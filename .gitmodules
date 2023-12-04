@@ -168,11 +168,6 @@
 	url = https://github.com/OCA/manufacture-reporting
 	branch = 17.0
 
-[submodule "OCA/mis-builder"]
-	path = OCA/mis-builder
-	url = https://github.com/OCA/mis-builder
-	branch = 17.0
-
 [submodule "OCA/multi-company"]
 	path = OCA/multi-company
 	url = https://github.com/OCA/multi-company
@@ -231,11 +226,6 @@
 [submodule "OCA/reporting-engine"]
 	path = OCA/reporting-engine
 	url = https://github.com/OCA/reporting-engine
-	branch = 17.0
-
-[submodule "OCA/rest-framework"]
-	path = OCA/rest-framework
-	url = https://github.com/OCA/rest-framework
 	branch = 17.0
 
 [submodule "OCA/rma"]
