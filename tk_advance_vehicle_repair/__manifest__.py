@@ -70,7 +70,7 @@
     'assets': {
         'web.assets_backend': [
             'tk_advance_vehicle_repair/static/src/xml/template.xml',
-            'tk_advance_vehicle_repair/static/src/css/lib/dashboard.css',
+            # 'tk_advance_vehicle_repair/static/src/css/lib/dashboard.css',
             'tk_advance_vehicle_repair/static/src/css/style.scss',
             'tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js',
         ],
