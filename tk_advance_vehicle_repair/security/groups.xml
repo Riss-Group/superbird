@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="module_tk_advance_vehicle_repair" model="ir.module.category">
+            <field name="name">Advance Vehicle Repair</field>
+            <field name="description">Access rights for Advance Vehicle Repair</field>
+        </record>
+        <record id="vehicle_repair_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_tk_advance_vehicle_repair"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="vehicle_repair_receptionist" model="res.groups">
+            <field name="name">Receptionist</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_tk_advance_vehicle_repair"/>
+        </record>
+        <record id="vehicle_repair_supervisor" model="res.groups">
+            <field name="name">Supervisor</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_tk_advance_vehicle_repair"/>
+        </record>
+        <record id="vehicle_repair_technician" model="res.groups">
+            <field name="name">Technician</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_tk_advance_vehicle_repair"/>
+        </record>
+
+        <record id="base.default_user" model="res.users">
+            <field name="groups_id" eval="[(4, ref('vehicle_repair_manager'))]"/>
+        </record>
+    </data>
+</odoo>

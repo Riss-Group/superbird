@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="inspection_job_card_form_view" model="ir.ui.view">
+            <field name="name">inspection.job.card.form.view</field>
+            <field name="model">inspection.job.card</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="stages" widget="statusbar" statusbar_visible="a_draft,b_in_progress,c_complete"/>
+
+                        <button name="%(action_inspection_vehicle_details)d" string="Select Vehicle" type="action"
+                                class="btn-primary" context="{'customer_id': customer_id}"
+                                invisible="vehicle_brand_id != False and registration_no != False and vehicle_model_id != False"/>
+
+                        <button string="In Progress" name="a_draft_to_b_in_progress" type="object" class="oe_highlight"
+                                invisible="stages not in 'a_draft'"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+
+                        <button string="Complete" name="b_in_progress_to_c_complete" type="object" class="oe_highlight"
+                                invisible="stages not in 'b_in_progress'"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+
+                        <button string="Cancel" name="c_complete_to_d_cancel" type="object" class="oe_highlight"
+                                invisible="stages not in 'b_in_progress'"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager"/>
+
+                        <button string="Create Vehicle Order" name="create_repair_job_card" type="object"
+                                class="oe_highlight"
+                                invisible="stages not in 'c_complete' or inspect_type != 'inspection_and_repair' or repair_job_card_id != False or vehicle_booking_id == False"/>
+
+                        <button string="Create Inspection Charge Sale Order" name="only_inspection_charge" type="object"
+                                class="oe_highlight" groups="tk_advance_vehicle_repair.vehicle_repair_manager"
+                                invisible="stages not in 'c_complete' or inspect_type != 'only_inspection' or sale_order_id != False"/>
+
+                        <button string="Create Repair Sale Order" name="action_inspection_repair_sale_order"
+                                type="object" class="oe_highlight"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager"
+                                invisible="stages not in 'c_complete' or inspect_type != 'inspection_and_repair' or inspection_repair_sale_order_id != False or vehicle_booking_id != False"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" position="inside"
+                             invisible="inspect_type == 'only_inspection'"
+                             groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <button class="oe_stat_button" type="object" name="view_team_task" icon="fa-tasks">
+                                <field string="Tasks" name="team_task_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="inspection_number"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Vehicle Booking Details" invisible="vehicle_booking_id == False">
+                                <field name="vehicle_booking_id" invisible="vehicle_booking_id == False"/>
+                            </group>
+                            <group string="Inspection Date">
+                                <field name="inspection_date"/>
+                            </group>
+                        </group>
+                        <group string="Vehicle Details">
+                            <group>
+                                <field name="vehicle_brand_id"/>
+                                <field name="registration_no"/>
+                                <field name="vehicle_fuel_type_id"/>
+                            </group>
+                            <group>
+                                <field name="vehicle_model_id"/>
+                                <field name="vin_no"/>
+                                <field name="transmission_type" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                        </group>
+                        <group string="Customer Details">
+                            <group>
+                                <field name="customer_id"/>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <strong>Address</strong>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                        <group string="Inspection Details">
+                            <group>
+                                <field name="sale_order_id" invisible="1"/>
+                                <field name="inspection_repair_sale_order_id" invisible="1"/>
+                                <field name="inspect_type" widget="radio" options="{'horizontal': True}"
+                                       readonly="vehicle_booking_id != False or sale_order_id != False or inspection_repair_sale_order_id != False"/>
+                                <label for="inspection_charge" string="Inspection Charge"
+                                       invisible="inspect_type != 'only_inspection'"
+                                       groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                <div class="address_format">
+                                    <field name="inspection_charge" style="width: auto;"
+                                           invisible="inspect_type != 'only_inspection'"
+                                           groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <strong invisible="sale_order_id == False"
+                                            groups="tk_advance_vehicle_repair.vehicle_repair_manager">&#160;&#160;Amount
+                                        Total&#160;&#160;
+                                    </strong>
+                                    <field name="amount_total" invisible="sale_order_id == False"
+                                           groups="tk_advance_vehicle_repair.vehicle_repair_manager"
+                                           style="width: auto; margin-left: 15px;"/>
+                                </div>
+                                <label for="sale_order_id" string="Sale Order" invisible="sale_order_id == False"
+                                       groups="tk_advance_vehicle_repair.vehicle_repair_manager"/>
+                                <div class="address_format" groups="tk_advance_vehicle_repair.vehicle_repair_manager">
+                                    <field name="sale_order_id" invisible="sale_order_id == False" readonly="1"
+                                           style="width: auto;"/>
+                                    <strong>&#160;&#160;
+                                        <field name="sale_order_state" widget="badge"
+                                               decoration-info="sale_order_state == 'draft'"
+                                               decoration-danger="sale_order_state == 'sent'"
+                                               decoration-success="sale_order_state == 'sale'"
+                                               decoration-primary="sale_order_state == 'done'"
+                                               decoration-warning="sale_order_state == 'cancel'" nolabel="1"
+                                               invisible="sale_order_id == False"
+                                               style="width: auto; margin-left: 15px;"/>
+                                    </strong>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="inspection_type" widget="radio" options="{'horizontal': True}"/>
+                            </group>
+                            <group>
+                                <field name="repair_job_card_id" invisible="repair_job_card_id == False" readonly="1"/>
+                            </group>
+                            <group invisible="inspection_type != 'specific_inspection'">
+                                <group>
+                                    <field name="part_assessment"/>
+                                    <field name="inner_body_inspection"/>
+                                    <field name="outer_body_inspection"/>
+                                    <field name="tyre_inspection"/>
+                                </group>
+                                <group>
+                                    <field name="mechanical_condition"/>
+                                    <field name="vehicle_component"/>
+                                    <field name="vehicle_fluid"/>
+                                </group>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                            </group>
+                            <group string="Responsible">
+                                <field name="responsible_id" widget="many2one_avatar_user"/>
+                            </group>
+                        </group>
+
+                        <notebook
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <page name="customer_observation" string="Customer Observations">
+                                <field name="customer_observation" nolabel="1"/>
+                            </page>
+                            <page name="spare_part_assessments" string="Parts Assessments"
+                                  invisible="inspection_type == 'specific_inspection' and part_assessment == False">
+                                <div>
+                                    <table width="100%" style="margin-top: 25px" class="table table-bordered">
+                                        <tr bgcolor="#f2f2f3">
+                                            <th style="padding: 5px; text-align: center;" colspan="4">Vehicle Spare
+                                                Parts Assessments
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="wd"/>
+                                                <label for="wd"/>
+                                            </td>
+                                            <td>
+                                                <field name="abs"/>
+                                                <label for="abs"/>
+                                            </td>
+                                            <td>
+                                                <field name="air_conditioning"/>
+                                                <label for="air_conditioning"/>
+                                            </td>
+                                            <td>
+                                                <field name="gps"/>
+                                                <label for="gps"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="luxury_sport_pkg"/>
+                                                <label for="luxury_sport_pkg"/>
+                                            </td>
+                                            <td>
+                                                <field name="running_boards"/>
+                                                <label for="running_boards"/>
+                                            </td>
+                                            <td>
+                                                <field name="awd"/>
+                                                <label for="awd"/>
+                                            </td>
+                                            <td>
+                                                <field name="bed_liner"/>
+                                                <label for="bed_liner"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="moon_sun_roof"/>
+                                                <label for="moon_sun_roof"/>
+                                            </td>
+                                            <td>
+                                                <field name="auto_transmission"/>
+                                                <label for="auto_transmission"/>
+                                            </td>
+                                            <td>
+                                                <field name="camper_shell"/>
+                                                <label for="camper_shell"/>
+                                            </td>
+                                            <td>
+                                                <field name="cd_usb_bluetooth"/>
+                                                <label for="cd_usb_bluetooth"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <field name="power_locks"/>
+                                                <label for="power_locks"/>
+                                            </td>
+                                            <td>
+                                                <field name="power_seats"/>
+                                                <label for="power_seats"/>
+                                            </td>
+                                            <td>
+                                                <field name="roof_rack"/>
+                                                <label for="roof_rack"/>
+                                            </td>
+                                            <td>
+                                                <field name="power_windows"/>
+                                                <label for="power_windows"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <field name="rear_window_wiper"/>
+                                                <label for="rear_window_wiper"/>
+                                            </td>
+                                            <td>
+                                                <field name="rear_lift_gate"/>
+                                                <label for="rear_lift_gate"/>
+                                            </td>
+                                            <td>
+                                                <field name="am_fm_radio"/>
+                                                <label for="am_fm_radio"/>
+                                            </td>
+                                            <td>
+                                                <field name="sport_wheels"/>
+                                                <label for="sport_wheels"/>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="tilt_wheel"/>
+                                                <label for="tilt_wheel"/>
+                                            </td>
+                                            <td>
+                                                <field name="towing_package"/>
+                                                <label for="towing_package"/>
+                                            </td>
+                                            <td>
+                                                <field name="wide_tires"/>
+                                                <label for="wide_tires"/>
+                                            </td>
+                                            <td>
+                                                <field name="cruise_control"/>
+                                                <label for="cruise_control"/>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="infotainment_system"/>
+                                                <label for="infotainment_system"/>
+                                            </td>
+                                            <td>
+                                                <field name="leather_interior"/>
+                                                <label for="leather_interior"/>
+                                            </td>
+                                            <td>
+                                                <field name="cvt_transmission"/>
+                                                <label for="cvt_transmission"/>
+                                            </td>
+                                            <td>
+                                                <field name="rear_sliding_window"/>
+                                                <label for="rear_sliding_window"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="stereo"/>
+                                                <label for="stereo"/>
+                                            </td>
+                                            <td>
+                                                <field name="other"/>
+                                                <label for="other"/>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </page>
+                            <page name="inner_condition" string="Vehicle Body Inner Conditions"
+                                  invisible="inspection_type == 'specific_inspection' and inner_body_inspection == False">
+                                <field name="interior_item_condition_ids" nolabel="1">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="vehicle_item_id"/>
+                                        <field name="interior_condition"/>
+                                        <field name="interior_condition_notes"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                         t-attf-style="background-image: url(#{kanban_image('interior.item.condition', 'avatar',record.id.raw_value)}})">
+                                                    </div>
+                                                    <div class="oe_kanban_details">
+                                                        <div class="o_kanban_record_top mb-0">
+                                                            <strong>
+                                                                <field name="vehicle_item_id"/>
+                                                            </strong>
+                                                        </div>
+                                                        <field name="interior_condition_notes"/>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <div class="oe_kanban_bottom_left">
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <field name="interior_condition"
+                                                                       widget="label_selection"
+                                                                       options="{'classes': {'worn': 'info', 'burnt': 'warning', 'ripped': 'danger', 'good': 'success', 'other': 'primary'}}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page name="vehicle_body_outer_condition" string="Vehicle Body Outer Conditions"
+                                  invisible="inspection_type == 'specific_inspection' and outer_body_inspection == False">
+                                <field name="vehicle_condition_line_ids" nolabel="1">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="vehicle_view"/>
+                                        <field name="vehicle_condition_location_id"/>
+                                        <field name="vehicle_condition_id"/>
+                                        <field name="condition_code"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                         t-attf-style="background-image: url(#{kanban_image('vehicle.condition.line', 'avatar',record.id.raw_value)}})">
+                                                    </div>
+                                                    <div class="oe_kanban_details">
+                                                        <div class="o_kanban_record_top mb-0">
+                                                            <strong>
+                                                                <field name="vehicle_view"/>
+                                                            </strong>
+                                                        </div>
+                                                        <field name="vehicle_condition_location_id"/>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <div class="oe_kanban_bottom_left">
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <strong>
+                                                                    <field name="vehicle_condition_id"/>&#160;-&#160;[
+                                                                    <field name="condition_code"/>]
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Mechanical Conditions"
+                                  invisible="inspection_type == 'specific_inspection' and mechanical_condition == False">
+                                <field name="mechanical_item_condition_ids" nolabel="1">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="vehicle_item_id"/>
+                                        <field name="mechanical_condition"/>
+                                        <field name="mechanical_condition_notes"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                         t-attf-style="background-image: url(#{kanban_image('mechanical.item.condition', 'avatar',record.id.raw_value)}})">
+                                                    </div>
+                                                    <div class="oe_kanban_details">
+                                                        <div class="o_kanban_record_top mb-0">
+                                                            <strong>
+                                                                <field name="vehicle_item_id"/>
+                                                            </strong>
+                                                        </div>
+                                                        <field name="mechanical_condition_notes"/>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <div class="oe_kanban_bottom_left">
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <field name="mechanical_condition"
+                                                                       widget="label_selection"
+                                                                       options="{'classes': {'poor': 'info', 'average': 'warning', 'not_working': 'danger', 'good': 'success', 'other': 'primary'}}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page name="vehicle_components" string="Vehicle Components"
+                                  invisible="inspection_type == 'specific_inspection' and vehicle_component == False">
+                                <field name="vehicle_components_ids" nolabel="1">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="vehicle_component_id"/>
+                                        <field name="c_vehicle_side"/>
+                                        <field name="condition"/>
+                                        <field name="remarks"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                         t-attf-style="background-image: url(#{kanban_image('vehicle.components', 'avatar',record.id.raw_value)}})">
+                                                    </div>
+                                                    <div class="oe_kanban_details">
+                                                        <div class="o_kanban_record_top mb-0">
+                                                            <strong>
+                                                                <field name="vehicle_component_id"/>&#160;-&#160;[
+                                                                <field name="c_vehicle_side"/>]
+                                                            </strong>
+                                                        </div>
+                                                        <field name="remarks"/>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <div class="oe_kanban_bottom_left">
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <field name="condition" widget="label_selection"
+                                                                       options="{'classes': {'require_future_attention': 'info', 'require_immediate_attention': 'warning', 'checked_ok': 'success'}}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page name="vehicle_fluids" string="Vehicle Fluids"
+                                  invisible="inspection_type == 'specific_inspection' and vehicle_fluid == False">
+                                <field name="vehicle_fluids_ids" nolabel="1">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="vehicle_fluid_id"/>
+                                        <field name="f_vehicle_side"/>
+                                        <field name="condition"/>
+                                        <field name="remarks"/>
+
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                         t-attf-style="background-image: url(#{kanban_image('vehicle.fluids', 'avatar',record.id.raw_value)}})">
+                                                    </div>
+                                                    <div class="oe_kanban_details">
+                                                        <div class="o_kanban_record_top mb-0">
+                                                            <strong>
+                                                                <field name="vehicle_fluid_id"/>&#160;-&#160;[
+                                                                <field name="f_vehicle_side"/>]
+                                                            </strong>
+                                                        </div>
+                                                        <field name="remarks"/>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <div class="oe_kanban_bottom_left">
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <field name="condition" widget="label_selection"
+                                                                       options="{'classes': {'require_future_attention': 'info', 'require_immediate_attention': 'warning', 'checked_ok': 'success'}}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page name="tyre_inspection" string="Tyres Inspections"
+                                  invisible="inspection_type == 'specific_inspection' and tyre_inspection == False">
+                                <field name="tyre_inspection_ids" nolabel="1">
+                                    <tree>
+                                        <field name="tyre"/>
+                                        <field name="condition"/>
+                                        <field name="tread_wear"/>
+                                        <field name="tread_depth"/>
+                                        <field name="tyre_pressure"/>
+                                        <field name="brake_pads"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="checklist" string="Checklists">
+                                <group>
+                                    <group>
+                                        <field name="check_list_template_id"/>
+                                    </group>
+                                </group>
+                                <br/>
+                                <field name="inspection_checklist_ids">
+                                    <form>
+                                        <field name="is_check"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </form>
+                                    <tree editable="bottom" default_order='name asc'
+                                          decoration-success="is_check == True">
+                                        <field name="is_check"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <br/>
+                        <h4 invisible="inspect_type != 'inspection_and_repair'"
+                            groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            Vehicle Spare parts
+                        </h4>
+                        <field name="vehicle_spare_part_ids" nolabel="1"
+                               invisible="inspect_type != 'inspection_and_repair'"
+                               groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="qty"/>
+                                <field name="unit_price"
+                                       groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                <field name="sub_total" sum="sub_total"
+                                       groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                <field name="company_id" column_invisible="True"/>
+                                <field name="currency_id" column_invisible="True"/>
+                            </tree>
+                        </field>
+                        <h4 invisible="inspect_type != 'inspection_and_repair'"
+                            groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            Vehicle Services
+                        </h4>
+                        <field name="inspection_repair_team_ids" nolabel="1"
+                               invisible="inspect_type != 'inspection_and_repair'"
+                               groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <form>
+                                <header>
+                                    <button string="Create Task" name="create_service_task" type="object"
+                                            class="oe_highlight"
+                                            groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"
+                                            invisible="service_team_id == False or team_task_id != False or not vehicle_service_team_members_ids"/>
+                                </header>
+                                <sheet>
+                                    <div class="oe_title">
+                                        <label for="vehicle_service_id"/>
+                                        <h1>
+                                            <field name="vehicle_service_id"/>
+                                        </h1>
+                                    </div>
+                                    <group string="Service Team Details">
+                                        <group>
+                                            <field name="service_team_id"/>
+                                            <field name="member_ids" invisible="1"/>
+                                            <field name="team_project_id" invisible="1"/>
+                                            <field name="vehicle_service_team_members_ids"
+                                                   widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                            <field name="team_task_id" invisible="team_task_id == False"/>
+                                        </group>
+                                        <group>
+                                            <label for="start_date" string="Date"/>
+                                            <div class="o_row">
+                                                <field name="start_date" nolabel="1" class="oe_inline"/>
+                                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon"
+                                                   title="Arrow"/>
+                                                <field name="end_date" nolabel="1" class="oe_inline"/>
+                                            </div>
+                                            <field name="work_is_done" invisible="1"/>
+                                            <field name="service_charge"
+                                                   groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="currency_id" invisible="1"/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                            <tree default_order='service_team_id asc'
+                                  decoration-danger="work_is_done == False"
+                                  decoration-success="work_is_done == True">
+                                <field name="vehicle_service_id"/>
+                                <field name="service_team_id" required="1"/>
+                                <field name="member_ids" column_invisible="True"/>
+                                <field name="vehicle_service_team_members_ids" widget="many2many_tags"
+                                       options="{'color_field': 'color'}" required="1"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="team_project_id" column_invisible="True"/>
+                                <field name="team_task_id" widget="many2one_button"/>
+                                <field name="work_is_done" column_invisible="True"/>
+                                <field name="service_charge" sum="service_charge"
+                                       groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                <field name="company_id" column_invisible="True"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <button string="Create Task" name="create_service_task" type="object"
+                                        class="oe_highlight"
+                                        invisible="service_team_id == False or team_task_id != False or not vehicle_service_team_members_ids"
+                                        groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                            </tree>
+                        </field>
+                        <table width="100%" groups="tk_advance_vehicle_repair.vehicle_repair_manager">
+                            <tr>
+                                <td invisible="inspection_repair_sale_order_id == False">
+                                    <strong>Sale Order:</strong>
+                                    <field name="inspection_repair_sale_order_id" readonly="1"
+                                           style="margin-left: 15px;"/>
+                                </td>
+                                <td invisible="inspect_type != 'inspection_and_repair'"
+                                    style="text-align: right;">
+                                    <strong>Total Parts Price:</strong>
+                                    <field name="part_price"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td invisible="inspection_repair_sale_order_id == False">
+                                    <strong>Status:</strong>
+                                    <field name="repair_sale_order_state" widget="badge"
+                                           decoration-info="repair_sale_order_state == 'draft'"
+                                           decoration-danger="repair_sale_order_state == 'sent'"
+                                           decoration-success="repair_sale_order_state == 'sale'"
+                                           decoration-primary="repair_sale_order_state == 'done'"
+                                           decoration-warning="repair_sale_order_state == 'cancel'"
+                                           style="margin-left: 15px;"/>
+                                </td>
+                                <td invisible="inspect_type != 'inspection_and_repair'"
+                                    style="text-align: right;">
+                                    <strong>Total Service Charge:</strong>
+                                    <field name="service_charge"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td invisible="inspection_repair_sale_order_id == False">
+                                    <strong>Total Amounts:</strong>
+                                    <field name="repair_amount_total"/>
+                                </td>
+                                <td invisible="inspect_type != 'inspection_and_repair'" style="text-align: right;">
+                                    <strong>Total:</strong>
+                                    <field name="sub_total" readonly="1"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="inspection_job_card_tree_view" model="ir.ui.view">
+            <field name="name">inspection.job.card.tree.view</field>
+            <field name="model">inspection.job.card</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="inspection_number"/>
+                    <field name="inspection_date"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="inspect_type"/>
+                    <field name="inspection_type"/>
+                    <field name="customer_id"/>
+                    <field name="stages" widget="badge" optional="show"
+                           decoration-info="stages == 'a_draft'"
+                           decoration-warning="stages == 'b_in_progress'"
+                           decoration-success="stages == 'c_complete'"
+                           decoration-danger="stages == 'd_cancel'"/>
+                </tree>
+            </field>
+        </record>
+        <record id="inspection_job_card_kanban_view" model="ir.ui.view">
+            <field name="name">inspection.job.card.kanban.view</field>
+            <field name="model">inspection.job.card</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="inspection_number"/>
+                    <field name="inspection_date"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="customer_id"/>
+                    <field name="stages"/>
+                    <field name="responsible_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong>
+                                            <field name="inspection_number"/>
+                                        </strong>
+                                        <br/>
+                                        <field name="vehicle_brand_id"/>&#160;-&#160;
+                                        <field name="vehicle_model_id"/>
+                                        <br/>
+                                        <field name="customer_id"/>
+                                    </div>
+                                    <strong>
+                                        <field name="inspection_date"/>
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="stages" widget="label_selection"
+                                               options="{'classes': {'a_draft': 'info', 'b_in_progress': 'warning', 'c_complete': 'success', 'd_cancel': 'danger'}}"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="responsible_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="inspection_job_card_pivot_view" model="ir.ui.view">
+            <field name="name">inspection.job.card.pivot.view</field>
+            <field name="model">inspection.job.card</field>
+            <field name="priority">60</field>
+            <field name="arch" type="xml">
+                <pivot string="Vehicle Details" sample="1">
+                    <field name="stages" type="col"/>
+                    <field name="inspection_date" interval="month" type="row"/>
+                    <field name="inspection_number" type="row"/>
+                    <field name="vehicle_brand_id" type="row"/>
+                    <field name="customer_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <record id="inspection_job_card_search_view" model="ir.ui.view">
+            <field name="name">inspection.job.card.search.view</field>
+            <field name="model">inspection.job.card</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="inspection_number"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="vehicle_model_id"/>
+                    <field name="registration_no"/>
+                    <field name="vehicle_fuel_type_id"/>
+                    <field name="customer_id"/>
+                    <field name="inspect_type"/>
+                    <field name="inspection_type"/>
+                    <field name="vin_no"/>
+                    <field name="transmission_type"/>
+                    <field name="responsible_id"/>
+                    <group string="Group By">
+                        <filter name="customer_id" string="Customer"
+                                context="{'group_by': 'customer_id'}"/>
+                        <filter name="vehicle_brand_id" string="Vehicle Brand"
+                                context="{'group_by': 'vehicle_brand_id'}"/>
+                        <filter name="vehicle_model_id" string="Vehicle Model"
+                                context="{'group_by': 'vehicle_model_id'}"/>
+                        <filter name="inspect_type" string="Inspection Type"
+                                context="{'group_by': 'inspect_type'}"/>
+                        <filter name="inspection_type" string="Type of Inspection"
+                                context="{'group_by': 'inspection_type'}"/>
+                        <filter name="transmission_type" string="Transmission Type"
+                                context="{'group_by': 'transmission_type'}"/>
+                        <filter name="responsible_id" string="Responsible"
+                                context="{'group_by': 'responsible_id'}"/>
+                        <filter name="stages" string="Stages"
+                                context="{'group_by': 'stages'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_inspection_job_card" model="ir.actions.act_window">
+            <field name="name">Job Card</field>
+            <field name="res_model">inspection.job.card</field>
+            <field name="view_mode">kanban,tree,form,pivot,search,activity</field>
+        </record>
+    </data>
+</odoo>

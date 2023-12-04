@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="repair_checklist_form_view" model="ir.ui.view">
+            <field name="name">repair.checklist.form.view</field>
+            <field name="model">repair.checklist</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="repair_checklist_tree_view" model="ir.ui.view">
+            <field name="name">repair.checklist.tree.view</field>
+            <field name="model">repair.checklist</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="is_check"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+        <record id="repair_checklist_search_view" model="ir.ui.view">
+            <field name="name">repair.checklist.search.view</field>
+            <field name="model">repair.checklist</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <group string="Group By">
+                        <filter name="name" string="Name"
+                                context="{'group_by': 'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_repair_checklist" model="ir.actions.act_window">
+            <field name="name">Repair Checklist</field>
+            <field name="res_model">repair.checklist</field>
+            <field name="view_mode">tree,form,search,activity</field>
+        </record>
+    </data>
+</odoo>

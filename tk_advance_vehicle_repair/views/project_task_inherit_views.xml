@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="project_task_form_view" model="ir.ui.view">
+            <field name="name">project.task.form.view</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_ids']" position="after">
+                    <field name="repair_job_card_id" invisible="repair_job_card_id == False" readonly="1"/>
+                    <field name="inspection_job_card_id" invisible="inspection_job_card_id == False" readonly="1"/>
+                    <field name="work_is_done"
+                           groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_technician"/>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="before">
+                    <page name="vehicle_details" string="Vehicle Details" invisible="repair_job_card_id == False">
+                        <group>
+                            <group>
+                                <field name="r_vehicle_brand_id"/>
+                                <field name="r_registration_no"/>
+                                <field name="r_vehicle_fuel_type_id"/>
+                            </group>
+                            <group>
+                                <field name="r_vehicle_model_id"/>
+                                <field name="r_vin_no"/>
+                                <field name="r_transmission_type" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page name="vehicle_details" string="Vehicle Details" invisible="inspection_job_card_id == False">
+                        <group>
+                            <group>
+                                <field name="i_vehicle_brand_id"/>
+                                <field name="i_registration_no"/>
+                                <field name="i_vehicle_fuel_type_id"/>
+                            </group>
+                            <group>
+                                <field name="i_vehicle_model_id"/>
+                                <field name="i_vin_no"/>
+                                <field name="i_transmission_type" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

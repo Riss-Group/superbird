@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="repair_job_card_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="repair">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <table class="table table-bordered table-sm">
+                            <tr>
+                                <td colspan="2"
+                                    style="font-size: 18px; background-color: #F8F8F8; padding: 2px; text-align: center; border: aliceblue;">
+                                    <strong>Repair Job Card</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Job Card No:
+                                    <span t-field="repair.sequence_number"/>
+                                </td>
+                                <td style="padding: 2px;">Date:
+                                    <span t-field="repair.inspect_repair_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding: 2px;">Vehicle Details</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Name:
+                                    <span t-field="repair.vehicle_brand_id"/>
+                                </td>
+                                <td style="padding: 2px;">Model:
+                                    <span t-field="repair.vehicle_model_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Fuel Type:
+                                    <span t-field="repair.vehicle_fuel_type_id"/>
+                                </td>
+                                <td style="padding: 2px;">Transmission Type:
+                                    <span t-field="repair.transmission_type"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Registration No:
+                                    <span t-field="repair.registration_no"/>
+                                </td>
+                                <td style="padding: 2px;">VIN No:
+                                    <span t-field="repair.vin_no"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding: 2px;">Customer Details</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Customer:
+                                    <span t-field="repair.customer_id"/>
+                                </td>
+                                <td style="padding: 2px;">Address:
+                                    <span t-field="repair.street"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Phone:
+                                    <span t-field="repair.phone"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="repair.street2"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">Email:
+                                    <span t-field="repair.email"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="repair.city"/>&#160;&#160;-&#160;
+                                    <span t-field="repair.state_id"/>&#160;&#160;-&#160;
+                                    <span t-field="repair.country_id"/>&#160;&#160;-&#160;
+                                    <span t-field="repair.zip"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-sm o_main_table mt-4">
+                            <tr>
+                                <td colspan="100%;"
+                                    style="font-size: 14px; background-color: #F8F8F8; padding: 2px; border: aliceblue;">
+                                    <strong>➤&#160;Customer Observations</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="100%" style="padding: 2px;">
+                                    <span t-field="repair.customer_observation"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm o_main_table mt-4">
+                            <tr>
+                                <td colspan="100%;"
+                                    style="font-size: 14px; background-color: #F8F8F8; padding: 2px; border: aliceblue;">
+                                    <strong>➤&#160;Vehicle Spare Parts</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="35%" style="padding: 2px;">
+                                    <strong>Spare Part</strong>
+                                </td>
+                                <td width="25%" style="padding: 2px;">
+                                    <strong>Quantity</strong>
+                                </td>
+                                <td width="20%" style="padding: 2px;">
+                                    <strong>Unit Price</strong>
+                                </td>
+                                <td width="20%" style="padding: 2px;">
+                                    <strong>Sub Total</strong>
+                                </td>
+                            </tr>
+                            <tr t-foreach="repair.vehicle_order_spare_part_ids" t-as="order_part">
+                                <td width="35%" style="padding: 2px;">
+                                    <span t-field="order_part.product_id"/>
+                                </td>
+                                <td width="25%" style="padding: 2px;">
+                                    <span t-field="order_part.qty"/>
+                                </td>
+                                <td width="20%" style="padding: 2px;">
+                                    <span t-field="order_part.unit_price"/>
+                                </td>
+                                <td width="20%" style="padding: 2px;">
+                                    <span t-field="order_part.sub_total"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="100%" style="text-align: Right; padding: 2px;">Parts Price:
+                                    <span t-field="repair.part_price"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm o_main_table mt-4">
+                            <tr>
+                                <td colspan="100%;"
+                                    style="font-size: 14px; background-color: #F8F8F8; padding: 2px; border: aliceblue;">
+                                    <strong>➤&#160;Vehicle Services</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">
+                                    <strong>Service</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Team</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Team Members</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Start Date</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>End Date</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Service Charge</strong>
+                                </td>
+                            </tr>
+                            <tr t-foreach="repair.vehicle_service_team_ids" t-as="team_service">
+                                <td style="padding: 2px;">
+                                    <span t-field="team_service.vehicle_service_id"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="team_service.service_team_id"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <t t-foreach="team_service.vehicle_service_team_members_ids" t-as="employee">
+                                        <span t-field="employee.name"/>
+                                    </t>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="team_service.start_date"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="team_service.end_date"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="team_service.service_charge"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="100%" style="text-align: Right; padding: 2px;">Service Charges:
+                                    <span t-field="repair.service_charge"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!--Inspection Checklist-->
+                        <table class="table table-sm o_main_table mt-4">
+                            <tr>
+                                <td colspan="3"
+                                    style="font-size: 14px; background-color: #F8F8F8; padding: 2px; border: aliceblue;">
+                                    <strong>➤&#160;Repair Checklists</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding: 2px;">
+                                    <strong>Checklist Template:</strong>
+                                    <span t-field="repair.check_list_template_id"/>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 2px;">
+                                    <strong>Check</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Name</strong>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <strong>Description</strong>
+                                </td>
+                            </tr>
+                            <tr t-foreach="repair.repair_checklist_ids" t-as="check">
+                                <td style="width: 5%; padding-left: 1.5rem; padding: 2px;">
+                                    <t t-if="check.is_check">
+                                        <img src="/tk_advance_vehicle_repair/static/src/img/true.png"
+                                             style="width: 10px; height: 10px;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/tk_advance_vehicle_repair/static/src/img/false.png"
+                                             style="width: 10px; height: 10px;"/>
+                                    </t>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="check.name"/>
+                                </td>
+                                <td style="padding: 2px;">
+                                    <span t-field="check.description"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_repair_job_card_report" model="ir.actions.report">
+        <field name="name">Repair Job Card Report</field>
+        <field name="model">repair.job.card</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">tk_advance_vehicle_repair.repair_job_card_report_template</field>
+        <field name="report_file">tk_advance_vehicle_repair.repair_job_card_report_template</field>
+        <field name="binding_model_id" ref="model_repair_job_card"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

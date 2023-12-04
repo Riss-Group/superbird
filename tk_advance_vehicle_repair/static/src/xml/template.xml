@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="tk_advance_vehicle_repair.adv_dashboard" owl="1">
+        <section class="section advance_vehicle_repair_dashboard">
+            <div class="container">
+                <div class="container advance_vehicle_repair_dashboard">
+                    <div class="row">
+                        <div class="col-md-12 mb-4 mt32 mb16">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-5">
+                                    <h4 class="section-header">Booking Details</h4>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-4 col-sm-6" t-on-click="() => this.viewVehicleBooking('all')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-info">
+                                            <span class="svg-icon svg-icon-info svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd"
+                                                          d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.bookingStats['total_vehicle_booking']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">Bookings</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4"
+                         t-on-click="() => this.viewVehicleBooking('vehicle_inspection')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-success">
+                                            <span class="svg-icon svg-icon-success svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z"
+                                                          fill="currentColor"/>
+                                                    <path opacity="0.3"
+                                                          d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.bookingStats['vehicle_inspection']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">In Inspections</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4"
+                         t-on-click="() => this.viewVehicleBooking('vehicle_repair')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-general">
+                                            <span class="svg-icon svg-icon-general svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                          d="M22.0318 8.59998C22.0318 10.4 21.4318 12.2 20.0318 13.5C18.4318 15.1 16.3318 15.7 14.2318 15.4C13.3318 15.3 12.3318 15.6 11.7318 16.3L6.93177 21.1C5.73177 22.3 3.83179 22.2 2.73179 21C1.63179 19.8 1.83177 18 2.93177 16.9L7.53178 12.3C8.23178 11.6 8.53177 10.7 8.43177 9.80005C8.13177 7.80005 8.73176 5.6 10.3318 4C11.7318 2.6 13.5318 2 15.2318 2C16.1318 2 16.6318 3.20005 15.9318 3.80005L13.0318 6.70007C12.5318 7.20007 12.4318 7.9 12.7318 8.5C13.3318 9.7 14.2318 10.6001 15.4318 11.2001C16.0318 11.5001 16.7318 11.3 17.2318 10.9L20.1318 8C20.8318 7.2 22.0318 7.59998 22.0318 8.59998Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M4.23179 19.7C3.83179 19.3 3.83179 18.7 4.23179 18.3L9.73179 12.8C10.1318 12.4 10.7318 12.4 11.1318 12.8C11.5318 13.2 11.5318 13.8 11.1318 14.2L5.63179 19.7C5.23179 20.1 4.53179 20.1 4.23179 19.7Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.bookingStats['vehicle_repair']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">In Repairs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4 mt32 mb16">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6"
+                         t-on-click="() => this.viewVehicleBooking('vehicle_inspection_repair')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-warning">
+                                            <span class="svg-icon svg-icon-warning svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.39961 20.5073C7.29961 20.5073 6.39961 19.6073 6.39961 18.5073C6.39961 17.4073 7.29961 16.5073 8.39961 16.5073H9.89961C11.7996 16.5073 13.3996 14.9073 13.3996 13.0073C13.3996 11.1073 11.7996 9.50732 9.89961 9.50732H8.09961L6.59961 11.2073C6.49961 11.3073 6.29961 11.4073 6.09961 11.5073C6.19961 11.5073 6.19961 11.5073 6.29961 11.5073H9.79961C10.5996 11.5073 11.2996 12.2073 11.2996 13.0073C11.2996 13.8073 10.5996 14.5073 9.79961 14.5073H8.39961C6.19961 14.5073 4.39961 16.3073 4.39961 18.5073C4.39961 20.7073 6.19961 22.5073 8.39961 22.5073H15.3996V20.5073H8.39961Z"
+                                                          fill="currentColor"/>
+                                                    <path opacity="0.3"
+                                                          d="M8.89961 8.7073L6.69961 11.2073C6.29961 11.6073 5.59961 11.6073 5.19961 11.2073L2.99961 8.7073C2.19961 7.8073 1.7996 6.50732 2.0996 5.10732C2.3996 3.60732 3.5996 2.40732 5.0996 2.10732C7.6996 1.50732 9.99961 3.50734 9.99961 6.00734C9.89961 7.00734 9.49961 8.0073 8.89961 8.7073Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M5.89961 7.50732C6.72804 7.50732 7.39961 6.83575 7.39961 6.00732C7.39961 5.1789 6.72804 4.50732 5.89961 4.50732C5.07119 4.50732 4.39961 5.1789 4.39961 6.00732C4.39961 6.83575 5.07119 7.50732 5.89961 7.50732Z"
+                                                          fill="currentColor"/>
+                                                    <path opacity="0.3"
+                                                          d="M17.3996 22.5073H15.3996V13.5073C15.3996 12.9073 15.7996 12.5073 16.3996 12.5073C16.9996 12.5073 17.3996 12.9073 17.3996 13.5073V22.5073Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M21.3996 18.5073H15.3996V13.5073H21.3996C22.1996 13.5073 22.5996 14.4073 22.0996 15.0073L21.2996 16.0073L22.0996 17.0073C22.6996 17.6073 22.1996 18.5073 21.3996 18.5073Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.bookingStats['vehicle_inspection_repair']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">In Inspections and Repairs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6"
+                         t-on-click="() => this.viewVehicleBooking('cancel')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-danger">
+                                            <span class="svg-icon svg-icon-danger svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
+                                                          fill="currentColor"/>
+                                                    <rect x="7" y="15.3137" width="12" height="2" rx="1"
+                                                          transform="rotate(-45 7 15.3137)" fill="currentColor"/>
+                                                    <rect x="8.41422" y="7" width="12" height="2" rx="1"
+                                                          transform="rotate(45 8.41422 7)" fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.bookingStats['booking_cancel']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">Cancelled</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4 mt32 mb16">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4 mt32 mb16">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5">
+                                <h4 class="section-header">Inspection Job Card Details</h4>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4"
+                         t-on-click="() => this.viewInspectionJobCard('all')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-info">
+                                            <span class="svg-icon svg-icon-info svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd"
+                                                          d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.inspectionJobCardStatus['total_inspection_job_card']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">Job Cards</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4"
+                         t-on-click="() => this.viewInspectionJobCard('b_in_progress')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-warning">
+                                            <span class="svg-icon svg-icon-warning svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M18.0002 22H6.00019C5.20019 22 4.8002 21.1 5.2002 20.4L12.0002 12L18.8002 20.4C19.3002 21.1 18.8002 22 18.0002 22Z"
+                                                          fill="currentColor"/>
+                                                    <path opacity="0.3"
+                                                          d="M18.8002 3.6L12.0002 12L5.20019 3.6C4.70019 3 5.20018 2 6.00018 2H18.0002C18.8002 2 19.3002 2.9 18.8002 3.6Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.inspectionJobCardStatus['inspection_in_progress']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">In Progress</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4" t-on-click="() => this.viewInspectionJobCard('c_complete')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-success">
+                                            <span class="svg-icon svg-icon-success svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                          d="M10.3 14.3L11 13.6L7.70002 10.3C7.30002 9.9 6.7 9.9 6.3 10.3C5.9 10.7 5.9 11.3 6.3 11.7L10.3 15.7C9.9 15.3 9.9 14.7 10.3 14.3Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M21 22H3C2.4 22 2 21.6 2 21V3C2 2.4 2.4 2 3 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22ZM11.7 15.7L17.7 9.70001C18.1 9.30001 18.1 8.69999 17.7 8.29999C17.3 7.89999 16.7 7.89999 16.3 8.29999L11 13.6L7.70001 10.3C7.30001 9.89999 6.69999 9.89999 6.29999 10.3C5.89999 10.7 5.89999 11.3 6.29999 11.7L10.3 15.7C10.5 15.9 10.8 16 11 16C11.2 16 11.5 15.9 11.7 15.7Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.inspectionJobCardStatus['inspection_complete']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4 mt32 mb16">
+                         <div class="row">
+                             <div class="col-12 col-sm-12 col-md-5">
+                             </div>
+                         </div>
+                     </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4" t-on-click="() => this.viewInspectionJobCard('d_cancel')">
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-body p-0">
+                                <div class="d-flex flex-stack card-p flex-grow-1">
+                                    <span class="symbol symbol-50px me-2">
+                                        <span class="symbol-label bg-light-danger">
+                                            <span class="svg-icon svg-icon-danger svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                          d="M12 10.6L14.8 7.8C15.2 7.4 15.8 7.4 16.2 7.8C16.6 8.2 16.6 8.80002 16.2 9.20002L13.4 12L12 10.6ZM10.6 12L7.8 14.8C7.4 15.2 7.4 15.8 7.8 16.2C8 16.4 8.30001 16.5 8.50001 16.5C8.70001 16.5 9.00002 16.4 9.20002 16.2L12 13.4L10.6 12Z"
+                                                          fill="currentColor"/>
+                                                    <path d="M21 22H3C2.4 22 2 21.6 2 21V3C2 2.4 2.4 2 3 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22ZM13.4 12L16.2 9.20001C16.6 8.80001 16.6 8.19999 16.2 7.79999C15.8 7.39999 15.2 7.39999 14.8 7.79999L12 10.6L9.20001 7.79999C8.80001 7.39999 8.19999 7.39999 7.79999 7.79999C7.39999 8.19999 7.39999 8.80001 7.79999 9.20001L10.6 12L7.79999 14.8C7.39999 15.2 7.39999 15.8 7.79999 16.2C7.99999 16.4 8.3 16.5 8.5 16.5C8.7 16.5 9.00001 16.4 9.20001 16.2L12 13.4L14.8 16.2C15 16.4 15.3 16.5 15.5 16.5C15.7 16.5 16 16.4 16.2 16.2C16.6 15.8 16.6 15.2 16.2 14.8L13.4 12Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <div class="d-flex flex-column text-end">
+                                        <span class="text-dark fw-bolder fs-2">
+                                            <t t-esc="state.inspectionJobCardStatus['inspection_cancel']"/>
+                                        </span>
+                                        <span class="text-muted fw-bold mt-1">Cancelled</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-4 mt32 mb16">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="box box-full mt16 mb16">
+                            <h5 class="mb16">Repair Job Card Details</h5>
+                            <div t-ref="vehicle_repair_job_card_details">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-full mt16 mb16">
+                            <h5 class="mb16">Booking Details</h5>
+                            <div t-ref="booking_details_graph">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-full mt16 mb16">
+                            <h5 class="mb16">Booking Sources</h5>
+                            <div t-ref="booking_source_graph">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-full mt16 mb16">
+                            <h5 class="mb16">Inspection Job Card in Inspection Types</h5>
+                            <div t-ref="job_card_inspection_type">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box box-full mt16">
+                            <h5 class="mb16">Most Common Fuels Used In Vehicles</h5>
+                            <div t-ref="most_common_fuel_used_in_vehicle">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </t>
+</templates>

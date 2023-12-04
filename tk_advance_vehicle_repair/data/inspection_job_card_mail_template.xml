@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="inspection_job_card_mail_template" model="mail.template">
+            <field name="name">Inspection Job Card Mail Template</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_inspection_job_card"/>
+            <field name="subject">Vehicle Inspection Completed - Important Information Inside</field>
+            <field name="email_from">{{object.company_id.email}}</field>
+            <field name="partner_to">{{ object.customer_id.id }}</field>
+            <field name="body_html" type="html">
+                <table style="width: 100%">
+                    <tr>
+                        <td>
+                            Dear Customer,
+                            <br/>
+                            <h4>
+                                <strong>
+                                    <t t-out="object.customer_id.name"/>
+                                </strong>
+                            </h4>
+                        </td>
+                    </tr>
+                </table>
+                <hr/>
+                <p>
+                    We hope this email finds you well. We are writing to inform you that the vehicle inspection for your
+                    <strong>
+                        <t t-out="object.vehicle_brand_id.name"/>
+                        &#160;-&#160;
+                        <t t-out="object.vehicle_model_id.name"/>
+                    </strong>
+                    has been successfully completed. We appreciate your cooperation throughout the process.
+                </p>
+                <p>
+                    1 Inspection Report: Attached to this email, you will find the comprehensive inspection report
+                    detailing the condition of your vehicle. Please review it carefully to understand the results and
+                    any recommended actions.
+                </p>
+                <p>
+                    2 Next Steps: Should you wish to proceed with any repairs or maintenance services, our team is here
+                    to assist you. Please contact our service department at
+                    <strong>
+                        <t t-out="object.company_id.phone"/>
+                    </strong>
+                    or simply reply to this email, and we will be happy to schedule an appointment or provide further
+                    guidance.
+                </p>
+                <p>
+                    We take pride in delivering high-quality service and ensuring your vehicle's reliability. Your
+                    satisfaction is our top priority, and we appreciate your trust in our expertise.
+                </p>
+                <p>
+                    If you have any questions or need further assistance, please don't hesitate to reach out to us. We
+                    are available to help you during our regular business hours.
+                </p>
+                <p>
+                    Once again, thank you for choosing our services. We look forward to serving you in the future.
+                </p>
+                <br/>
+                <h6>
+                    Best regards,
+                </h6>
+                <h5>
+                    <strong>
+                        <t t-out="object.responsible_id.name"/>
+                    </strong>
+                </h5>
+                <hr/>
+                <span>
+                    <h6>
+                        <t t-out="object.company_id.name"/>
+                    </h6>
+                    <t t-out="object.company_id.phone"/>
+                    <br/>
+                    <t t-out="object.company_id.email"/>
+                    <br/>
+                    <t t-out="object.company_id.website"/>
+                </span>
+            </field>
+            <field name="report_template_ids"
+                   eval="[(4, ref('tk_advance_vehicle_repair.action_inspection_job_card_report'))]"/>
+            <field name="lang">{{ object.customer_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

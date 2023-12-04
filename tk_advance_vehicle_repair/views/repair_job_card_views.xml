@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="repair_job_card_form_view" model="ir.ui.view">
+            <field name="name">repair.job.card.form.view</field>
+            <field name="model">repair.job.card</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="stages" widget="statusbar"
+                               statusbar_visible="draft,assign_to_technician,in_diagnosis,supervisor_inspection,complete"/>
+
+                        <button name="%(action_repair_vehicle_details)d" string="Select Vehicle" type="action"
+                                class="btn-primary" context="{'customer_id': customer_id}"
+                                invisible="vehicle_brand_id != False and registration_no != False and vehicle_model_id != False"/>
+
+                        <button string="Assign to Technician" name="draft_to_assign_to_technician" type="object"
+                                class="oe_highlight" invisible="stages not in 'draft'"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+
+                        <button string="In Diagnosis" name="assign_to_technician_to_in_diagnosis" type="object"
+                                class="oe_highlight" invisible="stages not in ['assign_to_technician', 'hold']"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician"/>
+
+                        <button string="Inspection Request" name="in_diagnosis_to_supervisor_inspection" type="object"
+                                class="oe_highlight" invisible="stages not in 'in_diagnosis'"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_technician"/>
+
+                        <button string="Complete" name="supervisor_inspection_to_complete" type="object"
+                                class="oe_highlight" invisible="stages not in ['supervisor_inspection', 'hold']"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+
+                        <button string="Hold" name="complete_to_hold" type="object"
+                                invisible="stages not in ['assign_to_technician', 'in_diagnosis', 'supervisor_inspection']"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+
+                        <button string="Cancel" name="hold_to_cancel" type="object"
+                                invisible="stages not in ['assign_to_technician', 'in_diagnosis', 'supervisor_inspection']"
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager"/>
+
+                        <button string="Create Repair Sale Order" name="action_repair_sale_order" type="object"
+                                class="oe_highlight" groups="tk_advance_vehicle_repair.vehicle_repair_manager"
+                                invisible="stages not in 'complete' or repair_sale_order_id != False"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" position="inside"
+                             groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <button class="oe_stat_button" type="object" name="view_team_tasks"
+                                    icon="fa-tasks">
+                                <field string="Tasks" name="team_task_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sequence_number"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Inspection Job Card Details" invisible="inspection_job_card_id == False">
+                                <field name="inspection_job_card_id" invisible="inspection_job_card_id == False"/>
+                            </group>
+                            <group string="Booking Details" invisible="vehicle_booking_id == False">
+                                <field name="vehicle_booking_id" invisible="vehicle_booking_id == False"/>
+                            </group>
+                            <group string="Inspection/Repair Date">
+                                <field name="inspect_repair_date"/>
+                            </group>
+                        </group>
+                        <group string="Vehicle Details">
+                            <group>
+                                <field name="vehicle_brand_id"/>
+                                <field name="registration_no"/>
+                                <field name="vehicle_fuel_type_id"/>
+                            </group>
+                            <group>
+                                <field name="vehicle_model_id"/>
+                                <field name="vin_no"/>
+                                <field name="transmission_type" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                        </group>
+                        <group string="Customer Details">
+                            <group>
+                                <field name="customer_id"/>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <strong>Address</strong>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                            </group>
+                            <group string="Responsible">
+                                <field name="responsible_id" widget="many2one_avatar_user"/>
+                            </group>
+                        </group>
+                        <notebook
+                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor,tk_advance_vehicle_repair.vehicle_repair_technician">
+                            <page name="customer_observation" string="Customer Observations">
+                                <field name="customer_observation" nolabel="1"/>
+                            </page>
+                            <page name="vehicle_spare_parts" string="Vehicle Spare Parts">
+                                <field name="vehicle_order_spare_part_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                        <field name="unit_price"
+                                               groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                        <field name="sub_total" sum="sub_total"
+                                               groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                        <field name="company_id" column_invisible="True"/>
+                                        <field name="currency_id" column_invisible="True"/>
+                                    </tree>
+                                </field>
+                                <group groups="tk_advance_vehicle_repair.vehicle_repair_manager">
+                                    <group>
+                                        <label for="repair_sale_order_id" string="Sale Order"
+                                               invisible="repair_sale_order_id == False"/>
+                                        <div class="address_format" invisible="repair_sale_order_id == False">
+                                            <field name="repair_sale_order_id" readonly="1" style="width: auto;"/>
+                                            <strong>&#160;&#160;
+                                                <field name="repair_order_state" widget="badge"
+                                                       decoration-info="repair_order_state == 'draft'"
+                                                       decoration-danger="repair_order_state == 'sent'"
+                                                       decoration-success="repair_order_state == 'sale'"
+                                                       decoration-primary="repair_order_state == 'done'"
+                                                       decoration-warning="repair_order_state == 'cancel'" nolabel="1"
+                                                       invisible="repair_sale_order_id == False"
+                                                       style="width: auto; margin-left: 15px;"/>
+                                            </strong>
+                                        </div>
+                                        <field name="repair_amount" invisible="repair_sale_order_id == False"/>
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" style="text-align: right">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="part_price"/>
+                                        <field name="service_charge"/>
+                                        <field name="sub_total" class="oe_subtotal_footer_separator" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="service_team" string="Services">
+                                <field name="vehicle_service_team_ids">
+                                    <form>
+                                        <header>
+                                            <button string="Create Task" name="create_service_task" type="object"
+                                                    class="oe_highlight"
+                                                    invisible="service_team_id == False or not vehicle_service_team_members_ids or team_task_id != False"
+                                                    groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                        </header>
+                                        <sheet>
+                                            <div class="oe_title">
+                                                <label for="vehicle_service_id"/>
+                                                <h1>
+                                                    <field name="vehicle_service_id"/>
+                                                </h1>
+                                            </div>
+                                            <group string="Service Team Details">
+                                                <group>
+                                                    <field name="service_team_id"/>
+                                                    <field name="member_ids" invisible="1"/>
+                                                    <field name="team_project_id" invisible="1"/>
+                                                    <field name="vehicle_service_team_members_ids"
+                                                           widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                                    <field name="team_task_id" invisible="team_task_id == False"/>
+                                                </group>
+                                                <group>
+                                                    <label for="start_date" string="Date"/>
+                                                    <div class="o_row">
+                                                        <field name="start_date" nolabel="1" class="oe_inline"/>
+                                                        <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon"
+                                                           title="Arrow"/>
+                                                        <field name="end_date" nolabel="1" class="oe_inline"/>
+                                                    </div>
+                                                    <field name="work_is_done" invisible="1"/>
+                                                    <field name="service_charge"
+                                                           groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                                    <field name="company_id" invisible="1"/>
+                                                    <field name="currency_id" invisible="1"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                    <tree default_order='service_team_id asc' decoration-danger="work_is_done == False"
+                                          decoration-success="work_is_done == True">
+                                        <field name="vehicle_service_id"/>
+                                        <field name="service_team_id" required="1"/>
+                                        <field name="vehicle_service_team_members_ids" widget="many2many_tags"
+                                               options="{'color_field': 'color'}" required="1"/>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="team_project_id" column_invisible="True"/>
+                                        <field name="team_task_id" widget="many2one_button"/>
+                                        <field name="work_is_done" column_invisible="True"/>
+                                        <field name="service_charge" sum="service_charge"
+                                               groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                        <field name="company_id" column_invisible="True"/>
+                                        <field name="currency_id" column_invisible="True"/>
+                                        <button string="Create Task" name="create_service_task" type="object"
+                                                class="oe_highlight"
+                                                invisible="service_team_id == False or not vehicle_service_team_members_ids or team_task_id != False"
+                                                groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_supervisor"/>
+                                    </tree>
+                                </field>
+                                <group groups="tk_advance_vehicle_repair.vehicle_repair_manager">
+                                    <group>
+                                        <label for="repair_sale_order_id" string="Sale Order"
+                                               invisible="repair_sale_order_id == False"/>
+                                        <div class="address_format" invisible="repair_sale_order_id == False">
+                                            <field name="repair_sale_order_id" readonly="1" style="width: auto;"/>
+                                            <strong>&#160;&#160;
+                                                <field name="repair_order_state" widget="badge"
+                                                       decoration-info="repair_order_state == 'draft'"
+                                                       decoration-danger="repair_order_state == 'sent'"
+                                                       decoration-success="repair_order_state == 'sale'"
+                                                       decoration-primary="repair_order_state == 'done'"
+                                                       decoration-warning="repair_order_state == 'cancel'" nolabel="1"
+                                                       invisible="repair_sale_order_id == False"
+                                                       style="width: auto; margin-left: 15px;"/>
+                                            </strong>
+                                        </div>
+                                        <field name="repair_amount" invisible="repair_sale_order_id == False"/>
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" style="text-align: right">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="part_price"/>
+                                        <field name="service_charge"/>
+                                        <field name="sub_total" class="oe_subtotal_footer_separator" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="checklist" string="Checklists">
+                                <group>
+                                    <group>
+                                        <field name="check_list_template_id"/>
+                                    </group>
+                                </group>
+                                <br/>
+                                <field name="repair_checklist_ids">
+                                    <form>
+                                        <field name="is_check"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </form>
+                                    <tree editable="bottom" default_order='name asc'
+                                          decoration-success="is_check == True">
+                                        <field name="is_check"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="repair_job_card_tree_view" model="ir.ui.view">
+            <field name="name">repair.job.card.tree.view</field>
+            <field name="model">repair.job.card</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence_number"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="vehicle_model_id"/>
+                    <field name="vehicle_fuel_type_id"/>
+                    <field name="registration_no"/>
+                    <field name="customer_id"/>
+                    <field name="stages" widget="badge" optional="show"
+                           decoration-info="stages == 'draft'"
+                           decoration-primary="stages == 'assign_to_technician'"
+                           decoration-danger="stages in ('in_diagnosis', 'supervisor_inspection')"
+                           decoration-warning="stages in ('hold', 'cancel')"
+                           decoration-success="stages == 'complete'"/>
+                </tree>
+            </field>
+        </record>
+        <record id="repair_job_card_kanban_view" model="ir.ui.view">
+            <field name="name">repair.job.card.kanban.view</field>
+            <field name="model">repair.job.card</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="sequence_number"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="vehicle_model_id"/>
+                    <field name="inspect_repair_date"/>
+                    <field name="customer_id"/>
+                    <field name="stages"/>
+                    <field name="responsible_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong>
+                                            <field name="sequence_number"/>
+                                        </strong>
+                                        <br/>
+                                        <field name="vehicle_brand_id"/>&#160;-&#160;
+                                        <field name="vehicle_model_id"/>
+                                        <br/>
+                                        <field name="customer_id"/>
+                                    </div>
+                                    <strong>
+                                        <field name="inspect_repair_date"/>
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="stages" widget="label_selection"
+                                               options="{'classes': {'draft': 'default', 'assign_to_technician': 'info', 'in_diagnosis': 'warning', 'supervisor_inspection': 'warning', 'hold': 'warning', 'complete': 'success', 'cancel': 'danger'}}"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="responsible_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="repair_job_card_pivot_view" model="ir.ui.view">
+            <field name="name">repair.job.card.pivot.view</field>
+            <field name="model">repair.job.card</field>
+            <field name="priority">60</field>
+            <field name="arch" type="xml">
+                <pivot string="Vehicle Repair Details" sample="1">
+                    <field name="stages" type="col"/>
+                    <field name="inspect_repair_date" interval="month" type="row"/>
+                    <field name="sequence_number" type="row"/>
+                    <field name="vehicle_brand_id" type="row"/>
+                    <field name="customer_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <record id="repair_job_card_search_view" model="ir.ui.view">
+            <field name="name">repair.job.card.search.view</field>
+            <field name="model">repair.job.card</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="sequence_number"/>
+                    <field name="registration_no"/>
+                    <field name="customer_id"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="vehicle_model_id"/>
+                    <field name="vin_no"/>
+                    <field name="transmission_type"/>
+                    <field name="responsible_id"/>
+                    <group string="Group By">
+                        <filter name="vehicle_brand_id" string="Vehicle Brands"
+                                context="{'group_by': 'vehicle_brand_id'}"/>
+                        <filter name="vehicle_model_id" string="Vehicle Model"
+                                context="{'group_by': 'vehicle_model_id'}"/>
+                        <filter name="customer_id" string="Customer"
+                                context="{'group_by': 'customer_id'}"/>
+                        <filter name="stages" string="Stages"
+                                context="{'group_by': 'stages'}"/>
+                        <filter name="responsible_id" string="Responsible"
+                                context="{'group_by': 'responsible_id'}"/>
+                        <filter name="transmission_type" string="Transmission Type"
+                                context="{'group_by': 'transmission_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_repair_job_card" model="ir.actions.act_window">
+            <field name="name">Job Card</field>
+            <field name="res_model">repair.job.card</field>
+            <field name="view_mode">kanban,tree,form,search,pivot,activity</field>
+        </record>
+    </data>
+</odoo>

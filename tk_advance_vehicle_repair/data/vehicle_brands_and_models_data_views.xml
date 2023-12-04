@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Vehicle Brand-->
+        <record id="vehicle_brand_1" model="vehicle.brand">
+            <field name="name">Audi</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/audi.png"/>
+        </record>
+        <record id="vehicle_brand_2" model="vehicle.brand">
+            <field name="name">BMW</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/bmw.png"/>
+        </record>
+        <record id="vehicle_brand_3" model="vehicle.brand">
+            <field name="name">Ferrari</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/ferrari.png"/>
+        </record>
+        <record id="vehicle_brand_4" model="vehicle.brand">
+            <field name="name">Honda</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/honda.png"/>
+        </record>
+        <record id="vehicle_brand_5" model="vehicle.brand">
+            <field name="name">Jaguar</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/jaguar.png"/>
+        </record>
+        <record id="vehicle_brand_6" model="vehicle.brand">
+            <field name="name">Lamborghini</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/lamborghini.png"/>
+        </record>
+        <record id="vehicle_brand_7" model="vehicle.brand">
+            <field name="name">Mercedes Benz</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/mc.png"/>
+        </record>
+        <record id="vehicle_brand_8" model="vehicle.brand">
+            <field name="name">Porsche</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/porsche.png"/>
+        </record>
+        <record id="vehicle_brand_9" model="vehicle.brand">
+            <field name="name">Tesla</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/tesla.png"/>
+        </record>
+        <record id="vehicle_brand_10" model="vehicle.brand">
+            <field name="name">Toyota</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/toyota.png"/>
+        </record>
+        <record id="vehicle_brand_11" model="vehicle.brand">
+            <field name="name">Volkswagen</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/volkswagen.png"/>
+        </record>
+        <record id="vehicle_brand_12" model="vehicle.brand">
+            <field name="name">Opel</field>
+            <field name="avatar" type="base64" file="tk_advance_vehicle_repair/static/src/img/opel.png"/>
+        </record>
+
+        <!--Vehicle Model-->
+        <record id="vehicle_model_1" model="vehicle.model">
+            <field name="name">A1</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_1"/>
+        </record>
+        <record id="vehicle_model_2" model="vehicle.model">
+            <field name="name">A4</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_1"/>
+        </record>
+        <record id="vehicle_model_3" model="vehicle.model">
+            <field name="name">A6</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_1"/>
+        </record>
+        <record id="vehicle_model_4" model="vehicle.model">
+            <field name="name">Q5</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_1"/>
+        </record>
+        <record id="vehicle_model_5" model="vehicle.model">
+            <field name="name">3 Series</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_2"/>
+        </record>
+        <record id="vehicle_model_6" model="vehicle.model">
+            <field name="name">Serie 1</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_2"/>
+        </record>
+        <record id="vehicle_model_7" model="vehicle.model">
+            <field name="name">5 Series</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_2"/>
+        </record>
+        <record id="vehicle_model_8" model="vehicle.model">
+            <field name="name">i3</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_2"/>
+        </record>
+        <record id="vehicle_model_9" model="vehicle.model">
+            <field name="name">488 Pista</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_3"/>
+        </record>
+        <record id="vehicle_model_10" model="vehicle.model">
+            <field name="name">F8 Tributo</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_3"/>
+        </record>
+        <record id="vehicle_model_11" model="vehicle.model">
+            <field name="name">Portofino</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_3"/>
+        </record>
+        <record id="vehicle_model_12" model="vehicle.model">
+            <field name="name">Civic</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_4"/>
+        </record>
+        <record id="vehicle_model_13" model="vehicle.model">
+            <field name="name">Accord</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_4"/>
+        </record>
+        <record id="vehicle_model_14" model="vehicle.model">
+            <field name="name">CR-V</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_4"/>
+        </record>
+        <record id="vehicle_model_15" model="vehicle.model">
+            <field name="name">Class A</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_7"/>
+        </record>
+        <record id="vehicle_model_16" model="vehicle.model">
+            <field name="name">Corolla</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_10"/>
+        </record>
+        <record id="vehicle_model_17" model="vehicle.model">
+            <field name="name">Camry</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_10"/>
+        </record>
+        <record id="vehicle_model_18" model="vehicle.model">
+            <field name="name">Highlander</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_10"/>
+        </record>
+        <record id="vehicle_model_19" model="vehicle.model">
+            <field name="name">Corsa</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_12"/>
+        </record>
+        <record id="vehicle_model_20" model="vehicle.model">
+            <field name="name">Astra</field>
+            <field name="vehicle_brand_id" ref="tk_advance_vehicle_repair.vehicle_brand_12"/>
+        </record>
+    </data>
+</odoo>

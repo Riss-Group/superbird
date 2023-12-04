@@ -1,0 +1,2970 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* tk_advance_vehicle_repair
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-09 10:36+0000\n"
+"PO-Revision-Date: 2023-08-09 10:36+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_vehicle_fuel_type_id
+msgid "Fuel Type"
+msgstr "Type de carburant"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__repair_job_card_id
+msgid "Job Card"
+msgstr "Carte de travail"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_vehicle_model_id
+msgid "Model"
+msgstr "Modèle"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_registration_no
+msgid "Registration No"
+msgstr "N ° d'enregistrement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_repair_sale_order_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__repair_sale_order_id
+msgid "Sale Order"
+msgstr "Ordre de vente"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__repair_amount_total
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__repair_amount
+msgid "Total Amount"
+msgstr "Montant total"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_transmission_type
+msgid "Transmission Type"
+msgstr "Type de transmission"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_vin_no
+msgid "VIN No"
+msgstr "NIV Non"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__r_vehicle_brand_id
+msgid "Vehicle"
+msgstr "Véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__wd
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "4WD"
+msgstr "4x4"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_repair_team_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_service_team_form_view
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
+msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Icône flèche\" "
+"title=\"Flèche\"/>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid ""
+"<span class=\"badge badge-pill badge-danger\" style=\"font-size: 12px;\">\n"
+"                                                                Require Immediate Attention\n"
+"                                                            </span>"
+msgstr ""
+"<span class=\"badge badge-pill badge-danger\" style=\"font-size: 12px;\">\n"
+"                                                                Nécessite une attention immédiate\n"
+"                                                            </span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid ""
+"<span class=\"badge badge-pill badge-info\" style=\"font-size: 12px;\">\n"
+"                                                                Require Future Attention\n"
+"                                                            </span>"
+msgstr ""
+"<span class=\"badge badge-pill badge-info\" style=\"font-size: 12px;\">\n"
+"                                                                Nécessite une attention future\n"
+"                                                            </span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid ""
+"<span class=\"badge badge-pill badge-success\" style=\"font-size: 12px;\">\n"
+"                                                                Checked and Okay at this Time\n"
+"                                                            </span>"
+msgstr ""
+"<span class=\"badge badge-pill badge-success\" style=\"font-size: 12px;\">\n"
+"                                                                Vérifié et OK pour le moment\n"
+"                                                            </span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid ""
+"<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
+"                                    <strong>Address</strong>\n"
+"                                </span>"
+msgstr ""
+"<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
+"                                    <strong>Adresse</strong>\n"
+"                                </span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Brake Pads(%)</span>"
+msgstr "<span>Les plaquettes de frein(%)</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Component</span>"
+msgstr "<span>Composante</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Condition Code</span>"
+msgstr "<span>Code d'état</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Condition</span>"
+msgstr "<span>Condition</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>End Date</span>"
+msgstr "<span>Date de fin</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Location</span>"
+msgstr "<span>Emplacement</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Name</span>"
+msgstr "<span>Nom</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Present Condition</span>"
+msgstr "<span>État actuel</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Quantity</span>"
+msgstr "<span>Quantité</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Remarks</span>"
+msgstr "<span>Remarques</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Service Charge</span>"
+msgstr "<span>Frais de service</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Service</span>"
+msgstr "<span>Service</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Spare Part</span>"
+msgstr "<span>Pièce détachée</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Start Date</span>"
+msgstr "<span>Date de début</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Team Members</span>"
+msgstr "<span>Membres de l'équipe</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Team</span>"
+msgstr "<span>Équipe</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Tread Depth</span>"
+msgstr "<span>Profondeur de bande de roulement</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Tread Wear</span>"
+msgstr <span>Usure de la bande de roulement</span>
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Tyre Location</span>"
+msgstr "<span>Emplacement des pneus</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Tyre Pressure</span>"
+msgstr "<span>Pression des pneus</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<span>Unit Price</span>"
+msgstr "<span>Prix ​​unitaire</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>Vehicle Side</span>"
+msgstr "<span>Côté véhicule</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<span>View</span>"
+msgstr "<span>Voir</span>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid ""
+"<strong attrs=\"{'invisible': [('sale_order_id', '=', False)]}\" groups=\"tk_advance_vehicle_repair.vehicle_repair_manager\">  Amount\n"
+"                                        Total  \n"
+"                                    </strong>"
+msgstr ""
+"<strong attrs=\"{'invisible': [('sale_order_id', '=', False)]}\" groups=\"tk_advance_vehicle_repair.vehicle_repair_manager\">  Montante\n"
+"                                        Totale  \n"
+"                                    </strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<strong>Customer Observations</strong>"
+msgstr "<strong>Observations des clients</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Inspection Job Card Report</strong>"
+msgstr "<strong>Rapport de carte de travail d'inspection</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Mechanical Conditions</strong>"
+msgstr "<strong>Conditions mécaniques</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<strong>Repair Job Card</strong>"
+msgstr "<strong>Carte de travail de réparation</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Sale Order:</strong>"
+msgstr "<strong>Bon de commande :</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Status:</strong>"
+msgstr "<strong>Statut:</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Total Amounts:</strong>"
+msgstr "<strong>Montants totaux :</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Total Parts Price:</strong>"
+msgstr "<strong>Prix ​​total des pièces :</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Total Service Charge:</strong>"
+msgstr "<strong>Frais de service totaux :</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "<strong>Total:</strong>"
+msgstr "<strong>Totale:</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Tyre Inspections</strong>"
+msgstr "<strong>Inspections des pneus</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Vehicle Body Inner Conditions</strong>"
+msgstr "<strong>Conditions intérieures de la carrosserie du véhicule</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Vehicle Body Outer Conditions</strong>"
+msgstr "<strong>Conditions extérieures de la carrosserie du véhicule</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Vehicle Components</strong>"
+msgstr "<strong>Composants du véhicule</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Vehicle Fluids</strong>"
+msgstr "<strong>Fluides pour véhicules</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<strong>Vehicle Services</strong>"
+msgstr "<strong>Services aux véhicules</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "<strong>Vehicle Spare Parts Assessments</strong>"
+msgstr "<strong>Évaluations de pièces de rechange de véhicules</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "<strong>Vehicle Spare Parts</strong>"
+msgstr "<strong>Pièces de rechange pour véhicules</strong>"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,body_html:tk_advance_vehicle_repair.repair_job_card_mail_template
+msgid ""
+"<table style=\"width: 100%\">\n"
+"                    <tr>\n"
+"                        <td>\n"
+"                            Dear Customer,\n"
+"                            <br>\n"
+"                            <h4>\n"
+"                                <strong>\n"
+"                                    <t t-out=\"object.customer_id.name\"></t>\n"
+"                                </strong>\n"
+"                            </h4>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </table>\n"
+"                <hr>\n"
+"                <p>\n"
+"                    I am writing to inform you that your\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+"                    </strong>\n"
+"                    has been repaired and is ready for pickup. Our team of mechanics has worked hard to ensure that your\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+"                    </strong>\n"
+"                    is in top condition and ready for safe operation.\n"
+"                </p>\n"
+"                <p>\n"
+"                    We have thoroughly inspected your vehicle to ensure that all repairs have been completed to our high\n"
+"                    standards. We have also conducted a road test to ensure that the vehicle is performing as expected.\n"
+"                    Our team takes great pride in their work, and we are confident that your vehicle will meet or exceed\n"
+"                    your expectations.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Please come to our workshop to pick up your vehicle as soon as possible. Our team will be happy to\n"
+"                    assist you with any questions you may have regarding the repair work done on your vehicle.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Thank you for choosing our service for your vehicle repair needs. We look forward to continuing to\n"
+"                    provide you with top-quality service in the future.\n"
+"                </p>\n"
+"                <br>\n"
+"                <h6>\n"
+"                    Best regards,\n"
+"                </h6>\n"
+"                <h5>\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.responsible_id.name\"></t>\n"
+"                    </strong>\n"
+"                </h5>\n"
+"                <hr>\n"
+"                <span>\n"
+"                    <h6>\n"
+"                        <t t-out=\"object.company_id.name\"></t>\n"
+"                    </h6>\n"
+"                    <t t-out=\"object.company_id.phone\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.email\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.website\"></t>\n"
+"                </span>\n"
+"            "
+msgstr ""
+"<table style=\"width: 100%\">\n"
+"                    <tr>\n"
+"                        <td>\n"
+"                            Cher client,\n"
+"                            <br>\n"
+"                            <h4>\n"
+"                                <strong>\n"
+"                                    <t t-out=\"object.customer_id.name\"></t>\n"
+"                                </strong>\n"
+"                            </h4>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </table>\n"
+"                <hr>\n"
+"                <p>\n"
+"                    Je vous écris pour vous informer que votre\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+"                    </strong>\n"
+"                    a été réparé et est prêt à être récupéré. Notre équipe de mécaniciens a travaillé fort pour s'assurer que votre\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+"                    </strong>\n"
+"                    est en parfait état et prêt à fonctionner en toute sécurité.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Nous avons minutieusement inspecté votre véhicule pour nous assurer que toutes les réparations ont été effectuées à notre plus haut niveau.\n"
+"                    normes. Nous avons également effectué un essai routier pour nous assurer que le véhicule fonctionne comme prévu.\n"
+"                    Notre équipe est très fière de son travail et nous sommes convaincus que votre véhicule atteindra ou dépassera\n"
+"                    vos attentes.\n"
+"                </p>\n"
+"                <p>\n"
+"                  N'hésitez pas à vous présenter à notre atelier pour récupérer votre véhicule dans les plus brefs délais. Notre équipe se fera un plaisir de\n"
+"                   répondre à toutes vos questions concernant les travaux de réparation effectués sur votre véhicule.\n"
+"                </p>\n"
+"                <p>\n"
+"                   Merci d'avoir choisi notre service pour vos besoins de réparation de véhicule. Nous avons hâte de continuer à\n"
+"                    vous fournir un service de qualité supérieure à l'avenir.\n"
+"                </p>\n"
+"                <br>\n"
+"                <h6>\n"
+"                    Cordialement,\n"
+"                </h6>\n"
+"                <h5>\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.responsible_id.name\"></t>\n"
+"                    </strong>\n"
+"                </h5>\n"
+"                <hr>\n"
+"                <span>\n"
+"                    <h6>\n"
+"                        <t t-out=\"object.company_id.name\"></t>\n"
+"                    </h6>\n"
+"                    <t t-out=\"object.company_id.phone\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.email\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.website\"></t>\n"
+"                </span>\n"
+"            "
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,body_html:tk_advance_vehicle_repair.inspection_job_card_mail_template
+msgid ""
+"<table style=\"width: 100%\">\n"
+"                    <tr>\n"
+"                        <td>\n"
+"                            Dear Customer,\n"
+"                            <br>\n"
+"                            <h4>\n"
+"                                <strong>\n"
+"                                    <t t-out=\"object.customer_id.name\"></t>\n"
+"                                </strong>\n"
+"                            </h4>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </table>\n"
+"                <hr>\n"
+"                <p>\n"
+"                    We hope this email finds you well. We are writing to inform you that the vehicle inspection for your\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+" - \n"
+"                        <t t-out=\"object.vehicle_model_id.name\"></t>\n"
+"                    </strong>\n"
+"                    has been successfully completed. We appreciate your cooperation throughout the process.\n"
+"                </p>\n"
+"                <p>\n"
+"                    1 Inspection Report: Attached to this email, you will find the comprehensive inspection report\n"
+"                    detailing the condition of your vehicle. Please review it carefully to understand the results and\n"
+"                    any recommended actions.\n"
+"                </p>\n"
+"                <p>\n"
+"                    2 Next Steps: Should you wish to proceed with any repairs or maintenance services, our team is here\n"
+"                    to assist you. Please contact our service department at\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.company_id.phone\"></t>\n"
+"                    </strong>\n"
+"                    or simply reply to this email, and we will be happy to schedule an appointment or provide further\n"
+"                    guidance.\n"
+"                </p>\n"
+"                <p>\n"
+"                    We take pride in delivering high-quality service and ensuring your vehicle's reliability. Your\n"
+"                    satisfaction is our top priority, and we appreciate your trust in our expertise.\n"
+"                </p>\n"
+"                <p>\n"
+"                    If you have any questions or need further assistance, please don't hesitate to reach out to us. We\n"
+"                    are available to help you during our regular business hours.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Once again, thank you for choosing our services. We look forward to serving you in the future.\n"
+"                </p>\n"
+"                <br>\n"
+"                <h6>\n"
+"                    Best regards,\n"
+"                </h6>\n"
+"                <h5>\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.responsible_id.name\"></t>\n"
+"                    </strong>\n"
+"                </h5>\n"
+"                <hr>\n"
+"                <span>\n"
+"                    <h6>\n"
+"                        <t t-out=\"object.company_id.name\"></t>\n"
+"                    </h6>\n"
+"                    <t t-out=\"object.company_id.phone\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.email\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.website\"></t>\n"
+"                </span>\n"
+"            "
+msgstr ""
+"<table style=\"width: 100%\">\n"
+"                    <tr>\n"
+"                        <td>\n"
+"                            Cher client,\n"
+"                            <br>\n"
+"                            <h4>\n"
+"                                <strong>\n"
+"                                    <t t-out=\"object.customer_id.name\"></t>\n"
+"                                </strong>\n"
+"                            </h4>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </table>\n"
+"                <hr>\n"
+"                <p>\n"
+"                    Nous espérons que cet e-mail vous trouvera bien. Nous vous écrivons pour vous informer que le contrôle technique du véhicule pour votre\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.vehicle_brand_id.name\"></t>\n"
+" - \n"
+"                        <t t-out=\"object.vehicle_model_id.name\"></t>\n"
+"                    </strong>\n"
+"                    a été complété avec succès. Nous apprécions votre coopération tout au long du processus.\n"
+"                </p>\n"
+"                <p>\n"
+"                    1 Rapport d'inspection : Attaché à cet e-mail, vous trouverez le rapport d'inspection complet\n"
+"                    détaillant l'état de votre véhicule. Veuillez le lire attentivement pour comprendre les résultats et\n"
+"                    toute action recommandée.\n"
+"                </p>\n"
+"                <p>\n"
+"                    2 Prochaines étapes : Si vous souhaitez procéder à des réparations ou à des services d'entretien, notre équipe est là\n"
+"                    pour vous assister. Veuillez contacter notre service après-vente au\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.company_id.phone\"></t>\n"
+"                    </strong>\n"
+"                   ou répondez simplement à cet e-mail, et nous serons heureux de planifier un rendez-vous ou de vous fournir de plus amples informations.\n"
+"                    conseils.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Nous sommes fiers de fournir un service de haute qualité et d'assurer la fiabilité de votre véhicule. Ton\n"
+"                    la satisfaction est notre priorité absolue et nous apprécions votre confiance en notre expertise.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Si vous avez des questions ou avez besoin d'aide supplémentaire, n'hésitez pas à nous contacter. Nous\n"
+"                    sont disponibles pour vous aider pendant nos heures d'ouverture régulières.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Encore une fois, merci d'avoir choisi nos services. Nous espérons avoir le plaisir de vous servir prochainement.\n"
+"                </p>\n"
+"                <br>\n"
+"                <h6>\n"
+"                    Cordialement,\n"
+"                </h6>\n"
+"                <h5>\n"
+"                    <strong>\n"
+"                        <t t-out=\"object.responsible_id.name\"></t>\n"
+"                    </strong>\n"
+"                </h5>\n"
+"                <hr>\n"
+"                <span>\n"
+"                    <h6>\n"
+"                        <t t-out=\"object.company_id.name\"></t>\n"
+"                    </h6>\n"
+"                    <t t-out=\"object.company_id.phone\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.email\"></t>\n"
+"                    <br>\n"
+"                    <t t-out=\"object.company_id.website\"></t>\n"
+"                </span>\n"
+"            "
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__abs
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "ABS"
+msgstr "abdos"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__am_fm_radio
+msgid "AM / FM / Sirius Radio"
+msgstr "Radio AM/FM/Sirius"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "AM / FM Radio"
+msgstr "Radio AM/FM"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__awd
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "AWD"
+msgstr "traction intégrale"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.module.category,description:tk_advance_vehicle_repair.module_tk_advance_vehicle_repair
+msgid "Access rights for Advance Vehicle Repair"
+msgstr "Droits d'accès pour Advance Vehicle Repair"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_needaction
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_needaction
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_needaction
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_needaction
+msgid "Action Needed"
+msgstr "Action nécessaire"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_ids
+msgid "Activities"
+msgstr "Activités"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_exception_decoration
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_exception_decoration
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_exception_decoration
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Décoration d'exception d'activité"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_state
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_state
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_state
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_state
+msgid "Activity State"
+msgstr "État d'activité"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_type_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_type_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_type_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Icône du type d'activité"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Address:"
+msgstr "Adresse:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.module.category,name:tk_advance_vehicle_repair.module_tk_advance_vehicle_repair
+msgid "Advance Vehicle Repair"
+msgstr "Réparation avancée de véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_advance_vehicle_repair_dashboard
+msgid "Advance Vehicle Repair Dashboard"
+msgstr "Tableau de bord de réparation de véhicule avancé"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__air_conditioning
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Air Conditioning"
+msgstr "Climatisation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__assign_to_technician
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Assign to Technician"
+msgstr "Attribuer au technicien"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_attachment_count
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_attachment_count
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_attachment_count
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_attachment_count
+msgid "Attachment Count"
+msgstr "Nombre de pièces jointes"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Auto Transmission"
+msgstr "Transmission automatique"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__transmission_type__automatic
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__transmission_type__automatic
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__transmission_type__automatic
+msgid "Automatic"
+msgstr "Automatique"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__auto_transmission
+msgid "Automatic Transmission"
+msgstr "Transmission automatique"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__avatar
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__mechanical_item_condition__mechanical_condition__average
+msgid "Average"
+msgstr "Moyenne"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__back
+msgid "Back View"
+msgstr "Vue arrière"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Bed Liner"
+msgstr "Doublure de caisse"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__bed_liner
+msgid "Bedliner"
+msgstr "Doublure de caisse"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_booking
+msgid "Booking"
+msgstr "Réservation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#, python-format
+msgid "Booking Cancelled"
+msgstr "Réservation annulée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__booking_date
+msgid "Booking Date"
+msgstr "Date de réservation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+#, python-format
+msgid "Booking Details"
+msgstr "Les détails de réservation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_booking_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_booking_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__booking_number
+msgid "Booking No"
+msgstr "Numéro de réservation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__booking_source
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_search_view
+msgid "Booking Source"
+msgstr "Origine de la réservation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "Booking Sources"
+msgstr "Sources de réservation"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_search_view
+msgid "Booking Stages"
+msgstr "Étapes de réservation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__booking_type
+msgid "Booking Type"
+msgstr "Type de réservation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_booking
+#, python-format
+msgid "Bookings"
+msgstr "Réservations"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_component__compo_vehicle_side__bottom_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_components__c_vehicle_side__bottom_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluid__fluid_vehicle_side__bottom_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluids__f_vehicle_side__bottom_side
+msgid "Bottom Side"
+msgstr "La partie au fond"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__bottom
+msgid "Bottom View"
+msgstr "Vue de dessous"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__brake_pads
+msgid "Brake pads (%)"
+msgstr "Les plaquettes de frein (%)"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_brand
+msgid "Brands"
+msgstr "Marques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__interior_item_condition__interior_condition__burnt
+msgid "Burnt"
+msgstr "Brûlée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__cd_usb_bluetooth
+msgid "CD / USB / Bluetooth"
+msgstr "CD/USB/Bluetooth"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "CD/USB/Bluetooth"
+msgstr "CD/USB/Bluetooth"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__transmission_type__cvt
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__transmission_type__cvt
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__transmission_type__cvt
+msgid "CVT"
+msgstr "CVT"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__cvt_transmission
+msgid "CVT Transmission"
+msgstr "Transmission CVT"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__camper_shell
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Camper Shell"
+msgstr "Coque de camping-car"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__cancel
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_stages__cancel
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__stages__d_cancel
+#, python-format
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__item_category
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_item_search_view
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_components__condition__checked_ok
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluids__condition__checked_ok
+msgid "Checked and Okay at this Time"
+msgstr "Vérifié et OK pour le moment"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__condition__checked_ok
+msgid "Checked and Okey at this Time"
+msgstr "Vérifié et OK pour le moment"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__city
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__city
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__city
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "City"
+msgstr "Ville"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__color
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__color
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__color
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__color
+msgid "Color"
+msgstr "Couleur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__company_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__company_id
+msgid "Company"
+msgstr "Entreprise"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__complete
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Complete"
+msgstr "Complète"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__stages__c_complete
+#, python-format
+msgid "Completed"
+msgstr "Complété"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__vehicle_component_id
+msgid "Component"
+msgstr "Composante"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_component
+msgid "Components"
+msgstr "Composantes"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__interior_condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__mechanical_condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__vehicle_condition_id
+msgid "Condition"
+msgstr "Condition"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__condition_code
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__condition_code
+msgid "Condition Code"
+msgstr "Code d'état"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_condition
+msgid "Conditions"
+msgstr "Conditions"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_configuration
+msgid "Configurations"
+msgstr "Configurations"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__country_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__country_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__country_id
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Country"
+msgstr "Pays"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Create Inspection Charge Sale Order"
+msgstr "Créer un ordre de vente avec frais d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Create Repair Sale Order"
+msgstr "Créer un ordre de vente de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_repair_team_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_service_team_form_view
+msgid "Create Task"
+msgstr "Créer une tâche"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Create Vehicle Order"
+msgstr "Créer une commande de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__create_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__create_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__create_date
+msgid "Created on"
+msgstr "Créé sur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__cruise_control
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Cruise Control"
+msgstr "Régulateur de vitesse"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__currency_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__currency_id
+msgid "Currency"
+msgstr "Monnaie"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__customer_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__customer_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__customer_id
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Customer Details"
+msgstr "Détails du client"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__customer_observation
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__customer_observation
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__customer_observation
+msgid "Customer Observation"
+msgstr "Observation du client"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Customer Observations"
+msgstr "Observations des clients"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Customer:"
+msgstr "Cliente:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_customer
+msgid "Customers"
+msgstr "Clientes"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Cvt Transmission"
+msgstr "Transmission CVT"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_advance_vehicle_repair_dashboard
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__inspect_repair_date
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_repair_team_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_service_team_form_view
+msgid "Date"
+msgstr "Date"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Date:"
+msgstr "Date:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_source__direct
+msgid "Direct"
+msgstr "Direct"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__display_name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__display_name
+msgid "Display Name"
+msgstr "Afficher un nom"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__email
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__email
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__email
+msgid "Email"
+msgstr "E-mail"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Email:"
+msgstr "E-mail:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__end_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__end_date
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__estimate_cost
+msgid "Estimate Cost"
+msgstr "Coût estimé"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__vehicle_fluid_id
+msgid "Fluid"
+msgstr "Fluide"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_fluid
+msgid "Fluids"
+msgstr "Fluides"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_follower_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_follower_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_follower_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_follower_ids
+msgid "Followers"
+msgstr "Suiveuses"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_partner_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_partner_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_partner_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Abonnés (Partenaires)"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__activity_type_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__activity_type_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__activity_type_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Icône géniale de police, par ex. fa-tâches"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__front
+msgid "Front View"
+msgstr "Vue de face"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_fuel_type
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_fuel_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_vehicle_fuel_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_fuel_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vehicle_fuel_type_id
+msgid "Fuel Type"
+msgstr "Type de carburant"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Fuel Type:"
+msgstr "Type de carburant:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_fuel_type
+msgid "Fuel Types"
+msgstr "Types de carburant"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__inspection_type__full_inspection
+msgid "Full Inspection"
+msgstr "Inspection complète"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__gps
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "GPS"
+msgstr "GPS"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__interior_item_condition__interior_condition__good
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__mechanical_item_condition__mechanical_condition__good
+msgid "Good"
+msgstr "Bien"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.interior_item_condition_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.mechanical_item_condition_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.service_team_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_component_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_condition_line_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_fluid_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_item_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_model_search_view
+msgid "Group By"
+msgstr "Par groupe"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__has_message
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__has_message
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__has_message
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__has_message
+msgid "Has Message"
+msgstr "A un message"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__hold
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Hold"
+msgstr "Prise"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__id
+msgid "ID"
+msgstr "IDENTIFIANT"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_exception_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_exception_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_exception_icon
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_exception_icon
+msgid "Icon"
+msgstr "Icône"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__activity_exception_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__activity_exception_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__activity_exception_icon
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icône pour indiquer une activité d'exception."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__message_needaction
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__message_needaction
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__message_needaction
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si cette case est cochée, de nouveaux messages nécessitent votre attention."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__message_has_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__message_has_sms_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__message_has_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__message_has_sms_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__message_has_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__message_has_sms_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__message_has_error
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si cette case est cochée, certains messages présentent une erreur de livraison."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__avatar
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__avatar
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__avatar
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__avatar
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__avatar
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__avatar
+msgid "Image"
+msgstr "Image"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__in_diagnosis
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "In Diagnosis"
+msgstr "En diagnostic"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "In Inspections"
+msgstr "Dans les inspections"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "In Inspections and Repairs"
+msgstr "Dans Inspections et réparations"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__stages__b_in_progress
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#, python-format
+msgid "In Progress"
+msgstr "En cours"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "In Repairs"
+msgstr "En Réparations"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__supervisor_inspection
+msgid "In Supervisor Inspection"
+msgstr "Dans l'inspection du superviseur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__infotainment_system
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Infotainment System"
+msgstr "Système d'infodivertissement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inner_body_inspection
+msgid "Inner Body Inspection"
+msgstr "Inspection de l'intérieur du corps"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__inspect_type__inspection_and_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_stages__vehicle_inspection_repair
+msgid "Inspection + Repair"
+msgstr "Inspection + Réparation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#, python-format
+msgid "Inspection Cancelled"
+msgstr "Inspection annulée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_charge
+#: model:product.template,name:tk_advance_vehicle_repair.vehicle_inspection_product_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Inspection Charge"
+msgstr "Frais d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#, python-format
+msgid "Inspection Completed"
+msgstr "Inspection terminée"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Inspection Date"
+msgstr "Date d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Inspection Details"
+msgstr "Détails de l'inspection"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#, python-format
+msgid "Inspection In Progress"
+msgstr "Inspection en cours"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,report_name:tk_advance_vehicle_repair.inspection_job_card_mail_template
+msgid "Inspection Information"
+msgstr "Informations sur l'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_inspection_job_card
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__inspection_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__inspection_job_card_id
+msgid "Inspection Job Card"
+msgstr "Carte de travail d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#, python-format
+msgid "Inspection Job Card Details"
+msgstr "Détails de la carte de travail d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,name:tk_advance_vehicle_repair.inspection_job_card_mail_template
+msgid "Inspection Job Card Mail Template"
+msgstr "Modèle de courrier de carte de travail d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.report,name:tk_advance_vehicle_repair.action_inspection_job_card_report
+msgid "Inspection Job Card Report"
+msgstr "Rapport de carte de travail d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "Inspection Job Card in Inspection Types"
+msgstr "Carte de travail d'inspection dans les types d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_inspection_job_card
+msgid "Inspection Job Cards"
+msgstr "Cartes de travail d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_number
+msgid "Inspection No"
+msgstr "Inspection Non"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_inspection_repair_team
+msgid "Inspection Repair Team"
+msgstr "Équipe d'inspection et de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Inspection Request"
+msgstr "Demande d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspect_type
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_search_view
+msgid "Inspection Type"
+msgstr "Type d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Inspection Type:"
+msgstr "Type d'inspection :"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Inspection/Repair Date"
+msgstr "Date d'inspection/réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.interior_item_condition_search_view
+msgid "Interior Condition"
+msgstr "État intérieur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_item__item_category__interior
+msgid "Interior Item"
+msgstr "Article d'intérieur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_interior_item_condition
+#: model:ir.model,name:tk_advance_vehicle_repair.model_interior_item_condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__interior_item_condition_ids
+msgid "Interior Item Condition"
+msgstr "État intérieur de l'article"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_is_follower
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_is_follower
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_is_follower
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_is_follower
+msgid "Is Follower"
+msgstr "Est suiveur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_inspection_job_card
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_repair_job_card
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__inspection_job_card_id
+msgid "Job Card"
+msgstr "Carte de travail"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__inspection_job_card_id
+msgid "Job Card No"
+msgstr "Carte de travail Non"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Job Card No:"
+msgstr "Numéro de carte de travail :"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/js/advance_vehicle_repair_dashboard.js:0
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_job_card
+#, python-format
+msgid "Job Cards"
+msgstr "Cartes de travail"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team____last_update
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__write_uid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_advance_vehicle_repair_dashboard__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__write_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__leather_interior
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Leather Interior"
+msgstr "Intérieur cuir"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__tyre__lf
+msgid "Left Front"
+msgstr "Avant gauche"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__tyre__lr
+msgid "Left Rear"
+msgstr "Arrière gauche"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__left_side
+msgid "Left Side View"
+msgstr "Vue du côté gauche"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_condition_location
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__vehicle_condition_location_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_location__location
+msgid "Location"
+msgstr "Emplacement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_condition_location
+msgid "Locations"
+msgstr "Emplacements"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__luxury_sport_pkg
+msgid "Luxury / Sport pkg."
+msgstr "Ensemble luxe/sport."
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Luxury Sport Pkg"
+msgstr "Groupe sport de luxe"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_main_attachment_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_main_attachment_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_main_attachment_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Pièce jointe principale"
+
+#. module: tk_advance_vehicle_repair
+#: model:res.groups,name:tk_advance_vehicle_repair.vehicle_repair_manager
+msgid "Manager"
+msgstr "Directrice"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__transmission_type__manual
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__transmission_type__manual
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__transmission_type__manual
+msgid "Manual"
+msgstr "Manuel"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__mechanical_condition
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.mechanical_item_condition_search_view
+msgid "Mechanical Condition"
+msgstr "État mécanique"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Mechanical Conditions"
+msgstr "Conditions mécaniques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_item__item_category__mechanical
+msgid "Mechanical Item"
+msgstr "Article mécanique"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_mechanical_item_condition
+#: model:ir.model,name:tk_advance_vehicle_repair.model_mechanical_item_condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__mechanical_item_condition_ids
+msgid "Mechanical Item Condition"
+msgstr "État mécanique de l'article"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__vehicle_service_team_members_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__vehicle_service_team_members_ids
+msgid "Members"
+msgstr "Membres"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_has_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_has_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_has_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_has_error
+msgid "Message Delivery error"
+msgstr "Erreur de livraison du message"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_ids
+msgid "Messages"
+msgstr "messages"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_model_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_vehicle_model_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_model_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vehicle_model_id
+msgid "Model"
+msgstr "Modèle"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Model:"
+msgstr "Modèle:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_model
+msgid "Models"
+msgstr "Des modèles"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Moon / Sun Roof"
+msgstr "Lune / Toit ouvrant"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__moon_sun_roof
+msgid "Moon or Sun Roof"
+msgstr "Toit ouvrant ou ouvrant"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "Most Common Fuels Used In Vehicles"
+msgstr "Carburants les plus couramment utilisés dans les véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__my_activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__my_activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__my_activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Date limite de mon activité"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__vehicle_item_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__vehicle_item_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_brand__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fuel_type__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_item__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__name
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service__service_name
+msgid "Name"
+msgstr "Nom"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Name:"
+msgstr "Nom:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__stages__a_draft
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__repair_job_card__stages__draft
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_stages__draft
+msgid "New"
+msgstr "Nouvelle"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_date_deadline
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Date limite de la prochaine activité"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_summary
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_summary
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_summary
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_summary
+msgid "Next Activity Summary"
+msgstr "Résumé de l'activité suivante"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_type_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_type_id
+msgid "Next Activity Type"
+msgstr "Type d'activité suivant"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__mechanical_item_condition__mechanical_condition__not_working
+msgid "Not Working"
+msgstr "Ca ne fonctionne pas"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_needaction_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_needaction_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_needaction_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Nombre d'actions"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_has_error_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_has_error_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_has_error_counter
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_has_error_counter
+msgid "Number of errors"
+msgstr "Nombre d'erreurs"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__message_needaction_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__message_needaction_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__message_needaction_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Nombre de messages nécessitant une action"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__message_has_error_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__message_has_error_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__message_has_error_counter
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Nombre de messages avec erreur de livraison"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__inspect_type__only_inspection
+msgid "Only Inspection"
+msgstr "Seul contrôle"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_type__only_inspection
+msgid "Only Vehicle Inspection"
+msgstr "Uniquement l'inspection du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_type__only_repair
+msgid "Only Vehicle Repair"
+msgstr "Réparation de véhicule uniquement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__repair_job_card_id
+msgid "Order Job Card No"
+msgstr "Commander la carte de travail Non"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__sale_order_state
+msgid "Order State"
+msgstr "État de la commande"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__other
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__interior_item_condition__interior_condition__other
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__mechanical_item_condition__mechanical_condition__other
+msgid "Other"
+msgstr "Autre"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__outer_body_inspection
+msgid "Outer Body Inspection"
+msgstr "Inspection du corps extérieur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__part_assessment
+msgid "Part Assessment"
+msgstr "Évaluation des pièces"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__part_price
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__part_price
+msgid "Part Price"
+msgstr "Prix ​​de la pièce"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Parts Assessments"
+msgstr "Évaluations de pièces"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Parts Price:"
+msgstr "Prix ​​des pièces :"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__phone
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__phone
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__phone
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Phone:"
+msgstr "Téléphone:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__mechanical_item_condition__mechanical_condition__poor
+msgid "Poor"
+msgstr "Pauvre"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__power_locks
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Power Locks"
+msgstr "Serrures électriques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__power_seats
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Power Seats"
+msgstr "Sièges électriques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__power_windows
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Power Windows"
+msgstr "Vitres électriques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__condition
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__condition
+msgid "Present Condition"
+msgstr "État actuel"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__team_project_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__service_team_project_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__team_project_id
+msgid "Project"
+msgstr "Projet"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_project_task
+msgid "Project Task"
+msgstr "Tâche de projet"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__qty
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__qty
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Quick Estimation Cost"
+msgstr "Coût d'estimation rapide"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Rear Lift Gate"
+msgstr "Hayon élévateur arrière"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__rear_lift_gate
+msgid "Rear Liftgate"
+msgstr "Hayon arrière"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__rear_sliding_window
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Rear Sliding Window"
+msgstr "Fenêtre coulissante arrière"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__rear_window_wiper
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Rear Window Wiper"
+msgstr "Essuie-glace de lunette arrière"
+
+#. module: tk_advance_vehicle_repair
+#: model:res.groups,name:tk_advance_vehicle_repair.vehicle_repair_receptionist
+msgid "Receptionist"
+msgstr "Réceptionniste"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__registration_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_registration_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__registration_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__registration_no
+msgid "Registration No"
+msgstr "N ° d'enregistrement"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Registration No:"
+msgstr "N ° d'enregistrement:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_interior_item_condition__interior_condition_notes
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_mechanical_item_condition__mechanical_condition_notes
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__remarks
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__remarks
+msgid "Remarks"
+msgstr "Remarques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_repair_job_card
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__repair_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__repair_job_card_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__repair_job_card_id
+msgid "Repair Job Card"
+msgstr "Carte de travail de réparation"
+
+#. module: tk_advance_vehicle_repair
+#. odoo-javascript
+#: code:addons/tk_advance_vehicle_repair/static/src/xml/template.xml:0
+#, python-format
+msgid "Repair Job Card Details"
+msgstr "Détails de la carte de travail de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,name:tk_advance_vehicle_repair.repair_job_card_mail_template
+msgid "Repair Job Card Mail Template"
+msgstr "Modèle de courrier de carte de travail de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.report,name:tk_advance_vehicle_repair.action_repair_job_card_report
+msgid "Repair Job Card Report"
+msgstr "Rapport de carte de travail de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_repair_job_card
+msgid "Repair Job Cards"
+msgstr "Cartes de travail de réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__repair_sale_invoiced
+msgid "Repair Sale Invoiced"
+msgstr "Vente de réparation facturée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__condition__require_future_attention
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_components__condition__require_future_attention
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluids__condition__require_future_attention
+msgid "Require Future Attention"
+msgstr "Nécessite une attention future"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__condition__require_immediate_attention
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_components__condition__require_immediate_attention
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluids__condition__require_immediate_attention
+msgid "Require Immediate Attention"
+msgstr "Nécessite une attention immédiate"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__responsible_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__responsible_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__service_manager_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__responsible_id
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__activity_user_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__activity_user_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__activity_user_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__activity_user_id
+msgid "Responsible User"
+msgstr "Utilisateur responsable"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__tyre__rf
+msgid "Right Front"
+msgstr "Avant droite"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__tyre_inspection__tyre__rr
+msgid "Right Rear"
+msgstr "Arrière droite"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__right_side
+msgid "Right Side View"
+msgstr "Vue du côté droit"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__interior_item_condition__interior_condition__ripped
+msgid "Ripped"
+msgstr "Déchirée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__roof_rack
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Roof Rack"
+msgstr "Galerie de toit"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__running_boards
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Running Boards"
+msgstr "Marchepieds"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__message_has_sms_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__message_has_sms_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__message_has_sms_error
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Erreur de livraison SMS"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__sale_invoiced
+msgid "Sale Invoiced"
+msgstr "Vente facturée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__sale_order_id
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Sale Order"
+msgstr "Ordre de vente"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__sequence_number
+msgid "Sequence No"
+msgstr "Séquence Non"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__vehicle_service_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__vehicle_service_id
+msgid "Service"
+msgstr "Service"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__service_charge
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__service_charge
+msgid "Service Charge"
+msgstr "Frais de service"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__service_charge
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__service_charge
+#: model:product.template,name:tk_advance_vehicle_repair.vehicle_service_charge_product_template
+msgid "Service Charges"
+msgstr "Frais de service"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Service Charges:"
+msgstr "Frais de service:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_repair_team_ids
+msgid "Service Details"
+msgstr "Détails des services"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.service_team_search_view
+msgid "Service Manager"
+msgstr "Gestionnaire de services"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_service_team
+#: model:ir.model,name:tk_advance_vehicle_repair.model_service_team
+msgid "Service Team"
+msgstr "Équipe de service"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_repair_team_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_service_team_form_view
+msgid "Service Team Details"
+msgstr "Détails de l'équipe de service"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vehicle_service_ids
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_service
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Services"
+msgstr "Prestations de service"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__product_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__product_id
+msgid "Spare Part"
+msgstr "Pièce détachée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_spare_parts
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vehicle_spare_part_ids
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_spare_parts
+msgid "Spare Parts"
+msgstr "Des pièces de rechange"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_order_spare_part
+msgid "Spare part"
+msgstr "Pièce détachée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__inspection_job_card__inspection_type__specific_inspection
+msgid "Specific Inspection"
+msgstr "Contrôle spécifique"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__sport_wheels
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Sport Wheels"
+msgstr "Roues Sport"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__stages
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__stages
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__booking_stages
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_search_view
+msgid "Stages"
+msgstr "Étapes"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__start_date
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__start_date
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__state_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__state_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__state_id
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "State"
+msgstr "État"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.client,name:tk_advance_vehicle_repair.action_advance_vehicle_repair_dashboard
+msgid "Statistics"
+msgstr "Statistiques"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__repair_sale_order_state
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__repair_order_state
+msgid "Status"
+msgstr "Statut"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__activity_state
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__activity_state
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__activity_state
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Statut basé sur les activités\n"
+"En retard : la date d'échéance est déjà dépassée\n"
+"Aujourd'hui : la date d'activité est aujourd'hui\n"
+"Planifié : Activités futures."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__stereo
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Stereo"
+msgstr "Stéréo"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__street
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__street
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__street
+msgid "Street"
+msgstr "Rue"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__street2
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__street2
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__street2
+msgid "Street 2"
+msgstr "Rue # 2"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Street 2..."
+msgstr "Rue # 2..."
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Street..."
+msgstr "Rue..."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__sub_total
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__sub_total
+msgid "Sub Total"
+msgstr "Sous-total"
+
+#. module: tk_advance_vehicle_repair
+#: model:res.groups,name:tk_advance_vehicle_repair.vehicle_repair_supervisor
+msgid "Supervisor"
+msgstr "Superviseuse"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__team_task_count
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__team_task_count
+msgid "Task"
+msgstr "Tâche"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Tasks"
+msgstr "Tâches"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_inspection_repair_team
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_service_team
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__service_team_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__service_team_id
+msgid "Team"
+msgstr "Équipe"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__team_member_ids
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.service_team_form_view
+msgid "Team Members"
+msgstr "Membres de l'équipe"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__team_task_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__team_task_id
+msgid "Team Task"
+msgstr "Tâche d'équipe"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_service_team
+msgid "Teams"
+msgstr "Équipes"
+
+#. module: tk_advance_vehicle_repair
+#: model:res.groups,name:tk_advance_vehicle_repair.vehicle_repair_technician
+msgid "Technician"
+msgstr "Technicienne"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__tilt_wheel
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Tilt Wheel"
+msgstr "Volant inclinable"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__title
+msgid "Title"
+msgstr "Titre"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_component__compo_vehicle_side__top_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_components__c_vehicle_side__top_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluid__fluid_vehicle_side__top_side
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_fluids__f_vehicle_side__top_side
+msgid "Top Side"
+msgstr "Côté supérieur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_condition_line__vehicle_view__top
+msgid "Top View"
+msgstr "Vue de dessus"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__amount_total
+msgid "Total Amount"
+msgstr "Montant total"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__towing_package
+msgid "Towing Package"
+msgstr "Forfait remorquage"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__transmission_type
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_transmission_type
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__transmission_type
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__transmission_type
+msgid "Transmission Type"
+msgstr "Type de transmission"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "Transmission Type:"
+msgstr "Type de transmission:"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__tread_depth
+msgid "Tread Depth"
+msgstr "Profondeur de bande de roulement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__tread_wear
+msgid "Tread Wear"
+msgstr "Usure de la bande de roulement"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__inspection_type
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_search_view
+msgid "Type of Inspection"
+msgstr "Type d'inspection"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid "Type of Inspection:"
+msgstr "Type d'inspection :"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__activity_exception_decoration
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__activity_exception_decoration
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__activity_exception_decoration
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Type d'activité d'exception enregistrée."
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__tyre_inspection_ids
+msgid "Tyre"
+msgstr "Pneu"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_tyre_inspection
+#: model:ir.model,name:tk_advance_vehicle_repair.model_tyre_inspection
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__tyre_inspection
+msgid "Tyre Inspection"
+msgstr "Inspection des pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__tyre
+msgid "Tyre Location"
+msgstr "Emplacement des pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_tyre_inspection__tyre_pressure
+msgid "Tyre Pressure"
+msgstr "Pression des pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Tyres Inspections"
+msgstr "Inspections des pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_order_spare_part__unit_price
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_spare_part__unit_price
+msgid "Unit Price"
+msgstr "Prix ​​unitaire"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vin_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_vin_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vin_no
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vin_no
+msgid "VIN No"
+msgstr "NIV Non"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+msgid "VIN No:"
+msgstr "N° VIN :"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_brand_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__i_vehicle_brand_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_brand_id
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__vehicle_brand_id
+msgid "Vehicle"
+msgstr "Véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Body Inner Conditions"
+msgstr "Conditions intérieures de la carrosserie du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Body Outer Conditions"
+msgstr "Conditions extérieures de la carrosserie du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_booking
+msgid "Vehicle Booking"
+msgstr "Réservation de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_pivot_view
+msgid "Vehicle Booking Details"
+msgstr "Détails de la réservation du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_brand
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_brand
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_model__vehicle_brand_id
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_model_search_view
+msgid "Vehicle Brand"
+msgstr "Marque du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_search_view
+msgid "Vehicle Brands"
+msgstr "Marques de véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_component
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_component
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_component
+msgid "Vehicle Component"
+msgstr "Composant de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_components
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_components
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_components_ids
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Components"
+msgstr "Composants du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.vehicle_component_and_fluid
+msgid "Vehicle Components & Fluids"
+msgstr "Composants et fluides de véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_condition
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_condition
+msgid "Vehicle Condition"
+msgstr "État du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_condition_line
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_condition_line
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_condition_line_ids
+msgid "Vehicle Condition Line"
+msgstr "Ligne d'état du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_condition_location
+msgid "Vehicle Condition Location"
+msgstr "Emplacement de l'état du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_condition_s
+msgid "Vehicle Conditions"
+msgstr "État du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_details
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_pivot_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.project_task_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_report_template
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Vehicle Details"
+msgstr "Les détails du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_fluid
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_fluid
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_fluid
+msgid "Vehicle Fluid"
+msgstr "Liquide de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_fluids
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_fluids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_fluids_ids
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Fluids"
+msgstr "Fluides pour véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_fuel_type
+msgid "Vehicle Fuel Type"
+msgstr "Type de carburant du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_stages__vehicle_inspection
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Vehicle Inspection"
+msgstr "Inspection de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Vehicle Inspection + Repair"
+msgstr "Inspection du véhicule + réparation"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_type__inspection_and_repair
+msgid "Vehicle Inspection + Vehicle Repair"
+msgstr "Inspection du véhicule + réparation du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,subject:tk_advance_vehicle_repair.inspection_job_card_mail_template
+msgid "Vehicle Inspection Completed - Important Information Inside"
+msgstr "Inspection du véhicule terminée - Informations importantes à l'intérieur"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_item
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_item
+msgid "Vehicle Item"
+msgstr "Article de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.menu_vehicle_item
+msgid "Vehicle Items"
+msgstr "Articles de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_model
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_model
+msgid "Vehicle Model"
+msgstr "Modèle de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_order_spare_part_ids
+msgid "Vehicle Order Spare Part"
+msgstr "Véhicule Commander une pièce de rechange"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_order_spare_part
+msgid "Vehicle Order Spare part"
+msgstr "Commande de véhicule Pièce détachée"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_stages__vehicle_repair
+#: model:ir.ui.menu,name:tk_advance_vehicle_repair.main_menu_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Vehicle Repair"
+msgstr "Réparation de véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_pivot_view
+msgid "Vehicle Repair Details"
+msgstr "Détails de la réparation du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_service
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_service
+msgid "Vehicle Service"
+msgstr "Service de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_service_team
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__vehicle_service_team_ids
+msgid "Vehicle Service Team"
+msgstr "Équipe de service des véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model,name:tk_advance_vehicle_repair.model_product_product
+msgid "Vehicle Service Type"
+msgstr "Type de service de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Services"
+msgstr "Services aux véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "Vehicle Services & Spare Parts"
+msgstr "Services et pièces de rechange pour véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_component__compo_vehicle_side
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_components__c_vehicle_side
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluid__fluid_vehicle_side
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_fluids__f_vehicle_side
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_component_search_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_fluid_search_view
+msgid "Vehicle Side"
+msgstr "Côté véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid ""
+"Vehicle Spare\n"
+"                                                Parts Assessments"
+msgstr ""
+"Véhicule de rechange\n"
+"                                                Évaluations de pièces"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__vehicle_spare_part_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_product_product__is_vehicle_part
+msgid "Vehicle Spare Part"
+msgstr "Pièce de rechange de véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+msgid "Vehicle Spare Parts"
+msgstr "Pièces de rechange pour véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.actions.act_window,name:tk_advance_vehicle_repair.action_vehicle_spare_part
+#: model:ir.model,name:tk_advance_vehicle_repair.model_vehicle_spare_part
+msgid "Vehicle Spare part"
+msgstr "Véhicule Pièce De Rechange"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle Spare parts"
+msgstr "Pièces de rechange pour véhicules"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_condition_line__vehicle_view
+msgid "Vehicle View"
+msgstr "Vue du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_condition_line_search_view
+msgid "Vehicle Views"
+msgstr "Vues du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+msgid "Vehicle condition"
+msgstr "État du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__vehicle_booking__booking_source__website
+msgid "Website"
+msgstr "Site Internet"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__website_message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__website_message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_service_team__website_message_ids
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__website_message_ids
+msgid "Website Messages"
+msgstr "Messagerie du site Web"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_inspection_job_card__website_message_ids
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_repair_job_card__website_message_ids
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_service_team__website_message_ids
+#: model:ir.model.fields,help:tk_advance_vehicle_repair.field_vehicle_booking__website_message_ids
+msgid "Website communication history"
+msgstr "Historique des communications du site Web"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid ""
+"Wide\n"
+"                                            Tires"
+msgstr ""
+"Large\n"
+"                                            Pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_report_template
+msgid ""
+"Wide\n"
+"                                        Tires"
+msgstr ""
+"Large\n"
+"                                        Pneus"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__wide_tires
+msgid "Wide Tires"
+msgstr "Pneus larges"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_repair_team__work_is_done
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_project_task__work_is_done
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_service_team__work_is_done
+msgid "Work is Done"
+msgstr "Le travail a été fait"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields.selection,name:tk_advance_vehicle_repair.selection__interior_item_condition__interior_condition__worn
+msgid "Worn"
+msgstr "Porté"
+
+#. module: tk_advance_vehicle_repair
+#: model:mail.template,subject:tk_advance_vehicle_repair.repair_job_card_mail_template
+msgid "Your Vehicle Has Been Repaired"
+msgstr "Votre véhicule a été réparé"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.inspection_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.repair_job_card_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_booking_form_view
+msgid "ZIP"
+msgstr "FERMETURE ÉCLAIR"
+
+#. module: tk_advance_vehicle_repair
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_inspection_job_card__zip
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_repair_job_card__zip
+#: model:ir.model.fields,field_description:tk_advance_vehicle_repair.field_vehicle_booking__zip
+msgid "Zip"
+msgstr "Zipper"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_service_form_view
+msgid "e.g. Name"
+msgstr "par exemple. Nom"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.service_team_form_view
+msgid "e.g. Team Name"
+msgstr "par exemple. Nom de l'équipe"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_brand_form_view
+msgid "e.g. Vehicle Brand"
+msgstr "par exemple. Marque du véhicule"
+
+#. module: tk_advance_vehicle_repair
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_component_form_view
+#: model_terms:ir.ui.view,arch_db:tk_advance_vehicle_repair.vehicle_fluid_form_view
+msgid "e.g.Lights"
+msgstr "ex.Lumières"

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!--Mechanical Item-->
+        <record id="mechanical_item_1" model="vehicle.item">
+            <field name="name">Engine</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_2" model="vehicle.item">
+            <field name="name">Transmission / Clutch</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_3" model="vehicle.item">
+            <field name="name">Brakes</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_4" model="vehicle.item">
+            <field name="name">Emergency Brake</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_5" model="vehicle.item">
+            <field name="name">Cabin Air</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_6" model="vehicle.item">
+            <field name="name">Exhaust</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_7" model="vehicle.item">
+            <field name="name">Power Accessories</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_8" model="vehicle.item">
+            <field name="name">Sound Equipment</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_9" model="vehicle.item">
+            <field name="name">Door Operation</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_10" model="vehicle.item">
+            <field name="name">Rear Gate Operation</field>
+            <field name="item_category">mechanical</field>
+        </record>
+        <record id="mechanical_item_11" model="vehicle.item">
+            <field name="name">Rear View Camera</field>
+            <field name="item_category">mechanical</field>
+        </record>
+
+        <!--Interior Item-->
+        <record id="interior_item_1" model="vehicle.item">
+            <field name="name">Front Carpet</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_2" model="vehicle.item">
+            <field name="name">Rear Carpet</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_3" model="vehicle.item">
+            <field name="name">Front Driver's Seat</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_4" model="vehicle.item">
+            <field name="name">Front Passenger Seat</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_5" model="vehicle.item">
+            <field name="name">Rear Driver's Side Seat</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_6" model="vehicle.item">
+            <field name="name">Rear Center Seat</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_7" model="vehicle.item">
+            <field name="name">Rear Passenger Side Seat</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_8" model="vehicle.item">
+            <field name="name">Rear Extended Row Seats</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_9" model="vehicle.item">
+            <field name="name">Headliner</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_10" model="vehicle.item">
+            <field name="name">Door Panels</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_11" model="vehicle.item">
+            <field name="name">Dashboard</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_12" model="vehicle.item">
+            <field name="name">Center Console</field>
+            <field name="item_category">interior</field>
+        </record>
+        <record id="interior_item_13" model="vehicle.item">
+            <field name="name">Trunk</field>
+            <field name="item_category">interior</field>
+        </record>
+    </data>
+</odoo>

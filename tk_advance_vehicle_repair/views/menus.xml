@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <menuitem id="main_menu_advance_vehicle_repair" name="Vehicle Repair"
+                  web_icon="tk_advance_vehicle_repair,static/description/icon.png"/>
+        <menuitem id="menu_advance_vehicle_repair_dashboard"
+                  name="Dashboard"
+                  parent="main_menu_advance_vehicle_repair"
+                  action="action_advance_vehicle_repair_dashboard"
+                  groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_receptionist"
+                  sequence="0"/>
+        <menuitem id="menu_vehicle_booking"
+                  name="Bookings"
+                  parent="main_menu_advance_vehicle_repair"
+                  action="action_vehicle_booking"
+                  sequence="1"/>
+        <menuitem id="menu_vehicle_job_card" name="Job Cards" parent="main_menu_advance_vehicle_repair" sequence="2"/>
+        <menuitem id="menu_inspection_job_card"
+                  name="Inspection Job Cards"
+                  parent="menu_vehicle_job_card"
+                  action="action_inspection_job_card"
+                  sequence="1"/>
+        <menuitem id="menu_repair_job_card"
+                  name="Repair Job Cards"
+                  parent="menu_vehicle_job_card"
+                  action="action_repair_job_card"
+                  sequence="2"/>
+        <menuitem id="menu_vehicle_customer"
+                  name="Customers"
+                  parent="main_menu_advance_vehicle_repair"
+                  groups="tk_advance_vehicle_repair.vehicle_repair_manager,tk_advance_vehicle_repair.vehicle_repair_receptionist"
+                  action="contacts.action_contacts"
+                  sequence="3"/>
+        <menuitem id="menu_service_team"
+                  name="Teams"
+                  parent="main_menu_advance_vehicle_repair"
+                  action="action_service_team"
+                  groups="tk_advance_vehicle_repair.vehicle_repair_manager"
+                  sequence="4"/>
+
+        <menuitem id="menu_vehicle_spare_parts"
+                  name="Spare Parts"
+                  parent="main_menu_advance_vehicle_repair"
+                  action="action_vehicle_spare_parts"
+                  sequence="5"/>
+        <menuitem id="menu_vehicle_service"
+                  name="Services"
+                  parent="main_menu_advance_vehicle_repair"
+                  action="action_vehicle_service"
+                  sequence="6"/>
+
+        <menuitem id="menu_configuration" name="Configurations" parent="main_menu_advance_vehicle_repair" sequence="7"/>
+        <menuitem id="menu_vehicle_details" name="Vehicle Details" parent="menu_configuration" sequence="1"/>
+        <menuitem id="menu_vehicle_brand"
+                  name="Brands"
+                  parent="menu_vehicle_details"
+                  action="action_vehicle_brand"
+                  sequence="1"/>
+        <menuitem id="menu_vehicle_model"
+                  name="Models"
+                  parent="menu_vehicle_details"
+                  action="action_vehicle_model"
+                  sequence="2"/>
+        <menuitem id="menu_vehicle_fuel_type"
+                  name="Fuel Types"
+                  parent="menu_vehicle_details"
+                  action="action_vehicle_fuel_type"
+                  sequence="3"/>
+
+        <menuitem id="menu_vehicle_condition_s" name="Vehicle Conditions" parent="menu_configuration" sequence="2"/>
+        <menuitem id="menu_vehicle_condition_location"
+                  name="Locations"
+                  parent="menu_vehicle_condition_s"
+                  action="action_vehicle_condition_location"
+                  sequence="1"/>
+        <menuitem id="menu_vehicle_condition"
+                  name="Conditions"
+                  parent="menu_vehicle_condition_s"
+                  action="action_vehicle_condition"
+                  sequence="2"/>
+        <menuitem id="menu_vehicle_item"
+                  name="Vehicle Items"
+                  parent="menu_vehicle_condition_s"
+                  action="action_vehicle_item"
+                  sequence="3"/>
+        <menuitem id="vehicle_component_and_fluid" name="Vehicle Components &amp; Fluids" parent="menu_configuration"
+                  sequence="3"/>
+        <menuitem id="menu_vehicle_component"
+                  name="Components"
+                  parent="vehicle_component_and_fluid"
+                  action="action_vehicle_component"
+                  sequence="1"/>
+        <menuitem id="menu_vehicle_fluid"
+                  name="Fluids"
+                  parent="vehicle_component_and_fluid"
+                  action="action_vehicle_fluid"
+                  sequence="2"/>
+
+        <menuitem id="vehicle_checklist_template"
+                  name="Checklist Templates"
+                  parent="menu_configuration"
+                  action="action_checklist_template"
+                  sequence="4"/>
+    </data>
+</odoo>

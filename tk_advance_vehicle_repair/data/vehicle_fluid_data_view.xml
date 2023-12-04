@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="vehicle_fluid_top_side_1" model="vehicle.fluid">
+            <field name="name">Transmission</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_2" model="vehicle.fluid">
+            <field name="name">Engine Oil</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_3" model="vehicle.fluid">
+            <field name="name">Coolant</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_4" model="vehicle.fluid">
+            <field name="name">Power Steering</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_5" model="vehicle.fluid">
+            <field name="name">Brake Fluids</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_5" model="vehicle.fluid">
+            <field name="name">Wiasher Fluid</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+        <record id="vehicle_fluid_top_side_6" model="vehicle.fluid">
+            <field name="name">Other</field>
+            <field name="fluid_vehicle_side">top_side</field>
+        </record>
+
+        <record id="vehicle_fluid_bottom_side_1" model="vehicle.fluid">
+            <field name="name">Manual Transmission</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_2" model="vehicle.fluid">
+            <field name="name">Transfer Case</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_3" model="vehicle.fluid">
+            <field name="name">Rear Differential</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_4" model="vehicle.fluid">
+            <field name="name">Front Differential</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_5" model="vehicle.fluid">
+            <field name="name">Grease Fittings</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_6" model="vehicle.fluid">
+            <field name="name">30/60/90 Service</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+        <record id="vehicle_fluid_bottom_side_7" model="vehicle.fluid">
+            <field name="name">Other</field>
+            <field name="fluid_vehicle_side">bottom_side</field>
+        </record>
+    </data>
+</odoo>

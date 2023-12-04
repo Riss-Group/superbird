@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+        <!--Booking-->
+        <!-- Only Manager their own records-->
+        <record id="vehicle_repair_manager_only_see_own_records_of_bookings" model="ir.rule">
+            <field name="name">AVR Manager: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_vehicle_booking"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_manager'))]"/>
+        </record>
+        <!-- Only Receptionist their own records-->
+        <record id="vehicle_repair_receptionist_only_see_own_records_of_bookings" model="ir.rule">
+            <field name="name">AVR Receptionist: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_vehicle_booking"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_receptionist'))]"/>
+        </record>
+        <!-- Only Supervisor their own records-->
+        <record id="vehicle_repair_supervisor_only_see_own_records_of_bookings" model="ir.rule">
+            <field name="name">AVR Supervisor: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_vehicle_booking"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_supervisor'))]"/>
+        </record>
+        <!-- Only Technician their own records-->
+        <record id="vehicle_repair_technician_only_see_own_records_of_bookings" model="ir.rule">
+            <field name="name">AVR Technician: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_vehicle_booking"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_technician'))]"/>
+        </record>
+
+        <!--Inspection Job Card-->
+        <!-- Only Manager their own records-->
+        <record id="vehicle_repair_manager_only_see_own_records_of_inspection_job_cards" model="ir.rule">
+            <field name="name">AVR Manager: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_inspection_job_card"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_manager'))]"/>
+        </record>
+        <!-- Only Receptionist their own records-->
+        <record id="vehicle_repair_receptionist_only_see_own_records_of_inspection_job_cards" model="ir.rule">
+            <field name="name">AVR Receptionist: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_inspection_job_card"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_receptionist'))]"/>
+        </record>
+        <!-- Only Supervisor their own records-->
+        <record id="vehicle_repair_supervisor_only_see_own_records_of_inspection_job_cards" model="ir.rule">
+            <field name="name">AVR Supervisor: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_inspection_job_card"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_supervisor'))]"/>
+        </record>
+        <!-- Only Technician their own records-->
+        <record id="vehicle_repair_technician_only_see_own_records_of_inspection_job_cards" model="ir.rule">
+            <field name="name">AVR Technician: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_inspection_job_card"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_technician'))]"/>
+        </record>
+
+        <!--Repair Job Card-->
+        <!-- Only Manager their own records-->
+        <record id="vehicle_repair_manager_only_see_own_records_of_repair_job_cards" model="ir.rule">
+            <field name="name">AVR Manager: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_repair_job_card"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_manager'))]"/>
+        </record>
+        <!-- Only Receptionist their own records-->
+        <record id="vehicle_repair_receptionist_only_see_own_records_of_repair_job_cards" model="ir.rule">
+            <field name="name">AVR Receptionist: see all records</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_repair_job_card"/>
+            <field name="domain_force">[(1,'=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_receptionist'))]"/>
+        </record>
+        <!-- Only Supervisor their own records-->
+        <record id="vehicle_repair_supervisor_only_see_own_records_of_repair_job_cards" model="ir.rule">
+            <field name="name">AVR Supervisor: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_repair_job_card"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_supervisor'))]"/>
+        </record>
+        <!-- Only Technician their own records-->
+        <record id="vehicle_repair_technician_only_see_own_records_of_repair_job_cards" model="ir.rule">
+            <field name="name">AVR Technician: own task only</field>
+            <field name="model_id" ref="tk_advance_vehicle_repair.model_repair_job_card"/>
+            <field name="domain_force">[('responsible_id','=',user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="groups" eval="[(4,ref('tk_advance_vehicle_repair.vehicle_repair_technician'))]"/>
+        </record>
+    </data>
+</odoo>
