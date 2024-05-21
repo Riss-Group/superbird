@@ -41,7 +41,7 @@ class AdvanceVehicleDashboard extends Component {
         this.commonVehicleFuels = useRef('most_common_fuel_used_in_vehicle');
 
         onWillStart( async () => {
-            await loadJS('/tk_advance_vehicle_repair/static/src/js/lib/apexcharts.js');
+            await loadJS('/tk_advance_vehicle_repair/static/src/js/apexcharts.js');
             let bookingData = await this.orm.call('advance.vehicle.repair.dashboard', 'get_advance_vehicle_repair_dashboard', []);
             if(bookingData){
                 this.state.bookingStats = bookingData;

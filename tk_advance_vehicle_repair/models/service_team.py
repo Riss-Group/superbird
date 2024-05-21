@@ -79,7 +79,9 @@ class VehicleServiceTeam(models.Model):
             'project_id': self.team_project_id.id,
             'partner_id': self.repair_job_card_id.customer_id.id,
             'user_ids': self.vehicle_service_team_members_ids.ids,
-            'date_assign': self.start_date,
+            'date_assign': self.start_date ,
+            'planned_date_begin': self.start_date or fields.Datetime.now(),
+            'date_deadline': self.end_date or fields.Datetime.now(),
             'date_last_stage_update': self.end_date,
             'repair_job_card_id': self.repair_job_card_id.id
         })
@@ -130,6 +132,8 @@ class InspectionRepairTeam(models.Model):
             'partner_id': self.inspection_job_card_id.customer_id.id,
             'user_ids': self.vehicle_service_team_members_ids.ids,
             'date_assign': self.start_date,
+            'planned_date_begin': self.start_date or fields.Datetime.now(),
+            'date_deadline': self.end_date or fields.Datetime.now(),
             'date_last_stage_update': self.end_date,
             'inspection_job_card_id': self.inspection_job_card_id.id
         })
