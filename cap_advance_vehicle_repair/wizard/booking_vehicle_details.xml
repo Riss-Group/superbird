@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="booking_vehicle_details_form_view_cap" model="ir.ui.view">
+            <field name="name">booking_vehicle_details_form_view_cap</field>
+            <field name="model">booking.vehicle.details</field>
+            <field name='inherit_id' ref='tk_advance_vehicle_repair.booking_vehicle_details_form_view'/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/group[2]" position="inside">
+                    <group name="warranty_info" string="Warranty Info">
+                        <field name='fleet_sold_date' />
+                        <field name='fleet_warranty_period' />
+                        <field name='fleet_warranty_expired' />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

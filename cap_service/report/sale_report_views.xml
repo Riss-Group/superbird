@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_saleorder_document_repair" name="report_saleorder_document_repair" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@id='informations']" position="after">
+            <t t-if="doc.service_order_id">
+                <h4>Repair Details</h4>
+                <div class='container mt-2 mb-2'>
+                    <div class='row col-12 border'>
+                        <strong><span>Printed Memo:</span></strong>
+                        <span t-field='doc.service_order_id.printed_memo' />
+                    </div>
+                    <div class="row border" name='repair_info'>
+                        <div class="col-3 mw-100 border">
+                            <strong>RO Number:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.name"/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>RO Date:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.start_date" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>Mileage</strong><br/>
+                            <span>In:</span>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_odometer_in"/>
+                            <br/>
+                            <span>Out:</span>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_odometer_out"/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>Service Writer:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.service_writer_id"/>
+                        </div>
+                    </div>
+                    <div class='row border'>
+                        <div class="col-3 mw-100 border">
+                            <strong>Stock No:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_stock_number"/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>Serial No:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_vin_sn"/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>Year/Make/Model:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_ymm"/>
+                        </div>
+                        <div class="col-3 mw-100 border">
+                            <strong>Plate:</strong><br/>
+                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_id.license_plate"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+
+        <xpath expr="//th[@name='th_description']" position='before'>
+            <th class="text-start">Mech</th>
+            <th class="text-start">Type</th>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position='before'>
+            <td class="text-start">
+                <span t-field="line.service_order_line_id.user_ids"/>
+            </td>
+            <td class="text-start">
+                <span t-field="line.product_id.detailed_type"/>
+            </td>
+        </xpath>
+
+        <xpath expr="//div[@name='so_total_summary']" position='before'>
+            <h4>Totals Summary</h4>
+            <table class="table table-sm table-bordered o_main_table mt-4">
+                <th class='text-start'>Type</th>
+                <th class='text-center'>Customer</th>
+                <th class='text-center'>Internal</th>
+                <th class='text-center'>Warranty</th>
+                <tr>
+                    <td>Parts</td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.customer_parts_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.internal_parts_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.warranty_parts_total" /></td>
+                </tr>
+                <tr>
+                    <td>Service</td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.customer_service_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.internal_service_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.warranty_service_total" /></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.customer_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.internal_total" /></td>
+                    <td class='text-end'>$<span t-field="doc.service_order_id.warranty_total" /></td>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+
+</odoo>

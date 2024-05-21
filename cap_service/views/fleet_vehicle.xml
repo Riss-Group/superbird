@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fleet_vehicle_view_form_warranty" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_form_warranty</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vin_sn']" position="after">
+                <field name="stock_number" />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="warranty_page" string="Warranty Details">
+                    <field name='fleet_vehicle_warranty_line' >
+                        <tree editable='bottom'>
+                            <field name='warranty_description'/>
+                            <field name='mileage_expiration'/>
+                            <field name='date_expiration'/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

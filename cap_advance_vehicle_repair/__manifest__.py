@@ -1,0 +1,21 @@
+{
+    'name': "Advance Vehicle Repair CAP",
+    'version': "1.0",
+    'description': "Advance Vehicle Repair Management CAP",
+    'summary': "Advance Vehicle Repair Management CAP",
+    'author': 'Captvea, BEL',
+    'website': "https://captivea.com",
+    'category': 'Services',
+    'depends': ['base', 'fleet', 'tk_advance_vehicle_repair'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/fleet_vehicle.xml',
+        'views/vehicle_booking.xml',
+        'views/vehicle_ccc.xml',
+        'views/vehicle_services_views.xml',
+        'wizard/booking_vehicle_details.xml',
+    ],
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+}

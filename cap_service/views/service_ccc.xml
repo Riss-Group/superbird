@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="service_ccc_form_view" model="ir.ui.view">
+            <field name="name">view_service_ccc_form_view</field>
+            <field name="model">service.ccc</field>
+            <field name="arch" type="xml">
+                <form string="Complaint Cause Correction">
+                    <sheet>
+                        <group name="group_container" >
+                            <field name="name" />
+                            <field name="ttype" />
+                            <field name="option_num" />
+                            <field name="description" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="service_order_ccc_view" model="ir.ui.view">
+            <field name="name">service_order_ccc_view</field>
+            <field name="model">service.ccc</field>
+            <field name="arch" type="xml">
+                <tree string="Complaint Cause Correction">
+                    <field name="name" />
+                    <field name="ttype" />
+                    <field name="option_num" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

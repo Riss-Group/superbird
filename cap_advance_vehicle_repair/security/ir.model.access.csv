@@ -1,0 +1,6 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+
+cap_advance_vehicle_repair.access_vehicle_ccc_manager,access_vehicle_ccc_manager,cap_advance_vehicle_repair.model_vehicle_ccc,tk_advance_vehicle_repair.vehicle_repair_manager,1,1,1,1
+cap_advance_vehicle_repair.access_vehicle_ccc_receptionist,access_vehicle_ccc_receptionist,cap_advance_vehicle_repair.model_vehicle_ccc,tk_advance_vehicle_repair.vehicle_repair_receptionist,1,1,1,1
+cap_advance_vehicle_repair.access_vehicle_ccc_supervisor,access_vehicle_ccc_supervisor,cap_advance_vehicle_repair.model_vehicle_ccc,tk_advance_vehicle_repair.vehicle_repair_supervisor,1,1,1,1
+cap_advance_vehicle_repair.access_vehicle_ccc_technician,access_vehicle_ccc_technician,cap_advance_vehicle_repair.model_vehicle_ccc,tk_advance_vehicle_repair.vehicle_repair_technician,1,1,1,1
