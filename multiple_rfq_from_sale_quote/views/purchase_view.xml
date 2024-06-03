@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="create_purchase_order_inherit_sales_quote">
+            <field name="name">purchase.order.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                 <field name="company_id" position="after">
+                     <field name="custom_sale_order_id" readonly="1" invisible="0" groups="sales_team.group_sale_manager"/>
+                </field>
+            </field>
+         </record>
+      </data>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_order_form_inherit_sales_quote">
+            <field name="name">sale.order.form.inherit.RFQ</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="is_rfq_create"/>
+                </xpath>
+                <xpath expr="//header/button[@name='action_draft']" position="after">
+                    <!-- <button string="Create RFQ" type="object" name="create_rfq_from_sales" class="oe_highlight" attrs="{'invisible': [('is_rfq_create', '=', False)]}"/> -->
+                    <button string="Create RFQ" type="object" name="create_rfq_from_sales" class="oe_highlight" invisible="is_rfq_create == False"/>
+                </xpath>
+                <xpath expr="//notebook//page[@name='order_lines']//tree//field[@name='price_subtotal']" position="after">
+                    <!-- <field name="custom_vendor_ids" widget="many2many_tags" attrs="{'invisible': [('is_rfq_create', '=', False)]}"/> -->
+                    <field name="custom_vendor_ids" widget="many2many_tags" invisible="not is_rfq_create"/>
+                    <field name="is_rfq_create" column_invisible="True"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <!-- <button class="oe_stat_button" type="object" name="probc_get_purchase_order" icon="fa-street-view" string="RFQ's" attrs="{'invisible': [('is_rfq_create', '=', False)]}"/> -->
+                    <button class="oe_stat_button" type="object" name="probc_get_purchase_order" icon="fa-street-view" string="RFQ's" invisible="is_rfq_create == False"/>
+                </xpath>
+            </field>
+         </record>
+      </data>
+</odoo>
