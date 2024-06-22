@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fastapi_endpoint_form_view_cap" model="ir.ui.view">
+        <field name="name">fastapi_endpoint_form_view_cap</field>
+        <field name="model">fastapi.endpoint</field>
+        <field name="inherit_id" ref="fastapi.fastapi_endpoint_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_sync_registry" type="object" string="Resync Registry" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
