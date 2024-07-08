@@ -12,7 +12,7 @@
         **WARNING**
         This app needs most likely needs to be installed via CLI since it adds a field to all base models to be used in external ID processing 
         """,
-    'depends': ['fastapi',],
+    'depends': ['fastapi','purchase','account'],
     'data': [
         "data/data.xml",
         "views/fastapi_endpoint.xml",

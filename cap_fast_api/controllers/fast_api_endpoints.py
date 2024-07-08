@@ -1,9 +1,10 @@
-from typing import Annotated, Union, List, Dict
+from typing import Annotated, Union, List, Dict, Optional
+import json
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 import logging
 
-from odoo import fields, models
+from odoo import fields, models, _
 from odoo.api import Environment
 from odoo.addons.fastapi.dependencies import odoo_env
 
@@ -39,10 +40,11 @@ class DataOutput(BaseModel):
 
 class DataInput(BaseModel):
     external_id: str
-    fields: Dict[str, Union[str, int, float, bool, List[RelatedOne2ManyRecord]]] = Field(default_factory=dict)
+    fields: Dict[str, Union[str, int, float, bool, List[RelatedOne2ManyRecord], dict]] = Field(default_factory=dict)
 
 class DataPayload(BaseModel):
     model: str
+    lang: Optional[str] = None
     data: List[DataInput]
 
 #Helper Methods
@@ -58,6 +60,19 @@ def create_xml_id(env: Environment, external_id: str, model: str, res_id: int):
             'res_id': res_id
         })
     return existing_record
+
+def convert_json_strings(fields):
+    for key, value in fields.items():
+        if isinstance(value, str):
+            try:
+                fields[key] = json.loads(value)
+            except json.JSONDecodeError:
+                pass
+        elif isinstance(value, dict):
+            fields[key] = convert_json_strings(value)
+        elif isinstance(value, list):
+            fields[key] = [convert_json_strings(item) if isinstance(item, dict) else item for item in value]
+    return fields
 
 def process_fields(env: Environment, model: str, fields: Dict[str, Union[str, int, float, bool, List[Dict]]]) -> Dict[str, Union[str, int, float, bool]]:
     '''
@@ -171,17 +186,26 @@ def dynamic_upsert(payload: DataPayload, env: Environment = Depends(odoo_env)) -
     odoo_model = env['ir.model'].search([('model','=',payload.model)])
     if not odoo_model:
         raise HTTPException(status_code=400, detail="Invalid model passed")
+    odoo_lang= env.lang
+    if payload.lang:
+        odoo_lang = env['res.lang'].search([
+            ('active','=',True), 
+            ('code','=',payload.lang)
+        ]).code
+        if not odoo_lang:
+            raise HTTPException(status_code=400, detail="Language code passed does not match an active Odoo Language")
     for data in payload.data:
-        resolved_fields = process_fields(env, payload.model, data.fields)
+        fields_with_json = convert_json_strings(data.fields)
+        resolved_fields = process_fields(env, payload.model, fields_with_json)
         record_id = env.ref(data.external_id, raise_if_not_found=False)
         instance_vals = ReturnValues(external_id=data.external_id, message="")
         if record_id:
-            if record_id.write(resolved_fields):
+            if record_id.with_context({'lang':odoo_lang}).write(resolved_fields):
                 instance_vals.message = "OK"
             else:
                 instance_vals.message = "Unknown Error Occured while writing data"
         else:
-            record_id = env[payload.model].create(resolved_fields)
+            record_id = env[payload.model].with_context({'lang':odoo_lang}).create(resolved_fields)
             xml_id = create_xml_id(env, data.external_id, payload.model, record_id.id)
             if record_id and xml_id:
                 instance_vals.message = "OK"
