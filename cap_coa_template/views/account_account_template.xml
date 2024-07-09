@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_account_template_tree" model="ir.ui.view">
+        <field name="name">view_account_account_template_tree</field>
+        <field name="model">account.account.template</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name='code' />
+                <field name='name' />
+                <field name='account_type' />
+                <field name='reconcile' />
+                <field name='non_trade' />
+                <field name='currency_id' optional="hide"/>
+                <field name='company_ids' widget="many2many_tags" optional="hide"/>
+                <field name='tag_ids' widget="many2many_tags" optional="hide" />
+            </tree>
+        </field>
+    </record>   
+
+    <record id="view_account_account_template_form" model="ir.ui.view">
+        <field name="name">view_account_account_template_form</field>
+        <field name="model">account.account.template</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div>
+                        <h1 style="font-size: 1.9rem;">
+                            <div class="row">
+                                <div class="col col-md-auto">
+                                    <label for="code" string="Code"/>
+                                    <div>
+                                        <field name="code" placeholder="e.g. 101000" class="oe_inline"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-8">
+                                    <label for="name" string="Account Name"/>
+                                    <div>
+                                        <field name="name" placeholder="e.g. Current Assets" style="width:80% !important;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name='account_type' readonly="child_used == True "/>
+                            <field name='company_ids' widget="many2many_tags" domain="[('parent_id', '=', False)]"/>
+                            <field name='tag_ids' widget="many2many_tags" optional="hide" />
+                        </group>
+                        <group>
+                            <field name='deprecated' />
+                            <field name='non_trade' />
+                            <field name='currency_id' />
+                            <field name='reconcile' />
+                            <field name='child_used' />
+                        </group>
+                        <field name='account_lines' readonly='1' force_save='1'>
+                            <tree >
+                                <button name="action_open_coa" type="object" title="Open COA" class="btn fa fa-external-link"/>
+                                <field name='name' />
+                                <field name='code' />
+                                <field name='company_id' />
+                                <field name='used' />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> 
+
+    <record id="view_account_account_template_search" model="ir.ui.view">
+        <field name="name">view_account_account_template_search</field>
+        <field name="model">account.account.template</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Accounts (Corp)">
+                <field name='name' filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]" string="Name/Code" />
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]" string="Account"/>
+                    <filter string="Receivable" name="receivableacc" domain="[('account_type','=','asset_receivable')]"/>
+                    <filter string="Payable" name="payableacc" domain="[('account_type','=','liability_payable')]"/>
+                    <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/>
+                    <filter string="Assets" name="assetsacc" domain="[('internal_group','=', 'asset')]"/>
+                    <filter string="Liability" name="liabilityacc" domain="[('internal_group','=', 'liability')]"/>
+                    <filter string="Income" name="incomeacc" domain="[('internal_group','=', 'income')]"/>
+                    <filter string="Expenses" name="expensesacc" domain="[('internal_group','=', 'expense')]"/>
+                    <separator/>
+                    <filter string="Active Account" name="activeacc" domain="[('deprecated', '=', False)]"/>
+                    <separator/>
+                    <field name="account_type"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Account Type" name="accounttype" domain="" context="{'group_by':'account_type'}"/>
+                    </group>
+            </search>
+        </field>
+    </record> 
+</odoo>
