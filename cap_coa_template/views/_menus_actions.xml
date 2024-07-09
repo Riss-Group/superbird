@@ -1,0 +1,28 @@
+<odoo>
+    <record id="action_account_account_template" model="ir.actions.act_window">
+        <field name="name">Chart of Accounts (Template)</field>
+        <field name="res_model">account.account.template</field>
+        <field name="target">current</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_account_coa" 
+        parent='account.menu_finance_configuration' 
+        name="Chart of Accounts Configuration" 
+        groups="account.group_account_manager" 
+        sequence="2">
+    </menuitem>  
+
+    <menuitem id="account.menu_action_account_template_form"
+        parent='cap_coa_template.menu_account_coa' 
+        name="Chart Of Accounts (Template)" 
+        action="cap_coa_template.action_account_account_template" 
+        sequence="0">
+    </menuitem>
+
+    <menuitem id="account.menu_action_account_form" 
+        name='Chart of Accounts'
+        parent='cap_coa_template.menu_account_coa' 
+        sequence="1">
+    </menuitem>
+</odoo>
