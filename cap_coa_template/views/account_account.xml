@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_account_form_coa_template" model="ir.ui.view">
+        <field name="name">view_account_form_coa_template</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[1]" position='inside'>
+                <field name="account_template_id" readonly='1' force_save='1' />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_list_coa_template" model="ir.ui.view">
+        <field name="name">view_account_list_coa_template</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="before">
+                <field name="account_template_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
