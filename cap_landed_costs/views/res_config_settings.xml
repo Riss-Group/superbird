@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_cap_landed_costs" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form_cap_landed_costs</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock_accountant.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='default_accounts']" position="inside">
+                <div class="row mt8">
+                    <label for="auto_landed_cost_account_id" class="col-lg-5 o_light_label"/>
+                    <field name="auto_landed_cost_account_id" options="{'no_quick_create':1, 'no_create':1}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
