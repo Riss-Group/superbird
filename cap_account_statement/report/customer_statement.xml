@@ -1,0 +1,99 @@
+<odoo>
+    <template id="template_customer_statement">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.send_as_company_id" />
+                <t t-set="currency_id" t-value="company.currency_id" />
+                <t t-call="cap_account_statement.template_customer_statement_document" t-lang="o.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="template_customer_statement_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <strong>Customer:</strong>
+                <div t-field="o.commercial_partner_id.name"/>
+                <div t-field="o.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+                <div t-if="o.vat" class="mt16">
+                    <t t-out="company.country_id.vat_label or 'Tax ID'"/>: 
+                    <span t-field="o.vat" /></div>
+                <br/>
+                <h2>Customer Statement</h2>
+                <div id="informations" class="row mt16 mb16">
+                    <div class="col-4" t-if="o.ref">
+                        <strong>Customer ID:</strong>
+                        <p t-field="o.ref" />
+                    </div>
+                    <div class="col-4">
+                        <div><strong>Statement Date:</strong></div>
+                        <div><strong>(YYYY-MM-DD)</strong></div>
+                        <p t-esc="time.strftime('%Y-%m-%d')"/> 
+                    </div>
+                </div>
+                <t t-set="due_move_ids" t-value="o.sudo().with_context({'allowed_company_ids': o.include_company_ids.ids}).due_move_ids" />
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Reference #</th>
+                            <th>Company Name</th>
+                            <th>
+                                <div>Invoice Date</div>
+                                <div>(YYYY-MM-DD)</div>
+                            </th>
+                            <th>
+                                <div>Due Date</div>
+                                <div>(YYYY-MM-DD)</div>
+                            </th>
+                            <th>Currency</th>
+                            <th>Total</th>
+                            <th>Total Due</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="due_move_ids" t-as="move_id">
+                            <tr>
+                                <td><span t-field="move_id.name"/></td>
+                                <td><span t-field="move_id.ref"/></td>
+                                <td><span t-field="move_id.company_id.name"/></td>
+                                <td><span t-field="move_id.invoice_date" t-options="{'widget': 'date', 'format': 'yyyy-MM-dd'}"/></td>
+                                <td><span t-field="move_id.invoice_date_due" t-options="{'widget': 'date', 'format': 'yyyy-MM-dd'}"/></td>
+                                <td><span t-field="move_id.currency_id.name"/></td>
+                                <td><span t-field="move_id.amount_total"/></td>
+                                <td><span t-field="move_id.amount_residual"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <h2>Invoice Aging</h2>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Current</th>
+                            <th>1 to 30</th>
+                            <th>31 to 60</th>
+                            <th>61 to 90</th>
+                            <th>91 to 120</th>
+                            <th>Over 120</th>
+                            <th>Total Due</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="aging_buckets" t-value="o.get_aging_bucket(due_move_ids=due_move_ids)"/>
+                        <tr>
+                            <td><span t-esc="aging_buckets.get('current_due')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('due_1_30')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('due_31_60')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('due_61_90')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('due_91_120')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('due_over_120')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                            <td><span t-esc="aging_buckets.get('total_due')" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>
