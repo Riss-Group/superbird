@@ -9,10 +9,11 @@
     'website': 'https://www.captivea.com/',
     'category': 'Uncategorized',
     'version': '1.0',
-    'depends': ['product'],
+    'depends': ['product','website_sale'],
 
     # always loaded
     'data': [
+        'views/ecommerce_categories.xml',
     ],
 
 }
