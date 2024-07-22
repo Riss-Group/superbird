@@ -1,0 +1,89 @@
+<odoo>
+    <template id="print_black_check_top">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckblnk_page ckblnk_top_page" 
+                    t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in; right: {{ o.company_id.account_check_printing_margin_right }}in;">
+                    <t t-call="cap_l10n_blank_check.ck_blank_check" />
+                    <t t-call="cap_l10n_blank_check.ck_blank_stub"><t t-set="stub_num" t-value="1"/></t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="ck_blank_check">
+        <div class="ckblnk_check">
+            <img class="company_logo" t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"/>
+            <div class="ckblnk_company_address" t-out="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+            <div class="sequence_number" t-if="page['sequence_number']" t-out="page['sequence_number']" />
+            <div class="currency_name" t-if="o.currency_id.name" t-out="o.currency_id.name" />
+            <div class="ckblnk_date_label" t-if="page['date_label']">Date:</div>
+            <div class="ckblnk_date" t-out="page['payment_date_canada']"/>
+            <div class="ckblnk_date_format">YYYY-MM-DD</div>
+            <div class="ckblnk_payee_address" t-out="page['partner_id']" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+            <div class="ckblnk_amount">
+                <t t-out="page['amount']"/>
+            </div>
+            <div class="ckblnk_amount_in_word" t-out="page['amount_in_word']"/>
+            <div class="ckblnk_memo" t-out="page['memo']"/>
+            <div class="ckblnk_scanner" t-if="page['micr_text']" t-out="page['micr_text']" />
+        </div>
+    </template>
+
+    <template id="ck_blank_stub">
+        <div t-attf-class="ckblnk_stub ckblnk_stub_{{ stub_num }}">
+            <div class="sequence_number" t-if="page['sequence_number']" t-out="page['sequence_number']" />
+            <div class="row summary_line">
+                <div class="col-4 text-start">
+                    <div class="summary_label">Partner Name:</div>
+                    <div><span t-out="page['partner_name']"/></div>
+                </div>
+                <div class="col-4 text-start">
+                    <div class="summary_label">Date (YYYY-MM-DD):</div>
+                    <div><span t-out="page['payment_date_canada']"/></div>
+                </div>
+            </div>
+            <div class="row summary_line">
+                <div class="col-4 text-start">
+                    <div class="summary_label">Invoice Total:</div>
+                    <div><span t-out="page['amount_invoice']"/></div>
+                </div>
+                <div class="col-4 text-start">
+                    <div class="summary_label">Discount Total:</div>
+                    <div><span t-out="page['amount_discount']"/></div>
+                </div>
+                <div class="col-4 text-start">
+                    <div class="summary_label">Check Total:</div>
+                    <div><span t-out="page['amount']"/></div>
+                </div>
+            </div>
+            <table class="table table-bordered table-sm stub_lines" t-if="page['stub_lines']">
+                <thead><tr>
+                    <th class="text-start">Due Date</th>
+                    <th class="text-start">Description</th>
+                    <th class="text-end">Invoice Amount</th>
+                    <th class="text-end">Discount Taken</th>
+                    <th class="text-end">Amount Due</th>
+                    <th class="text-end">Payment</th>
+                </tr></thead>
+                <tbody>
+                    <t t-foreach="page['stub_lines']" t-as="stub_line">
+                        <t t-if="stub_line.get('header')">
+                            <tr><th colspan="6"><t t-out="stub_line['name']"/></th></tr>
+                        </t>
+                        <t t-if="not stub_line.get('header')"><tr>
+                            <td class="text-start"><t t-if="stub_line['due_date']" t-out="stub_line['due_date']"/></td>
+                            <td class="text-start text-truncate" style="max-width: 500px;"><t t-out="stub_line['number']"/></td>
+                            <td class="text-end"><t t-out="stub_line['amount_total']"/></td>
+                            <td class="text-end"><t t-out="stub_line['discount_taken']"/></td>
+                            <td class="text-end"><t t-out="stub_line['amount_residual']"/></td>
+                            <td class="text-end"><t t-out="stub_line['amount_paid']"/></td>
+                        </tr></t>
+                    </t>
+                    <tr t-if="page['stub_cropped']"><td colspan="6" class="text-end">...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+</odoo>
