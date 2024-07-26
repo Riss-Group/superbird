@@ -1,11 +1,13 @@
 from odoo import models, api, fields
 
+
 class StockWarehouse(models.Model):
     _inherit = 'stock.warehouse'
 
 
     formula_type = fields.Selection([('fixed','Fixed'), ('python_code', 'Python Code')], default="fixed")
     python_code_id = fields.Many2one('reordering.rule.python.code', string='Python Code')
+
 
     def update_params_on_reordering_rules(self):
         '''
