@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_warehouse_minmax_formula" model="ir.ui.view">
+        <field name="name">view_warehouse_minmax_formula</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Reordering Rule Engine" name="reorder_rules" groups="cap_stock.edit_orderpoint_python, base.group_system">
+                    <group name="reorder_container">
+                        <group name="reorder_left_group">
+                            <field name="formula_type"/>
+                            <field name="reorder_order_cost_var" />
+                            <field name="reorder_inventory_maint_cost_var" />
+                            <field name="reorder_period_days" />
+                        </group>
+                        <group name="reorder_right_group">
+                            <field name="demo_sales_volume" />
+                            <field name="demo_unit_cost" />
+                            <field name="demo_reorder_min" readonly="True" force_save="True"/>
+                            <field name="demo_reorder_max" readonly="True" force_save="True"/>
+                        </group>
+                    </group>
+                    <button name="run_min_max" type="object" string="Demo Calculation" title="Recalc" icon="fa-calculator" class="btn oe_highlight m-2" context="{'active_id':id}"/>
+                    <button name="update_params_on_reordering_rules" type="object" string="Update Forumlas" title="Update Formulas" class="btn oe_highlight m-2" icon="fa-refresh" context="{'active_id':id}"/>
+                    <field name="python_code" widget="code" options="{'mode': 'python'}" class="mt-4"/>
+                   <div class="mt-4">
+                        <p><strong>How to use this tool:</strong></p>
+                        <p>
+                            The reordering rules, when created, will load their defaults based on the warehouse configuration. 
+                            Several default parameters are available to be used when the formula type is set to Python. 
+                            <br />
+                            These include:
+                        </p>
+                        <ul>
+                            <li><strong>order_cost_fixed</strong></li>
+                            <li><strong>inventory_main_cost</strong></li>
+                            <li><strong>period_days</strong></li>
+                            <li><strong>unit_cost</strong></li>
+                            <li><strong>demo_sales_volume</strong></li>
+                            <li><strong>Math</strong> - (the standard Python math library to gain access to functions like sqrt())</li>
+                        </ul>
+                        <p>
+                            The typical 'Server Action' objects are also available to be used with the exception of 'records' since that could create an infinite loop.
+                            <br />
+                            These include:
+                        </p>
+                        <ul>
+                            <li><strong>uid</strong></li>
+                            <li><strong>user</strong></li>
+                            <li><strong>time</strong></li>
+                            <li><strong>datetime</strong></li>
+                            <li><strong>dateutil</strong></li>
+                            <li><strong>timezone</strong></li>
+                            <li><strong>float_compare</strong></li>
+                            <li><strong>b64encode</strong></li>
+                            <li><strong>b64decode</strong></li>
+                            <li><strong>Command</strong></li>
+                            <li><strong>model</strong></li>
+                            <li><strong>record</strong></li>
+                            <li><strong>_logger</strong></li>
+                            <li><strong>log</strong></li>
+                        </ul>
+                        <p>
+                            A simulation of the formula can be tested with the code editor here by utilizing the 'Demo Sales Volume' and 'Demo Cost Unit'. 
+                            When passed down to the reordering rule, <strong>sales_volume</strong> will search Sales History and <strong>unit_cost</strong> will search from the product.
+                            <br />
+                            Two values should be set in order to have the dynamic calculation work: <strong>min_qty</strong> and <strong>max_qty</strong>.
+                            <br />
+                            If these parameters are not found, then 0 will be set instead.
+                        </p>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
