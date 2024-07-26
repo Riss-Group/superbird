@@ -14,8 +14,10 @@
         'stock',
         ],
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'data/data.xml',
+        'views/_menu_actions.xml',
+        'views/reordering_rule_python_code.xml',
         'views/stock_warehouse.xml',
         'views/stock_warehouse_orderpoint.xml',
     ],

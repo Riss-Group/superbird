@@ -12,45 +12,13 @@ _logger = logging.getLogger()
 class StockWarehouseOrderpoint(models.Model):
     _inherit = 'stock.warehouse.orderpoint'
 
-    purchase_order_cost_var = fields.Float()
-    inventory_maint_cost_var = fields.Float()
-    period_days = fields.Integer()
-    sales_order_line_volume = fields.Float(compute="_compute_sales_order_line_volume")
-    standard_price = fields.Float(related='product_id.standard_price')
+
     formula_type = fields.Selection([('fixed','Fixed'), ('python_code', 'Python Code')], default='fixed')
-    python_code = fields.Text(string='Python Code')
+    python_code_id = fields.Many2one('reordering.rule.python.code', string='Python Code')
     last_min_max_run_date = fields.Datetime()
     show_run_min_max = fields.Boolean(compute="_compute_show_run_min_max")
 
-    @api.constrains('python_code')
-    def _check_python_code(self):
-        '''
-            Validate the syntax of the Python code in the 'python_code' field.
-            Raises a ValidationError if the syntax is incorrect (AKA Unsafe Execution from Base safe_eval).
-        '''
-        for record in self.sudo().filtered('python_code'):
-            msg = test_python_expr(expr=record.python_code.strip(), mode="exec")
-            if msg:
-                raise ValidationError(msg)
 
-    @api.depends('period_days', 'product_id')
-    def _compute_sales_order_line_volume(self):
-        '''
-            Compute the total volume of sales order lines for the product in the orderpoint
-            within the period specified by 'period_days'.
-        '''
-        for record in self:
-            total_volume = 0.0
-            if record.product_id and record.period_days:
-                date_from = datetime.today() - timedelta(days=record.period_days)
-                sales_order_lines = self.env['sale.order.line'].search([
-                    ('product_id', '=', record.product_id.id),
-                    ('state', 'in', ['sale', 'done']), 
-                    ('order_id.date_order', '>=', date_from)
-                ])
-                total_volume = sum(line.product_uom_qty for line in sales_order_lines)
-            record.sales_order_line_volume = total_volume
-    
     @api.depends('formula_type')
     def _compute_show_run_min_max(self):
         '''
@@ -59,36 +27,16 @@ class StockWarehouseOrderpoint(models.Model):
         for record in self:
             record.show_run_min_max = record.formula_type == 'python_code'
 
-
     def run_min_max(self):
         '''
             Evaluate the Python code in the 'python_code' field and set the minimum and maximum quantities for the orderpoint based on the evaluation results.
         '''
         for record in self:
-            if record.formula_type == 'python_code' and record.python_code:
+            if record.formula_type == 'python_code' and record.python_code_id.python_code:
                 eval_context = record._get_eval_context()
-                res = safe_eval(record.python_code, eval_context, mode='exec', nocopy=True)
-                vals = {
-                    'product_min_qty' : eval_context.get('min_qty',0),
-                    'product_max_qty' : eval_context.get('max_qty',0),
-                    'last_min_max_run_date' :fields.Datetime.now()
-                }
+                res = safe_eval(record.python_code_id.python_code, eval_context, mode='exec', nocopy=True)
+                vals = {'last_min_max_run_date' :fields.Datetime.now()}
                 record.write(vals)
-    
-    def edit_min_max_formula(self):
-        '''
-            Return an action to open the form view for the current orderpoint to edit the minimum and maximum quantity formula.
-        '''
-        self.ensure_one()
-        if self.id:
-            return {
-            'name': _('Stock Orderpoint'),
-            'res_model': 'stock.warehouse.orderpoint',
-            'view_mode': 'form',
-            'target': 'current',
-            'res_id': self.id,
-            'type': 'ir.actions.act_window',
-        }
     
     @api.model
     def _get_eval_context(self):
@@ -114,12 +62,7 @@ class StockWarehouseOrderpoint(models.Model):
             'record': record,
             'log': log,
             '_logger': LoggerProxy,
-            'Math': wrap_module(math, dir(math)),
-            'sales_volume': record.sales_order_line_volume if record else 0,
-            'unit_cost': record.standard_price if record else 0,
-            'period_days': record.period_days if record else 0,
-            'inventory_maint_cost': record.inventory_maint_cost_var if record else 0,
-            'order_cost_fixed' : record.purchase_order_cost_var if record else 0,
+            'Math': wrap_module(math, dir(math))
         })
         return eval_context
 
@@ -129,22 +72,9 @@ class StockWarehouseOrderpoint(models.Model):
 
             return vals_dict to write
         '''
-        if warehouse_id:
-            vals = {
-                'purchase_order_cost_var': warehouse_id.reorder_order_cost_var,
-                'inventory_maint_cost_var': warehouse_id.reorder_inventory_maint_cost_var,
-                'period_days': warehouse_id.reorder_period_days,
-                'python_code': warehouse_id.python_code,
-                'formula_type': warehouse_id.formula_type
-            }
-            return vals
-        else:
-            return {
-                'purchase_order_cost_var': 0,
-                'inventory_maint_cost_var': 0,
-                'period_days': 0,
-                'python_code': False,
-                'formula_type': 'fixed'
+        return {
+                'python_code_id': warehouse_id.python_code_id.id if warehouse_id else False,
+                'formula_type': warehouse_id.formula_type if warehouse_id else 'fixed'
             }
 
     @api.model_create_multi
@@ -187,7 +117,7 @@ class StockWarehouseOrderpoint(models.Model):
         orderpoint_ids = self.env['stock.warehouse.orderpoint'].search([
             '|', ('last_min_max_run_date', '=', False), ('last_min_max_run_date', '<', today_start),
             ('formula_type', '=', 'python_code'),
-            ('python_code', '!=', False)
+            ('python_code_id.python_code', '!=', False)
         ], limit=limit)
         for orderpoint_id in orderpoint_ids:
             try:
