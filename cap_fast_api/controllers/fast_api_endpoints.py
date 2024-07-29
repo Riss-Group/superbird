@@ -200,17 +200,23 @@ def dynamic_upsert(payload: DataPayload, env: Environment = Depends(odoo_env)) -
         record_id = env.ref(data.external_id, raise_if_not_found=False)
         instance_vals = ReturnValues(external_id=data.external_id, message="")
         if record_id:
-            if record_id.with_context({'lang':odoo_lang}).write(resolved_fields):
-                instance_vals.message = "OK"
-            else:
-                instance_vals.message = "Unknown Error Occured while writing data"
+            try:
+                if record_id.with_context({'lang':odoo_lang}).write(resolved_fields):
+                    instance_vals.message = "OK"
+                else:
+                    instance_vals.message = "Unknown Error Occured while writing data"
+            except Exception as e:
+                instance_vals.message = f"WRITE EX: {e}"
         else:
-            record_id = env[payload.model].with_context({'lang':odoo_lang}).create(resolved_fields)
-            xml_id = create_xml_id(env, data.external_id, payload.model, record_id.id)
-            if record_id and xml_id:
-                instance_vals.message = "OK"
-            else:
-                instance_vals.message = "Unknown Error Occured while creating data"
+            try:
+                record_id = env[payload.model].with_context({'lang':odoo_lang}).create(resolved_fields)
+                xml_id = create_xml_id(env, data.external_id, payload.model, record_id.id)
+                if record_id and xml_id:
+                    instance_vals.message = "OK"
+                else:
+                    instance_vals.message = "Unknown Error Occured while creating data"
+            except Exception as e:
+                instance_vals.message = f"CREATE EX: {e}"
         return_values.append(instance_vals)
     output = DataOutput(model=payload.model, returnvalues=return_values)
     return output
