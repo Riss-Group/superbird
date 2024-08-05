@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_partner_form_cap_account_statement" model="ir.ui.view">
+        <field name="name">view_partner_form_cap_account_statement</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Statement Info" name="statement_detail">
+                    <field name="company_warning_message" colspan='2' nolabel='1' decoration-danger="True"/>
+                    <group name="statement_container">
+                        <group name="statement_left">
+                            <field name="send_as_company_id" />
+                            <field name="include_company_ids" widget='many2many_tags' />
+                        </group>
+                        <group name="statement_right">
+                            <field name="current_due"/>
+                            <field name="due_1_30"/>
+                            <field name="due_31_60"/>
+                            <field name="due_61_90"/>
+                            <field name="due_91_120"/>
+                            <field name="due_over_120"/>
+                            <field name="total_due"/>
+                        </group>
+                    </group>
+                    <field name="due_move_ids">
+                        <tree no_open="1">
+                            <button name='open_move' type='object' icon="fa-external-link" title='Open'/>
+                            <field name="name" />
+                            <field name="invoice_date" optional="show" />
+                            <field name="invoice_date_due" optional="show"/>
+                            <field name="company_id" optional="hide" />
+                            <field name="currency_id" optional="show" />
+                            <field name="amount_total_signed" sum="Total Amount" optional="show" />
+                            <field name="amount_residual_signed" sum="Total Due" optional="show" />
+                            <field name="payment_state" widget="badge" optional="show"/>
+                            <field name="state" widget="badge" optional="show"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

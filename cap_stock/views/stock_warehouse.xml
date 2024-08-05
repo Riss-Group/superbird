@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_warehouse_minmax_formula" model="ir.ui.view">
+        <field name="name">view_warehouse_minmax_formula</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Reordering Rule Engine" name="reorder_rules" groups="cap_stock.edit_orderpoint_python, base.group_system">
+                    <group name="reorder_container">
+                        <group name="reorder_left_group">
+                            <field name="formula_type"/>
+                            <field name="python_code_id" options="{'no_quick_create':1, 'no_create':1, 'no_edit':1}"/>
+                            <button name="update_params_on_reordering_rules" colspan="2" type="object" string="Update Forumlas" title="Update Formulas" class="btn oe_highlight m-2" icon="fa-refresh" context="{'active_id':id}"/>
+                        </group>
+                        <group name="reorder_right_group">
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

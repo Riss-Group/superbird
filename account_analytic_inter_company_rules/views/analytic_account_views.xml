@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_analytic_account_view_form_inter_company_invoice" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inter.company.invoice</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field eval="10" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="automate_interco_invoice"/>
+                <field name="interco_partner_id" required="automate_interco_invoice == True" invisible="automate_interco_invoice == False"
+                       options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

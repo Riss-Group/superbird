@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_account_journal_form_blank_check" model="ir.ui.view">
+        <field name="name">view_account_journal_form_blank_check</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='bank_account_number']" position="inside">
+                <field name="check_transit_number" />
+                <field name="check_account_number" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
