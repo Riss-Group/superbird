@@ -2,8 +2,31 @@
 
 import { patch } from "@web/core/utils/patch";
 import BarcodeModel from '@stock_barcode/models/barcode_model';
+import LineComponent from "@stock_barcode/components/line";
+import { useService } from "@web/core/utils/hooks";
+
+
+patch(LineComponent.prototype, {
+    setup() {
+        super.setup();
+        this.action = useService("action");
+        this.orm = useService("orm");
+        this.rpc = useService("rpc");
+    },
+
+    async printProductBarcode(line) {
+        const reportFile = 'cap_stock_barcode.report_product_barcode';
+        return this.action.doAction({
+            type: "ir.actions.report",
+            report_type: "qweb-pdf",
+            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
+            report_file: reportFile,
+        });
+    },
+});
 
 patch(BarcodeModel.prototype, {
+
     async _processBarcode(barcode) {
         let barcodeData = {};
         let currentLine = false;
@@ -244,3 +267,10 @@ patch(BarcodeModel.prototype, {
         this.trigger('update');
     }
 })
+
+//export default class CapLineComponent extends LineComponent {
+//
+//    printProductBarcode(line) {
+//        console.log('print barcode');
+//    }
+//}
