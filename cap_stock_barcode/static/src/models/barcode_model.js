@@ -4,6 +4,8 @@ import { patch } from "@web/core/utils/patch";
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import LineComponent from "@stock_barcode/components/line";
 import { useService } from "@web/core/utils/hooks";
+import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
+
 
 
 patch(LineComponent.prototype, {
@@ -11,7 +13,7 @@ patch(LineComponent.prototype, {
         super.setup();
         this.action = useService("action");
         this.orm = useService("orm");
-        this.rpc = useService("rpc");
+        this.notification = useService("notification");
     },
 
     async printProductBarcode(line) {
@@ -23,6 +25,29 @@ patch(LineComponent.prototype, {
             report_file: reportFile,
         });
     },
+    async updateProductBarcode(line) {
+        let error = null;
+        let scanned_barcode = null;
+        try {
+            scanned_barcode = await scanBarcode(this.env, this.facingMode);
+        } catch (err) {
+            error = err.message;
+        }
+
+        if (scanned_barcode) {
+            await this.orm.write('product.product', [line.product_id.id], {
+                barcode: scanned_barcode,
+            });
+            if ("vibrate" in window.navigator) {
+                window.navigator.vibrate(100);
+            }
+        } else {
+            this.notification.add(error || _t("Please, Scan again!"), {
+                type: "warning",
+            });
+        }
+    },
+
 });
 
 patch(BarcodeModel.prototype, {
@@ -268,9 +293,3 @@ patch(BarcodeModel.prototype, {
     }
 })
 
-//export default class CapLineComponent extends LineComponent {
-//
-//    printProductBarcode(line) {
-//        console.log('print barcode');
-//    }
-//}
