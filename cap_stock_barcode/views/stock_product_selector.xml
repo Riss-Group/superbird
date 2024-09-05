@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="cap_stock_move_line_product_selector" model="ir.ui.view">
+            <field name="name">stock.move.line.selector_cap</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+            <field eval="17" name="priority"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <div class="col-6 my-2 d-flex align-items-baseline" position="before">
+                    <div class="col-12 my-2 d-flex align-items-baseline text-end">
+                        <i class="me-3 text-end" title="Quantity Not Done"/>
+                        <div class="ms-auto">
+                            <field name="related_scrap_line" readonly="1" class="invisible"/>
+                            <field name="not_done_qty" class="w-100 w-md-50 text-end o_qty_done_field_completed"/>
+                            <i class="fa fa-trash ms-2" title="Additional Info"></i>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
