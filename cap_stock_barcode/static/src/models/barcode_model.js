@@ -5,6 +5,7 @@ import BarcodeModel from '@stock_barcode/models/barcode_model';
 import LineComponent from "@stock_barcode/components/line";
 import { useService } from "@web/core/utils/hooks";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
+import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
 
 
 
@@ -14,6 +15,7 @@ patch(LineComponent.prototype, {
         this.action = useService("action");
         this.orm = useService("orm");
         this.notification = useService("notification");
+        this.dialog = useService('dialog');
     },
 
     async printProductBarcode(line) {
@@ -26,26 +28,18 @@ patch(LineComponent.prototype, {
         });
     },
     async updateProductBarcode(line) {
-        let error = null;
-        let scanned_barcode = null;
-        try {
-            scanned_barcode = await scanBarcode(this.env, this.facingMode);
-        } catch (err) {
-            error = err.message;
-        }
-
-        if (scanned_barcode) {
-            await this.orm.write('product.product', [line.product_id.id], {
-                barcode: scanned_barcode,
+        this.dialog.add(ManualBarcodeScanner, {
+            openMobileScanner: async () => {
+                await this.openMobileScanner();
+            },
+            onApply: (barcode) => {
+                barcode = this.env.model.cleanBarcode(barcode);
+                this.orm.write('product.product', [line.product_id.id], {
+                    barcode: barcode,
             });
-            if ("vibrate" in window.navigator) {
-                window.navigator.vibrate(100);
+            return barcode;
             }
-        } else {
-            this.notification.add(error || _t("Please, Scan again!"), {
-                type: "warning",
-            });
-        }
+        });
     },
 
 });
