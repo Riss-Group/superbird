@@ -16,6 +16,7 @@
 
     # always loaded
     'data': [
+        'views/stock_product_selector.xml',
         'report/product_barcode.xml'
     ],
      'assets': {
