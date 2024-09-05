@@ -13,6 +13,7 @@
                         <div class="ms-auto">
                             <field name="related_scrap_line" readonly="1" class="invisible"/>
                             <field name="not_done_qty" class="w-100 w-md-50 text-end o_qty_done_field_completed"/>
+                            <i class="fa fa-trash ms-2" title="Additional Info"></i>
                         </div>
                     </div>
                 </div>

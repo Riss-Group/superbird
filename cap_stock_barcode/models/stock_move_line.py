@@ -14,6 +14,9 @@ class StockMoveLine(models.Model):
         for line in self:
             if line.not_done_qty != 0:
                 line.update_scrap_line()
+            else:
+                if line.related_scrap_line:
+                    line.related_scrap_line.unlink()
 
     def update_scrap_line(self):
         for line in self:
