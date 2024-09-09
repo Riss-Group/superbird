@@ -1,0 +1,104 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_analytic_inter_company_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-26 19:10+0000\n"
+"PO-Revision-Date: 2024-03-26 19:10+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_analytic_inter_company_rules
+#. odoo-python
+#: code:addons/account_analytic_inter_company_rules/models/account_move.py:0
+#, python-format
+msgid "%s Invoice: %s"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model,name:account_analytic_inter_company_rules.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Compte analytique"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_bank_statement_line__auto_split
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_move__auto_split
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_payment__auto_split
+msgid "Auto Split Document"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_analytic_account__automate_interco_invoice
+msgid "Automate Intercompany Invoice"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model,name:account_analytic_inter_company_rules.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model,name:account_analytic_inter_company_rules.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,help:account_analytic_inter_company_rules.field_account_bank_statement_line__origin_partner_id
+#: model:ir.model.fields,help:account_analytic_inter_company_rules.field_account_move__origin_partner_id
+#: model:ir.model.fields,help:account_analytic_inter_company_rules.field_account_payment__origin_partner_id
+msgid "Customer/Vendor of the original invoice/bill"
+msgstr "Client/Fournisseur de la facture client/facture originale"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_res_company__account_interco_revenue_account_id
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_res_config_settings__account_interco_revenue_account_id
+msgid "Default Revenue Account for Intercompany Transactions"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_analytic_account__interco_partner_id
+msgid "Intercompany Partner"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model,name:account_analytic_inter_company_rules.model_account_move
+msgid "Journal Entry"
+msgstr "Pièce comptable"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model,name:account_analytic_inter_company_rules.model_account_move_line
+msgid "Journal Item"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_bank_statement_line__origin_partner_id
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_move__origin_partner_id
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_payment__origin_partner_id
+msgid "Original Partner"
+msgstr "Partenaire d'origine"
+
+#. module: account_analytic_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:account_analytic_inter_company_rules.view_in_invoice_bill_tree
+msgid "Original Vendor"
+msgstr "Fournisseur d'origine"
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_bank_statement_line__auto_split_invoice_id
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_move__auto_split_invoice_id
+#: model:ir.model.fields,field_description:account_analytic_inter_company_rules.field_account_payment__auto_split_invoice_id
+msgid "Split Invoice"
+msgstr ""
+
+#. module: account_analytic_inter_company_rules
+#: model:ir.model.fields,help:account_analytic_inter_company_rules.field_res_config_settings__account_interco_revenue_account_id
+msgid ""
+"This account will be used by default as the revenue account for intercompany"
+" transactions."
+msgstr ""

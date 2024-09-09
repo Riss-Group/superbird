@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_warehouse_orderpoint_tree_editable_minmax_formula" model="ir.ui.view">
+        <field name="name">view_warehouse_orderpoint_tree_editable_minmax_formula</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='route_id']" position="after">
+                <field name="formula_type" optional="hide" groups="cap_stock.edit_orderpoint_python, base.group_system"/>
+                <field name="python_code_id" optional="hide" invisible="formula_type != 'python_code'" options="{'no_quick_create':1, 'no_create':1, 'no_edit':1}" groups="cap_stock.edit_orderpoint_python, base.group_system"/>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <field name="last_min_max_run_date" readonly="True" string="M/M Last Run" optional="hide"/>
+            </xpath>
+            <xpath expr="//button[@name='action_replenish']" position="before">
+                <field name="show_run_min_max" invisible="True" />
+                <button name="run_min_max" type="object" string="Recalc M/M" icon="fa-calculator" invisible="not show_run_min_max" context="{'active_id':id}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
