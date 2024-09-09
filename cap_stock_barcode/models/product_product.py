@@ -7,5 +7,5 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     def action_print_barcode_report(self):
-        action = self.env.ref('product.action_report_pricelist').report_action(self)
+        action = self.env.ref('stock.label_product_product').report_action(self)
         return action

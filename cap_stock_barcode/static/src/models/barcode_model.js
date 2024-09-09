@@ -25,7 +25,6 @@ patch(BackorderDialog.prototype, {
 },
 
     async get_scrap_qty(line){
-    debugger;
      const not_done_qty_id = await this.orm.searchRead(
             "stock.move.line",
             [
@@ -49,24 +48,31 @@ patch(LineComponent.prototype, {
     },
 
     async printProductBarcode(line) {
-        const reportFile = 'cap_stock_barcode.report_product_barcode';
-        return this.action.doAction({
-            type: "ir.actions.report",
-            report_type: "qweb-pdf",
-            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
-            report_file: reportFile,
-        });
+        const action = await this.action.loadAction(
+            "product.action_open_label_layout"
+        );
+        action.context = {'default_product_ids' : [line.product_id.id]}
+        this.action.doAction({...action, default_product_ids: line.product_id.id});
+//        const reportFile = 'stock.label_product_product_view';
+//        return this.action.doAction({
+//            type: "ir.actions.report",
+//            report_type: "qweb-pdf",
+//            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
+//            report_file: reportFile,
+//        });
     },
     async updateProductBarcode(line) {
         this.dialog.add(ManualBarcodeScanner, {
             openMobileScanner: async () => {
                 await this.openMobileScanner();
             },
-            onApply: (barcode) => {
+            onApply: async (barcode) => {
                 barcode = this.env.model.cleanBarcode(barcode);
-                this.orm.write('product.product', [line.product_id.id], {
-                    barcode: barcode,
-            });
+                const res = await this.orm.call(
+                    'stock.move.line',
+                    'update_product_barcode',
+                    [[line.id],barcode]
+                );
             return barcode;
             }
         });
