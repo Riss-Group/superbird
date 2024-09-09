@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from itertools import product
 
 from odoo import models, fields, api
 
@@ -34,3 +35,8 @@ class StockMoveLine(models.Model):
             for company, stock_warehouse_id in groups
         }
         return locations_per_company[self.company_id.id]
+
+
+    def update_product_barcode(self, barcode):
+        if barcode:
+            self.product_id.write({'barcode': barcode})

@@ -25,7 +25,6 @@ patch(BackorderDialog.prototype, {
 },
 
     async get_scrap_qty(line){
-    debugger;
      const not_done_qty_id = await this.orm.searchRead(
             "stock.move.line",
             [
@@ -67,11 +66,13 @@ patch(LineComponent.prototype, {
             openMobileScanner: async () => {
                 await this.openMobileScanner();
             },
-            onApply: (barcode) => {
+            onApply: async (barcode) => {
                 barcode = this.env.model.cleanBarcode(barcode);
-                this.orm.write('product.product', [line.product_id.id], {
-                    barcode: barcode,
-            });
+                const res = await this.orm.call(
+                    'stock.move.line',
+                    'update_product_barcode',
+                    [[line.id],barcode]
+                );
             return barcode;
             }
         });
