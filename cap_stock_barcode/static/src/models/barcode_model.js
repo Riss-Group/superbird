@@ -49,13 +49,18 @@ patch(LineComponent.prototype, {
     },
 
     async printProductBarcode(line) {
-        const reportFile = 'cap_stock_barcode.report_product_barcode';
-        return this.action.doAction({
-            type: "ir.actions.report",
-            report_type: "qweb-pdf",
-            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
-            report_file: reportFile,
-        });
+        const action = await this.action.loadAction(
+            "product.action_open_label_layout"
+        );
+        action.context = {'default_product_ids' : [line.product_id.id]}
+        this.action.doAction({...action, default_product_ids: line.product_id.id});
+//        const reportFile = 'stock.label_product_product_view';
+//        return this.action.doAction({
+//            type: "ir.actions.report",
+//            report_type: "qweb-pdf",
+//            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
+//            report_file: reportFile,
+//        });
     },
     async updateProductBarcode(line) {
         this.dialog.add(ManualBarcodeScanner, {
