@@ -12,8 +12,9 @@
                         <i class="me-3 text-end" title="Quantity Not Done"/>
                         <div class="ms-auto">
                             <field name="related_scrap_line" readonly="1" class="invisible"/>
-                            <field name="not_done_qty" class="w-100 w-md-50 text-end o_qty_done_field_completed"/>
+                            <field name="not_done_qty" class="w-100 w-md-50 text-end o_qty_done_field_not_completed"/>
                             <i class="fa fa-trash ms-2" title="Additional Info"></i>
+                            Remaining : <field name="qty_remaining" class="w-100 w-md-50 text-end o_qty_not_done_field_completed oe_inline"/>
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
     not_done_qty = fields.Float('Qty Not Done', readonly=False, store=True)
+    qty_remaining = fields.Float('Remaining Qty', compute="compute_remaining_qty", store=False)
     related_scrap_line = fields.Many2one('stock.move.line')
 
     @api.onchange('not_done_qty')
@@ -18,6 +19,11 @@ class StockMoveLine(models.Model):
             else:
                 if line.related_scrap_line:
                     line.related_scrap_line.unlink()
+
+    @api.depends( 'move_id.product_uom_qty', 'qty_done', 'not_done_qty')
+    def compute_remaining_qty(self):
+        for line in self:
+            line.qty_remaining = line.move_id.product_uom_qty - line.qty_done - line.not_done_qty
 
     def update_scrap_line(self):
         for line in self:
