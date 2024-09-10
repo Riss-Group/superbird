@@ -14,6 +14,14 @@
                     style="margin-top: 15px;"
                     type="object"
                 />
+                <button
+                    class="oe_highlight"
+                    groups="product_configurator.group_product_configurator"
+                    name="action_tradein_start"
+                    string="Add trade-in"
+                    style="margin-top: 15px;"
+                    type="object"
+                />
             </xpath>
             <xpath
                 expr="//field[@name='order_line']/form//field[@name='product_id']"
