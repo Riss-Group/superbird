@@ -38,7 +38,7 @@ class SaleOrderLine(models.Model):
             "order_id": self.order_id.id,
             "product_id": product.id or False,
             "company_id": self.order_id.company_id.id,
-            "product_uom_qty": quantity,
+            "product_uom_qty":  - quantity,
         }
 
         return line_vals
