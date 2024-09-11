@@ -18,7 +18,7 @@
         'security/ir.model.access.csv',
         # 'views/_menu_actions.xml',
         'views/contact.xml',
-        # 'views/product.xml',
+        'views/product.xml',
     ],
     'installable': True,
     'auto_install': False,
