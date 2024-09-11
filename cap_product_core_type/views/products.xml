@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_product_template_cap_form_core_part" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <field name="alternative_product_ids" position="after">
+               <field name="has_core" widget="boolean_toggle"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_product_cap_form_core_part" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="alternative_product_ids" position="after">
+               <field name="has_core" widget="boolean_toggle" invisible="1"/>
+               <field name="core_part_id" invisible="not has_core"/>
+            </field>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+</odoo>
