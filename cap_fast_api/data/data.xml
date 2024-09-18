@@ -7,9 +7,9 @@
       <field name="login">dynamic_upsert_app_user</field>
     </record>
 
-      <record id="price_check_app_user" model="res.users" context="{'no_reset_password': True, 'no_reset_password': True}">
-      <field name="name">Price Check User</field>
-      <field name="login">price_check_app_user</field>
+      <record id="inventory_check_app_user" model="res.users" context="{'no_reset_password': True, 'no_reset_password': True}">
+      <field name="name">Inventory Check User</field>
+      <field name="login">inventory_check_app_user</field>
     </record>
 
     <!-- This is the group that will be used to run the demo app
@@ -23,9 +23,9 @@
       <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))] "/>
     </record>
 
-    <record id="price_check_app_group" model="res.groups">
-      <field name="name">Price Check Endpoint Group</field>
-      <field name="users" eval="[(4, ref('price_check_app_user'))]" />
+    <record id="inventory_check_app_group" model="res.groups">
+      <field name="name">Inventory Check Endpoint Group</field>
+      <field name="users" eval="[(4, ref('inventory_check_app_user'))]" />
       <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))] "/>
     </record>
 
@@ -39,12 +39,12 @@
       <field name="user_id" ref="dynamic_upsert_app_user" />
     </record>
 
-    <record model="fastapi.endpoint" id="fastapi_endpoint_price_check">
-      <field name="name">Fastapi Price Check Endpoint</field>
-      <field name="description">Retrieve pricelist pricing for product, partner and quantity</field>
-      <field name="app">price_check</field>
-      <field name="root_path">/fastapi_pc</field>
-      <field name="user_id" ref="price_check_app_user" />
+    <record model="fastapi.endpoint" id="fastapi_endpoint_inventory_check">
+      <field name="name">Fastapi Inventory Checker Endpoint</field>
+      <field name="description">Executes Price Checker or Stock Checker. See API Docs for more details </field>
+      <field name="app">inventory_checker</field>
+      <field name="root_path">/fastapi_inv</field>
+      <field name="user_id" ref="inventory_check_app_user" />
     </record>
   </data>
 </odoo>
