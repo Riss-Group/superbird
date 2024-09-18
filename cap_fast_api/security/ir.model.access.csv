@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fastapi_company_map_user,access_fastapi_company_map_user,model_fastapi_company_map,fastapi.group_fastapi_user,1,1,1,1
