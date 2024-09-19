@@ -3,23 +3,11 @@
 from odoo import models, fields, api
 
 
-class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
+class PurchaseOrderLine(models.Model):
+    _inherit = 'purchase.order.line'
 
     is_core_part = fields.Boolean("Is Core Part", default=False, copy=False)
-
-    @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom')
-    def _compute_qty_delivered(self):
-        super(SaleOrderLine, self)._compute_qty_delivered()
-        if self.is_core_part:
-            self.qty_delivered *= -1
-
-    def _get_qty_procurement(self, previous_product_uom_qty=False):
-        if self.is_core_part:
-            qty = self.product_uom_qty * 2
-            return qty
-        else:
-            return super(SaleOrderLine, self)._get_qty_procurement(previous_product_uom_qty)
+    core_parent_line_id = fields.Many2one('purchase.order.line')
 
     def expand_core_line(self, write=False):
         self.ensure_one()
@@ -50,6 +38,7 @@ class SaleOrderLine(models.Model):
             "order_id": self.order_id.id,
             "product_id": product.id or False,
             "company_id": self.order_id.company_id.id,
+            "core_parent_line_id":  self.id,
             "product_uom_qty":  quantity,
             "is_core_part":  True,
         }
@@ -57,8 +46,23 @@ class SaleOrderLine(models.Model):
         return line_vals
 
     def _prepare_invoice_line(self, **optional_values):
-        res = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)
+        res = super(PurchaseOrderLine, self)._prepare_invoice_line(**optional_values)
         is_core_part = self.is_core_part
         if is_core_part :
             res['is_core_part'] = self.is_core_part
         return res
+
+
+    @api.depends('move_ids.state', 'move_ids.product_uom', 'move_ids.quantity', "core_parent_line_id.move_ids.state")
+    def _compute_qty_received(self):
+        super(PurchaseOrderLine, self)._compute_qty_received()
+        for line in self:
+            if line.is_core_part:
+                line.qty_received = line.product_qty
+
+    def _get_qty_procurement(self):
+        if self.is_core_part:
+            qty = self.product_uom_qty
+            return qty
+        else:
+            return super(PurchaseOrderLine, self)._get_qty_procurement()
