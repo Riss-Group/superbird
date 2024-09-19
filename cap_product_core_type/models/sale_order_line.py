@@ -8,26 +8,18 @@ class SaleOrderLine(models.Model):
 
     is_core_part = fields.Boolean("Is Core Part", default=False)
 
+    @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom')
+    def _compute_qty_delivered(self):
+        super(SaleOrderLine, self)._compute_qty_delivered()
+        if self.is_core_part:
+            self.qty_delivered *= -1
 
-    def _convert_to_tax_base_line_dict(self, **kwargs):
-        """ Convert the current record to a dictionary in order to use the generic taxes computation method
-        defined on account.tax.
-
-        :return: A python dictionary.
-        """
-        self.ensure_one()
-        return self.env['account.tax']._convert_to_tax_base_line_dict(
-            self,
-            partner=self.order_id.partner_id,
-            currency=self.order_id.currency_id,
-            product=self.product_id,
-            taxes=self.tax_id,
-            price_unit=self.price_unit,
-            quantity=self.product_uom_qty if not self.is_core_part else -1 * self.product_uom_qty,
-            discount=self.discount,
-            price_subtotal=self.price_subtotal,
-            **kwargs,
-        )
+    def _get_qty_procurement(self, previous_product_uom_qty=False):
+        if self.is_core_part:
+            qty = self.product_uom_qty * 2
+            return qty
+        else:
+            return super(SaleOrderLine, self)._get_qty_procurement(previous_product_uom_qty)
 
     def expand_core_line(self, write=False):
         self.ensure_one()
@@ -58,7 +50,7 @@ class SaleOrderLine(models.Model):
             "order_id": self.order_id.id,
             "product_id": product.id or False,
             "company_id": self.order_id.company_id.id,
-            "product_uom_qty":  - quantity,
+            "product_uom_qty":  quantity,
             "is_core_part":  True,
         }
 
@@ -69,5 +61,4 @@ class SaleOrderLine(models.Model):
         is_core_part = self.is_core_part
         if is_core_part :
             res['is_core_part'] = self.is_core_part
-            res['quantity'] *= -1
         return res
