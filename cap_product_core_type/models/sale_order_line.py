@@ -13,19 +13,12 @@ class SaleOrderLine(models.Model):
     @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom', "core_parent_line_id.move_ids.state")
     def _compute_qty_delivered(self):
         super(SaleOrderLine, self)._compute_qty_delivered()
-        for line in self.filtered(lambda l:l.is_core_part):
-            qty_delivered = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing').mapped('quantity')) or 0
-            qty_returned = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'incoming').mapped('quantity')) or 0
-            qty = qty_returned - qty_delivered
-            line.qty_delivered = line.core_parent_line_id.qty_delivered - qty
+        for rec in self:
+            if rec.is_core_part:
+                rec.qty_delivered += rec.core_parent_line_id.qty_delivered
 
-
-    def _get_qty_procurement(self, previous_product_uom_qty=False):
-        if self.is_core_part:
-            qty = self.product_uom_qty * 2
-            return qty
-        else:
-            return super(SaleOrderLine, self)._get_qty_procurement(previous_product_uom_qty)
+    def _create_procurement(self, product_qty, procurement_uom, values):
+        return super()._create_procurement(product_qty if not self.is_core_part else -product_qty, procurement_uom, values)
 
     def expand_core_line(self, write=False):
         self.ensure_one()

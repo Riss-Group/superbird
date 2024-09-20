@@ -58,12 +58,7 @@ class PurchaseOrderLine(models.Model):
         super(PurchaseOrderLine, self)._compute_qty_received()
         for line in self:
             if line.is_core_part:
-                qty = sum(line.move_ids.filtered(lambda m:m.state == 'done').mapped('quantity')) or 0
-                line.qty_received = line.core_parent_line_id.qty_received - qty
+                line.qty_received += line.core_parent_line_id.qty_received
 
-    def _get_qty_procurement(self):
-        if self.is_core_part:
-            qty = self.product_uom_qty * 2
-            return qty
-        else:
-            return super(PurchaseOrderLine, self)._get_qty_procurement()
+    def _prepare_stock_move_vals(self, picking, price_unit, product_uom_qty, product_uom):
+        return super()._prepare_stock_move_vals(picking, price_unit, product_uom_qty if not self.is_core_part else -product_uom_qty, product_uom)
