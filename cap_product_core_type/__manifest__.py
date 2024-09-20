@@ -20,6 +20,7 @@ Long description of module's purpose
     # always loaded
     'data': [
         'views/products.xml',
+        'views/sale.xml',
     ],
 }
 

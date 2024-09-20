@@ -7,12 +7,18 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     is_core_part = fields.Boolean("Is Core Part", default=False, copy=False)
+    core_parent_line_id = fields.Many2one('sale.order.line')
 
-    @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom')
+
+    @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom', "core_parent_line_id.move_ids.state")
     def _compute_qty_delivered(self):
         super(SaleOrderLine, self)._compute_qty_delivered()
-        if self.is_core_part:
-            self.qty_delivered *= -1
+        for line in self.filtered(lambda l:l.is_core_part):
+            qty_delivered = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing').mapped('quantity')) or 0
+            qty_returned = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'incoming').mapped('quantity')) or 0
+            qty = qty_returned - qty_delivered
+            line.qty_delivered = line.core_parent_line_id.qty_delivered - qty
+
 
     def _get_qty_procurement(self, previous_product_uom_qty=False):
         if self.is_core_part:
@@ -52,6 +58,7 @@ class SaleOrderLine(models.Model):
             "company_id": self.order_id.company_id.id,
             "product_uom_qty":  quantity,
             "is_core_part":  True,
+            "core_parent_line_id": self.id,
         }
 
         return line_vals

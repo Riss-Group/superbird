@@ -13,7 +13,7 @@ class PurchaseOrderLine(models.Model):
         self.ensure_one()
         if self.product_id.has_core and self.product_id.core_part_id:
             for product in self.product_id.core_part_id:
-                vals = self.get_sale_order_line_vals(product)
+                vals = self.get_purchase_order_line_vals(product)
                 self.create([vals])
 
     @api.model_create_multi
@@ -31,15 +31,15 @@ class PurchaseOrderLine(models.Model):
         res |= super().create(new_vals)
         return res
 
-    def get_sale_order_line_vals(self, product):
+    def get_purchase_order_line_vals(self, product):
         self.ensure_one()
-        quantity = self.product_uom_qty
+        quantity = self.product_qty
         line_vals = {
             "order_id": self.order_id.id,
             "product_id": product.id or False,
             "company_id": self.order_id.company_id.id,
             "core_parent_line_id":  self.id,
-            "product_uom_qty":  quantity,
+            "product_qty":  quantity,
             "is_core_part":  True,
         }
 
@@ -58,11 +58,12 @@ class PurchaseOrderLine(models.Model):
         super(PurchaseOrderLine, self)._compute_qty_received()
         for line in self:
             if line.is_core_part:
-                line.qty_received = line.product_qty
+                qty = sum(line.move_ids.filtered(lambda m:m.state == 'done').mapped('quantity')) or 0
+                line.qty_received = line.core_parent_line_id.qty_received - qty
 
     def _get_qty_procurement(self):
         if self.is_core_part:
-            qty = self.product_uom_qty
+            qty = self.product_uom_qty * 2
             return qty
         else:
             return super(PurchaseOrderLine, self)._get_qty_procurement()
