@@ -15,11 +15,12 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale'],
+    'depends': ['sale_stock', 'purchase_stock'],
 
     # always loaded
     'data': [
         'views/products.xml',
+        'views/sale.xml',
     ],
 }
 

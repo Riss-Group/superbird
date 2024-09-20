@@ -3,28 +3,17 @@
 from odoo import models, fields, api
 
 
-class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
+class PurchaseOrderLine(models.Model):
+    _inherit = 'purchase.order.line'
 
     is_core_part = fields.Boolean("Is Core Part", default=False, copy=False)
-    core_parent_line_id = fields.Many2one('sale.order.line')
-
-
-    @api.depends('move_ids.state', 'move_ids.scrapped', 'move_ids.quantity', 'move_ids.product_uom', "core_parent_line_id.move_ids.state")
-    def _compute_qty_delivered(self):
-        super(SaleOrderLine, self)._compute_qty_delivered()
-        for rec in self:
-            if rec.is_core_part:
-                rec.qty_delivered += rec.core_parent_line_id.qty_delivered
-
-    def _create_procurement(self, product_qty, procurement_uom, values):
-        return super()._create_procurement(product_qty if not self.is_core_part else -product_qty, procurement_uom, values)
+    core_parent_line_id = fields.Many2one('purchase.order.line')
 
     def expand_core_line(self, write=False):
         self.ensure_one()
         if self.product_id.has_core and self.product_id.core_part_id:
             for product in self.product_id.core_part_id:
-                vals = self.get_sale_order_line_vals(product)
+                vals = self.get_purchase_order_line_vals(product)
                 self.create([vals])
 
     @api.model_create_multi
@@ -42,23 +31,34 @@ class SaleOrderLine(models.Model):
         res |= super().create(new_vals)
         return res
 
-    def get_sale_order_line_vals(self, product):
+    def get_purchase_order_line_vals(self, product):
         self.ensure_one()
-        quantity = self.product_uom_qty
+        quantity = self.product_qty
         line_vals = {
             "order_id": self.order_id.id,
             "product_id": product.id or False,
             "company_id": self.order_id.company_id.id,
-            "product_uom_qty":  quantity,
+            "core_parent_line_id":  self.id,
+            "product_qty":  quantity,
             "is_core_part":  True,
-            "core_parent_line_id": self.id,
         }
 
         return line_vals
 
     def _prepare_invoice_line(self, **optional_values):
-        res = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)
+        res = super(PurchaseOrderLine, self)._prepare_invoice_line(**optional_values)
         is_core_part = self.is_core_part
         if is_core_part :
             res['is_core_part'] = self.is_core_part
         return res
+
+
+    @api.depends('move_ids.state', 'move_ids.product_uom', 'move_ids.quantity', "core_parent_line_id.move_ids.state")
+    def _compute_qty_received(self):
+        super(PurchaseOrderLine, self)._compute_qty_received()
+        for line in self:
+            if line.is_core_part:
+                line.qty_received += line.core_parent_line_id.qty_received
+
+    def _prepare_stock_move_vals(self, picking, price_unit, product_uom_qty, product_uom):
+        return super()._prepare_stock_move_vals(picking, price_unit, product_uom_qty if not self.is_core_part else -product_uom_qty, product_uom)
