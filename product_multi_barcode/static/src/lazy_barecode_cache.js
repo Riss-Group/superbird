@@ -20,7 +20,7 @@ patch(LazyBarcodeCache.prototype, {
                 this.dbIdCache[model][record.id] = record;
                 if (model === 'product.product' || model === 'product.template') {
                     const barcodes = record.barcode;
-                    let barcodeArray = barcodes.split(',');
+                    let barcodeArray = barcodes ? barcodes.split(',') : [];
                     for (const barcodeRecord of barcodeArray) {
                         const barcode = barcodeRecord;
 
