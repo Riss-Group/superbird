@@ -8,6 +8,7 @@ import { useState } from "@odoo/owl";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
 import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
 import { BackorderDialog } from '@stock_barcode/components/backorder_dialog';
+import {_t} from "@web/core/l10n/translation";
 
 
 patch(BackorderDialog.prototype, {
@@ -51,7 +52,7 @@ patch(LineComponent.prototype, {
         const action = await this.action.loadAction(
             "product.action_open_label_layout"
         );
-        action.context = {'default_product_ids' : [line.product_id.id]}
+        action.context = {'default_product_ids' : [line.product_id.id], 'default_print_format' : '4x12', 'default_hide_price_fields' : true}
         this.action.doAction({...action, default_product_ids: line.product_id.id});
 //        const reportFile = 'stock.label_product_product_view';
 //        return this.action.doAction({

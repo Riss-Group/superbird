@@ -17,7 +17,8 @@
     # always loaded
     'data': [
         'views/stock_product_selector.xml',
-        'report/product_barcode.xml'
+        'report/product_barcode.xml',
+        'wizard/product_label_layout.xml'
     ],
      'assets': {
         'web.assets_backend': [
