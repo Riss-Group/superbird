@@ -8,6 +8,7 @@ import { useState } from "@odoo/owl";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
 import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
 import { BackorderDialog } from '@stock_barcode/components/backorder_dialog';
+import {_t} from "@web/core/l10n/translation";
 
 
 patch(BackorderDialog.prototype, {
