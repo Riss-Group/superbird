@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from itertools import product
 
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 
 
 class StockMoveLine(models.Model):
@@ -45,4 +45,9 @@ class StockMoveLine(models.Model):
 
     def update_product_barcode(self, barcode):
         if barcode:
-            self.product_id.write({'barcode': barcode})
+            self.product_id.write({'barcode_ids': [
+                Command.create({
+                    'product_id': self.product_id.id,
+                    'name': barcode,
+                })]
+            })

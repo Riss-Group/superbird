@@ -12,7 +12,7 @@
     'website': "https://www.captivea.com",
 
     'version': '0.1',
-    'depends': ['stock_barcode','product'],
+    'depends': ['product_multi_barcode','product'],
 
     # always loaded
     'data': [
@@ -23,6 +23,7 @@
      'assets': {
         'web.assets_backend': [
             'cap_stock_barcode/static/src/**/*.js',
+            'cap_stock_barcode/static/src/*.js',
             'cap_stock_barcode/static/src/**/*.xml',
         ],
 
