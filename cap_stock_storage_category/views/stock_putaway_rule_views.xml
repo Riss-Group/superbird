@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_stock_putaway_rule_tree_inherited" model="ir.ui.view">
+        <field name="name">stock.putaway.rule.tree.inherited</field>
+        <field name="model">stock.putaway.rule</field>
+        <field name="inherit_id" ref="stock.stock_putaway_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='storage_category_id']" position="after">
+                <field name="storage_category_id" column_invisible="True"/>
+                <field name="use_of_location" readonly="storage_category_id"/>
+                <field name="location_type" readonly="storage_category_id"/>
+                <field name="location_specification" readonly="storage_category_id"/>
+                <field name="same_velocity" readonly="storage_category_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
