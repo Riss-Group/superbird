@@ -22,11 +22,6 @@
         "views/product_template_view.xml",
         "security/ir.model.access.csv",
     ],
-    'assets': {
-        'web.assets_backend': [
-            'product_multi_barcode/static/src/*.js',
-        ],
-    },
     "installable": True,
     "post_init_hook": "post_init_hook",
 }
