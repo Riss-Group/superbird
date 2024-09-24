@@ -6,16 +6,37 @@
         <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='route_id']" position="after">
-                <field name="formula_type" optional="hide" groups="cap_stock.edit_orderpoint_python, base.group_system"/>
-                <field name="python_code_id" optional="hide" invisible="formula_type != 'python_code'" options="{'no_quick_create':1, 'no_create':1, 'no_edit':1}" groups="cap_stock.edit_orderpoint_python, base.group_system"/>
+                <field name="formula_type" optional="hide"
+                       groups="cap_stock.edit_orderpoint_python, base.group_system"/>
+                <field name="python_code_id" optional="hide" invisible="formula_type != 'python_code'"
+                       options="{'no_quick_create':1, 'no_create':1, 'no_edit':1}"
+                       groups="cap_stock.edit_orderpoint_python, base.group_system"/>
+                <field name="suggested_min" force_save="1"/>
+                <field name="suggested_max" force_save="1"/>
+                <field name="has_pending_changes" column_invisible="True"/>
             </xpath>
             <xpath expr="//tree" position="inside">
                 <field name="last_min_max_run_date" readonly="True" string="M/M Last Run" optional="hide"/>
+                <header>
+                    <button name="run_min_max" type="object" string="Recalc M/M" icon="fa-calculator"/>
+                    <button name="commit_min_max" type="object" string="Commit Changes" icon="fa-check"/>
+                </header>
             </xpath>
-            <xpath expr="//button[@name='action_replenish']" position="before">
-                <field name="show_run_min_max" invisible="True" />
-                <button name="run_min_max" type="object" string="Recalc M/M" icon="fa-calculator" invisible="not show_run_min_max" context="{'active_id':id}"/>
-            </xpath>
+            <tree position="attributes">
+                <attribute name="decoration-warning">has_pending_changes</attribute>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_stock_warehouse_orderpoint_search_inherit" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.search.inherit</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.warehouse_orderpoint_search"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <filter name="has_pending_changes" string="Pending Changes"
+                        domain="[('has_pending_changes', '=', True)]"/>
+            </filter>
         </field>
     </record>
 </odoo>
