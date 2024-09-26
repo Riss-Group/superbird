@@ -13,3 +13,14 @@ class SaleOrderLine(models.Model):
             res['taxes'] = self.company_id.sale_down_payment_product_id.taxes_id
         return res
             
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id and self.product_id.replacement_id:
+            replacement_product = self.product_id.replacement_id
+            self.product_id = replacement_product
+            return {
+                'warning': {
+                    'title': "Product Replacement",
+                    'message': f"The product you selected has been replaced with {replacement_product.name}.",
+                }
+            }

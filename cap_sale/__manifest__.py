@@ -14,6 +14,7 @@ This module contains customizations for common sales features.
         'sale',
         ],
     'data': [
+        'views/product_view.xml',
     ],
     'installable': True,
     'auto_install': False,
