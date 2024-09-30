@@ -7,7 +7,7 @@ class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
     def _get_applicable_rules(self, products, date, **kwargs):
-        res = super()._get_applicable_rules(products, date, **kwargs)
+        res = super(Pricelist, self)._get_applicable_rules(products, date, **kwargs)
         applicable_rules = []
         for product in products:
             product_uom = product.uom_id
