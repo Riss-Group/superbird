@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class PricelistItem(models.Model):
@@ -16,6 +16,16 @@ class PricelistItem(models.Model):
         string="Public Category",
         comodel_name='product.public.category',
     )
+
+    @api.depends('applied_on', 'categ_id', 'product_tmpl_id', 'product_id', 'compute_price', 'fixed_price', \
+        'pricelist_id', 'percent_price', 'price_discount', 'price_surcharge')
+    def _compute_name_and_price(self):
+        super(PricelistItem, self)._compute_name_and_price()
+        for item in self:
+            if item.public_categ_id and item.applied_on == '4_public_category':
+                item.name = _("Public Category: %s", item.public_categ_id.display_name)
+            elif item.vendor_id and item.applied_on == '5_vendor':
+                item.name = _("Vendor: %s", item.vendor_id.name)
 
     def _get_vendor_domain(self):
         partner_ids = self.env['product.supplierinfo'].search([]).mapped('partner_id.id')
