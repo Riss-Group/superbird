@@ -34,7 +34,8 @@ class SaleOrderLine(models.Model):
             if partner_obj.search_count(customer_domain+ [('id', '=', partner.id)]):
                 product_domain = ast.literal_eval(restriction.allowed_products)
                 if combined_domain:
-                    combined_domain = ['|'] + combined_domain + product_domain
+                    combined_domain = combined_domain + product_domain
+                    # combined_domain = ['|'] + combined_domain + product_domain
                 else:
                     combined_domain = product_domain
         return combined_domain
