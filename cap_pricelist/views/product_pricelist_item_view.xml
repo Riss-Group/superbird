@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="product_pricelist_supplier_item_form_view" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="vendor_id" invisible="applied_on != '5_vendor'"/>
+                <field name="public_categ_id" invisible="applied_on != '4_public_category'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
