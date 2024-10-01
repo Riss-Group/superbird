@@ -13,6 +13,7 @@ class SaleOrderLine(models.Model):
             res['taxes'] = self.company_id.sale_down_payment_product_id.taxes_id
         return res
             
+
     def get_replacement_history(self):
         replacement_history = []
         current_product = self.product_id
@@ -45,4 +46,3 @@ class SaleOrderLine(models.Model):
                     'message': history_message,
                 }
             }
-
