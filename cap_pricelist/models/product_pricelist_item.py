@@ -40,8 +40,7 @@ class PricelistItem(models.Model):
                 and not any(public_categ.parent_path.startswith(self.public_categ_id.parent_path) for public_categ in product.public_categ_ids)
             ):
                 res = False
-        elif self.applied_on == "5_vendor":
-            vendor = self.env.context.get('partner_id')
-            if self.vendor_id != vendor:
+        elif self.applied_on == "5_vendor" and self.vendor_id :
+            if product.seller_ids and self.vendor_id not in product.mapped('seller_ids.partner_id'):
                 res = False
         return res
