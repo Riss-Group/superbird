@@ -14,6 +14,7 @@ class SaleOrderLine(models.Model):
     def _compute_product_domain(self):
         for line in self:
             partner = line.order_id.partner_id
+            combined_domain = []
             if partner:
                 combined_domain = line._get_partner_restrictions(partner=partner)
         line.product_domain = combined_domain + [('sale_ok', '=', True)]
