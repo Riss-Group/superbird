@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="cap_sale.product_configurator_dialog" t-inherit="sale_product_configurator.dialog" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ProductList" position="after">
+            <ProductList
+            t-if="this.state.replacementProduct.length"
+            products="this.state.replacementProduct"
+            isProductReplacement="true"
+            areProductsOptional="true"/>
+            <ProductList
+            t-if="this.state.alternateProducts.length"
+            products="this.state.alternateProducts"
+            areProductsAlternatives="true"
+            areProductsOptional="true"/>
+            <ProductList
+            t-if="this.state.accessoryProducts.length"
+            products="this.state.accessoryProducts"
+            areProductsAccessories="true"
+            areProductsOptional="true"/>
+        </xpath>
+    </t>
+</templates>

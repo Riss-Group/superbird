@@ -13,3 +13,8 @@ class SaleOrderLine(models.Model):
             res['taxes'] = self.company_id.sale_down_payment_product_id.taxes_id
         return res
             
+    @api.onchange('product_id')
+    def _check_replacement(self):
+        if self.product_template_id.replacement_id:
+            self.product_id = self.product_template_id.replacement_id
+            
