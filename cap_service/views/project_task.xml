@@ -13,4 +13,31 @@
         </field>
     </record>
 
+    <record id="project_task_create_timesheet_view_form_cap" model="ir.ui.view">
+        <field name="name">project_task_create_timesheet_view_form_cap</field>
+        <field name="model">project.task.create.timesheet</field>
+        <field name="inherit_id" ref="timesheet_grid.project_task_create_timesheet_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <field name='cause' />
+                <field name='correction' />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_task_search_form_base_cap" model="ir.ui.view">
+        <field name="name">view_task_search_form_base_cap</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form_base"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='open_tasks']" position="attributes">
+                <attribute name="context">{'group_by': 'stage_id'}</attribute>
+                <attribute name="string">Task View</attribute>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

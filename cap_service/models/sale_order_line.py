@@ -29,5 +29,3 @@ class SalesOrderLine(models.Model):
             return (dict(self.env[object].fields_get(allfields=[field_name])[field_name]['selection'])[field_value])
         else:
             return False
-
-    service_order_line_product_id = fields.Many2one('service.order.line.product')
