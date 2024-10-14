@@ -30,7 +30,7 @@ class StockMoveLine(models.Model):
             if line.related_scrap_line:
                 line.related_scrap_line.write({'qty_done': line.not_done_qty})
             else:
-                new_line = line.copy({'move_id': line.move_id.id, 'qty_done': line.not_done_qty, 'location_dest_id': line.picking_type_id.quarantine_location_id})
+                new_line = line.copy({'move_id': line.move_id.id, 'qty_done': line.not_done_qty, 'location_dest_id': line.picking_type_id.quarantine_location_id.id})
                 line.write({'related_scrap_line' : new_line.id})
 
     def _compute_scrap_location_id(self):
