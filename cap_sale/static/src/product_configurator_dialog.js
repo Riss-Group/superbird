@@ -13,10 +13,9 @@ patch(ProductConfiguratorDialog.prototype, {
         this.rpc = useService("rpc");
         
         onWillStart(async() => {
-            const { products, optional_products, accessory_products, alternate_products, replacement_product } = await this._loadPartData(this.props.edit);
+            const { products, optional_products, accessory_products, alternate_products } = await this._loadPartData(this.props.edit);
             this.state.accessoryProducts = accessory_products;
             this.state.alternateProducts = alternate_products;
-            this.state.replacementProduct = replacement_product;
         });
     },
 

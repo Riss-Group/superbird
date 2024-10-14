@@ -104,23 +104,6 @@ class ProductConfiguratorController(ProductConfiguratorController):
                     parent_product_tmpl_ids=[product_template.id],
                 ) for alternative_product_template in product_template.alternative_product_ids
             ] if not only_main_product else [],
-            replacement_product=[
-                 dict(
-                    **self._get_product_information(
-                        replacement_product.product_tmpl_id,
-                        replacement_product.product_tmpl_id._get_first_possible_combination(
-                            parent_combination=combination
-                        ),
-                        currency_id,
-                        so_date,
-                        # giving all the ptav of the parent product to get all the exclusions
-                        parent_combination=product_template.attribute_line_ids.\
-                            product_template_value_ids,
-                        pricelist_id=pricelist_id,
-                    ),
-                    parent_product_tmpl_ids=[product_template.id],
-                ) for replacement_product in [product_template.replacement_id]
-            ] if not only_main_product else [],
         )
         return res
 
