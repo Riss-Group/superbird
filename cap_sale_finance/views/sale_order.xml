@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_sale_finance" model="ir.ui.view">
+        <field name="name">view_order_form_sale_finance</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Finance" name="finance_page">
+                    <field name="finance_term_lines" readonly="state == 'cancel' or locked">
+                        <tree string="Finance Lines" editable="bottom">
+                            <field name="order_id" column_invisible="True" />
+                            <field name="partner_id" />
+                            <field name="finance_amount" />
+                            <field name="periodicity" />
+                            <field name="skip_periods" optional="show"/>
+                            <field name="interest_rate_percent" />
+                            <field name="years_financed" />
+                            <field name="period_total" optional="show" />
+                            <field name="terms_interest_total" optional="show" />
+                            <field name="terms_total" optional="show"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

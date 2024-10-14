@@ -32,6 +32,7 @@ class StockMoveLine(models.Model):
             else:
                 new_move = line.move_id.copy({'product_uom_qty': line.not_done_qty, 'location_dest_id': line.picking_type_id.quarantine_location_id.id})
                 new_line = line.copy({'move_id': new_move.id, 'qty_done': line.not_done_qty, 'location_dest_id': line.picking_type_id.quarantine_location_id.id})
+
                 line.write({'related_scrap_line' : new_line.id})
                 self.env.cr.execute(f"update stock_move set product_uom_qty={line.qty_done} where id={line.move_id.id}")
 

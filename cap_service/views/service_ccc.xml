@@ -5,14 +5,26 @@
             <field name="name">view_service_ccc_form_view</field>
             <field name="model">service.ccc</field>
             <field name="arch" type="xml">
-                <form string="Complaint Cause Correction">
+                <form string="Service Template">
                     <sheet>
                         <group name="group_container" >
                             <field name="name" />
-                            <field name="ttype" />
-                            <field name="option_num" />
-                            <field name="description" />
+                            <field name="cause" />
+                            <field name="correction" />
+                            <field name="project_id" />
                         </group>
+                        <field name='service_template_parts'>
+                            <tree editable='bottom'>
+                                <field name='product_id'/>
+                                <field name='quantity' />
+                            </tree>
+                        </field>
+                        <field name='service_template_service'>
+                            <tree editable='bottom'>
+                                <field name='product_id'/>
+                                <field name='quantity' />
+                            </tree>
+                        </field>
                     </sheet>
                 </form>
             </field>
@@ -22,11 +34,11 @@
             <field name="name">service_order_ccc_view</field>
             <field name="model">service.ccc</field>
             <field name="arch" type="xml">
-                <tree string="Complaint Cause Correction">
+                <tree string="Service Template">
                     <field name="name" />
-                    <field name="ttype" />
-                    <field name="option_num" />
-                    <field name="description" />
+                    <field name="cause" />
+                    <field name="correction" />
+                    <field name='project_id'/>
                 </tree>
             </field>
         </record>

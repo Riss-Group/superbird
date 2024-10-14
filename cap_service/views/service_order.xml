@@ -14,103 +14,72 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button type="object" name="action_stat_button_task_ids" class="oe_stat_button"
-                                    icon="fa-tasks">
+                            <button type="object" name="action_stat_button_task_ids" class="oe_stat_button" icon="fa-tasks">
                                 <field name="task_ids" widget="statinfo" string="Tasks"/>
                             </button>
                         </div>
-                        <group name="group_container">
+                        <group name="group_container" >
                             <group name='general_container' string='General'>
                                 <field name="name" readonly='1' force_save='1'/>
-                                <field name="initiation_date"/>
-<!--                                <field name="end_date"/>-->
-                                <field name="service_writer_id"/>
+                                <field name="start_date" />
+                                <field name="end_date" />
+                                <field name="service_writer_id" />
                             </group>
                             <group name='general_other_container' string='Other General'>
-                                <field name='internal_memo'/>
-                                <field name='printed_memo'/>
-                                <field name='ref' string='Customer Reference'/>
+                                <field name='internal_memo' />
+                                <field name='printed_memo' />
+                                <field name='ref' string='Customer Reference' />
                             </group>
                             <group name='customer_container' string='Customer Details'>
                                 <field name="sale_order_id" readonly='1' force_save='1'/>
-                                <field name="partner_id" widget="res_partner_many2one"
-                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
-                                <field name='shipping_partner_id' widget="res_partner_many2one"
-                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
-                                <field name="payment_term_id"/>
+                                <field name="partner_id" string='Customer' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
+                                <field name='shipping_partner_id' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
+                                <field name="payment_term_id" />
                             </group>
                             <group name='fleet_container' string='Vehicle Details'>
-                                <field name="fleet_vehicle_id"/>
-                                <field name="fleet_vehicle_make"/>
-                                <field name="fleet_vehicle_model"/>
+                                <field name="available_fleet_vehicle_ids" invisible='1'/>
+                                <field name="fleet_vehicle_id" domain="[('id','in',available_fleet_vehicle_ids)]"/>
+                                <field name="fleet_vehicle_make" />
+                                <field name="fleet_vehicle_model" />
                                 <field name="fleet_vehicle_year"/>
-                                <field name="fleet_vehicle_vin_sn"/>
-                                <field name="fleet_vehicle_stock_number"/>
-                                <label for="fleet_odometer_in"/>
-                                <div class="o_row o_hr_narrow_field">
+                                <field name="fleet_vehicle_vin_sn" string="VIN Number"/>
+                                <field name="fleet_vehicle_body_number" string="Body Number"/>
+                                <field name="fleet_vehicle_stock_number" string="Stock Number"/>
+                                <label for="fleet_odometer_in" />
+                                <div class="o_row o_hr_narrow_field" >
                                     <field name="fleet_odometer_in"/>
                                     <field name="fleet_odometer_unit"/>
                                 </div>
                                 <field name="fleet_odometer_out"/>
                             </group>
                         </group>
+                        <button name="button_add_from_template" string="Add Job Line From Template" type="object" class="oe_highlight" />
                         <notebook>
-                            <page name="job_lines" string="Service issues">
+                            <page name="job_lines" string="Job Lines">
                                 <field name="service_order_lines">
                                     <tree editable="bottom">
-                                        <field name="ttype" optional='show' string='Type'/>
-<!--                                        <field name="task_stage" string='Status' optional='show'/>-->
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="name"/>
-                                        <field name="cause"/>
-                                        <field name="correction"/>
-                                        <field name="project_id" string="Department"/>
-                                        <field name="task_ids" widget='many2many_tags' readonly='1' force_save='1'
-                                               optional='show'/>
-                                        <field name='user_ids' widget='many2many_avatar_user' />
+                                        <field name="sequence" string='#' optional='show'/>
+                                        <field name="ttype" string='Type'/>
+                                        <field name="task_stage" string='Status' optional='hide'/>
+                                        <field name="name" widget='text' string="Description" />
+                                        <field name="cause" widget='text' optional='show'/>
+                                        <field name="correction" widget='text' string="Fix" optional='show'/>
+                                        <field name="project_id" string="Department" />
+                                        <field name="task_id" widget='many2one' readonly='1' force_save='1' optional='show'/>
+                                        <field name='user_ids' widget='many2many_avatar_user' optional='show'/>
                                         <field name="hours" optional='show'/>
                                         <field name="hours_consumed" optional='show'/>
                                         <field name="subtotal" optional='show'/>
-                                        <field name="service_order_line_product_ids" optional='hide'
-                                               widget='many2many_tags' readonly='1' force_save='1'
-                                               options="{'no_quick_create':1, 'no_create':1}"/>
-                                        <field name="service_order_line_item_ids" widget="many2many_tags"/>
-                                        <field name="service_order_line_labor_ids" widget="many2many_tags"/>
-                                        <button name='button_view_products' type='object' title="View Products"
-                                                string="View Details"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page name="service_item_line_ids" string="Items">
-                                <field name="service_item_line_ids">
-                                    <tree editable="bottom">
-                                        <field name="service_order_id" column_invisible="1"/>
-                                        <field name="service_order_line_id" domain="[('service_order_id', '=', service_order_id)]"/>
-                                        <field name="product_id" domain="[('type', '=', 'product')]"/>
-                                        <field name="product_type" column_invisible="1"/>
-                                        <field name="quantity"/>
-                                        <field name="unit_price"/>
-                                        <field name="warranty_coverage"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page name="service_item_labor_ids" string="Labor">
-                                <field name="service_labor_line_ids">
-                                    <tree editable="bottom">
-                                        <field name="service_order_id" column_invisible="1"/>
-                                        <field name="service_order_line_id" domain="[('service_order_id', '=', service_order_id)]"/>
-                                        <field name="product_id" domain="[('type', '=', 'service')]"/>
-                                        <field name="product_type" column_invisible="0"/>
-                                        <field name="quantity"/>
-                                        <field name="unit_price"/>
-                                        <field name="warranty_coverage"/>
-                                        <field name="task_ids" widget="many2many_tags"/>
+                                        <field name="service_order_line_product_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
+                                        <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
+                                        <button name='button_view_products' type='object' title="View Products" string="Parts" />
+                                        <button name='button_view_services' type='object' title="View Services" string="Labor" />
                                     </tree>
                                 </field>
                             </page>
                             <page name="warranty_info" string="Warranty Info">
-                                <field name='fleet_vehicle_warranty_line'>
-                                    <tree>
+                                <field name='fleet_vehicle_warranty_line' >
+                                    <tree >
                                         <field name='warranty_description'/>
                                         <field name='mileage_expiration'/>
                                         <field name='date_expiration'/>
@@ -148,7 +117,7 @@
             <field name="model">service.order</field>
             <field name="arch" type="xml">
                 <tree string="Service Order">
-                    <field name="name"/>
+                    <field name="name" />
                     <field name="partner_id" optional='show'/>
                     <field name="shipping_partner_id" optional='hide'/>
                     <field name="start_date" optional='show'/>

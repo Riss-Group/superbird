@@ -7,6 +7,16 @@
       <field name="login">dynamic_upsert_app_user</field>
     </record>
 
+      <record id="inventory_check_app_user" model="res.users" context="{'no_reset_password': True, 'no_reset_password': True}">
+      <field name="name">Inventory Check User</field>
+      <field name="login">inventory_check_app_user</field>
+    </record>
+
+    <record id="sale_order_app_user" model="res.users" context="{'no_reset_password': True, 'no_reset_password': True}">
+      <field name="name">Sale Order API User</field>
+      <field name="login">sale_order_app_user</field>
+    </record>
+
     <!-- This is the group that will be used to run the demo app
     This group will only depend on the "group_fastapi_endpoint_runner" group
     that provides the minimal access rights to retrieve the user running the
@@ -15,6 +25,18 @@
     <record id="dynamic_upsert_app_group" model="res.groups">
       <field name="name">Dynamic Upsert Endpoint Group</field>
       <field name="users" eval="[(4, ref('dynamic_upsert_app_user'))]" />
+      <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))] "/>
+    </record>
+
+    <record id="inventory_check_app_group" model="res.groups">
+      <field name="name">Inventory Check Endpoint Group</field>
+      <field name="users" eval="[(4, ref('inventory_check_app_user'))]" />
+      <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))] "/>
+    </record>
+
+      <record id="sale_order_app_group" model="res.groups">
+      <field name="name">Sale Order Endpoint Group</field>
+      <field name="users" eval="[(4, ref('sale_order_app_user'))]" />
       <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))] "/>
     </record>
 
@@ -27,5 +49,43 @@
       <field name="root_path">/fastapi</field>
       <field name="user_id" ref="dynamic_upsert_app_user" />
     </record>
+
+    <record model="fastapi.endpoint" id="fastapi_endpoint_inventory_check">
+      <field name="name">Fastapi Inventory Checker Endpoint</field>
+      <field name="description">Executes Price Checker or Stock Checker. See API Docs for more details </field>
+      <field name="app">inventory_checker</field>
+      <field name="root_path">/fastapi_inv</field>
+      <field name="user_id" ref="inventory_check_app_user" />
+    </record>
+
+    <record model="fastapi.endpoint" id="fastapi_endpoint_sale_order">
+      <field name="name">Fastapi Sale Order Endpoint</field>
+      <field name="description">Executes Receives optimizely data and creates and confirms sales orders. See API Docs for more details </field>
+      <field name="app">sale_order</field>
+      <field name="root_path">/fastapi_so</field>
+      <field name="user_id" ref="sale_order_app_user" />
+    </record>
+
+    <!-- This makes a carrier.delivery record for free shipping used in the Ecom Integration -->
+    <record id="product_product_free_shipping" model="product.product">
+        <field name="name">Standard delivery</field>
+        <field name="default_code">Delivery_999</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries"/>
+        <field name="sale_ok" eval="False"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">0.0</field>
+        <field name="invoice_policy">order</field>
+    </record>
+    
+    <record id="free_shipping" model="delivery.carrier">
+        <field name="name">Free Shipping</field>
+        <field name="fixed_price">0.0</field>
+        <field name="sequence">1</field>
+        <field name="delivery_type">fixed</field>
+        <field name="active" eval="True" />
+        <field name="product_id" ref="cap_fast_api.product_product_free_shipping"/>
+    </record>
+
   </data>
 </odoo>
