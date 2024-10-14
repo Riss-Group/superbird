@@ -5,7 +5,7 @@ from odoo import models, fields, api, Command
 class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    quarantine_location_id = fields.Many2one('stock.location', compute="_compute_scrap_location_id", store=False, readonly=False)
+    quarantine_location_id = fields.Many2one('stock.location', compute="_compute_scrap_location_id", store=True, readonly=False)
 
     def _compute_scrap_location_id(self):
         groups = self.env['stock.location']._read_group(
