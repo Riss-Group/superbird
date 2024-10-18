@@ -8,11 +8,11 @@ class ServiceTemplateSelect(models.Model):
 
 
     service_order_id = fields.Many2one('service.order')
-    service_ccc = fields.Many2many('service.ccc')
+    service_template = fields.Many2many('service.template')
 
 
     def button_save(self):
-        for record in self.service_ccc:
+        for record in self.service_template:
             service_order_product_vals = [ 
                 (0,0,{
                     'product_id':x.product_id.id,

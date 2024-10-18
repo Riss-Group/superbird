@@ -3,15 +3,15 @@ from odoo.exceptions import UserError
 
 
 class ServiceOrder(models.Model):
-    _name = 'service.order.line'   
+    _name = 'service.order.line'
+    _description = "Service Order Line"
     
 
     name = fields.Text(string='Description')
     cause = fields.Text(compute="_compute_cause_correction", store=True, readonly=False)
     correction = fields.Text(compute="_compute_cause_correction", store=True, readonly=False)
-    service_order_id = fields.Many2one('service.order')
-    project_id = fields.Many2one('project.project')
-    task_id = fields.Many2one('project.task')
+    project_id = fields.Many2one('project.project', copy=False)
+    task_id = fields.Many2one('project.task', copy=False)
     task_stage = fields.Many2one('project.task.type', related='task_id.stage_id', store=True, readonly=True)
     user_ids = fields.Many2many('res.users', related='task_id.user_ids', readonly=False)
     hours = fields.Float(string="Hours(est)", compute='_compute_hours')
@@ -20,10 +20,12 @@ class ServiceOrder(models.Model):
         ('Customer','Customer'),
         ('Internal','Internal'),
         ('Warranty','Warranty'),
-    ],default='Customer')
+    ],default='Customer', required=True)
     subtotal = fields.Float(compute="_compute_subtotal")
-    service_order_line_product_ids = fields.One2many('service.order.line.product', 'service_order_line_id')
-    service_order_line_service_ids = fields.One2many('service.order.line.service', 'service_order_line_id')
+    service_order_id = fields.Many2one('service.order', ondelete='cascade')
+    sale_line_ids = fields.One2many('sale.order.line', 'service_order_line_id')
+    service_order_line_product_ids = fields.One2many('service.order.line.product', 'service_order_line_id',)
+    service_order_line_service_ids = fields.One2many('service.order.line.service', 'service_order_line_id',)
     sequence = fields.Integer()
     
     

@@ -10,6 +10,7 @@
                 <page name="repair_info" string="Repair Info">
                     <group>
                         <field name='service_order_id' readonly='1' force_save='1'/>
+                        <field name='service_order_type' readonly='1' force_save='1'/>
                     </group>
                 </page>
             </xpath>

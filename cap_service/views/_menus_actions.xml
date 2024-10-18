@@ -9,10 +9,18 @@
             <field name="context">{}</field>
         </record>
 
-        <record id="service_ccc_action" model="ir.actions.act_window">
+        <record id="service_template_action" model="ir.actions.act_window">
             <field name="name">Service Templates</field>
-            <field name="res_model">service.ccc</field>
+            <field name="res_model">service.template</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="service_template_type_action" model="ir.actions.act_window">
+            <field name="name">Service Template Type</field>
+            <field name="res_model">service.template.type</field>
+            <field name="view_mode">tree</field>
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
@@ -29,7 +37,9 @@
         <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" sequence="60" />
         <menuitem id="service_order_menu_menu" name="Repair Orders" parent="service_order_main_menu"  sequence="0"/>
         <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  sequence="0"/>
-        <menuitem id="service_ccc_action_menu" name="Service Templates" action="service_ccc_action"  parent="service_order_config_menu" sequence="10"/>
+        <menuitem id="service_order_template_menu" name="Service Templates" parent="service_order_config_menu"  sequence="0"/>
+        <menuitem id="service_template_action_menu" name="Service Templates" action="service_template_action"  parent="service_order_template_menu" sequence="10"/>
+        <menuitem id="service_template_type_action_menu" name="Service Template Type" action="service_template_type_action"  parent="service_order_template_menu" sequence="10"/>
         <menuitem id="service_order_action_menu" name="Repair Orders" action="service_order_action"  parent="service_order_menu_menu" sequence="10"/>
     </data>
 </odoo>
