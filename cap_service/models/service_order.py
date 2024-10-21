@@ -27,6 +27,7 @@ class ServiceOrder(models.Model):
     fleet_vehicle_vin_sn = fields.Char(related='fleet_vehicle_id.vin_sn')
     fleet_vehicle_stock_number = fields.Char(related='fleet_vehicle_id.stock_number')
     fleet_vehicle_body_number = fields.Char(related='fleet_vehicle_id.body_number')
+    fleet_vehicle_body_number = fields.Char(related='fleet_vehicle_id.body_number')
     fleet_vehicle_ymm = fields.Char(compute='_compute_fleet_vehicle_ymm')
     fleet_vehicle_warranty_line = fields.One2many('fleet.vehicle.warranty.line',related='fleet_vehicle_id.fleet_vehicle_warranty_line')
     fleet_odometer_unit = fields.Selection(related='fleet_vehicle_id.odometer_unit')
@@ -117,6 +118,7 @@ class ServiceOrder(models.Model):
     def _compute_task_ids(self):
         for record in self:
             task_ids = record.service_order_lines.mapped('task_id')
+            task_ids = record.service_order_lines.mapped('task_id')
             record.task_ids = task_ids
             record.task_ids_count = len(task_ids)
     
@@ -124,9 +126,18 @@ class ServiceOrder(models.Model):
         'service_order_lines.service_order_line_product_ids.unit_price',
         'service_order_lines.service_order_line_service_ids.quantity',
         'service_order_lines.service_order_line_service_ids.unit_price',
+        'service_order_lines.service_order_line_product_ids.unit_price',
+        'service_order_lines.service_order_line_service_ids.quantity',
+        'service_order_lines.service_order_line_service_ids.unit_price',
     )
     def _compute_totals(self):
         for record in self:
+            customer_parts = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Customer').mapped('service_order_line_product_ids'))
+            customer_service = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Customer').mapped('service_order_line_service_ids'))
+            warranty_parts = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Warranty').mapped('service_order_line_product_ids'))
+            warranty_service = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Warranty').mapped('service_order_line_service_ids'))
+            internal_parts = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Internal').mapped('service_order_line_product_ids'))
+            internal_service = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Internal').mapped('service_order_line_service_ids'))
             customer_parts = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Customer').mapped('service_order_line_product_ids'))
             customer_service = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Customer').mapped('service_order_line_service_ids'))
             warranty_parts = sum(x.quantity * x.unit_price for x in record.service_order_lines.filtered(lambda x: x.ttype == 'Warranty').mapped('service_order_line_product_ids'))
@@ -169,6 +180,8 @@ class ServiceOrder(models.Model):
             raise UserError('Base URL is not defined in the settings')
         return {
         "type": "ir.actions.act_url",
+        "url": f'{url}{self.fleet_vehicle_body_number}',
+        "target": "new",  
         "url": f'{url}{self.fleet_vehicle_body_number}',
         "target": "new",  
         }

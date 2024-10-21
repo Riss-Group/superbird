@@ -1,6 +1,7 @@
 from odoo import  models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
+from odoo.osv import expression
 
 
 class FleetVehicle(models.Model):

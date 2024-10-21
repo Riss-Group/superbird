@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class ProjectTask(models.Model):
     _inherit = 'project.task'
     _order = "priority desc, planned_date_begin desc, id desc"
+    _order = "priority desc, planned_date_begin desc, id desc"
     
 
     name = fields.Char(string='Description')

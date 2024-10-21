@@ -5,6 +5,8 @@ from odoo.exceptions import UserError
 class ServiceOrderLineProduct(models.Model):
     _name = 'service.order.line.product'  
     _description = 'Service Order Line Products' 
+    _name = 'service.order.line.product'  
+    _description = 'Service Order Line Products' 
 
     service_order_line_id = fields.Many2one('service.order.line', ondelete='cascade')
     sale_line_id = fields.One2many('sale.order.line', 'service_order_line_product_id')

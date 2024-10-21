@@ -25,6 +25,7 @@
             </xpath>
             <xpath expr="//field[@name='vin_sn']" position="after">
                 <field name="body_number" />
+                <field name="body_number" />
                 <field name="stock_number" />
             </xpath>
             <xpath expr="//field[@name='category_id']" position='before'>

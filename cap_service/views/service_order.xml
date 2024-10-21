@@ -15,6 +15,7 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button type="object" name="action_stat_button_task_ids" class="oe_stat_button" icon="fa-tasks">
+                            <button type="object" name="action_stat_button_task_ids" class="oe_stat_button" icon="fa-tasks">
                                 <field name="task_ids" widget="statinfo" string="Tasks"/>
                             </button>
                             <button type="object" name="action_stat_button_sale_order_ids" class="oe_stat_button" icon="fa-usd">
@@ -28,13 +29,20 @@
                             </button>
                         </div>
                         <group name="group_container" >
+                        <group name="group_container" >
                             <group name='general_container' string='General'>
                                 <field name="name" readonly='1' force_save='1'/>
                                 <field name="start_date" />
                                 <field name="end_date" />
                                 <field name="service_writer_id" />
+                                <field name="start_date" />
+                                <field name="end_date" />
+                                <field name="service_writer_id" />
                             </group>
                             <group name='general_other_container' string='Other General'>
+                                <field name='internal_memo' />
+                                <field name='printed_memo' />
+                                <field name='ref' string='Customer Reference' />
                                 <field name='internal_memo' />
                                 <field name='printed_memo' />
                                 <field name='ref' string='Customer Reference' />
@@ -50,7 +58,16 @@
                                 <field name="fleet_vehicle_id" domain="[('id','in',available_fleet_vehicle_ids)]"/>
                                 <field name="fleet_vehicle_make" />
                                 <field name="fleet_vehicle_model" />
+                                <field name="available_fleet_vehicle_ids" invisible='1'/>
+                                <field name="fleet_vehicle_id" domain="[('id','in',available_fleet_vehicle_ids)]"/>
+                                <field name="fleet_vehicle_make" />
+                                <field name="fleet_vehicle_model" />
                                 <field name="fleet_vehicle_year"/>
+                                <field name="fleet_vehicle_vin_sn" string="VIN Number"/>
+                                <field name="fleet_vehicle_body_number" string="Body Number"/>
+                                <field name="fleet_vehicle_stock_number" string="Stock Number"/>
+                                <label for="fleet_odometer_in" />
+                                <div class="o_row o_hr_narrow_field" >
                                 <field name="fleet_vehicle_vin_sn" string="VIN Number"/>
                                 <field name="fleet_vehicle_body_number" string="Body Number"/>
                                 <field name="fleet_vehicle_stock_number" string="Stock Number"/>
@@ -63,7 +80,9 @@
                             </group>
                         </group>
                         <button name="button_add_from_template" string="Add Job Line From Template" type="object" class="oe_highlight" />
+                        <button name="button_add_from_template" string="Add Job Line From Template" type="object" class="oe_highlight" />
                         <notebook>
+                            <page name="job_lines" string="Job Lines">
                             <page name="job_lines" string="Job Lines">
                                 <field name="service_order_lines">
                                     <tree editable="bottom">
@@ -83,10 +102,16 @@
                                         <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
                                         <button name='button_view_products' type='object' title="View Products" string="Parts" />
                                         <button name='button_view_services' type='object' title="View Services" string="Labor" />
+                                        <field name="service_order_line_product_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
+                                        <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
+                                        <button name='button_view_products' type='object' title="View Products" string="Parts" />
+                                        <button name='button_view_services' type='object' title="View Services" string="Labor" />
                                     </tree>
                                 </field>
                             </page>
                             <page name="warranty_info" string="Warranty Info">
+                                <field name='fleet_vehicle_warranty_line' >
+                                    <tree >
                                 <field name='fleet_vehicle_warranty_line' >
                                     <tree >
                                         <field name='warranty_description'/>
