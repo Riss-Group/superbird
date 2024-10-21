@@ -10,7 +10,7 @@ class ProjectTask(models.Model):
     name = fields.Char(string='Description')
     cause = fields.Char()
     correction = fields.Char()
-    priority = fields.Selection([
+    priority = fields.Selection(selection_add=[
         ('1','low'),
         ('2','med-low'),
         ('3','med'),

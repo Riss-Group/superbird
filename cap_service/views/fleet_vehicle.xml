@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="fleet_vehicle_view_form_warranty" model="ir.ui.view">
-        <field name="name">fleet_vehicle_view_form_warranty</field>
+    <record id="fleet_vehicle_view_form_service" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_form_service</field>
         <field name="model">fleet.vehicle</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_fleet_move_lines" type="object" class="oe_stat_button" icon="fa-list">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Product Moves</span>
+                        <span class="o_stat_value">
+                            <field name="fleet_move_line_ids" invisible='1'/>
+                            <field name="fleet_move_line_count" />
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_date']" position="after">
+                <field name="sold_date" />
+            </xpath>
             <xpath expr="//field[@name='vin_sn']" position="attributes">
                 <attribute name="string">VIN Number</attribute>
             </xpath>
@@ -15,6 +29,7 @@
             </xpath>
             <xpath expr="//field[@name='category_id']" position='before'>
                 <field name="customer_id" />
+                <field name="product_id" />
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="warranty_page" string="Warranty Details">
