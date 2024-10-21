@@ -38,7 +38,10 @@ class SaleOrderLine(models.Model):
             history_message += "-" * 60 + "\n"
 
             for product, replacement in replacement_history:
-                history_message += "{:<30} {:>30}\n".format(product.default_code, replacement.name + ' : ' + replacement.default_code)
+                history_message += "{:<30} {:>30}\n".format(
+                    product.default_code,
+                    (replacement.name or '') + ' : ' + (replacement.default_code or '')
+                )
 
             return {
                 'warning': {
