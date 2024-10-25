@@ -1,1 +1,0 @@
-from . import booking_vehicle_details
