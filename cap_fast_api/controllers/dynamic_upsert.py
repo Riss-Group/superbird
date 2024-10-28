@@ -2,6 +2,7 @@ from typing import Annotated, Union, List, Dict, Optional
 import json
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
+import pprint
 import logging
 
 from odoo import fields, models, _
@@ -109,7 +110,7 @@ def convert_json_strings(fields):
     for key, value in fields.items():
         if isinstance(value, str):
             try:
-                fields[key] = json.loads(value)
+                fields[key] = value
             except json.JSONDecodeError:
                 pass
         elif isinstance(value, dict):
@@ -117,6 +118,13 @@ def convert_json_strings(fields):
         elif isinstance(value, list):
             fields[key] = [convert_json_strings(item) if isinstance(item, dict) else item for item in value]
     return fields
+
+def _is_field_editable(field):
+    if field.readonly:
+        return False
+    if not field.store and field.compute and not field.inverse:
+        return False
+    return True
 
 def process_fields(env: Environment, model: str, fields: Dict[str, Union[str, int, float, bool, List[Dict]]]) -> Dict[str, Union[str, int, float, bool]]:
     '''
@@ -161,9 +169,18 @@ def process_fields(env: Environment, model: str, fields: Dict[str, Union[str, in
     for field_name, field_value in fields.items():
         field = odoo_model._fields.get(field_name)
         if field is None:
-            raise UserError(f"Field {field_name} does not exist on model {model}")        
-        if not field.store:
-            raise UserError(f"Field {field_name} is not a stored field and cannot be updated")        
+            raise UserError(f"Field {field_name} does not exist on model {model}")
+        if not _is_field_editable(field):
+            field_properties = {
+                "type": field.type,
+                "readonly": field.readonly,
+                "compute": bool(field.compute),
+                "inverse": bool(field.inverse),
+                "related": field.related,
+                "store": field.store,
+                "string": field.string,
+            }
+            raise UserError(f"Field {field_name} is not considered editable. Field Properties: {field_properties}")
         if field.type == 'many2one':
             if isinstance(field_value, str) and '.' in field_value:
                 related_record = env.ref(field_value, raise_if_not_found=False)
@@ -219,7 +236,10 @@ def process_fields(env: Environment, model: str, fields: Dict[str, Union[str, in
             if m2m_vals:
                 vals_dict[field_name] = m2m_vals
         else:
-            vals_dict[field_name] = field_value
+            if field.type in ['char', 'selection', 'text']:
+                vals_dict[field_name] = str(field_value)
+            else:
+                vals_dict[field_name] = field_value
     return vals_dict
 
 #routers
