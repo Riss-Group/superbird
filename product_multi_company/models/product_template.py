@@ -9,3 +9,8 @@ class ProductTemplate(models.Model):
     _name = "product.template"
     _description = "Product Template (Multi-Company)"
 
+    company_ids = fields.Many2many(
+        "res.company",
+        relation="product_template_company_rel",  # Unique relation table name
+        string="Companies",
+    )
