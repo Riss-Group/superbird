@@ -44,7 +44,8 @@ class DataOrderDetailSO(BaseModel):
 class DataPayloadSO(BaseModel):
     companycode: str = None
     ponumber: Optional[str] = None
-    custno: str = None
+    custno: Optional[str] = None
+    partner_id: Optional[int] = None
     discount: Optional[str] = None
     freeship: Optional[str] = None
     holdorder: Optional[str] = None
@@ -53,18 +54,44 @@ class DataPayloadSO(BaseModel):
     orderdetail: List[DataOrderDetailSO] = None
 
 #Helpers
-def get_res_partner(env: Environment, custno=False):
+def get_res_partner(env: Environment, custno=False, db_id=False):
     '''
-        TODO DOCS
+        This helper method retrieves a partner record from the Odoo database based on the given customer reference number (`custno`) or database ID (`db_id`).
+
+        If `db_id` is provided, the method searches for a partner whose ID matches the given value.
+        If `custno` is provided and `db_id` is not, the method searches for a partner whose reference matches the given value in the `res.partner` model.
+        If neither `custno` nor `db_id` are provided, the method returns an empty recordset.
+
+        Args:
+            env (Environment): The Odoo environment object.
+            custno (str, optional): The customer reference number. Default is `False`.
+            db_id (int, optional): The database ID of the partner. Default is `False`.
+
+        Returns:
+            recordset: The `res.partner` record that matches the given `custno` or `db_id`, or an empty recordset if not found.
     '''
-    if not custno:
-        return False
-    partner_id = env['res.partner'].search([('ref','=',custno)])
+    partner_id = env['res.partner']
+    if not custno and not db_id:
+        pass
+    elif db_id:
+        partner_id = env['res.partner'].search([('id','=',db_id)])
+    elif custno:
+        partner_id = env['res.partner'].search([('ref','=',custno)])
     return partner_id
 
 def get_product(env: Environment, itemnno=False):
     '''
-        TODO DOCS
+        This helper method retrieves a product record from the Odoo database based on the given item number (`itemnno`).
+
+        If `itemnno` is provided, the method searches for a product whose name matches the given value in the `product.product` model.
+        If no matching product is found or `itemnno` is not provided, the method returns `False`.
+
+        Args:
+            env (Environment): The Odoo environment object.
+            itemnno (str, optional): The item number of the product. Default is `False`.
+
+        Returns:
+            recordset: The `product.product` record that matches the given `itemnno`, or `False` if not found.
     '''
     if not itemnno:
         return False
@@ -73,7 +100,17 @@ def get_product(env: Environment, itemnno=False):
 
 def get_company(env: Environment, companycode=False):
     '''
-        TODO DOCS
+        This helper method retrieves a company record from the Odoo database based on the given company code (`companycode`).
+
+        If `companycode` is provided, the method searches for a company mapping in the `fastapi.company.map` model and retrieves the corresponding company record.
+        If no matching company is found or `companycode` is not provided, the method returns `False`.
+
+        Args:
+            env (Environment): The Odoo environment object.
+            companycode (str, optional): The company code. Default is `False`.
+
+        Returns:
+            recordset: The `res.company` record that matches the given `companycode`, or `False` if not found.
     '''
     if not companycode:
         return False
@@ -82,7 +119,19 @@ def get_company(env: Environment, companycode=False):
 
 def get_so_line_vals(product_id=False, qty=0, price=0, discount=0):
     '''
-        TODO DOCS
+        This helper method creates a dictionary of values for a sale order line.
+
+        The method takes in the product, quantity, price, and discount, and creates a dictionary containing these values,
+        which can be used to create or update sale order lines in the `sale.order.line` model.
+
+        Args:
+            product_id (recordset, optional): The `product.product` record representing the product to be added to the sale order line. Default is `False`.
+            qty (float, optional): The quantity of the product. Default is `0`.
+            price (float, optional): The price per unit of the product. Default is `0`.
+            discount (float, optional): The discount to be applied to the product. Default is `0`.
+
+        Returns:
+            tuple: A tuple with sale order line values, suitable for use in a one2many field.
     '''
     return (0,0,{
         'product_id' : product_id.id,
@@ -95,7 +144,61 @@ def get_so_line_vals(product_id=False, qty=0, price=0, discount=0):
 @sale_order_router.post("/sale_order")
 def sale_order_create(payload: DataPayloadSO, env: Environment = Depends(odoo_env)) -> ReturnValuesSO:
     '''
-        TODO DOCS
+        FastAPI Route that creates a sale order in Odoo based on the provided payload.
+
+        The payload should include the company code, customer number, and order details.
+        Additional parameters like discount, free shipping, and promotional details can also be provided.
+
+        The method handles the following steps:
+        - Look up the company by the provided `companycode`.
+        - Look up the customer by the provided `partner_id` or `custno`. Partner ID is prioritized
+        - Determine any applicable discount based on promotions.
+        - Create a sale order header and order lines based on the provided product details.
+        - If free shipping is indicated, apply the free shipping method to the sale order.
+
+        Args:
+            payload (DataPayloadSO): The sale order data payload.
+            env (Environment): The Odoo environment object.
+
+        Returns:
+            ReturnValuesSO: The response containing sale order ID, sale order name, and a message indicating success or failure.
+
+        Sample payload:
+        {
+            "companycode": "P",
+            "ponumber": "PO123456",
+            "partner_id": 42
+            "custno": "CUST001",
+            "discount": "5",
+            "freeship": "Y",
+            "holdorder": "N",
+            "onetimeship": "N",
+            "promo": [
+                {
+                    "promoname": "Promo1",
+                    "discount": "10"
+                }
+            ],
+            "orderdetail": [
+                {
+                    "itemno": "ITEM001",
+                    "qty": 5,
+                    "prix": 100.0
+                },
+                {
+                    "itemno": "ITEM002",
+                    "qty": 2,
+                    "prix": 50.0
+                }
+            ]
+        }
+
+        Sample return:
+        {
+            "sale_order_id": "123",
+            "sale_order_name": "SO001",
+            "message": "OK"
+        }
     '''
     return_values = ReturnValuesSO()
     #Handle company context
@@ -111,16 +214,16 @@ def sale_order_create(payload: DataPayloadSO, env: Environment = Depends(odoo_en
     context.update({'allowed_company_ids': company_id.ids + [x for x in allowed_company_ids if x not in company_id.ids]})  
     env = env(context=context)
     #Handle Partner Lookup
-    if not payload.custno:
-        return_values.message = "The param 'custno' was not provided and is required"
+    if not payload.custno and not payload.partner_id:
+        return_values.message = "The param 'custno' AND partner_id was not provided and at least one is required"
         return return_values
-    partner_id = get_res_partner(env=env, custno=payload.custno)
+    partner_id = get_res_partner(env=env, custno=payload.custno, db_id=payload.partner_id)
     if not partner_id:
-        return_values.message = f"Could not find a matching Odoo partner that matches the custno provided of [{payload.custno}]"
+        return_values.message = f"Could not find a matching Odoo partner that matches the custno provided of [{payload.custno}] or partner_id of [{payload.partner_id}]"
         return return_values        
     # Determine Discount Percent
     discount = 0
-    for promo in payload.promo:
+    for promo in payload.promo or []:
         try:
             discount = float(promo.discount)
         except (ValueError, TypeError):

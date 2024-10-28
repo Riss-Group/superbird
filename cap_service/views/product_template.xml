@@ -7,13 +7,13 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='purchase']" position="inside">
-                <group name="create_fleet" string="Fleet" readonly="tracking != 'serial' or not purchase_ok">
-                    <field name='tracking' force_save='1' invisible='1' />
-                    <field name='available_vehicle_model_ids' force_save='1' invisible='1' />
-                    <field name='create_fleet_vehicle' force_save='1'/>
-                    <field name='vehicle_year' force_save='1' required="create_fleet_vehicle"/>
-                    <field name='vehicle_make_id' force_save='1' required="create_fleet_vehicle" domain="[('is_bus_fleet','=',True)]"/>
-                    <field name='vehicle_model_id' force_save='1' required="create_fleet_vehicle" domain="[('id','in',available_vehicle_model_ids)]"/>
+                <group name="create_fleet" string="Fleet" >
+                    <field name="tracking" force_save="1" invisible="1"/>
+                    <field name="available_vehicle_model_ids" force_save="1" invisible="1"/>
+                    <field name="create_fleet_vehicle" force_save="1" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
+                    <field name="vehicle_year" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
+                    <field name="vehicle_make_id" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)" domain="[('is_bus_fleet','=',True)]"/>
+                    <field name="vehicle_model_id" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)" domain="[('id','in',available_vehicle_model_ids)]"/>
                 </group>
             </xpath>
         </field>
