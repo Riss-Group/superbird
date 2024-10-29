@@ -9,6 +9,7 @@ import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/b
 import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
 import { BackorderDialog } from '@stock_barcode/components/backorder_dialog';
 import {_t} from "@web/core/l10n/translation";
+import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 
 
 patch(BackorderDialog.prototype, {
@@ -63,6 +64,7 @@ patch(LineComponent.prototype, {
 //        });
     },
     async updateProductBarcode(line) {
+    self = this;
         this.dialog.add(ManualBarcodeScanner, {
             openMobileScanner: async () => {
                 await this.openMobileScanner();
@@ -74,6 +76,21 @@ patch(LineComponent.prototype, {
                     'update_product_barcode',
                     [[line.id],barcode]
                 );
+                 if (res) {
+                    const dbBarcodeCache = self.env.model.cache.dbBarcodeCache;
+
+                    if (!dbBarcodeCache['product.product']) {
+                        dbBarcodeCache['product.product'] = {};
+                    }
+
+                    if (!dbBarcodeCache['product.product'][barcode]) {
+                        dbBarcodeCache['product.product'][barcode] = [];
+                    }
+                    dbBarcodeCache['product.product'][barcode].push(line.product_id.id);
+
+                } else {
+                    console.error("Failed to update barcode in dbBarcodeCache.");
+                            }
             return barcode;
             }
         });
@@ -320,6 +337,10 @@ patch(BarcodeModel.prototype, {
             this._selectLine(currentLine);
         }
         this.trigger('update');
+    },
+
+    lineCanBeSelected() {
+        return false;
     }
 })
 
