@@ -55,3 +55,4 @@ class StockMoveLine(models.Model):
                     'name': barcode,
                 })]
             })
+        return True
