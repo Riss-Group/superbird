@@ -7,6 +7,7 @@ class ServiceOrder(models.Model):
     _description = "Service Order Line"
     
 
+    op_code_id = fields.Many2one('service.template')
     name = fields.Text(string='Description')
     cause = fields.Text(compute="_compute_cause_correction", store=True, readonly=False)
     correction = fields.Text(compute="_compute_cause_correction", store=True, readonly=False)

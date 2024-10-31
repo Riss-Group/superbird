@@ -29,8 +29,10 @@ class ServiceTemplateSelect(models.Model):
                 for x in record.service_template_service]     
             service_order_line_vals = {
                 'service_order_id': self.service_order_id.id,
+                'op_code_id': record.id,
+                'ttype': record.tttype,
                 'project_id' : record.project_id.id,
-                'name': record.name,
+                'name': record.complaint,
                 'cause': record.cause,
                 'correction': record.correction,
                 'service_order_line_product_ids' : service_order_product_vals,
