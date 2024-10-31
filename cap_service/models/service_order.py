@@ -1,5 +1,5 @@
 from odoo import  models, fields, api, _, Command
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import logging
 logger = logging.getLogger()
 
@@ -47,7 +47,7 @@ class ServiceOrder(models.Model):
     internal_service_total = fields.Float(compute='_compute_totals')
     service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     payment_term_id = fields.Many2one('account.payment.term', compute='_compute_payment_term_id', store=True, readonly=False)
-    start_date = fields.Datetime()
+    start_date = fields.Datetime(default=fields.Datetime.now())
     end_date = fields.Datetime()
     task_ids = fields.Many2many('project.task', compute='_compute_task_ids')
     task_ids_count = fields.Integer(compute='_compute_task_ids')
@@ -60,6 +60,12 @@ class ServiceOrder(models.Model):
         ('done','Done'),
         ],default='draft')
 
+
+    @api.constrains('state','fleet_vehicle_id','start_date')
+    def _check_state_fleet_date(self):
+        for record in self:
+            if record.state != 'draft' and (not record.fleet_vehicle_id or not record.start_date):
+                raise ValidationError(_("The vehicle and start date must be set before changing the state to anything other than 'Draft'."))
 
     @api.onchange('fleet_vehicle_id')
     def _onchange_fleet_vehicle_id(self):

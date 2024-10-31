@@ -6,7 +6,10 @@ from . import fleet_vehicle_model
 from . import fleet_vehicle_warranty_line
 from . import fleet_vehicle
 from . import product_template
+from . import product_product
+from . import product_attribute
 from . import stock_move_line
+from . import stock_move
 from . import stock_picking
 from . import project_project
 from . import project_task
