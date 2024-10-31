@@ -7,9 +7,15 @@
             <field name="arch" type="xml">
                 <form string="Service Template">
                     <sheet>
+                        <div class="oe_title">
+                            <h1 class="d-flex">
+                                <field name="op_code" required="1" placeholder="OP Code"/>
+                            </h1>
+                        </div>
                         <group name="group_container" >
-                            <field name="ttype" />
-                            <field name="name" />
+                            <field name="tttype" />
+                            <field name="template_type_id" />
+                            <field name="complaint" />
                             <field name="cause" />
                             <field name="correction" />
                             <field name="project_id" domain="[('is_repair_service','=',True)]"/>
@@ -46,8 +52,9 @@
             <field name="model">service.template</field>
             <field name="arch" type="xml">
                 <tree string="Service Template">
-                    <field name="ttype" />
-                    <field name="name" />
+                    <field name="op_code" />
+                    <field name="tttype" />
+                    <field name="complaint" />
                     <field name="cause" />
                     <field name="correction" />
                     <field name='project_id'/>
