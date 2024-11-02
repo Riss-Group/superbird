@@ -4,9 +4,27 @@ from odoo.http import Controller, request, route
 from odoo.addons.sale_product_configurator.controllers.main import ProductConfiguratorController
 from datetime import datetime
 from odoo.exceptions import UserError
+from odoo import fields
+
 
 class ProductConfiguratorController(ProductConfiguratorController):
     
+    @route('/sale_product_configurator/get_product_pricelists', type='json', auth='user')
+    def get_product_pricelists(
+        self,
+        product_template_id,
+        quantity,
+        currency_id,
+        company_id=None,
+        only_main_product=False,
+    ):
+
+        if company_id:
+            request.update_context(allowed_company_ids=[company_id])
+        product_template = request.env['product.template'].browse(product_template_id)
+
+
+
     @route('/sale_product_configurator/get_part_values', type='json', auth='user')
     def get_product_part_configurator_values(
         self,
@@ -120,15 +138,21 @@ class ProductConfiguratorController(ProductConfiguratorController):
     ):
         if company_id:
             request.update_context(allowed_company_ids=[company_id])
+        
+        # Browse the product template
         product_template = request.env['product.template'].browse(product_template_id)
+        
+        # Combine parent combination and the provided combination
         parent_combination = request.env['product.template.attribute.value'].browse(
             parent_combination + combination
         )
+
+        # Loop through the accessory product's templates
         return [
             dict(
                 **self._get_product_information(
-                    accessory_product_template,
-                    accessory_product_template._get_first_possible_combination(
+                    accessory_product_template.product_tmpl_id,  # Get the product.template
+                    accessory_product_template.product_tmpl_id._get_first_possible_combination(
                         parent_combination=parent_combination
                     ),
                     currency_id,
@@ -138,4 +162,44 @@ class ProductConfiguratorController(ProductConfiguratorController):
                 ),
                 parent_product_tmpl_ids=[product_template.id],
             ) for accessory_product_template in product_template.accessory_product_ids
+        ]
+    
+    @route('/sale_product_configurator/get_alternate_products', type='json', auth='user')
+    def sale_product_configurator_get_alternate_products(
+        self,
+        product_template_id,
+        combination,
+        parent_combination,
+        currency_id,
+        so_date,
+        company_id=None,
+        pricelist_id=None,
+    ):
+        # Set the context for the allowed companies if a company_id is provided
+        if company_id:
+            request.update_context(allowed_company_ids=[company_id])
+        
+        # Browse the product template
+        product_template = request.env['product.template'].browse(product_template_id)
+        
+        # Combine parent combination and the provided combination
+        parent_combination = request.env['product.template.attribute.value'].browse(
+            parent_combination + combination
+        )
+        
+        # Loop through the alternative products of the product_template and return the relevant data
+        return [
+            dict(
+                **self._get_product_information(
+                    alternate_product_template,
+                    alternate_product_template._get_first_possible_combination(
+                        parent_combination=parent_combination
+                    ),
+                    currency_id,
+                    so_date,
+                    parent_combination=parent_combination,
+                    pricelist_id=pricelist_id,
+                ),
+                parent_product_tmpl_ids=[product_template.id],
+            ) for alternate_product_template in product_template.alternative_product_ids
         ]
