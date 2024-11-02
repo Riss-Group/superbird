@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_attribute_view_form_service" model="ir.ui.view">
+        <field name="name">product_attribute_view_form_service</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale_main_fields']" position="inside">
+                <field name="is_cap" />
+                <field name="is_bu" />
+            </xpath>
+            <xpath expr="//field[@name='value_ids']//tree" position="inside">
+                <field name="attribute_id" column_invisible="1" />
+                <field name="company_code" required="attribute_id.is_bu" column_invisible="not parent.is_bu"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

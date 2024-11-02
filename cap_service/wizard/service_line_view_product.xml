@@ -7,38 +7,29 @@
         <field name="arch" type="xml">
             <form string="Service Line View Product">
                 <group>
-                    <field name="service_order_line_id"/>
                     <field name="service_order_id" readonly='1' force_save='1' />
+                    <field name="service_order_line_id" domain="[('service_order_id','=',service_order_id)]"/>
+                    <field name='ttype' invisible='1'/>
                 </group>
-                <group string="Items">
-                    <field name="service_order_line_item_ids"
-                           context="{'default_service_order_line_id': service_order_line_id}">
-                        <tree editable='bottom'>
-                            <field name='service_order_line_id' column_invisible="1" force_save="1"/>
-                            <field name='product_id' domain="[('type', '=', 'product')]"/>
-                            <field name='product_type' column_invisible="1"/>
-                            <field name='quantity'/>
-                            <field name='unit_price'/>
-                            <field name='warranty_coverage'/>
-                        </tree>
-                    </field>
-                </group>
-                <group string="Labor">
-                    <field name="service_order_line_labor_ids"
-                           context="{'default_service_order_line_id': service_order_line_id}">
-                        <tree editable='bottom'>
-                            <field name='service_order_line_id' column_invisible="1" force_save="1"/>
-                            <field name='product_id' domain="[('type', '=', 'service')]"/>
-                            <field name='product_type' column_invisible="1"/>
-                            <field name='quantity'/>
-                            <field name='unit_price'/>
-                            <field name='warranty_coverage'/>
-                        </tree>
-                    </field>
-                </group>
+                <field name="service_order_line_product_ids" readonly="False" invisible="ttype == 'service'">
+                    <tree editable='bottom'>
+                        <field name='service_order_line_id' column_invisible='1'/>
+                        <field name='product_id' domain="[('detailed_type','!=','service')]"/>
+                        <field name='quantity' />
+                        <field name='unit_price' />
+                    </tree>
+                </field>
+                <field name="service_order_line_service_ids" readonly="False" invisible="ttype == 'product'">
+                    <tree editable='bottom'>
+                        <field name='service_order_line_id' column_invisible='1'/>
+                        <field name='product_id' domain="[('detailed_type','=','service')]"/>
+                        <field name='quantity' />
+                        <field name='unit_price' />
+                    </tree>
+                </field>
                 <footer>
-                    <button name="action_save" string='Save' class="oe_highlight" type='object'/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button name="action_save" string='Save' class="oe_highlight" type='object' />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>
         </field>

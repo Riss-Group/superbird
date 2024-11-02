@@ -14,6 +14,7 @@ class SaleOrderLine(models.Model):
             res['taxes'] = self.company_id.sale_down_payment_product_id.taxes_id
         return res
 
+
     def get_replacement_history(self):
         replacement_history = []
         current_product = self.product_id
@@ -38,8 +39,10 @@ class SaleOrderLine(models.Model):
             history_message += "-" * 60 + "\n"
 
             for product, replacement in replacement_history:
-                history_message += "{:<30} {:>30}\n".format(product.default_code,
-                                                            replacement.name + ' : ' + replacement.default_code)
+                history_message += "{:<30} {:>30}\n".format(
+                    product.default_code,
+                    (replacement.name or '') + ' : ' + (replacement.default_code or '')
+                )
 
             return {
                 'warning': {
@@ -47,3 +50,4 @@ class SaleOrderLine(models.Model):
                     'message': history_message,
                 }
             }
+

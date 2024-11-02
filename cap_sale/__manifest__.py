@@ -16,7 +16,7 @@ This module contains customizations for common sales features.
         'sale_product_configurator',
         ],
     'data': [
-        'views/product_views.xml',
+        'views/product_view.xml',
     ],
     'assets': {
         'web.assets_backend': [
