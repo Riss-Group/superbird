@@ -122,6 +122,7 @@ class ProductConfiguratorController(ProductConfiguratorController):
                     parent_product_tmpl_ids=[product_template.id],
                 ) for alternative_product_template in product_template.alternative_product_ids
             ] if not only_main_product else [],
+            tiered_pricing = self.product_pricelist(product_template_id, combination, pricelist_id)
         )
         return res
 
@@ -203,3 +204,96 @@ class ProductConfiguratorController(ProductConfiguratorController):
                 parent_product_tmpl_ids=[product_template.id],
             ) for alternate_product_template in product_template.alternative_product_ids
         ]
+
+
+
+
+    def get_globle_data(self, pricelist_item, data, product, combination, items):
+        if data.date_start:
+            date_start = data.date_start.date()
+        if data.date_end:
+            date_end = data.date_end.date()
+        current_date = date.today()
+        if data.date_start and not data.date_end:
+            if current_date >= date_start:
+                self.get_pricelist_data(data, product, combination, items)
+        elif not data.date_start and data.date_end:
+            if current_date <= date_end:
+                self.get_pricelist_data(data, product, combination, items)
+        elif data.date_start and data.date_end:
+            if current_date >= date_start and current_date <= date_end:
+                self.get_pricelist_data(data, product, combination, items)
+        else:
+            self.get_pricelist_data(data, product, combination, items)
+
+    def get_pricelist_data(self, pricelist_item, product, combination, items):
+        if pricelist_item.compute_price == 'fixed':
+            discount_per = (product.list_price - round(pricelist_item.fixed_price or 0, 2)) / product.list_price * 100
+            discount_per = max(discount_per,0.0)
+            if pricelist_item.currency_id and pricelist_item.currency_id.position and pricelist_item.currency_id.position == 'before':
+                items.append({'quantity': pricelist_item.min_quantity, 'price': pricelist_item.currency_id.symbol + str(
+                    round(pricelist_item.fixed_price or 0, 2)), 'discount_price': round(discount_per, 2)})
+            elif pricelist_item.currency_id and pricelist_item.currency_id.position and pricelist_item.currency_id.position == 'after':
+                items.append({'quantity': pricelist_item.min_quantity, 'price': str(round(
+                    pricelist_item.fixed_price or 0, 2)) + pricelist_item.currency_id.symbol, 'discount_price': round(discount_per, 2)})
+        elif pricelist_item.compute_price == 'formula' or pricelist_item.compute_price == 'percentage':
+            discount_per = 0
+            if pricelist_item.compute_price == 'formula':
+                discount_per = pricelist_item.price_discount
+            else:
+                discount_per = pricelist_item.percent_price
+            ProductTemplate = request.env['product.template']
+            combination_p = request.env['product.template.attribute.value'].browse(
+                combination)
+            main_v = ProductTemplate.browse(int(product.product_tmpl_id.id))._get_combination_info(
+                combination_p, int(product or 0), int(pricelist_item.min_quantity or 1))
+            if pricelist_item.min_quantity > 0:
+                price_dict = {'product_price': main_v.get('price')}
+                if pricelist_item.currency_id and pricelist_item.currency_id.position and pricelist_item.currency_id.position == 'before':
+                    # items.append({'quantity': pricelist_item.min_quantity, 'price': pricelist_item.currency_id.symbol + str(round(price_dict.get('product_price') or 0, 2))})
+                    items.append({'quantity': pricelist_item.min_quantity, 'price': pricelist_item.currency_id.symbol + str(
+                        round(price_dict.get('product_price') or 0, 2)), 'discount_price': discount_per})
+                elif pricelist_item.currency_id and pricelist_item.currency_id.position and pricelist_item.currency_id.position == 'after':
+                    # items.append({'quantity': pricelist_item.min_quantity, 'price': str(round(price_dict.get('product_price') or 0, 2)) + pricelist_item.currency_id.symbol})
+                    items.append({'quantity': pricelist_item.min_quantity, 'price': str(round(price_dict.get(
+                        'product_price') or 0, 2)) + pricelist_item.currency_id.symbol, 'discount_price': discount_per})
+
+    def product_pricelist(self, product=None, combination=None, pricelist_id=None, **post):
+        product_env = request.env['product.product']
+        view_env = request.env['ir.ui.view']
+        if int(product) != 0:
+            product = product_env.sudo().browse(int(product))
+            pricelist = request.env['product.pricelist'].browse(int(pricelist_id or 0))
+            pricelist_item_ids = variant_id = request.env['product.pricelist.item'].search(
+                [('product_id', '=', product.id),
+                 ('pricelist_id', '=', pricelist.id)])
+            if not variant_id:
+                pricelist_item_ids = request.env['product.pricelist.item'].search(
+                    [('product_tmpl_id', '=', product.product_tmpl_id.id), ('applied_on', '!=', '0_product_variant'),
+                     ('pricelist_id', '=', pricelist.id)])
+            currency = request.website.currency_id
+            items = []
+            if pricelist_item_ids:
+                for pricelist_item in pricelist_item_ids:
+                    self.get_globle_data(self, pricelist_item, product, combination, items)
+                pricelist_items = {'pricelist_items': items}
+                res = view_env._render_template('product_tiered_pricing.web_pricelist_custom', pricelist_items)
+                return res
+            elif pricelist and not pricelist_item_ids and pricelist.item_ids:
+                flag = 0
+                for data in pricelist.item_ids:
+                    if data.applied_on == '2_product_category':
+                        product_id = product_env.sudo().search([('id', '=', int(product.id)), ('categ_id', '=', int(data.categ_id.id))])
+                        if currency.id == data.currency_id.id and product_id:
+                            self.get_globle_data(self, data, product, combination, items)
+                        if items:
+                            flag = 1
+                    elif data.applied_on == '3_global' and flag == 0:
+                        if currency.id == data.currency_id.id:
+                            self.get_globle_data(self, data, product, combination, items)
+                pricelist_items = {'pricelist_items': items}
+                return pricelist_items
+            else:
+                return None
+        else:
+            return None
