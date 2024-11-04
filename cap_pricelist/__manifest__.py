@@ -21,7 +21,6 @@
     # always loaded
     'data': [
         'views/product_pricelist_item_view.xml',
-        'views/product.xml',
     ],
 }
 
