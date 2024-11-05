@@ -11,6 +11,8 @@ class SaleFinanceTerms(models.Model):
 
     order_id = fields.Many2one('sale.order')
     partner_id = fields.Many2one('res.partner')
+    deposit_amount = fields.Float()
+    trade_amount = fields.Float()
     finance_amount = fields.Float(compute="_compute_finance_amount", store=True, readonly=False)
     interest_rate_percent = fields.Float()
     skip_periods = fields.Integer()
@@ -24,10 +26,10 @@ class SaleFinanceTerms(models.Model):
         ('monthly','Monthly')])
 
     
-    @api.depends('order_id.amount_total')
+    @api.depends('order_id.amount_total', 'deposit_amount', 'trade_amount')
     def _compute_finance_amount(self):
         for record in self:
-            record.finance_amount = record.order_id.amount_total
+            record.finance_amount = record.order_id.amount_total - record.deposit_amount - record.trade_amount
         
     @api.depends('finance_amount', 'interest_rate_percent', 'skip_periods', 'years_financed', 'periodicity')
     def _compute_terms_total(self):
