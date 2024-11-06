@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cap_common_contact_fields" model="ir.ui.view">
+        <field name="name">cap_common_contact_fields</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="extra_info" string="Extra Info" colspan="2">
+                    <group>
+                        <group string="Customer Fields">
+                            <field name="customer_class_id" />
+                            <field name="bus_segmentation_id" />
+                            <field name="bus_customer_type_id" />
+                            <field name="customer_level_id" />
+                            <field name="parts_territory_id" />
+                            <field name="bus_territory_id" />
+                            <field name="service_territory_id" />
+                            <field name="parts_route_number" />
+                            <field name="freight_term_id" />
+                            <field name="parts_salesperson_id" />
+                            <field name="bus_salesperson_id" />
+                            <field name="bus_salesperson_backup_id" />
+                            <field name="special_constant_id" />
+                            <field name="default_garage_id" />
+                            <field name="legacy_customer" />
+                            <field name="second_legacy_customer" />
+                            <field name="can_sell_bus" />
+                            <field name="can_sell_parts" />
+                            <field name="can_backorder" />
+                            <field name="parts_required_po" />
+                            <field name="bus_required_po" />
+                            <field name="service_required_po" />
+                            <field name="fleet_gm" />
+                            <field name="fleet_ford" />
+                            <field name="fleet_bb" />
+                            <field name="number_A" />
+                            <field name="last_entered_A" readonly="true" />
+                            <field name="number_C" />
+                            <field name="last_entered_C" readonly="true" />
+                            <field name="number_D" />
+                            <field name="last_entered_D" readonly="true" />
+                            <field name="number_MV" />
+                            <field name="last_entered_MV" readonly="true" />
+                            <field name="saaq" />
+                            <field name="bid_assist_phone" widget="phone"/>
+                            <field name="bb_primary_body_plan" />
+                            <field name="operator" />
+                            <field name="dot_inspector_id" />
+                        </group>
+                        <group string="Vendor Fields">
+                            <field name="mid_number" />
+                            <field name="account_number" />
+                            <field name="min_order" />
+                            <field name="free_ship_threshold" />
+                            <field name="saving_threshold_ids" />
+                            <field name="default_incoterm_id" />
+                            <field name="product_labeled" />
+                            <field name="labels_supplied_by_us" />
+                            <field name="direct_ship" />
+                            <field name="communication_preference" />
+                            <field name="supplier_username" />
+                            <field name="supplier_password" password="True"/>
+                            <field name="discount_web_order" />
+                            <field name="special_instructions" />
+                            <field name="pricelist_type" />
+                            <field name="pricelist_period" />
+                            <field name="allowed_order_day_ids" />
+                            <field name="allowed_delivery_day_ids" />
+                            <field name="booking_period_id" />
+                            <field name="booking_notes" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

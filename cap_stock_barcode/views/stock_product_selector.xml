@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="cap_stock_move_line_product_selector" model="ir.ui.view">
+            <field name="name">stock.move.line.selector_cap</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+            <field eval="17" name="priority"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <div class="row" position="inside">
+                    <div class="col-12 my-2 d-flex align-items-baseline">
+                        <i class="fa fa-trash me-3" title="Quarantined"/>
+                        <label for="not_done_qty" string="Quarantined"/>
+                        <field name="not_done_qty" clas3s="w-100 w-md-50 text-end o_qty_done_field_not_completed" options="{'type': 'number'}" placeholder="Quarantined"/>
+                    </div>
+                    <div class="col-12 my-2 d-flex align-items-baseline">
+                        <label for="qty_remaining" string="Remaining"/>
+                        <field name="qty_remaining" class="w-100 w-md-50 text-end" options="{'type': 'number'}" placeholder="Remaining"/>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

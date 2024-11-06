@@ -5,5 +5,6 @@ from . import sale_order
 from . import sale_order_line
 from . import service_ccc
 from . import service_order_line_product
+from . import service_order_line_service
 from . import service_order_line
 from . import service_order

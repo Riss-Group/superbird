@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_sale_order_cap_form_core_part" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tax_totals']" position="before">
+                <label for="total_repayable" groups="base.group_user" invisible="total_repayable == 0"/>
+                <div class="text-nowrap" groups="base.group_user" invisible="total_repayable == 0">
+                    <field name="total_repayable" class="oe_inline"/>
+                </div>
+                <label for="refunded_amount" groups="base.group_user" invisible="refunded_amount == 0"/>
+                <div class="text-nowrap" groups="base.group_user" invisible="refunded_amount == 0">
+                    <field name="refunded_amount" class="oe_inline"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

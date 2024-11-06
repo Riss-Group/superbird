@@ -10,7 +10,7 @@
     'description': """
         TBD
         """,
-    'depends': ['account', 'sale', 'stock', 'fleet', 'product', 'sale_project'],
+    'depends': ['account', 'sale', 'stock', 'fleet', 'product', 'project', 'timesheet_grid'],
     'data': [
         'data/sequence.xml',
         'report/sale_report_views.xml',
@@ -22,6 +22,7 @@
         'views/service_order.xml',
         'views/service_ccc.xml',
         'wizard/service_line_view_product.xml',
+        'wizard/service_template_select.xml',
 
     ],
     'installable': True,

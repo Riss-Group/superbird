@@ -1,0 +1,24 @@
+<odoo>
+    <record id="reordering_rule_python_code_action" model="ir.actions.act_window">
+        <field name="name">Reordering Rule Python Code</field>
+        <field name="res_model">reordering.rule.python.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <menuitem
+        id="cap_stock.menu_stock_config_settings_python_code"
+        name="Python Code"
+        parent="stock.menu_stock_config_settings"
+        sequence="99"
+        groups="cap_stock.edit_orderpoint_python,base.group_system"/>
+    
+    <menuitem
+        id="cap_stock.menu_stock_config_reordering_rule_python_code"
+        name="Reordering Rule Python Code"
+        action="cap_stock.reordering_rule_python_code_action"
+        groups="cap_stock.edit_orderpoint_python,base.group_system"
+        parent="cap_stock.menu_stock_config_settings_python_code"
+        sequence="99"/>
+</odoo>

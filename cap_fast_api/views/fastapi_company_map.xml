@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fastapi_company_map_view_tree" model="ir.ui.view">
+            <field name="name">fastapi_company_map_view_tree</field>
+            <field name="model">fastapi.company.map</field>
+            <field name="arch" type="xml">
+                <tree string="Company Map" multi_edit="true" editable="bottom">
+                    <field name="name" required="1" />
+                    <field name="company_id" required="1" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="fastapi_company_map_action" model="ir.actions.act_window">
+            <field name="name">FastAPI Company Map</field>
+            <field name="res_model">fastapi.company.map</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem 
+            id="fastapi_config_menu" 
+            name="Config" 
+            parent="fastapi.menu_fastapi_root" 
+            sequence="20"/>
+        
+        <menuitem
+            id="fastapi_company_map_menu" name="Sale Order Company Map"
+            action="cap_fast_api.fastapi_company_map_action"
+            parent="cap_fast_api.fastapi_config_menu"
+            sequence="21"/>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="BarcodeDialogCap" t-inherit="stock_barcode.BackorderDialog" t-inherit-mode="extension">
+    <xpath expr="//div[contains(@class, 'o_barcode_backorder_column_titles')]/div[contains(@class, 'col-2') and contains(@class, 'ps-1')]" position="after">
+        <div class="col-2">Quarantined</div>
+    </xpath>
+    <xpath expr="//t[@t-foreach='props.uncompletedLines']//div[contains(@class, 'o_barcode_backorder_product_row')]//div[contains(@class, 'col-2') and contains(@class, 'ps-1')]" position="after">
+        <div class="col-2">
+            <span name="scrap-qty" t-esc="scrap_quantities[line.id]"/>
+        </div>
+    </xpath>
+    </t>
+
+
+</templates>

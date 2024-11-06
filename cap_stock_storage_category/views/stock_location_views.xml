@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_stock_location_form_inherited" model="ir.ui.view">
+        <field name="name">stock.location.form.inherited</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="storage_category_id" position="after">
+                <field name="use_of_location" invisible="usage != 'internal'" groups="stock.group_stock_storage_categories"/>
+                <field name="location_type" invisible="usage != 'internal'" groups="stock.group_stock_storage_categories"/>
+                <field name="location_specification" invisible="usage != 'internal'" groups="stock.group_stock_storage_categories"/>
+                <field name="velocity_id" invisible="usage != 'internal'" groups="stock.group_stock_storage_categories"/>
+            </field>
+        </field>
+    </record>
+</odoo>

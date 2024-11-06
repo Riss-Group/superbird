@@ -1,0 +1,49 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="cap_part_sales_restriction.list">
+      <field name="name">Sale.Restriction list</field>
+      <field name="model">sale.restriction</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name"/>
+          <field name="customer_domain" widget="domain" options="{'model': 'res.partner'}"/>
+          <field name="allowed_products" widget="domain" options="{'model': 'product.template'}"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="cap_part_sales_restriction.form">
+      <field name="name">Sale.Restriction form</field>
+      <field name="model">sale.restriction</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+            </group>
+            <group>
+              <field name="customer_domain" widget="domain" options="{'model': 'res.partner'}"/>
+            </group>
+            <group>
+              <field name="allowed_products" widget="domain" options="{'model': 'product.template'}"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="cap_part_sales_restriction.action_window">
+      <field name="name">Sale Restriction window</field>
+      <field name="res_model">sale.restriction</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sale Restriction" id="cap_part_sales_restriction.menu" parent="sale.menu_sale_config"
+              action="cap_part_sales_restriction.action_window"/>
+
+  </data>
+</odoo>
