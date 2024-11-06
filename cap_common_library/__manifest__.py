@@ -16,7 +16,7 @@
         ],
     'data': [
         'security/ir.model.access.csv',
-        # 'views/_menu_actions.xml',
+        'data/available_days_data.xml',
         'views/contact.xml',
         'views/product.xml',
     ],
