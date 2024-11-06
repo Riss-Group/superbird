@@ -4,3 +4,4 @@ class ResPartnerBank(models.Model):
     _inherit = 'res.partner.bank'
 
     approval_id = fields.Many2one('approval.request', string="Approval")
+    command = fields.Integer(string="ORM Command")
