@@ -31,8 +31,6 @@ class CrmLead(models.Model):
         return res
 
     def action_sale_quotations_new(self):
-        raise UserError("test")
-        # Redirect to add partner if none exists
         if not self.partner_id:
             return self.env["ir.actions.actions"]._for_xml_id("sale_crm.crm_quotation_partner_action")
 
