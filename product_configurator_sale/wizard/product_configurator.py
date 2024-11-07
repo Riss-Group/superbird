@@ -40,7 +40,8 @@ class ProductConfiguratorSale(models.TransientModel):
             line_vals.update(
                 {field: line._fields[field].convert_to_write(line[field], line)}
             )
-
+        if self.env.context.get('negative', False):
+            line_vals.update({'product_uom_qty': -1})
         line_vals.update(
             {
                 "config_session_id": self.config_session_id.id,

@@ -12,9 +12,18 @@
         **WARNING**
         This app needs most likely needs to be installed via CLI since it adds a field to all base models to be used in external ID processing 
         """,
-    'depends': ['fastapi','purchase','account'],
+    'depends': [
+        'fastapi',
+        'purchase',
+        'account',
+        'sale',
+        'product',
+        'delivery'
+    ],
     'data': [
         "data/data.xml",
+        "security/ir.model.access.csv",
+        "views/fastapi_company_map.xml",
         "views/fastapi_endpoint.xml",
     ],
     'installable': True,

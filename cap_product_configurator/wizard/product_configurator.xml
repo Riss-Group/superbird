@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+      <record id="cap_product_category_form_view2" model="ir.ui.view">
+        <field name="name">product.configurator.form_cap</field>
+        <field name="model">product.configurator</field>
+        <field name="inherit_id" ref="product_configurator.product_configurator_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//group[@colspan='1']" position="inside">
+            <div class="o_row" style="display: flex; align-items: center; gap: 40px;">
+                <label for="qty_available" string="Qty Available"/>
+                <field name="qty_available" readonly="1" class="oe_inline" style="flex-grow: 1;"/>
+                <button type="object"
+                    name="action_product_forecast_report"
+                    context="{'default_product_tmpl_id': id}"
+                    class="oe_inline"
+                    icon="fa-area-chart"/>
+        </div>
+        </xpath>
+        </field>
+    </record>
+</odoo>

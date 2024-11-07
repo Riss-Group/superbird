@@ -48,7 +48,7 @@
                     <group>
                         <group>
                             <field name='account_type' readonly="child_used == True "/>
-                            <field name='company_ids' widget="many2many_tags" domain="[('parent_id', '=', False)]"/>
+                            <field name='company_ids' widget="many2many_tags"/>
                             <field name='tag_ids' widget="many2many_tags" optional="hide" />
                         </group>
                         <group>

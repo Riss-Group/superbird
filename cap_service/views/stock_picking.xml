@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_service" model="ir.ui.view">
+        <field name="name">view_picking_form_service</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_fleet_vehicle" type="object" class="oe_stat_button" icon="fa-truck" invisible="fleet_vehicle_count == 0">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Vehicles</span>
+                        <span class="o_stat_value">
+                            <field name="fleet_vehicle_ids" invisible='1'/>
+                            <field name="fleet_vehicle_count" />
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

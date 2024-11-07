@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cap_common_product_template_fields" model="ir.ui.view">
+        <field name="name">cap_common_product_template_fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='standard_price_uom']" position="after">
+                <field name="core_cost"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Product Classification" name="product_metadata">
+                    <group name="product_metadata_container">
+                        <group name="product_metadata_left">
+                            <field name="stock_class_id"/>
+                            <field name="price_class_id" />
+                            <field name="price_subclass_id" 
+                                   domain="[('price_class_id', '=', price_class_id)]"/>
+                            <field name="product_group_id" />
+                            <field name="product_subgroup_id" 
+                                   domain="[('product_group_id', '=', product_group_id)]"/>
+                        </group>
+                        <group name="product_metadata_right">
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Stock Class Views -->
+    <record id="cap_common_product_stock_class_form" model="ir.ui.view">
+        <field name="name">cap_common_product_stock_class_form</field>
+        <field name="model">product.stock_class</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_product_stock_class_tree" model="ir.ui.view">
+        <field name="name">cap_common_product_stock_class_tree</field>
+        <field name="model">product.stock_class</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Price Class Views -->
+    <record id="cap_common_product_price_class_form" model="ir.ui.view">
+        <field name="name">cap_common_product_price_class_form</field>
+        <field name="model">product.price_class</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="price_subclass_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_product_price_class_tree" model="ir.ui.view">
+        <field name="name">cap_common_product_price_class_tree</field>
+        <field name="model">product.price_class</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="price_subclass_ids" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Price Subclass Views -->
+    <record id="cap_common_product_price_subclass_form" model="ir.ui.view">
+        <field name="name">cap_common_product_price_subclass_form</field>
+        <field name="model">product.price_subclass</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="price_class_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_product_price_subclass_tree" model="ir.ui.view">
+        <field name="name">cap_common_product_price_subclass_tree</field>
+        <field name="model">product.price_subclass</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="price_class_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Group Views -->
+    <record id="cap_common_product_group_form" model="ir.ui.view">
+        <field name="name">cap_common_product_group_form</field>
+        <field name="model">product.group</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="product_subgroup_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_product_group_tree" model="ir.ui.view">
+        <field name="name">cap_common_product_group_tree</field>
+        <field name="model">product.group</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="product_subgroup_ids" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Subgroup Views -->
+    <record id="cap_common_product_subgroup_form" model="ir.ui.view">
+        <field name="name">cap_common_product_subgroup_form</field>
+        <field name="model">product.subgroup</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="product_group_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_product_subgroup_tree" model="ir.ui.view">
+        <field name="name">cap_common_product_subgroup_tree</field>
+        <field name="model">product.subgroup</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="product_group_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_product_stock_class" model="ir.actions.act_window">
+        <field name="name">Stock Classes</field>
+        <field name="res_model">product.stock_class</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_product_price_class" model="ir.actions.act_window">
+        <field name="name">Price Classes</field>
+        <field name="res_model">product.price_class</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_product_price_subclass" model="ir.actions.act_window">
+        <field name="name">Price Subclasses</field>
+        <field name="res_model">product.price_subclass</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_product_group" model="ir.actions.act_window">
+        <field name="name">Product Groups</field>
+        <field name="res_model">product.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_product_subgroup" model="ir.actions.act_window">
+        <field name="name">Product Subgroups</field>
+        <field name="res_model">product.subgroup</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_product_configuration" parent="stock.menu_stock_config_settings" groups="" name="Additional Product Configuration" sequence="160" />
+    <menuitem id="menu_stock_classes" name="Stock Classes" parent="menu_product_configuration" action="action_product_stock_class" sequence="110" />
+    <menuitem id="menu_price_classes" name="Price Classes" parent="menu_product_configuration" action="action_product_price_class" sequence="120" />
+    <menuitem id="menu_price_subclasses" name="Price Subclasses" parent="menu_product_configuration" action="action_product_price_subclass" sequence="130" />
+    <menuitem id="menu_product_groups" name="Product Groups" parent="menu_product_configuration" action="action_product_group" sequence="140" />
+    <menuitem id="menu_product_subgroups" name="Product Subgroups" parent="menu_product_configuration" action="action_product_subgroup" sequence="150" />
+</odoo>

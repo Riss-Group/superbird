@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cap_common_contact_fields" model="ir.ui.view">
+        <field name="name">cap_common_contact_fields</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_customer" />
+                <field name="is_vendor" />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="page_customer_info" string="Customer Info" invisible="not is_customer">
+                    <group name="group_customer_info_container">
+                        <group name="group_customer_info_left">
+                            <field name="customer_class_id" />
+                            <field name="bus_segmentation_id" />
+                            <field name="bus_customer_type_id" />
+                            <field name="customer_level_id" />
+                            <field name="parts_territory_id" />
+                            <field name="bus_territory_id" />
+                            <field name="service_territory_id" />
+                            <field name="parts_route_number" />
+                            <field name="freight_term_id" />
+                            <field name="parts_salesperson_id" />
+                            <field name="bus_salesperson_id" />
+                            <field name="bus_salesperson_backup_id" />
+                            <field name="special_constant_id" />
+                            <field name="default_garage_id" />
+                            <field name="legacy_customer" />
+                            <field name="second_legacy_customer" />
+                            <field name="saaq" />
+                            <field name="bid_assist_phone" widget="phone"/>
+                            <field name="bb_primary_body_plan" />
+                            <field name="operator" />
+                            <field name="dot_inspector_id" />
+                        </group>
+                        <group name="group_customer_info_right" >
+                            <field name="can_sell_bus" />
+                            <field name="can_sell_parts" />
+                            <field name="can_backorder" />
+                            <field name="parts_required_po" />
+                            <field name="bus_required_po" />
+                            <field name="service_required_po" />
+                            <field name="fleet_gm" />
+                            <field name="fleet_ford" />
+                            <field name="fleet_bb" />
+                            <field name="number_A" />
+                            <field name="last_entered_A" readonly="true" />
+                            <field name="number_C" />
+                            <field name="last_entered_C" readonly="true" />
+                            <field name="number_D" />
+                            <field name="last_entered_D" readonly="true" />
+                            <field name="number_MV" />
+                            <field name="last_entered_MV" readonly="true" />
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Vendor Info Page -->
+                <page name="page_vendor_info" string="Vendor Info" invisible="not is_vendor" >
+                    <group name="group_vendor_info_container">
+                        <group name="group_vendor_info_left">
+                            <field name="mid_number" />
+                            <field name="account_number" />
+                            <field name="min_order" />
+                            <field name="free_ship_threshold" />
+                            <field name="default_incoterm_id" />
+                            <field name="product_labeled" />
+                            <field name="labels_supplied_by_us" />
+                            <field name="direct_ship" />
+                            <field name="communication_preference" />
+                        </group>
+                        <group name="group_vendor_info_right">
+                            <field name="supplier_username" />
+                            <field name="supplier_password" password="True"/>
+                            <field name="discount_web_order" />
+                            <field name="special_instructions" />
+                            <field name="pricelist_type" />
+                            <field name="pricelist_period" />
+                            <field name="allowed_order_day_ids" widget="many2many_tags" />
+                            <field name="allowed_delivery_day_ids" widget="many2many_tags"/>
+                            <field name="booking_period_id" />
+                            <field name="booking_notes" />
+                        </group>
+                        <sheet>
+                            <h4>Savings Matrix</h4>
+                                <field name="saving_threshold_ids" />
+                        </sheet>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Additional Related Views -->
+    <!-- ResPartnerSegmentation Views -->
+    <record id="cap_common_res_partner_segmentation_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_segmentation_form</field>
+        <field name="model">res.partner.segmentation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_segmentation_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_segmentation_tree</field>
+        <field name="model">res.partner.segmentation</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerType Views -->
+    <record id="cap_common_res_partner_type_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_type_form</field>
+        <field name="model">res.partner.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_type_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_type_tree</field>
+        <field name="model">res.partner.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerLevel Views -->
+    <record id="cap_common_res_partner_level_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_level_form</field>
+        <field name="model">res.partner.level</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_level_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_level_tree</field>
+        <field name="model">res.partner.level</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerTerritory Views -->
+    <record id="cap_common_res_partner_territory_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_territory_form</field>
+        <field name="model">res.partner.territory</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_territory_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_territory_tree</field>
+        <field name="model">res.partner.territory</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerFreightTerm Views -->
+    <record id="cap_common_res_partner_freight_term_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_freight_term_form</field>
+        <field name="model">res.partner.freight_term</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_freight_term_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_freight_term_tree</field>
+        <field name="model">res.partner.freight_term</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerConstant Views -->
+    <record id="cap_common_res_partner_constant_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_constant_form</field>
+        <field name="model">res.partner.constant</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_constant_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_constant_tree</field>
+        <field name="model">res.partner.constant</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ServiceGarage Views -->
+    <record id="cap_common_service_garage_form" model="ir.ui.view">
+        <field name="name">cap_common_service_garage_form</field>
+        <field name="model">service.garage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_service_garage_tree" model="ir.ui.view">
+        <field name="name">cap_common_service_garage_tree</field>
+        <field name="model">service.garage</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerInspector Views -->
+    <record id="cap_common_res_partner_inspector_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_inspector_form</field>
+        <field name="model">res.partner.inspector</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_inspector_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_inspector_tree</field>
+        <field name="model">res.partner.inspector</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerAvailableDay Views -->
+    <record id="cap_common_res_partner_available_day_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_available_day_form</field>
+        <field name="model">res.partner.available_day</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_available_day_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_available_day_tree</field>
+        <field name="model">res.partner.available_day</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerBooking Views -->
+    <record id="cap_common_res_partner_booking_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_booking_form</field>
+        <field name="model">res.partner.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_booking_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_booking_tree</field>
+        <field name="model">res.partner.booking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ResPartnerSavings Views -->
+    <record id="cap_common_res_partner_savings_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_savings_form</field>
+        <field name="model">res.partner.savings</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="currency_id" />
+                        <field name="percent_discount"/>
+                        <field name="currency_discount"/>
+                        <field name="trigger_threshold"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_savings_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_savings_tree</field>
+        <field name="model">res.partner.savings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="currency_id" />
+                <field name="percent_discount"/>
+                <field name="currency_discount"/>
+                <field name="trigger_threshold"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="cap_common_res_partner_segmentation_action" model="ir.actions.act_window">
+        <field name="name">Customer Segmentations</field>
+        <field name="res_model">res.partner.segmentation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_type_action" model="ir.actions.act_window">
+        <field name="name">Customer Types</field>
+        <field name="res_model">res.partner.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_level_action" model="ir.actions.act_window">
+        <field name="name">Customer Levels</field>
+        <field name="res_model">res.partner.level</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_territory_action" model="ir.actions.act_window">
+        <field name="name">Customer Territories</field>
+        <field name="res_model">res.partner.territory</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_freight_term_action" model="ir.actions.act_window">
+        <field name="name">Freight Terms</field>
+        <field name="res_model">res.partner.freight_term</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_constant_action" model="ir.actions.act_window">
+        <field name="name">Special Constants</field>
+        <field name="res_model">res.partner.constant</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_service_garage_action" model="ir.actions.act_window">
+        <field name="name">Service Garages</field>
+        <field name="res_model">service.garage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_inspector_action" model="ir.actions.act_window">
+        <field name="name">DOT Inspectors</field>
+        <field name="res_model">res.partner.inspector</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_available_day_action" model="ir.actions.act_window">
+        <field name="name">Available Days</field>
+        <field name="res_model">res.partner.available_day</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_booking_action" model="ir.actions.act_window">
+        <field name="name">Booking Periods</field>
+        <field name="res_model">res.partner.booking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cap_common_res_partner_savings_action" model="ir.actions.act_window">
+        <field name="name">Saving Threshold Matrices</field>
+        <field name="res_model">res.partner.savings</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="cap_common_additional_contact_configuration" name="Additional Contact Configuration" parent="contacts.res_partner_menu_config"/>
+    <menuitem id="cap_common_res_partner_segmentation_menu" name="Customer Segmentations" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_segmentation_action"/>
+    <menuitem id="cap_common_res_partner_type_menu" name="Customer Types" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_type_action"/>
+    <menuitem id="cap_common_res_partner_level_menu" name="Customer Levels" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_level_action"/>
+    <menuitem id="cap_common_res_partner_territory_menu" name="Customer Territories" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_territory_action"/>
+    <menuitem id="cap_common_res_partner_freight_term_menu" name="Freight Terms" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_freight_term_action"/>
+    <menuitem id="cap_common_res_partner_constant_menu" name="Special Constants" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_constant_action"/>
+    <menuitem id="cap_common_service_garage_menu" name="Service Garages" parent="cap_common_additional_contact_configuration" action="cap_common_service_garage_action"/>
+    <menuitem id="cap_common_res_partner_inspector_menu" name="DOT Inspectors" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_inspector_action"/>
+    <menuitem id="cap_common_res_partner_available_day_menu" name="Available Days" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_available_day_action"/>
+    <menuitem id="cap_common_res_partner_booking_menu" name="Booking Periods" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_booking_action"/>
+    <menuitem id="cap_common_res_partner_savings_menu" name="Saving Threshold Matrices" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_savings_action"/>
+
+</odoo>

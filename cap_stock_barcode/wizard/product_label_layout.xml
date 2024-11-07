@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_label_layout_form_cap" model="ir.ui.view">
+        <field name="name">product.label.layout.form_cap</field>
+        <field name="model">product.label.layout</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="product.product_label_layout_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='custom_quantity']" position="before">
+                <field name="hide_price_fields" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="invisible">hide_price_fields</attribute>
+            </xpath>
+            <xpath expr="//field[@name='print_format']" position="attributes">
+                <attribute name="invisible">hide_price_fields</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

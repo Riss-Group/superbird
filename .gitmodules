@@ -332,3 +332,8 @@
 	path = OCA/rest-framework
 	url = https://github.com/OCA/rest-framework.git
 	branch = 17.0
+
+[submodule "OCA/product-pack"]
+	path = OCA/product-pack
+	url = https://github.com/OCA/product-pack.git
+	branch = 17.0
