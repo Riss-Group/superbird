@@ -56,7 +56,8 @@ class ProductTemplate(models.Model):
     @api.model_create_multi
     def create(self, vals):
         records = super().create(vals)
-        if vals.get('vehicle_year'):
-            for record in records:
-                record.product_variant_ids._compute_sequence_code()
+        for val in vals:
+            if val.get('vehicle_year'):
+                for record in records:
+                    record.product_variant_ids._compute_sequence_code()
         return records

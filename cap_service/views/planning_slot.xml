@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="project_forecast.planning_slot_view_search" model="ir.ui.view">
+            <field name="name">planning_slot_service_project_search_view</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='role_id']" position="after">
+                    <field name="service_project_id"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_role']" position="after">
+                    <filter string="My Projects" name="my_project" domain="[('service_project_id.user_id','=', uid)]" groups="project.group_project_user"/>
+                </xpath>
+                <xpath expr="//filter[@name='group_by_role']" position="after">
+                    <filter name="group_by_project" string="Project" context="{'group_by': 'service_project_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
