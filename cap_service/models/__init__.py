@@ -5,6 +5,7 @@ from . import fleet_vehicle_model_brand
 from . import fleet_vehicle_model
 from . import fleet_vehicle_warranty_line
 from . import fleet_vehicle
+from . import planning_slot
 from . import product_template
 from . import product_product
 from . import product_attribute
