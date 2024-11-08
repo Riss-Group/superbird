@@ -17,6 +17,7 @@ class ProjectTask(models.Model):
         ('4','med-high'),
         ('5','high'),
     ],default='1')
+    planning_slot_ids = fields.One2many('planning.slot', 'service_task_id')
 
 class ProjectTaskCreateTimesheet(models.TransientModel):
     _inherit = 'project.task.create.timesheet'
