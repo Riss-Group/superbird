@@ -4,6 +4,19 @@ from odoo.exceptions import UserError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(SaleOrder,self).create(vals)
+        opportunity = self.env['crm.lead'].browse(self.env.context.get('default_opportunity_id'))
+        if opportunity:
+            # Upon Creation opportunity.order_ids is init however not self so we must account for this
+            has_quotations = len(opportunity.order_ids) - 1
+            if has_quotations < 1:
+                prop_stage = self.env['crm.stage'].search([('is_proposition','=',True)],limit=1)
+                if prop_stage:
+                    opportunity.stage_id = prop_stage
+        return res
 
     @api.constrains('client_order_ref')
     def _check_client_order_ref_unique(self):
