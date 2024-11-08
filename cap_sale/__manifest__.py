@@ -11,12 +11,12 @@
 This module contains customizations for common sales features.
         """,
     'depends': [
-        'sale', 
+        'sale',
         'website_sale',
         'sale_product_configurator',
-        ],
+    ],
     'data': [
-        'views/product_view.xml',
+        # 'views/product_view.xml',
     ],
     'assets': {
         'web.assets_backend': [
