@@ -1,7 +1,5 @@
 from odoo import  models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
-import logging
-logger = logging.getLogger()
 
 
 class ServiceOrder(models.Model):
@@ -59,7 +57,10 @@ class ServiceOrder(models.Model):
         ('confirmed','In Repair'),
         ('done','Done'),
         ],default='draft')
-
+    planning_slot_ids = fields.One2many('planning.slot', compute="_compute_planning_slot_ids")
+    planning_hours_total = fields.Float(compute="_compute_planning_hours_total")
+    planning_hours_planned = fields.Float(related='sale_order_ids.planning_hours_planned')
+    planning_hours_to_plan = fields.Float(related='sale_order_ids.planning_hours_to_plan')
 
     @api.constrains('state','fleet_vehicle_id','start_date')
     def _check_state_fleet_date(self):
@@ -111,6 +112,20 @@ class ServiceOrder(models.Model):
     def _compute_invoice_count(self):
         for record in self:
             record.invoice_count = len(record.invoice_ids)
+    
+    @api.depends('service_order_lines.service_order_line_service_ids.sale_line_id.planning_slot_ids')
+    def _compute_planning_slot_ids(self):
+        for record in self:
+            planning_slot_ids = self.env['planning.slot']
+            for service_line in record.service_order_lines:
+                for line in service_line.service_order_line_service_ids:
+                    planning_slot_ids += line.sale_line_id.planning_slot_ids
+            record.planning_slot_ids = planning_slot_ids.ids if planning_slot_ids else False
+    
+    @api.depends('sale_order_ids.planning_hours_planned', 'sale_order_ids.planning_hours_to_plan')
+    def _compute_planning_hours_total(self):
+        for record in self:
+            record.planning_hours_total = record.planning_hours_planned + record.planning_hours_to_plan
 
     def update_child_sequence(self):
         for parent in self:
@@ -189,6 +204,15 @@ class ServiceOrder(models.Model):
             'target': 'current',
         }
     
+    def action_view_planning(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
+        action.update({
+            'name': _('View Planning'),
+            'domain': [('id','in',self.planning_slot_ids.ids)]
+        })
+        return action
+    
     def action_upsert_so(self):
         for record in self:
             for batch in record._get_so_vals():
@@ -206,6 +230,9 @@ class ServiceOrder(models.Model):
                     warning_service_line_names.append(str(line.sequence))
                     continue
                 line.task_id = self.env['project.task'].create(record._get_task_vals(line))
+                planning_slot_to_update_ids = line.sale_line_ids.planning_slot_ids.filtered(lambda x: not x.project_id)
+                if planning_slot_to_update_ids:
+                    planning_slot_to_update_ids.project_id = line.project_id
             record.state = 'confirmed'
         if warning_service_line_names:
             warning_message = 'Not all tasks were created because some service lines do not have a project defined. Line numbers to review are: '
