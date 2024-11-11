@@ -67,7 +67,7 @@ class AccountMove(models.Model):
                 lambda line: line.analytic_distribution
             ):
                 account_ids = [
-                    int(account_id)
+                    int(account_id.replace(',', ''))
                     for account_id in line.analytic_distribution or {}
                 ]
                 if account_ids:
