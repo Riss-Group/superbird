@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="is_customer" />
-                <field name="is_vendor" />
+                <field name="is_customer" invisible="1"/>
+                <field name="is_supplier" invisible="1"/>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="page_customer_info" string="Customer Info" invisible="not is_customer">
@@ -58,7 +58,7 @@
                 </page>
 
                 <!-- Vendor Info Page -->
-                <page name="page_vendor_info" string="Vendor Info" invisible="not is_vendor" >
+                <page name="page_vendor_info" string="Vendor Info" invisible="not is_supplier" >
                     <group name="group_vendor_info_container">
                         <group name="group_vendor_info_left">
                             <field name="mid_number" />
