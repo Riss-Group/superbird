@@ -67,7 +67,7 @@ class AccountMove(models.Model):
                 lambda line: line.analytic_distribution
             ):
                 account_ids = [
-                    int(account_id)
+                    int(account_id.replace(',', ''))
                     for account_id in line.analytic_distribution or {}
                 ]
                 if account_ids:
@@ -153,7 +153,7 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     origin_analytic_move_line_id = fields.Many2one(
-        "account.move.line", String="Origin Analytic Move Line"
+        "account.move.line", string="Origin Analytic Move Line"
     )
 
     def _analytic_prepare_invoice_line_data(

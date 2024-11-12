@@ -6,6 +6,7 @@ class ProductProduct(models.Model):
     replacement_id = fields.Many2one('product.product', string="Replacement Product", help="Product that replaces this one.")
     eco_fee = fields.Float(string="Eco Fee", company_dependent=True, digits='Product Price')
 
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 

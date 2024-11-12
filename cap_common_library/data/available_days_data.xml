@@ -1,0 +1,23 @@
+<odoo>
+    <record id="available_day_monday" model="res.partner.available_day">
+        <field name="name">Monday</field>
+    </record>
+    <record id="available_day_tuesday" model="res.partner.available_day">
+        <field name="name">Tuesday</field>
+    </record>
+    <record id="available_day_wednesday" model="res.partner.available_day">
+        <field name="name">Wednesday</field>
+    </record>
+    <record id="available_day_thursday" model="res.partner.available_day">
+        <field name="name">Thursday</field>
+    </record>
+    <record id="available_day_friday" model="res.partner.available_day">
+        <field name="name">Friday</field>
+    </record>
+    <record id="available_day_saturday" model="res.partner.available_day">
+        <field name="name">Saturday</field>
+    </record>
+    <record id="available_day_sunday" model="res.partner.available_day">
+        <field name="name">Sunday</field>
+    </record>
+</odoo>
