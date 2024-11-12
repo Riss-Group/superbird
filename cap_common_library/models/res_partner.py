@@ -48,7 +48,7 @@ class ResPartner(models.Model):
     operator = fields.Char('Operator ID')
     dot_inspector_id = fields.Many2one('res.partner.inspector', string='DOT Inspector')
 #VENDOR FIELDS
-    is_vendor = fields.Boolean()
+    is_supplier = fields.Boolean()
     mid_number = fields.Char('MID Number', translate=True)
     account_number = fields.Char('Account Number', translate=True)
     min_order = fields.Float('Min Order Amount')
