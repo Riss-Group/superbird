@@ -93,8 +93,10 @@ class ProductAttribute(models.Model):
             nosearch_fields = attribute._get_nosearch_fields()
             if attribute.custom_type in nosearch_fields and attribute.search_ok:
                 raise ValidationError(
-                    _("Selected custom field type '%s' is not searchable")
-                    % attribute.custom_type
+                    _(
+                        "Selected custom field type '%s' is not searchable",
+                        attribute.custom_type,
+                    )
                 )
 
     def validate_custom_val(self, val):
@@ -110,27 +112,28 @@ class ProductAttribute(models.Model):
                 raise ValidationError(
                     _(
                         "Selected custom value '%(name)s' must be "
-                        "between %(min_val)s and %(max_val)s"
-                    )
-                    % (
-                        {
+                        "between %(min_val)s and %(max_val)s",
+                        **{
                             "name": self.name,
                             "min_val": self.min_val,
                             "max_val": self.max_val,
-                        }
+                        },
                     )
                 )
             elif minv and val < minv:
                 raise ValidationError(
-                    _("Selected custom value '%(name)s' must be at least %(min_val)s")
-                    % ({"name": self.name, "min_val": self.min_val})
+                    _(
+                        "Selected custom value '%(name)s' must be at least %(min_val)s",
+                        **{"name": self.name, "min_val": self.min_val},
+                    )
                 )
             elif maxv and val > maxv:
                 raise ValidationError(
                     _(
-                        "Selected custom value '%(name)s' must be lower than %(max_value)s"
+                        "Selected custom value '%(name)s' "
+                        "must be lower than %(max_value)s",
+                        **{"name": self.name, "max_value": self.max_val + 1},
                     )
-                    % ({"name": self.name, "max_val": self.max_val + 1})
                 )
 
     @api.constrains("min_val", "max_val")
@@ -145,6 +148,13 @@ class ProductAttribute(models.Model):
                 raise ValidationError(
                     _("Maximum value must be greater than Minimum value")
                 )
+
+    def _configurator_value_ids(self):
+        """Values accepted for attributes in `self`."""
+        values = self.value_ids
+        if any(self.mapped("val_custom")):
+            values += self.env["product.config.session"].get_custom_value_id()
+        return values
 
 
 class ProductAttributeLine(models.Model):
@@ -186,13 +196,11 @@ class ProductAttributeLine(models.Model):
                 raise ValidationError(
                     _(
                         "Default values for each attribute line must exist in "
-                        "the attribute values (%(attr_name)s: %(default_val)s)"
-                    )
-                    % (
-                        {
+                        "the attribute values (%(attr_name)s: %(default_val)s)",
+                        **{
                             "attr_name": line.attribute_id.name,
                             "default_val": line.default_val.name,
-                        }
+                        },
                     )
                 )
 
@@ -209,13 +217,11 @@ class ProductAttributeLine(models.Model):
                 raise ValidationError(
                     _(
                         "The attribute %(attr)s must have at least one value for "
-                        "the product %(product)s."
-                    )
-                    % (
-                        {
+                        "the product %(product)s.",
+                        **{
                             "attr": ptal.attribute_id.display_name,
                             "product": ptal.product_tmpl_id.display_name,
-                        }
+                        },
                     )
                 )
             for pav in ptal.value_ids:
@@ -224,17 +230,22 @@ class ProductAttributeLine(models.Model):
                         _(
                             "On the product %(product)s you cannot associate the "
                             "value %(value)s with the attribute %(attr)s because they "
-                            "do not match."
-                        )
-                        % (
-                            {
+                            "do not match.",
+                            **{
                                 "product": ptal.product_tmpl_id.display_name,
                                 "value": pav.display_name,
                                 "attr": ptal.attribute_id.display_name,
-                            }
+                            },
                         )
                     )
         return True
+
+    def _configurator_value_ids(self):
+        """Values accepted for template attribute lines in `self`."""
+        values = self.value_ids
+        if any(self.mapped("custom")):
+            values += self.env["product.config.session"].get_custom_value_id()
+        return values
 
 
 class ProductAttributeValue(models.Model):
@@ -292,23 +303,20 @@ class ProductAttributeValue(models.Model):
         return extra_prices
 
     def _compute_display_name(self):
-        super()._compute_display_name()
-        if self._context.get("show_price_extra"):
-            product_template_id = self.env.context.get("active_id", False)
-            price_precision = self.env["decimal.precision"].precision_get(
-                "Product Price"
+        # useless return to make pylint happy
+        res = super()._compute_display_name()
+        if not self.env.context.get("show_price_extra"):
+            return res
+        product_template_id = self.env.context.get("active_id", False)
+        price_precision = self.env["decimal.precision"].precision_get("Product Price")
+        for attribute in self:
+            extra_prices = attribute.get_attribute_value_extra_prices(
+                product_tmpl_id=product_template_id, pt_attr_value_ids=attribute
             )
-            for rec in self:
-                extra_prices = rec.get_attribute_value_extra_prices(
-                    product_tmpl_id=product_template_id, pt_attr_value_ids=rec
-                )
-                price_extra = extra_prices.get(rec.id)
-                if price_extra:
-                    name = ("{} ( +{} )").format(
-                        rec.name,
-                        ("{0:,.%sf}" % (price_precision)).format(price_extra),
-                    )
-                    rec.display_name = name or rec.display_name
+            price_extra = extra_prices.get(attribute.id)
+            if price_extra:
+                name = f"{attribute.name} ( +{price_extra:.{price_precision}f} )"
+                attribute.display_name = name or attribute.display_name
 
     @api.model
     def name_search(self, name="", args=None, operator="ilike", limit=100):
@@ -318,30 +326,6 @@ class ProductAttributeValue(models.Model):
 
         TODO: This only works when activating the selection not when typing
         """
-        if self.env.context.get("wizard_id"):
-            wiz_id = self.env["product.configurator"].browse(
-                self.env.context.get("wizard_id")
-            )
-            if (
-                wiz_id.domain_attr_ids
-                and self.env.context.get("field_name") == wiz_id.dyn_field_value
-            ):
-                if self.env.context.get("is_m2m"):
-                    if len(args) > 2:
-                        vals1 = args[-1]
-                        vals2 = args[1]
-                        if vals2 and vals1:
-                            vals = list(set(vals2[2]) - set(vals1[2]))
-                        args = [("id", "in", vals)]
-                else:
-                    args = [("id", "in", wiz_id.domain_attr_ids.ids)]
-
-            elif wiz_id.domain_attr_2_ids and (
-                self.env.context.get("field_name") == wiz_id.dyn_field_2_value
-                or not wiz_id.dyn_field_2_value
-            ):
-                args = [("id", "in", wiz_id.domain_attr_2_ids.ids)]
-
         product_tmpl_id = self.env.context.get("_cfg_product_tmpl_id")
         if product_tmpl_id:
             # TODO: Avoiding browse here could be a good performance enhancer
@@ -376,6 +360,13 @@ class ProductAttributeValue(models.Model):
             args = new_args
         res = super().name_search(name=name, args=args, operator=operator, limit=limit)
         return res
+
+    # TODO: Prevent unlinking custom options by overriding unlink
+
+    # _sql_constraints = [
+    #    ('unique_custom', 'unique(id,allow_custom_value)',
+    #    'Only one custom value per dimension type is allowed')
+    # ]
 
 
 class ProductAttributePrice(models.Model):

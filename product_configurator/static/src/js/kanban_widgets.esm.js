@@ -1,9 +1,9 @@
 /* @odoo-module */
-import {FormController} from "@web/views/form/form_controller";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
 import {onMounted} from "@odoo/owl";
 import {patch} from "@web/core/utils/patch";
 
-patch(FormController.prototype, {
+patch(KanbanController.prototype, {
     setup() {
         super.setup(...arguments);
         onMounted(() => {
@@ -16,18 +16,11 @@ patch(FormController.prototype, {
                 var buttons = form_element.querySelector(
                     ".o_control_panel_main_buttons"
                 );
-                var createButtons = buttons.querySelectorAll(".o_form_button_create");
+                var createButtons = buttons.querySelectorAll(".o-kanban-button-new");
                 createButtons.forEach((button) => {
                     button.style.display = "none";
                 });
             }
         });
-    },
-    async beforeExecuteActionButton(clickParams) {
-        if (clickParams.special === "no_save") {
-            delete clickParams.special;
-            return true;
-        }
-        return super.beforeExecuteActionButton(...arguments);
     },
 });

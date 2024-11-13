@@ -1,9 +1,9 @@
 /* @odoo-module */
-import {FormController} from "@web/views/form/form_controller";
+import {ListController} from "@web/views/list/list_controller";
 import {onMounted} from "@odoo/owl";
 import {patch} from "@web/core/utils/patch";
 
-patch(FormController.prototype, {
+patch(ListController.prototype, {
     setup() {
         super.setup(...arguments);
         onMounted(() => {
@@ -16,18 +16,11 @@ patch(FormController.prototype, {
                 var buttons = form_element.querySelector(
                     ".o_control_panel_main_buttons"
                 );
-                var createButtons = buttons.querySelectorAll(".o_form_button_create");
+                var createButtons = buttons.querySelectorAll(".o_list_button_add");
                 createButtons.forEach((button) => {
                     button.style.display = "none";
                 });
             }
         });
-    },
-    async beforeExecuteActionButton(clickParams) {
-        if (clickParams.special === "no_save") {
-            delete clickParams.special;
-            return true;
-        }
-        return super.beforeExecuteActionButton(...arguments);
     },
 });
