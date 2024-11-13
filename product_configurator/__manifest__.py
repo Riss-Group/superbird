@@ -32,6 +32,8 @@
             "/product_configurator/static/src/js/boolean_button_widget.esm.js",
             "/product_configurator/static/src/js/boolean_button_widget.xml",
             "/product_configurator/static/src/js/relational_fields.esm.js",
+            "/product_configurator/static/src/js/kanban_widgets.esm.js",
+            "/product_configurator/static/src/js/list_widgest.esm.js",
         ]
     },
     "demo": [
@@ -44,7 +46,6 @@
     ],
     "images": ["static/description/cover.png"],
     "post_init_hook": "post_init_hook",
-    # "qweb": ["static/xml/create_button.xml"],
     "development_status": "Beta",
     "maintainers": ["PCatinean"],
     "installable": True,
