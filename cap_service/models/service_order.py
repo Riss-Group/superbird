@@ -1,24 +1,26 @@
 from odoo import  models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
+from markupsafe import Markup
 
 
 class ServiceOrder(models.Model):
     _name = 'service.order' 
     _description = "Service Order"  
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
 
     name = fields.Char(default=lambda self: '', copy=False)
-    partner_id = fields.Many2one('res.partner')
+    partner_id = fields.Many2one('res.partner', tracking=True)
     service_order_lines = fields.One2many('service.order.line', 'service_order_id', )
-    warranty_partner_id = fields.Many2one('res.partner')
-    shipping_partner_id = fields.Many2one('res.partner')
+    warranty_partner_id = fields.Many2one('res.partner', tracking=True)
+    shipping_partner_id = fields.Many2one('res.partner', tracking=True)
     seperate_warranty_docs = fields.Boolean(compute='_compute_seperate_warranty_docs')
     sale_order_ids = fields.One2many('sale.order', 'service_order_id')
     sale_order_count = fields.Integer(compute='_compute_sale_order_count')
     invoice_ids = fields.One2many('account.move', 'service_order_id')
     invoice_count = fields.Integer(compute='_compute_invoice_count')
     available_fleet_vehicle_ids = fields.Many2many('fleet.vehicle', compute='_compute_available_fleet_vehicle_ids', store=False)
-    fleet_vehicle_id = fields.Many2one('fleet.vehicle')
+    fleet_vehicle_id = fields.Many2one('fleet.vehicle', tracking=True)
     fleet_vehicle_make = fields.Many2one('fleet.vehicle.model.brand', related='fleet_vehicle_id.model_id.brand_id')
     fleet_vehicle_model = fields.Many2one('fleet.vehicle.model', related='fleet_vehicle_id.model_id')
     fleet_vehicle_year = fields.Char(related='fleet_vehicle_id.model_year')
@@ -43,10 +45,10 @@ class ServiceOrder(models.Model):
     internal_total = fields.Float(compute='_compute_totals')
     internal_parts_total = fields.Float(compute='_compute_totals')
     internal_service_total = fields.Float(compute='_compute_totals')
-    service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user, tracking=True)
     payment_term_id = fields.Many2one('account.payment.term', compute='_compute_payment_term_id', store=True, readonly=False)
-    start_date = fields.Datetime(default=fields.Datetime.now())
-    end_date = fields.Datetime()
+    start_date = fields.Datetime(default=fields.Datetime.now(), tracking=True)
+    end_date = fields.Datetime(tracking=True)
     task_ids = fields.Many2many('project.task', compute='_compute_task_ids')
     task_ids_count = fields.Integer(compute='_compute_task_ids')
     worksheet_references = fields.Json(string="Worksheets", compute="_compute_worksheet_references")
@@ -56,7 +58,7 @@ class ServiceOrder(models.Model):
         ('quote','Quote'),
         ('confirmed','In Repair'),
         ('done','Done'),
-        ],default='draft')
+        ],default='draft', tracking=True)
     planning_slot_ids = fields.One2many('planning.slot', compute="_compute_planning_slot_ids")
     planning_hours_total = fields.Float(compute="_compute_planning_hours_total")
     planning_hours_planned = fields.Float(related='sale_order_ids.planning_hours_planned')
@@ -218,8 +220,17 @@ class ServiceOrder(models.Model):
             for batch in record._get_so_vals():
                 if batch.get('so_vals') and batch.get('existing_sale_order'):
                     batch.get('existing_sale_order').write(batch.get('so_vals'))
+                    record.message_post(
+                        body=Markup("<b>%s</b> %s") % (_("Sale Order Updated:"), batch.get('existing_sale_order').name),
+                        subtype_xmlid="mail.mt_note"
+                    )
                 elif batch.get('so_vals'):
-                    record.sale_order_ids += self.env['sale.order'].create(batch.get('so_vals'))
+                    sale_order_id = self.env['sale.order'].create(batch.get('so_vals'))
+                    record.sale_order_ids += sale_order_id
+                    record.message_post(
+                        body=Markup("<b>%s</b> %s") % (_("Sale Order Created:"), sale_order_id.name),
+                        subtype_xmlid="mail.mt_note"
+                    )
                 record.state = 'quote' if record.state == 'draft' else record.state
 
     def action_create_tasks(self):
@@ -230,6 +241,10 @@ class ServiceOrder(models.Model):
                     warning_service_line_names.append(str(line.sequence))
                     continue
                 line.task_id = self.env['project.task'].create(record._get_task_vals(line))
+                record.message_post(
+                    body=Markup("<b>%s</b> %s") % (_("Task Created:"), line.task_id.name),
+                    subtype_xmlid="mail.mt_note"
+                )
                 planning_slot_to_update_ids = line.sale_line_ids.planning_slot_ids.filtered(lambda x: not x.project_id)
                 if planning_slot_to_update_ids:
                     planning_slot_to_update_ids.project_id = line.project_id
