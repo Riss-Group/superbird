@@ -1,4 +1,4 @@
-<!-- product_supercession/views/product_view.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_product_form_supercession" model="ir.ui.view">
         <field name="name">product.product.form.supercession</field>
@@ -9,7 +9,8 @@
                 <field name="replacement_id"/>
             </field>
             <field name="taxes_id" position="after">
-                <field name="eco_fee_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="eco_fee_amount" widget="monetary"
+                       options="{'currency_field': 'currency_id', 'field_digits': True}"/>
             </field>
         </field>
     </record>
