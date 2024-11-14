@@ -7,6 +7,7 @@
             <field name="name" position="after">
                 <field name="use_of_location"/>
                 <field name="pallets"/>
+                <field name="warehouse_id"/>
                 <field name="location_type"/>
                 <field name="location_specification"/>
                 <field name="velocity_id"/>
