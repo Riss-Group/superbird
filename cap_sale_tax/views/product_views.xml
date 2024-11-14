@@ -1,15 +1,11 @@
-<!-- product_supercession/views/product_view.xml -->
 <odoo>
     <record id="view_product_form_supercession" model="ir.ui.view">
         <field name="name">product.product.form.supercession</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <field name="uom_po_id" position="after">
-                <field name="replacement_id"/>
-            </field>
             <field name="taxes_id" position="after">
-                <field name="eco_fee_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="eco_fee" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
             </field>
         </field>
     </record>
