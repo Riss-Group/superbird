@@ -26,6 +26,15 @@
                             <button type="object" name="action_view_worksheets" class="oe_stat_button" icon="fa-file-text-o">
                                 <field name="worksheet_references_count" widget="statinfo" string="Worksheets"/>
                             </button>
+                            <button type="object" name="action_view_planning" class="oe_stat_button" icon="fa-tasks">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Planning</span>
+                                    <span class="o_stat_value">
+                                        <field name="planning_hours_planned"/> / <field name="planning_hours_total"/> To Plan
+                                        <field name="planning_hours_to_plan" invisible="1"/>
+                                    </span>
+                                </div>
+                            </button>
                         </div>
                         <group name="group_container" >
                             <group name='general_container' string='General'>
