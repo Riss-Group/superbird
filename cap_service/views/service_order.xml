@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <record id="view_attachment_kanban_preview" model="ir.ui.view">
+            <field name="name">ir.attachment.kanban.preview</field>
+            <field name="model">ir.attachment</field>
+            <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="mimetype"/>
+                <field name="type"/>
+                <field name="create_uid"/>
+                <field name="url"/>
+                <field name="create_date"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-menu">
+                        <a t-attf-href="/web/content/ir.attachment/#{record.id.raw_value}/datas?download=true" download="" class="dropdown-item">Download</a>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                            <div class="o_kanban_image">
+                                <div class="o_kanban_image_wrapper">
+                                    <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png|webp)').test(record.mimetype.raw_value)"/>
+                                    <div t-if="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted" aria-label="Image is a link"/>
+                                    <img t-elif="webimage" t-attf-src="/web/image/#{record.id.raw_value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
+                                    <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.raw_value"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_details_wrapper">
+                                    <div t-att-title="record.name.raw_value" >
+                                        <field name="name" class="o_text_overflow"/>
+                                    </div>
+                                    <div>
+                                        <field class="text-muted" name="create_date" widget="date"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_right">
+                                            <a t-attf-href="/web/content/ir.attachment/#{record.id.raw_value}/datas?download=true" download="" role="button" class="btn btn-link" title="Download Attachment">
+                                                <i class="fa fa-download" aria-hidden="true"/> Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+            </field>
+        </record>
+
         <record id="service_order_form_view" model="ir.ui.view">
             <field name="name">view_service_order_form_view</field>
             <field name="model">service.order</field>
@@ -77,6 +128,7 @@
                             <page name="job_lines" string="Job Lines">
                                 <field name="service_order_lines">
                                     <tree editable="bottom">
+                                        <field name="task_attachment_count" invisible="1"/>
                                         <field name="sequence" string='#' optional='show'/>
                                         <field name="ttype" string='Type'/>
                                         <field name="task_stage" string='Status' optional='hide'/>
@@ -94,6 +146,7 @@
                                         <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
                                         <button name='button_view_products' type='object' title="View Products" string="Parts" />
                                         <button name='button_view_services' type='object' title="View Services" string="Labor" />
+                                        <button name="button_view_attachments" type="object" class="oe_stat_button" icon="fa-paperclip" title="Attachments" invisible="task_attachment_count == 0"/>
                                     </tree>
                                 </field>
                             </page>
@@ -128,6 +181,9 @@
                             <field name="total"   readonly="1"/>
                         </group>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
