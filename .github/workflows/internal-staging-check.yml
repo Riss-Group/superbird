@@ -1,0 +1,22 @@
+name: Verify Internal Branch Sync
+
+on:
+  pull_request:
+    branches:
+      - 17.0-staging
+
+jobs:
+  verify-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if `17.0-internal` is merged
+        run: |
+          git fetch origin
+          if git merge-base --is-ancestor origin/17.0-internal HEAD; then
+            echo "All changes from 17.0-internal are present in this branch."
+          else
+            echo "17.0-staging is not fully synced with 17.0-internal." >&2
+            exit 1
