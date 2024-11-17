@@ -4,61 +4,53 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def _update_expected_revenue(self, opportunity, amount):
+        """
+            Helper function to assist in redefining an Opportunity's Expected Revenue
+        """
+        if opportunity:
+            opportunity.expected_revenue += amount
+
+    def _compute_order_revenue(self):
+        """
+            Helper function to assist in calculating a Sale Order's total
+        """
+        return sum(line.price_unit * line.product_uom_qty for line in self.order_line)
+
     @api.model
     def create(self, vals):
-        # Create the sale order record
         sale_order = super(SaleOrder, self).create(vals)
-        
-        # Check if there's an associated opportunity
         if sale_order.opportunity_id:
-            # Calculate total expected revenue from all related sale orders, excluding canceled ones
-            total_expected_revenue = sum(
-                line.price_unit * line.product_uom_qty
-                for order in sale_order.opportunity_id.order_ids
-                if order.state != 'cancel'
-                for line in order.order_line
-            )
-            
-            # Update the opportunity's expected revenue
-            sale_order.opportunity_id.expected_revenue = total_expected_revenue
-
+            self._update_expected_revenue(sale_order.opportunity_id, sale_order._compute_order_revenue())
         return sale_order
 
     def write(self, vals):
-        # Check if there's an associated opportunity
-        if self.opportunity_id:
-            uom_qty_or_price_unit_changed = False
+        for order in self:
+            if order.opportunity_id:
+                old_revenue = order._compute_order_revenue()
 
-            # Detect changes in `product_uom_qty` or `price_unit` in order lines
-            if 'order_line' in vals:
-                for line_data in vals.get('order_line', []):
-                    if line_data[0] == 1:  # Line update
-                        line_id = line_data[1]
-                        line_vals = line_data[2]
+                result = super(SaleOrder, self).write(vals)
 
-                        line = self.env['sale.order.line'].browse(line_id)
-                        
-                        # Check if `product_uom_qty` or `price_unit` was modified
-                        if 'product_uom_qty' in line_vals and line_vals['product_uom_qty'] != line.product_uom_qty:
-                            uom_qty_or_price_unit_changed = True
-                        if 'price_unit' in line_vals and line_vals['price_unit'] != line.price_unit:
-                            uom_qty_or_price_unit_changed = True
+                new_revenue = order._compute_order_revenue()
+                self._update_expected_revenue(order.opportunity_id, new_revenue - old_revenue)
+            else:
+                result = super(SaleOrder, self).write(vals)
+        return result
 
-            # Apply the changes first
-            result = super(SaleOrder, self).write(vals)
-
-            # If any quantity or price was changed, update expected revenue on the opportunity
-            if uom_qty_or_price_unit_changed:
+    def unlink(self):
+        for order in self:
+            if order.opportunity_id:
                 total_expected_revenue = sum(
                     line.price_unit * line.product_uom_qty
-                    for order in self.opportunity_id.order_ids
-                    if order.state != 'cancel'  # Exclude canceled orders
+                    for order in order.opportunity_id.order_ids
+                    if order.state != 'cancel'
                     for line in order.order_line
                 )
+                order.opportunity_id.expected_revenue = total_expected_revenue
+        return super(SaleOrder, self).unlink()
 
-                self.opportunity_id.expected_revenue = total_expected_revenue
-        else:
-            # If no opportunity is associated, simply apply the changes
-            result = super(SaleOrder, self).write(vals)
-
-        return result
+    def action_cancel(self):
+        for order in self:
+            if order.opportunity_id and order.state != 'cancel':
+                self._update_expected_revenue(order.opportunity_id, -order._compute_order_revenue())
+        return super(SaleOrder, self).action_cancel()

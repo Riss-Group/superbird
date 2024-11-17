@@ -9,7 +9,7 @@
                 <field name="replacement_id"/>
             </field>
             <field name="taxes_id" position="after">
-                <field name="eco_fee_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="eco_fee" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
             </field>
         </field>
     </record>
