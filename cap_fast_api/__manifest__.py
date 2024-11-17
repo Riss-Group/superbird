@@ -17,6 +17,7 @@
         'purchase',
         'account',
         'sale',
+        'product',
         'delivery'
     ],
     'data': [

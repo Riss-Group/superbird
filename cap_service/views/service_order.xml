@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <record id="view_attachment_kanban_preview" model="ir.ui.view">
+            <field name="name">ir.attachment.kanban.preview</field>
+            <field name="model">ir.attachment</field>
+            <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="mimetype"/>
+                <field name="type"/>
+                <field name="create_uid"/>
+                <field name="url"/>
+                <field name="create_date"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-menu">
+                        <a t-attf-href="/web/content/ir.attachment/#{record.id.raw_value}/datas?download=true" download="" class="dropdown-item">Download</a>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                            <div class="o_kanban_image">
+                                <div class="o_kanban_image_wrapper">
+                                    <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png|webp)').test(record.mimetype.raw_value)"/>
+                                    <div t-if="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted" aria-label="Image is a link"/>
+                                    <img t-elif="webimage" t-attf-src="/web/image/#{record.id.raw_value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
+                                    <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.raw_value"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_details_wrapper">
+                                    <div t-att-title="record.name.raw_value" >
+                                        <field name="name" class="o_text_overflow"/>
+                                    </div>
+                                    <div>
+                                        <field class="text-muted" name="create_date" widget="date"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_right">
+                                            <a t-attf-href="/web/content/ir.attachment/#{record.id.raw_value}/datas?download=true" download="" role="button" class="btn btn-link" title="Download Attachment">
+                                                <i class="fa fa-download" aria-hidden="true"/> Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+            </field>
+        </record>
+
         <record id="service_order_form_view" model="ir.ui.view">
             <field name="name">view_service_order_form_view</field>
             <field name="model">service.order</field>
@@ -8,8 +59,8 @@
                 <form string="Service Order">
                     <header>
                         <field name="state" widget="statusbar" nolabel='1' options="{'clickable':1}"/>
-                        <button name='action_confirm' string="Create SO" type="object" class="oe_highlight"/>
-                        <button name='action_launch_repair' string="Create Tasks" type="object" class="oe_highlight"/>
+                        <button name='action_upsert_so' string="Create/Update SO" type="object" class="oe_highlight"/>
+                        <button name='action_create_tasks' string="Create Tasks" type="object" class="oe_highlight"/>
                         <button name='action_open_portal' string='View in Portal' type='object' class='oe_highlight' />
                     </header>
                     <sheet>
@@ -17,10 +68,29 @@
                             <button type="object" name="action_stat_button_task_ids" class="oe_stat_button" icon="fa-tasks">
                                 <field name="task_ids" widget="statinfo" string="Tasks"/>
                             </button>
+                            <button type="object" name="action_stat_button_sale_order_ids" class="oe_stat_button" icon="fa-usd">
+                                <field name="sale_order_ids" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button type="object" name="action_stat_button_account_move_ids" class="oe_stat_button" icon="fa-pencil-square-o">
+                                <field name="invoice_ids" widget="statinfo" string="Invoices"/>
+                            </button>
+                            <button type="object" name="action_view_worksheets" class="oe_stat_button" icon="fa-file-text-o">
+                                <field name="worksheet_references_count" widget="statinfo" string="Worksheets"/>
+                            </button>
+                            <button type="object" name="action_view_planning" class="oe_stat_button" icon="fa-tasks">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Planning</span>
+                                    <span class="o_stat_value">
+                                        <field name="planning_hours_planned"/> / <field name="planning_hours_total"/> To Plan
+                                        <field name="planning_hours_to_plan" invisible="1"/>
+                                    </span>
+                                </div>
+                            </button>
                         </div>
                         <group name="group_container" >
                             <group name='general_container' string='General'>
                                 <field name="name" readonly='1' force_save='1'/>
+                                <field name="create_date" />
                                 <field name="start_date" />
                                 <field name="end_date" />
                                 <field name="service_writer_id" />
@@ -31,9 +101,9 @@
                                 <field name='ref' string='Customer Reference' />
                             </group>
                             <group name='customer_container' string='Customer Details'>
-                                <field name="sale_order_id" readonly='1' force_save='1'/>
                                 <field name="partner_id" string='Customer' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
                                 <field name='shipping_partner_id' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
+                                <field name='warranty_partner_id' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}"/>
                                 <field name="payment_term_id" />
                             </group>
                             <group name='fleet_container' string='Vehicle Details'>
@@ -58,22 +128,25 @@
                             <page name="job_lines" string="Job Lines">
                                 <field name="service_order_lines">
                                     <tree editable="bottom">
+                                        <field name="task_attachment_count" invisible="1"/>
                                         <field name="sequence" string='#' optional='show'/>
                                         <field name="ttype" string='Type'/>
                                         <field name="task_stage" string='Status' optional='hide'/>
+                                        <field name="op_code_id" readonly='1' force_save='1' optional='hide' />
                                         <field name="name" widget='text' string="Description" />
                                         <field name="cause" widget='text' optional='show'/>
                                         <field name="correction" widget='text' string="Fix" optional='show'/>
-                                        <field name="project_id" string="Department" />
-                                        <field name="task_id" widget='many2one' readonly='1' force_save='1' optional='show'/>
-                                        <field name='user_ids' widget='many2many_avatar_user' optional='show'/>
+                                        <field name="project_id" string="Department" domain="[('is_repair_service','=',True)]"/>
+                                        <field name="task_id" widget='many2one' readonly='1' force_save='1' optional='hide'/>
+                                        <field name='user_ids' widget='many2many_avatar_user' optional='hide'/>
                                         <field name="hours" optional='show'/>
-                                        <field name="hours_consumed" optional='show'/>
+                                        <field name="hours_consumed" optional='hide'/>
                                         <field name="subtotal" optional='show'/>
                                         <field name="service_order_line_product_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
                                         <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
                                         <button name='button_view_products' type='object' title="View Products" string="Parts" />
                                         <button name='button_view_services' type='object' title="View Services" string="Labor" />
+                                        <button name="button_view_attachments" type="object" class="oe_stat_button" icon="fa-paperclip" title="Attachments" invisible="task_attachment_count == 0"/>
                                     </tree>
                                 </field>
                             </page>
@@ -108,6 +181,9 @@
                             <field name="total"   readonly="1"/>
                         </group>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -122,7 +198,6 @@
                     <field name="shipping_partner_id" optional='hide'/>
                     <field name="start_date" optional='show'/>
                     <field name="end_date" optional='hide'/>
-                    <field name="sale_order_id" optional='hide'/>
                     <field name="ref" optional='hide'/>
                     <field name="state" optional='show'/>
                     <field name="fleet_vehicle_id" optional='show'/>

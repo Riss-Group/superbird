@@ -8,12 +8,14 @@
                 <group>
                     <field name="service_order_id" readonly='1' force_save='1' />
                 </group>
-                <field name="service_ccc" readonly="False">
+                <field name="service_template" readonly="False">
                     <tree editable='bottom'>
-                        <field name='name'/>
-                        <field name='cause'/>
-                        <field name='correction' />
-                        <field name='project_id' />
+                        <field name="op_code" />
+                        <field name="tttype" />
+                        <field name="complaint" />
+                        <field name="cause" />
+                        <field name="correction" />
+                        <field name='project_id'/>
                     </tree>
                 </field>
                 <footer>

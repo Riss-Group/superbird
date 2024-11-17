@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_cap_contact_type" model="ir.ui.view">
+        <field name="name">res.partner.form_contact_type</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_manual_rank.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_type']" position="after">
+                <div>
+                    <label for="is_customer" />
+                    <field name="is_customer" widget="boolean_toggle"/>
+                    <label for="is_supplier" />
+                    <field name="is_supplier" widget="boolean_toggle"/>
+                </div>
+            </xpath>
+            <xpath expr="//group[@name='sale']/field[@name='is_customer']" position="replace">
+            </xpath>
+            <xpath expr="//group[@name='purchase']/field[@name='is_supplier']" position="replace">
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_form_cap_contact_type2" model="ir.ui.view">
+        <field name="name">res.partner.form_contact_type</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale']" position="attributes">
+                <attribute name="invisible">is_customer != True</attribute>>
+            </xpath>
+            <xpath expr="//group[@name='purchase']" position="attributes">
+                <attribute name="invisible">is_supplier != True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

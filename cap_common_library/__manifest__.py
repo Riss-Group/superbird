@@ -3,7 +3,7 @@
     'name': 'CAP Common Library',
     'category': 'Productivity',
     'summary': "CAP Common Library",
-    'version': '0.1',
+    'version': '0.2',
     'author': 'Captivea software Consulting, Bassim Elsamaloty',
     'website': 'https://www.captivea.com/',
     'license': 'OPL-1',
@@ -16,7 +16,7 @@
         ],
     'data': [
         'security/ir.model.access.csv',
-        # 'views/_menu_actions.xml',
+        'data/available_days_data.xml',
         'views/contact.xml',
         'views/product.xml',
     ],

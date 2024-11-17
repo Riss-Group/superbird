@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="approval_category_data_contact_accounting_change" model="approval.category">
+            <field name="name">Change Contact Accounting Info</field>
+            <field name="approval_type">contact change</field>
+            <field name="sequence">80</field>
+            <field name="automated_sequence" eval="True"/>
+            <field name="sequence_code">CCAI</field>
+        </record>
+    </data>
+</odoo>
