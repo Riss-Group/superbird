@@ -2,6 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import BarcodeModel from '@stock_barcode/models/barcode_model';
+import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import LineComponent from "@stock_barcode/components/line";
 import { useService } from "@web/core/utils/hooks";
 import { useState } from "@odoo/owl";
@@ -11,6 +12,62 @@ import { BackorderDialog } from '@stock_barcode/components/backorder_dialog';
 import {_t} from "@web/core/l10n/translation";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 
+
+patch(BarcodePickingModel.prototype, {
+    async setup() {
+        super.setup();
+    },
+    getQtyDone(line) {
+        return line.barcode_qty_done;
+    },
+    getQtyDemand(line) {
+        return line.product_uom_qty || line.reserved_uom_qty || 0;
+    },
+    async save_barcode_qty_done(line) {
+        await this.orm.write(this.lineModel, [line.id], { barcode_qty_done: line.barcode_qty_done });
+    },
+    updateLineQty(virtualId, qty = 1) {
+        this.actionMutex.exec(() => {
+            const line = this.pageLines.find(l => l.virtual_id === virtualId);
+            line.barcode_qty_done += qty;
+            this.save_barcode_qty_done(line);
+        });
+    },
+    get canBeValidate() {
+        let result = super.canBeValidate;
+
+        if (this.cache && this.cache.dbIdCache && this.cache.dbIdCache['stock.move.line']) {
+            let movelines = this.cache.dbIdCache['stock.move.line'];
+
+            if (typeof movelines === 'object' && movelines !== null) {
+                const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
+                    item => item.barcode_qty_done > 0
+                );
+
+                if (hasBarcodeQtyDoneGreaterThanZero) {
+                    result = true;
+                }
+            }
+        }
+
+    return result;
+},
+    lineCanBeEdited(line) {
+        let res = super.lineCanBeEdited(line);
+        if (!this.lastScanned.product || this.lastScanned.product.id != line.product_id.id){
+            return false
+        };
+        return res;
+    },
+    getDisplayIncrementBtn(line) {
+       let res = super.getDisplayIncrementBtn(line);
+        if (!this.lastScanned.product || this.lastScanned.product.id != line.product_id.id){
+            return false
+        };
+        return res;
+    }
+
+})
 
 patch(BackorderDialog.prototype, {
     async setup() {
@@ -341,6 +398,6 @@ patch(BarcodeModel.prototype, {
 
     lineCanBeSelected() {
         return false;
-    }
+    },
 })
 
