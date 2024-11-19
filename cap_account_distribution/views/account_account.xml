@@ -1,0 +1,38 @@
+<odoo>
+	<data>
+		<record id="cap_account_account_form" model="ir.ui.view">
+			<field name="name">cap_account_account_form</field>
+			<field name="model">account.account</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="account.view_account_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//notebook//page[@name='accounting']" position="after">
+					<page string="Admin Distribution">
+						<field name="account_distribution_lines">
+							<tree editable="top">
+								<field name="account_id" readonly="1" optional="hide"/>
+								<field name="account_type" readonly="1" optional="hide"/>
+								<field name="account_distribution_id"
+									   domain="[('account_type', '=', account_type), ('id', '!=', account_id)]"
+									   options="{'no_create': True, 'no_edit': True}"/>
+								<field name="percent_distribution" />
+							</tree>
+						</field>
+					</page>
+					<page string="Expense Distribution">
+						<field name="account_expense_distribution_lines">
+							<tree editable="top">
+								<field name="account_id" readonly="1" optional="hide"/>
+								<field name="account_type" readonly="1" optional="hide"/>
+								<field name="account_distribution_id"
+									   domain="[('account_type', '=', account_type), ('id', '!=', account_id)]"
+									   options="{'no_create': True, 'no_edit': True}"/>
+								<field name="percent_distribution" />
+							</tree>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
