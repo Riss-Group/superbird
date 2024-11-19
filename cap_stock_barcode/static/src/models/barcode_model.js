@@ -2,100 +2,11 @@
 
 import { patch } from "@web/core/utils/patch";
 import BarcodeModel from '@stock_barcode/models/barcode_model';
-import LineComponent from "@stock_barcode/components/line";
 import { useService } from "@web/core/utils/hooks";
 import { useState } from "@odoo/owl";
-import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
-import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
-import { BackorderDialog } from '@stock_barcode/components/backorder_dialog';
 import {_t} from "@web/core/l10n/translation";
-import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 
 
-patch(BackorderDialog.prototype, {
-    async setup() {
-        super.setup();
-        this.orm = useService("orm");
-        this.scrap_quantities = useState({});
-        this.loadScrapQuantities();
-    },
-    async loadScrapQuantities() {
-    for (const line of this.props.uncompletedLines) {
-        const qty = await this.get_scrap_qty(line);
-        this.scrap_quantities[line.id] = qty; // Reactive update
-    }
-},
-
-    async get_scrap_qty(line){
-     const not_done_qty_id = await this.orm.searchRead(
-            "stock.move.line",
-            [
-                ["product_id", "=", line.product_id.id],
-                ["move_id", "=", line.move_id],
-                ["id", "=", line.id],
-            ],
-            ["not_done_qty"]
-        );
-        return not_done_qty_id.length ? not_done_qty_id[0].not_done_qty : 0;
-        }
-    })
-
-patch(LineComponent.prototype, {
-    setup() {
-        super.setup();
-        this.action = useService("action");
-        this.orm = useService("orm");
-        this.notification = useService("notification");
-        this.dialog = useService('dialog');
-    },
-
-    async printProductBarcode(line) {
-        const action = await this.action.loadAction(
-            "product.action_open_label_layout"
-        );
-        action.context = {'default_product_ids' : [line.product_id.id], 'default_print_format' : '4x12', 'default_hide_price_fields' : true}
-        this.action.doAction({...action, default_product_ids: line.product_id.id});
-//        const reportFile = 'stock.label_product_product_view';
-//        return this.action.doAction({
-//            type: "ir.actions.report",
-//            report_type: "qweb-pdf",
-//            report_name: `${reportFile}?docids=${line.product_id.id}&quantity=${1}`,
-//            report_file: reportFile,
-//        });
-    },
-    async updateProductBarcode(line) {
-    self = this;
-        this.dialog.add(ManualBarcodeScanner, {
-            openMobileScanner: async () => {
-                await this.openMobileScanner();
-            },
-            onApply: async (barcode) => {
-                barcode = this.env.model.cleanBarcode(barcode);
-                const res = await this.orm.call(
-                    'stock.move.line',
-                    'update_product_barcode',
-                    [[line.id],barcode]
-                );
-                 if (res) {
-                    const dbBarcodeCache = self.env.model.cache.dbBarcodeCache;
-
-                    if (!dbBarcodeCache['product.product']) {
-                        dbBarcodeCache['product.product'] = {};
-                    }
-
-                    if (!dbBarcodeCache['product.product'][barcode]) {
-                        dbBarcodeCache['product.product'][barcode] = [];
-                    }
-                    dbBarcodeCache['product.product'][barcode].push(line.product_id.id);
-
-                } else {
-                    console.error("Failed to update barcode in dbBarcodeCache.");
-                            }
-            return barcode;
-            }
-        });
-    },
-});
 
 patch(BarcodeModel.prototype, {
 
@@ -341,6 +252,6 @@ patch(BarcodeModel.prototype, {
 
     lineCanBeSelected() {
         return false;
-    }
+    },
 })
 

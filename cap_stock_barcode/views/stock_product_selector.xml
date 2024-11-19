@@ -7,6 +7,14 @@
             <field eval="17" name="priority"/>
             <field name="type">form</field>
             <field name="arch" type="xml">
+                 <xpath expr="//div[@class='col-12 my-2 d-flex align-items-baseline']" position="replace">
+                    <div class="col-12 my-2 d-flex align-items-baseline">
+                        <i class="fa fa-fw fa-lg fa-cube me-3" title="Quantity"/>
+                        <field name="barcode_qty_done" class="w-100 w-md-50 text-end o_qty_done_field_completed" invisible="barcode_qty_done == quantity" options="{'type': 'number'}" placeholder="Quantity"/>
+                        <field name="barcode_qty_done" class="w-100 w-md-50 text-end o_qty_done_field_not_completed" invisible="barcode_qty_done != quantity" options="{'type': 'number'}" placeholder="Quantity"/>
+                        <field name="quantity" widget="set_reserved_qty_button" field_to_set="barcode_qty_done" invisible="picked"/>
+                    </div>
+                </xpath>
                 <div class="row" position="inside">
                     <div class="col-12 my-2 d-flex align-items-baseline">
                         <i class="fa fa-trash me-3" title="Quarantined"/>
