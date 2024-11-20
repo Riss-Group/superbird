@@ -8,6 +8,7 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         for line in self.move_line_ids:
-            line.qty_done = line.barcode_qty_done
+            if line.barcode_qty_done and self.env.context.get('barcode_trigger'):
+                line.qty_done = line.barcode_qty_done
         res = super(StockPicking, self).button_validate()
         return res

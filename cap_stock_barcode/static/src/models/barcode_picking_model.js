@@ -13,22 +13,28 @@ patch(BarcodePickingModel.prototype, {
     async setup() {
         super.setup();
     },
+
     getQtyDone(line) {
         return line.barcode_qty_done;
     },
+
     getQtyDemand(line) {
         return line.product_uom_qty || line.reserved_uom_qty || 0;
     },
+
     async save_barcode_qty_done(line) {
         await this.orm.write(this.lineModel, [line.id], { barcode_qty_done: line.barcode_qty_done });
     },
+
     updateLineQty(virtualId, qty = 1) {
         this.actionMutex.exec(() => {
             const line = this.pageLines.find(l => l.virtual_id === virtualId);
             line.barcode_qty_done += qty;
             this.save_barcode_qty_done(line);
+            this.cache.dbIdCache['stock.move.line'][line.id]['barcode_qty_done'] = line.barcode_qty_done;
         });
     },
+
     get canBeValidate() {
         let result = super.canBeValidate;
 
@@ -48,6 +54,7 @@ patch(BarcodePickingModel.prototype, {
 
     return result;
 },
+
     lineCanBeEdited(line) {
         let res = super.lineCanBeEdited(line);
         if (!this.lastScanned.product || this.lastScanned.product.id != line.product_id.id){
@@ -55,6 +62,7 @@ patch(BarcodePickingModel.prototype, {
         };
         return res;
     },
+
     getDisplayIncrementBtn(line) {
        let res = super.getDisplayIncrementBtn(line);
         if (!this.lastScanned.product || this.lastScanned.product.id != line.product_id.id){
@@ -62,7 +70,8 @@ patch(BarcodePickingModel.prototype, {
         };
         return res;
     },
-async validate() {
+
+    async validate() {
         if (this.config.restrict_scan_dest_location == 'mandatory' &&
             !this.lastScanned.destLocation && this.selectedLine) {
             return this.notification(_t("Destination location must be scanned"), { type: "danger" });
@@ -113,6 +122,7 @@ async validate() {
         }
         return await super.validate();
     },
+
     _lineIsNotComplete(line) {
         const currentLine = this._getParentLine(line) || line;
         const isNotComplete = currentLine.reserved_uom_qty && currentLine.barcode_qty_done < currentLine.reserved_uom_qty;
