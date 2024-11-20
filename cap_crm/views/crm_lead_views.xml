@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!--    Inherit crm lead form view and add my customer_reference field under the tag field I want my field to be present on lead and on opportunity views-->
-	<record id="cap_crm_stage_form_inherit" model="ir.ui.view">
-		<field name="name">cap.crm.stage.form.inherit</field>
-		<field name="model">crm.stage</field>
-		<field name="inherit_id" ref="crm.crm_stage_form"/>
-		<field name="arch" type="xml">
-			<xpath expr="//field[@name='team_id']" position="after">
-				<field name="is_proposition"/>
-			</xpath>
-
-		</field>
-	</record>
-
     <record id="view_crm_lead_form_inherit_customer_reference" model="ir.ui.view">
         <field name="name">crm.lead.form.customer.reference</field>
         <field name="model">crm.lead</field>

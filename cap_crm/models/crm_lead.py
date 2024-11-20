@@ -37,19 +37,7 @@ class CrmLead(models.Model):
         # Pass customer_reference in context when creating a quotation
         action = super(
                     CrmLead,
-                    self.with_context(customer_reference=self.customer_reference, opportunity_id=self.id)
+                    self.with_context(customer_reference=self.customer_reference)
                 ).action_sale_quotations_new()
         return action
 
-class CRMStage(models.Model):
-    _inherit = 'crm.stage'
-
-    is_proposition = fields.Boolean(string="Is Proposition")
-
-    def write(self, vals):
-        print(f"\n\n{vals}\n\n")
-        if vals.get('is_proposition'):
-            proposition_stage = self.env['crm.stage'].search([('is_proposition','=',True)],limit=1)
-            if proposition_stage:
-                raise UserError(f"""Only 1 stage can be configured as the Proposition Stage. If you would like to make the '{self.name}' the proposition stage then re-configure the '{proposition_stage.name}' stage.""")
-        return super(CRMStage, self).write(vals)
