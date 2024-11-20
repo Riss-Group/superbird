@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
                 self._update_expected_revenue(order.opportunity_id, new_revenue - old_revenue)
             else:
                 result = super(SaleOrder, self).write(vals)
-        return result
+            return result
 
     def unlink(self):
         for order in self:
