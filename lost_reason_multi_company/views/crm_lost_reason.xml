@@ -16,4 +16,14 @@
             </xpath>
         </field>
     </record>
+    <record id="crm_stage_tree_cap_inherit" model="ir.ui.view">
+        <field name="name">crm.stage.tree.inherit</field>
+        <field name="model">crm.stage</field>
+        <field name="inherit_id" ref="crm.crm_stage_tree" />
+        <field name="arch" type="xml">
+            <field name="team_id" position="after">
+                <field name="company_id" />
+            </field>
+        </field>
+    </record>
 </odoo>
