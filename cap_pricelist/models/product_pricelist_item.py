@@ -22,7 +22,7 @@ class PricelistItem(models.Model):
         super(PricelistItem, self)._compute_name_and_price()
         for item in self:
             if item.product_domain and item.applied_on == '4_product_domain':
-                item.name = _("Domain: %s", item.product_domain)
+                item.name = _("Domain")
 
 
 
