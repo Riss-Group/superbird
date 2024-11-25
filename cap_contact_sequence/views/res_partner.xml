@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="partner_view_buttons_historical_fields">
+            <field name="name">partner.view.historical_fields</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="55"/>
+            <field name="arch" type="xml">
+                <field name="ref" position="after">
+                  <field name="sequence" readonly="1"/>
+                  <field name="id_number"/>
+                  <field name="historical_id_number"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
