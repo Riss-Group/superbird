@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'CAP Sale',
+    'name': 'CAP Sale Price Breakdown',
     'category': 'Sales',
-    'summary': "CAP Sale",
+    'summary': "CAP Sale Price Breakdown",
     'version': '1.0',
     'author': 'Captivea software Consulting, Kevin Lai',
     'website': 'https://www.captivea.com/',
