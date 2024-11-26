@@ -40,6 +40,7 @@ class PurchaseOrderLine(models.Model):
             "company_id": self.order_id.company_id.id,
             "core_parent_line_id":  self.id,
             "product_qty":  quantity,
+            "price_unit":  product.main_purchase_price,
             "is_core_part":  True,
         }
 
