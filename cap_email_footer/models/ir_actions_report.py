@@ -118,24 +118,24 @@ class IrActionsReport(models.Model):
         ######################################################################
         # Check for custom email association
         if report_name:
-            company_id = self.env.user.company_id.id
-
+            record = self.env[report_model].search([('id','=',self.env.context.get('active_id'))])
+            company_id = record.company_id.id
             report_id = self.env['ir.actions.report'].search([('report_name','=',report_name)]).id
+            if company_id:
+                custom_email = self.env['custom.email'].search([
+                    ('report_action_ids', 'in', report_id),
+                    ('company_id', '=', company_id)
+                ], limit=1)
 
-            custom_email = self.env['custom.email'].search([
-                ('report_action_ids', 'in', report_id),
-                ('company_id', '=', company_id)
-            ], limit=1)
+                if custom_email:
+                    # Modify the footer to include the custom email
+                   # Dynamically add the custom email to the footer
+                    custom_email_p = etree.Element('p')
+                    custom_email_p.text = custom_email.email
 
-            if custom_email:
-                # Modify the footer to include the custom email
-               # Dynamically add the custom email to the footer
-                custom_email_p = etree.Element('p')
-                custom_email_p.text = custom_email.email
-
-                # Locate where to insert the custom email in the footer
-                footer_body = footer_node.xpath(".//div[@class='text-center']/ul")[0]
-                footer_body.insert(1, custom_email_p)  # Add custom email div at the top
+                    # Locate where to insert the custom email in the footer
+                    footer_body = footer_node.xpath(".//div[@class='text-center']")[0]
+                    footer_body.insert(0, custom_email_p)  # Add custom email div at the top
 
         footer_content = Markup(lxml.html.tostring(footer_node, encoding='unicode'))
         ######################################################################
