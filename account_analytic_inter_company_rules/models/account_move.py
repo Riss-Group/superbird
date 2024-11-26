@@ -67,9 +67,11 @@ class AccountMove(models.Model):
                 lambda line: line.analytic_distribution
             ):
                 account_ids = [
-                    int(account_id)
+                    int(account_id.split(',')[1] if ',' in account_id else int(account_id))
+                    # account_id
                     for account_id in line.analytic_distribution or {}
                 ]
+
                 if account_ids:
                     analytic_account_ids = analytic_account_obj.browse(
                         account_ids
@@ -160,16 +162,19 @@ class AccountMoveLine(models.Model):
         self, interco_partner_analytic_account, fiscal_position_id
     ):
         self.ensure_one()
+        analytic_distribution = {
+            (key.split(',')[-1] if ',' in key else key): value
+            for key, value in self.analytic_distribution.items()
+        }
+        interco_percents_list = [
+            analytic_distribution.get(str(line_analytic.id))
+            for line_analytic in interco_partner_analytic_account
+        ]
 
-        interco_percents = sum(
-            [
-                self.analytic_distribution.get(str(line_analytic.id))
-                for line_analytic in interco_partner_analytic_account
-            ]
-        )
+        interco_percents = sum(interco_percents_list)
         analytic_distribution = {
             str(account_id): (
-                self.analytic_distribution[str(account_id)]
+                analytic_distribution[str(account_id)]
                 * 100
                 / interco_percents
             )

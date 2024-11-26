@@ -1,0 +1,16 @@
+{
+    'name': 'cap_crm_advance',
+    'version': '1.0',
+    'category': 'CRM',
+    'summary': 'Proposition Stage management and Automatically pushing advancing a lead into the Proposition stage',
+    'depends': [
+        'base',
+        'crm',
+        'sale',
+        ],
+    'data': [
+        'views/crm_lead.xml',
+    ],
+    'installable': True,
+    'application': False,
+}

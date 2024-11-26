@@ -6,8 +6,8 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
 
-    send_as_company_id = fields.Many2one('res.company')
-    include_company_ids = fields.Many2many('res.company')
+    send_as_company_id = fields.Many2one('res.company', store=False, readonly=True, compute="_compute_send_as_company_id",)
+    include_company_ids = fields.Many2many('res.company', store=False, readonly=True, compute="_compute_include_company_ids",)
     due_move_ids = fields.One2many('account.move', string='Due Invoices', compute='_compute_due_invoice_ids')
     company_warning_message = fields.Html(compute='_compute_due_invoice_ids')
     current_due = fields.Monetary(string='Current', compute='_compute_aging_buckets')
@@ -17,6 +17,22 @@ class ResPartner(models.Model):
     due_91_120 = fields.Monetary(string='91 to 120', compute='_compute_aging_buckets')
     due_over_120 = fields.Monetary(string='Over 120', compute='_compute_aging_buckets')
     total_due = fields.Monetary(string='Total Due', compute='_compute_aging_buckets')
+
+    @api.depends_context('allowed_company_ids')
+    def _compute_send_as_company_id(self):
+        for record in self:
+            if self.env.company.parent_id:
+                record.send_as_company_id = record.env.company.parent_id
+            else:
+                record.send_as_company_id = record.env.company.id
+    
+    @api.depends_context('allowed_company_ids')
+    def _compute_include_company_ids(self):
+        for record in self:
+            parent_company_id = self.env.company.parent_id if self.env.company.parent_id else self.env.company
+            parent_child_company_ids = parent_company_id + parent_company_id.child_ids
+            record.include_company_ids = [(6, 0, parent_child_company_ids.ids)]
+            
 
     @api.depends('unreconciled_aml_ids', 'send_as_company_id', 'include_company_ids')
     @api.depends_context('allowed_company_ids')
@@ -71,7 +87,7 @@ class ResPartner(models.Model):
             if move.state != 'posted' or move.payment_state == 'paid':
                 continue
             days_due = (today - move.invoice_date_due).days
-            amount_due = move.amount_residual
+            amount_due = move.amount_residual_signed
             if days_due <= 0:
                 current_due += amount_due
             elif days_due <= 30:
@@ -94,3 +110,13 @@ class ResPartner(models.Model):
             'total_due' : current_due + due_1_30 + due_31_60 + due_61_90 + due_91_120 + due_over_120,
         }
     
+    def view_grouped_move_ids(self):
+        return {
+            'name': _('Due Invoices'),
+            'res_model': 'account.move',
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'domain': [('id', 'in', self.due_move_ids.ids)],
+            'context': {'group_by': ['company_id']},
+            'type': 'ir.actions.act_window',
+        }

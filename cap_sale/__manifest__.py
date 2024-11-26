@@ -11,11 +11,18 @@
 This module contains customizations for common sales features.
         """,
     'depends': [
-        'sale',
+        'sale', 
+        'website_sale',
+        'sale_product_configurator',
         ],
     'data': [
-        'views/product_view.xml',
+        'views/product_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'cap_sale/static/src/**/*',
+        ],
+    },
     'installable': True,
     'auto_install': False,
     'application': True,

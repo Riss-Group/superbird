@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record model="ir.ui.view" id="crm_lost_reason_view_form_multi_company">
+        <field name="name">crm.lost.reason.tree form view (with multi-company)</field>
+        <field name="model">crm.lost.reason</field>
+        <field name="inherit_id" ref="crm.crm_lost_reason_view_tree" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='name']" position="after">
+                <field
+                    name="company_ids"
+                    groups="base.group_multi_company"
+                    widget="many2many_tags"
+                    options="{'no_create': True}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

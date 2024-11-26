@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_view_form_service" model="ir.ui.view">
+        <field name="name">project_view_form_service</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_field_service']//div" position="inside">
+                <setting class="col-lg-12" help="This project is used for tasks related service orders">
+                    <field name="is_repair_service"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

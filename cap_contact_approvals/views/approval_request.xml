@@ -1,0 +1,29 @@
+<odoo>
+	<data>
+		<record id="cap_inherit_approval_request_form_view" model="ir.ui.view">
+			<field name="name">cap.inherit.approval.request.form.view</field>
+			<field name="model">approval.request</field>
+			<field name="inherit_id" ref="approvals.approval_request_view_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//notebook//page[@name='products']" position="after">
+					<page string="Account Contact Changes" 
+						  name="account_contact_changes"
+						  invisible="category_id != %(cap_contact_approvals.approval_category_data_contact_accounting_change)d">
+
+						<group>
+							<group>
+								<field name="credit" readonly="1"/>
+								<field name="days_sales_outstanding" readonly="1"/>
+								<field name="use_partner_credit_limit" readonly="1"/>
+								<field name="credit_limit" readonly="1"/>
+							</group>
+							<group>
+								<field name="bank_ids" readonly="1"/>
+							</group>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

@@ -10,6 +10,12 @@
             <span name="scrap-qty" t-esc="scrap_quantities[line.id]"/>
         </div>
     </xpath>
+    <xpath expr="//span[@name='qty-done']" position="replace">
+            <span name="barcode_qty_done" t-esc="line.barcode_qty_done"/> /
+    </xpath>
+    <xpath expr="//span[@name='backorder-qty']" position="replace">
+        <span name="backorder-qty" t-esc="(line.reserved_uom_qty - line.barcode_qty_done - scrap_quantities[line.id]) > 0 and (line.reserved_uom_qty - line.barcode_qty_done - scrap_quantities[line.id]) or 0"/> /
+    </xpath>
     </t>
 
 
