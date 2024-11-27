@@ -60,12 +60,12 @@ class ProductConfigurator(models.TransientModel):
 
         if values and   any(item.startswith('__attribute_') for item in list(values.keys())) :
             transformed_dict = {
-                key.replace('__attribute_', ''): value
+                key.replace('__attribute_', ''): value[0][2]
                 for key, value in values.items()
                 if key.startswith('__attribute_')
             }
             view_attribute_ids = list(map(int, transformed_dict.keys()))
-            attribute_value_ids = list(transformed_dict.values())
+            attribute_value_ids = list(transformed_dict.values())[0]
             template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', attribute_value_ids)])
             qty_available = self._get_product_ids_qty_available(template_values.ids)
         values['qty_available'] = qty_available
