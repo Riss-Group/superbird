@@ -19,7 +19,7 @@ This module contains customizations for common sales features.
     ],
     'assets': {
         'web.assets_backend': [
-            'cap_sale/static/src/**/*',
+            'cap_product_price_break/static/src/**/*',
         ],
     },
     'installable': True,
