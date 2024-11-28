@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="unreconciled_bank_statement_line_tree_view" model="ir.ui.view">
+        <field name="name">unreconciled.bank.statement.line</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <tree default_order="internal_index desc">
+                <!--Invisible fields-->
+                <field name="statement_complete" column_invisible="True"/>
+                <field name="statement_valid" column_invisible="True"/>
+                <field name="state" column_invisible="True"/>
+                <field name="is_reconciled" column_invisible="True"/>
+                <field name="to_check" column_invisible="True"/>
+                <field name="country_code" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" column_invisible="True"/>
+
+                <!--Visible fields-->
+                <field name="sequence" widget="handle" column_invisible="True"/> <!--Until we add the JS class-->
+                <field name="date" readonly="is_reconciled and amount != 0" options="{'warn_future': true}"/>
+                <field name="payment_ref" required="1" readonly="is_reconciled and amount != 0"/>
+                <field name="partner_id" readonly="is_reconciled and amount != 0"/>
+                <field name="account_number" optional="hidden"/>
+                <field name="narration" string="Notes" readonly="is_reconciled and amount != 0" optional="hidden"/>
+                <field name="ref" readonly="is_reconciled and amount != 0" optional="hidden"/>
+                <field name="transaction_type" optional="hidden"/>
+                <field name="amount_currency" optional="hidden" groups="base.group_multi_currency" invisible="not foreign_currency_id" readonly="is_reconciled and amount != 0"/>
+                <field name="amount" readonly="is_reconciled and amount != 0"/>
+                <field name="journal_id" domain="[('type', 'in', ['bank','cash'])]" column_invisible="bool(context.get('default_journal_id'))" readonly="(statement_id or is_reconciled) and amount != 0"/>
+                <field name="running_balance" class="oe_read_only"/>
+                <field name="statement_id" optional="show" options="{'no_quick_create': True}" domain="['|',('journal_id', '=', journal_id),('journal_id', '=', False)]" context="{                                 'default_journal_id':journal_id,                                 'form_view_ref': 'account_accountant.view_bank_statement_form_bank_rec_widget',                                 'st_line_id':id,                             }" decoration-danger="statement_complete == False or statement_valid == False" widget="bank_rec_list_many2one_multi_id" readonly="not id"/>
+                <button name="create_expense_action" string="Create Expense" type="object" class="btn-primary"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="unreconciled_bank_statement_line_actions_all" model="ir.actions.act_window">
+        <field name="name">Bank Statement Line</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="cap_account_expense_extended.unreconciled_bank_statement_line_tree_view" />
+        <field name="domain">[('is_reconciled','=',False)]</field>
+    </record>
+
+    <menuitem id="menu_hr_unreported_transactions" name="Unreported Transactions" sequence="1"
+              parent="hr_expense.menu_hr_expense_reports" action="unreconciled_bank_statement_line_actions_all"/>
+</odoo>
