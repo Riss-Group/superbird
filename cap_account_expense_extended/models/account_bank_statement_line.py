@@ -10,5 +10,5 @@ class AccountBankStatementLine(models.Model):
             raise ValidationError(_('Please define an employee on the journal'))
         expense_dict = {'name': self.payment_ref, 'employee_id': self.journal_id.employee_id.id, 'date': self.date,
                         'total_amount_currency': abs(self.amount), 'currency_id': self.currency_id.id,
-                        'company_id': self.company_id.id}
+                        'company_id': self.company_id.id, 'product_id': self.company_id.expense_product_id.id}
         self.env['hr.expense'].create(expense_dict)
