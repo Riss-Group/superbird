@@ -45,6 +45,7 @@ class SaleOrderLine(models.Model):
     def get_sale_order_line_vals(self, product):
         self.ensure_one()
         quantity = self.product_uom_qty
+        sale_core_route = self.env.ref("cap_product_core_type.route_core_type_sale")
         line_vals = {
             "order_id": self.order_id.id,
             "product_id": product.id or False,
@@ -52,6 +53,8 @@ class SaleOrderLine(models.Model):
             "product_uom_qty":  quantity,
             "is_core_part":  True,
             "core_parent_line_id": self.id,
+            "price_unit": product.main_purchase_price,
+            "route_id" : sale_core_route.id,
         }
 
         return line_vals
@@ -62,3 +65,4 @@ class SaleOrderLine(models.Model):
         if is_core_part :
             res['is_core_part'] = self.is_core_part
         return res
+
