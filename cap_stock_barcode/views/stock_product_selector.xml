@@ -26,6 +26,30 @@
                         <field name="qty_remaining" class="w-100 w-md-50 text-end" options="{'type': 'number'}" placeholder="Remaining"/>
                     </div>
                 </div>
+                <xpath expr="." position="inside">
+                    <div class="oe_chatter" invisible="qty_remaining == 0">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    <record id="cap_stock_move_line_form" model="ir.ui.view">
+            <field name="name">stock.move.line.form_cap</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_move_line_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="." position="inside">
+                    <field name="qty_remaining" invisible="1"/>
+                    <div class="oe_chatter" invisible="qty_remaining == 0">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </xpath>
             </field>
         </record>
     </data>
