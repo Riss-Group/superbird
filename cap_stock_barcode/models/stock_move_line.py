@@ -78,3 +78,8 @@ class StockMoveLine(models.Model):
         for scrap in self:
             return locations_per_company[scrap.company_id.id]
 
+
+class StockMoveLineMail(models.Model):
+    _name = 'stock.move.line'
+    _inherit = 'stock.move.line'
+    _inherit = ['stock.move.line', 'mail.thread', 'mail.activity.mixin']
