@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <record model="ir.ui.view" id="res_partner_view_inherit_is_partner">
+        <field name="name">res.partner.view.inherit.ispartner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+                <field name="is_portal_user" invisible="1"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page name="portal_access_info" string="Portal Access Info" invisible="not is_portal_user">
+                    <group>
+                        <group>
+                            <field name="accounting_information"/>
+                            <field name="project_information"/>
+                            <field name="helpdesk_information"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
