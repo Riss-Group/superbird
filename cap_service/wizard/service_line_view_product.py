@@ -2,7 +2,7 @@ from odoo import  models, fields, api
 from odoo.exceptions import UserError
 
 
-class ServiceLineViewProduct(models.Model):
+class ServiceLineViewProduct(models.TransientModel):
     _name = 'service.line.view.product'   
     _description = 'Service Line View Product'
 
