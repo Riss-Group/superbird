@@ -17,6 +17,8 @@ class ServiceOrder(models.Model):
     seperate_warranty_docs = fields.Boolean(compute='_compute_seperate_warranty_docs')
     sale_order_ids = fields.One2many('sale.order', 'service_order_id')
     sale_order_count = fields.Integer(compute='_compute_sale_order_count')
+    rental_order_ids = fields.One2many('sale.order', 'service_order_rental_id')
+    rental_order_count = fields.Integer(compute='_compute_rental_order_count')
     invoice_ids = fields.One2many('account.move', 'service_order_id')
     invoice_count = fields.Integer(compute='_compute_invoice_count')
     available_fleet_vehicle_ids = fields.Many2many('fleet.vehicle', compute='_compute_available_fleet_vehicle_ids', store=False)
@@ -109,6 +111,11 @@ class ServiceOrder(models.Model):
     def _compute_sale_order_count(self):
         for record in self:
             record.sale_order_count = len(record.sale_order_ids)
+    
+    @api.depends('rental_order_ids')
+    def _compute_rental_order_count(self):
+        for record in self:
+            record.rental_order_count = len(record.rental_order_ids)
 
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
@@ -263,6 +270,21 @@ class ServiceOrder(models.Model):
                 }
             }
 
+    def button_create_rental_order(self):
+        return {
+            'name': 'Create Rental Order',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'service.rental.order',
+            'context': {
+                'default_service_order_id': self.id,
+                'default_partner_id': self.partner_id.id,
+                'default_start_date': self.start_date,
+                'default_end_date': self.end_date,
+            },
+            'target': 'new',
+        }
+
     def action_stat_button_task_ids(self):
         return {
             'type': 'ir.actions.act_window',
@@ -286,6 +308,11 @@ class ServiceOrder(models.Model):
             },
             'domain': [('id', 'in', self.sale_order_ids.ids)]
         }
+    
+    def action_stat_button_rental_order_ids(self):
+        action = self.env["ir.actions.act_window"]._for_xml_id("sale_renting.rental_order_action")
+        action['domain'] = [('id', 'in', self.rental_order_ids.ids)]
+        return action
 
     def action_stat_button_account_move_ids(self):
         action = self.env['ir.actions.actions']._for_xml_id('account.action_move_out_invoice_type')
