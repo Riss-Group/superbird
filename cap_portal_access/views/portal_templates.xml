@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="portal_my_home_sale_based_on_groups" inherit_id="sale.portal_my_home_sale">
+        <xpath expr="//t[@t-value=&quot;'quotation_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.accounting_information)
+            </attribute>
+        </xpath>
+        <xpath expr="//t[@t-value=&quot;'order_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.accounting_information)
+            </attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_project_custom" inherit_id="project.portal_my_home">
+        <xpath expr="//t[@t-value=&quot;'project_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.project_information)
+            </attribute>
+        </xpath>
+        <xpath expr="//t[@t-value=&quot;'task_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.project_information)
+            </attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_invoice_based_on_groups" inherit_id="account.portal_my_home_invoice">
+        <xpath expr="//t[@t-value=&quot;'invoice_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.accounting_information)
+            </attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_timesheet_custom" name="Show Timesheets" customize_show="True"
+              inherit_id="hr_timesheet.portal_my_home_timesheet">
+        <xpath expr="//t[@t-value=&quot;'timesheet_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.project_information)
+            </attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_helpdesk_extended" name="Show Tickets" customize_show="True"
+              inherit_id="helpdesk.portal_my_home_helpdesk_ticket">
+         <xpath expr="//t[@t-value=&quot;'ticket_count'&quot;]/.." position="attributes">
+            <attribute name="t-if">request.env.user.has_group('base.group_user') or
+            (request.env.user.has_group('base.group_portal') and request.env.user.partner_id.helpdesk_information)
+            </attribute>
+        </xpath>
+    </template>
+</odoo>

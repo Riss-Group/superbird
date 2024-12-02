@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="wizard_view_inherit">
+        <field name="name">wizard.view.inherit</field>
+        <field name="model">portal.wizard</field>
+        <field name="inherit_id" ref="portal.wizard_view"/>
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_ids']/tree/field[@name='email']" position="after">
+                <field name="accounting_information" readonly="is_portal or is_internal or email_state != 'ok'"/>
+                <field name="project_information" readonly="is_portal or is_internal or email_state != 'ok'"/>
+                <field name="helpdesk_information" readonly="is_portal or is_internal or email_state != 'ok'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
