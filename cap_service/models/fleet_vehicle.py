@@ -29,7 +29,11 @@ class FleetVehicle(models.Model):
     service_order_ids = fields.One2many('service.order', 'fleet_vehicle_id')
     service_order_ids_count = fields.Integer(compute='_compute_service_order_ids_count')
     is_bus_fleet = fields.Boolean(related='model_id.is_bus_fleet')
-
+    active_demo_unit = fields.Boolean(tracking=True)
+    was_demo_unit = fields.Boolean(tracking=True)
+    rental_sale_line_ids = fields.One2many('sale.order.line', 'fleet_vehicle_rental_id')
+    rental_sign_request_ids = fields.Many2many('sign.request', compute='compute_rental_sign_request_ids')
+    rental_sign_request_count = fields.Integer(compute='compute_rental_sign_request_ids')
 
     @api.model
     def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):
@@ -59,6 +63,13 @@ class FleetVehicle(models.Model):
     def _compute_service_order_ids_count(self):
         for record in self:
             record.service_order_ids_count = len(record.service_order_ids)
+    
+    @api.depends('rental_sale_line_ids')
+    def compute_rental_sign_request_ids(self):
+        for record in self:
+            sign_ids = record.rental_sale_line_ids.order_id.sign_request_ids
+            record.rental_sign_request_ids = sign_ids.ids
+            record.rental_sign_request_count = len(sign_ids)
 
     def action_fleet_move_lines(self):
         return {
@@ -72,8 +83,39 @@ class FleetVehicle(models.Model):
     def action_service_order_ids(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Fleet Moves',
+            'name': 'Service Orders',
             'view_mode': 'tree,form',
-            'res_model': 'stock.move.line',
+            'res_model': 'service.order',
             'domain': [('id', 'in', self.service_order_ids.ids)]
         }
+    
+    def action_rental_sign_request_ids(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("sign.sign_request_action")
+        action['domain'] = [('id','in',self.rental_sign_request_ids.ids)]
+        return action
+    
+    @api.onchange('active_demo_unit')
+    def _onchange_active_demo_unit(self):
+        if self.active_demo_unit:
+            self.was_demo_unit = True
+            return {
+                'warning': {
+                    'title': "Permanent Action Warning",
+                    'message': (
+                        "Marking this unit as an active demo unit is permanent and cannot be undone. Proceed with caution!"
+                    ),
+                }
+            }
+    
+    @api.model
+    def create(self, vals):
+        if vals.get('active_demo_unit'):
+            vals['was_demo_unit'] = True
+        return super().create(vals)
+
+    def write(self, vals):
+        if 'active_demo_unit' in vals and vals['active_demo_unit']:
+            vals['was_demo_unit'] = True
+        if 'was_demo_unit' in vals and not vals['was_demo_unit']:
+            raise UserError("The field 'Was Demo Unit' cannot be unset once it has been marked as True.")
+        return super(FleetVehicle, self).write(vals)

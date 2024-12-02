@@ -65,6 +65,11 @@
                         </span>
                     </div>
                 </button>
+                <button name="action_rental_sign_request_ids" type="object" class="oe_stat_button" icon="fa-pencil" invisible="not is_bus_fleet">
+                    <field name="rental_sign_request_count" widget="statinfo" string="Rental Agreements"/>
+                    <field name="rental_sale_line_ids" invisible="1" />
+                    <field name="rental_sign_request_count" invisible="1" />
+                </button>
             </xpath>
             <xpath expr="//button[@name='open_assignation_logs']" position="attributes">
                 <attribute name="invisible">is_bus_fleet</attribute>
@@ -76,6 +81,10 @@
                 <attribute name="invisible">is_bus_fleet</attribute>
             </xpath>
             <!-- Business Fields -->
+            <xpath expr="//group//field[@name='company_id']" position="after">
+                <field name="active_demo_unit" />
+                <field name="was_demo_unit" force_save="1" readonly="1" />
+            </xpath>
             <xpath expr="//field[@name='order_date']" position="after">
                 <field name="sold_date" />
             </xpath>
