@@ -32,5 +32,6 @@ class ProductProduct(models.Model):
                         'implementation': 'no_gap',
                         'prefix': sequence_prefix,
                         'padding': 4,
+                        'company_id':False
                     })
                 record.sequence_id = sequence_id

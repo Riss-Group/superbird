@@ -1,0 +1,13 @@
+<odoo>
+    <record id="quality_point_view_form_service" model="ir.ui.view">
+        <field name="name">quality_point_view_form_service</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality.quality_point_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_ids']" position="after">
+                <field name="dest_location_id" domain="[('company_id', '=', company_id)]" invisible="measure_on != 'operation'"/>
+                <field name="source_location_id" domain="[('company_id', '=', company_id)]" invisible="measure_on != 'operation'" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
