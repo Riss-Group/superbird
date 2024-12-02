@@ -17,4 +17,19 @@
         </field>
     </record>
 
+    <record id="rental_order_form_view_service" model="ir.ui.view">
+        <field name="name">rental_order_form_view_service</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_renting.rental_order_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rental_start_date']" position="after">
+                <field name="service_order_rental_id" string="Service Order" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_template_id']" position="after">
+                <field name="create_fleet_vehicle" column_invisible="1"/>
+                <field name="fleet_vehicle_rental_id" domain="[('active_demo_unit','=',True)]" required="create_fleet_vehicle" readonly="not create_fleet_vehicle"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

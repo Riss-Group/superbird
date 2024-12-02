@@ -2,7 +2,7 @@ from odoo import  models, fields, api
 from odoo.exceptions import UserError
 
 
-class ServiceTemplateSelect(models.Model):
+class ServiceTemplateSelect(models.TransientModel):
     _name = 'service.template.select'
     _description = 'Service Template Select'
 
