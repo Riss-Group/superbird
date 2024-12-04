@@ -14,6 +14,7 @@
         'account', 'hr_expense',
         ],
     'data': [
+        'security/ir.model.access.csv',
         'views/account_journal_views.xml',
         'views/hr_expense_views.xml',
     ],
