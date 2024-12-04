@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+        <record id="notification_autoclose_delay" model="ir.config_parameter">
+            <field name="key">notification.autoclose_delay</field>
+            <field name="value">4000</field>
+        </record>
+    </data>
+</odoo>

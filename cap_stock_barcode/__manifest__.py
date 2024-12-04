@@ -19,7 +19,8 @@
         'views/stock_product_selector.xml',
         'report/product_barcode.xml',
         'wizard/product_label_layout.xml',
-        'views/stock_picking_type.xml'
+        'views/stock_picking_type.xml',
+        'views/stock_picking.xml'
     ],
      'assets': {
         'web.assets_backend': [

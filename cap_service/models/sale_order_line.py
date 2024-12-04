@@ -4,6 +4,8 @@ from odoo import fields, models, api
 class SalesOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    fleet_vehicle_rental_id = fields.Many2one('fleet.vehicle', string='Fleet Vehicle')
+    create_fleet_vehicle = fields.Boolean(related='product_template_id.create_fleet_vehicle')
     service_order_line_id = fields.Many2one('service.order.line')
     service_order_line_product_id = fields.Many2one('service.order.line.product', )
     service_order_line_service_id = fields.Many2one('service.order.line.service', )

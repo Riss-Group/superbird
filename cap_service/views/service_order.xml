@@ -62,6 +62,7 @@
                         <button name='action_upsert_so' string="Create/Update SO" type="object" class="oe_highlight"/>
                         <button name='action_create_tasks' string="Create Tasks" type="object" class="oe_highlight"/>
                         <button name='action_open_portal' string='View in Portal' type='object' class='oe_highlight' />
+                        <button name='button_create_rental_order' string='Create Rental Order' type='object' class='oe_highlight' />
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -85,6 +86,9 @@
                                         <field name="planning_hours_to_plan" invisible="1"/>
                                     </span>
                                 </div>
+                            </button>
+                            <button type="object" name="action_stat_button_rental_order_ids" class="oe_stat_button" icon="fa-key">
+                                <field name="rental_order_ids" widget="statinfo" string="Rentals"/>
                             </button>
                         </div>
                         <group name="group_container" >

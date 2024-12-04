@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="cap_sale.product_configurator_product_list"
+       t-inherit="sale_product_configurator.saleProductConfigurator.productList" t-inherit-mode="extension" owl="1">
+        <xpath expr="//h4" position="replace">
+            <h4 class="mt-4 mb-3" t-if="this.props.isProductReplacement"><b>REPLACEMENT</b></h4>
+            <h4 class="mt-4 mb-3" t-if="this.props.areProductsAlternatives">Alternative products</h4>
+            <h4 class="mt-4 mb-3" t-if="this.props.areProductsAccessories">Add accessories</h4>
+            <h4 class="mt-4 mb-3" t-if="this.props.areProductsOptional and !this.props.isProductReplacement and !this.props.areProductsAlternatives and !this.props.areProductsAccessories">Add optional</h4>
+            <h4 class="mt-4 mb-3"
+                t-if="!this.props.isProductReplacement and !this.props.areProductsAlternatives and !this.props.areProductsAccessories and !this.props.areProductsOptional">Main Product</h4>
+        </xpath>
+    </t>
+
+</templates>
