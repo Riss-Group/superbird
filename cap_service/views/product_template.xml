@@ -6,6 +6,15 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="options_package_ok" invisible="not sale_ok or detailed_type != 'service' "/>
+                    <label for="options_package_ok" invisible="not sale_ok or detailed_type != 'service'"/>
+                </span>
+            </xpath>
+            <xpath expr="//group[@name='group_general']" position="inside">
+                <field name="package_service_template_id" invisible="not options_package_ok" required="options_package_ok"/>
+            </xpath>
             <xpath expr="//group[@name='purchase']" position="inside">
                 <group name="create_fleet" string="Fleet" >
                     <field name="tracking" force_save="1" invisible="1"/>
@@ -14,6 +23,8 @@
                     <field name="vehicle_year" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
                     <field name="vehicle_make_id" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)" domain="[('is_bus_fleet','=',True)]"/>
                     <field name="vehicle_model_id" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)" domain="[('id','in',available_vehicle_model_ids)]"/>
+                    <field name="create_pdi_receipt" force_save="1" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
+                    <field name="pdi_receipt_service_template_id" force_save="1" readonly="not create_pdi_receipt"/>
                 </group>
             </xpath>
         </field>

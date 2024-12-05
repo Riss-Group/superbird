@@ -31,6 +31,14 @@
                 <attribute name="readonly">1</attribute>
                 <attribute name="force_save">1</attribute>
             </xpath>
+            <xpath expr="//group[@name='create_fleet']//field[@name='create_pdi_receipt']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='create_fleet']//field[@name='pdi_receipt_service_template_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
         </field>
     </record>
 

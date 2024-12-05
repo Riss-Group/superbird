@@ -98,6 +98,7 @@
                                 <field name="start_date" />
                                 <field name="end_date" />
                                 <field name="service_writer_id" />
+                                <field name="company_id" />
                             </group>
                             <group name='general_other_container' string='Other General'>
                                 <field name='internal_memo' />
@@ -204,6 +205,7 @@
                     <field name="end_date" optional='hide'/>
                     <field name="ref" optional='hide'/>
                     <field name="state" optional='show'/>
+                    <field name="company_id" optional='hide'/>
                     <field name="fleet_vehicle_id" optional='show'/>
                     <field name="fleet_vehicle_make" optional='show'/>
                     <field name="fleet_vehicle_model" optional='show'/>
