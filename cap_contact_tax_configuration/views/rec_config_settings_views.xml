@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cap_res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">cap.res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='accounting_reports']" position="inside">
+                <setting id="tax_exemption_fiscal_position" groups="account.group_account_user"
+                         help="Fiscal position that will be set by default when 'Tax Applicable' on contact is market as No"
+                         company_dependent="1">
+                    <field name="tax_exemption_fiscal_position_id"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

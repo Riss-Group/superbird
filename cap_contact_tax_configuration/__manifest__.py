@@ -10,9 +10,11 @@
     'description': """
         """,
     'depends': [
-        'base', 'account',
+        'base', 'account', 'l10n_ca'
         ],
     'data': [
+        'views/rec_config_settings_views.xml',
+        'views/rec_partner_views.xml',
     ],
     'installable': True,
     'auto_install': False,
