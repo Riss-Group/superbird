@@ -14,11 +14,11 @@ Long description of module's purpose
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['stock'],
+    'depends': ['stock_barcode','sale_stock'],
     'data': [
         'security/ir.model.access.csv',
         'views/product_template.xml',
-        # 'views/templates.xml',
+        'views/stock_product_selector.xml',
     ],
 
 }

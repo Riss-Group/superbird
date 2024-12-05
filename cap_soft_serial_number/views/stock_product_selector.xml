@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="cap_stock_move_line_product_selector_soft_serial" model="ir.ui.view">
+            <field name="name">stock.move.line.selector_cap_soft_serial</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                 <xpath expr="//div[@class='row justify-content-center justify-content-md-start']" position="before">
+                    <div class="col-12 my-2 d-flex align-items-baseline">
+                        <label for="soft_serial_ids" string="Serial"/>
+                        <field name="soft_serial_ids" widget="many2many_tags" context="{'default_product_id' : product_id}"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
