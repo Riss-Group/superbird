@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_property_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.property.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="priority">2</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='misc']" position="inside">
+                <field name="is_tax_applicable" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_partner_property_form_inherited_1" model="ir.ui.view">
+        <field name="name">res.partner.property.form.inherit_1</field>
+        <field name="model">res.partner</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="invisible">not is_tax_applicable</attribute>
+            </xpath>
+        </field>
+    </record>
+     <record id="res_partner_form_inherit_ca_inherited" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.l10n.ca.inherited</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="l10n_ca.res_partner_form_inherit_ca"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='l10n_ca_pst']" position="attributes">
+                    <attribute name="invisible">'CA' not in fiscal_country_codes or not is_tax_applicable</attribute>
+                </xpath>
+            </field>
+        </record>
+</odoo>
