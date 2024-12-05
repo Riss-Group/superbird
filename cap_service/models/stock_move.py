@@ -23,6 +23,9 @@ class StockMove(models.Model):
             for move_line_id in move_id.move_line_ids:
                 if product_id.create_fleet_vehicle and move_line_id.picking_type_id.code == 'incoming' and move_line_id.lot_name:
                     move_line_id._process_fleet_vehicle_in()
+                elif product_id.create_fleet_vehicle and move_id.picking_type_id.code == 'outgoing' and (move_line_id.lot_name or move_line_id.lot_id.name):
+                    for move_line_id in move_id.move_line_ids:
+                        move_line_id._process_fleet_vehicle_out()
 
     def action_assign_serial(self):
         '''
