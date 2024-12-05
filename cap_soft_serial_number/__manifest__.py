@@ -19,6 +19,7 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'views/product_template.xml',
         'views/stock_product_selector.xml',
+        'views/account_move.xml',
     ],
 
 }
