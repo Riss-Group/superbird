@@ -37,6 +37,7 @@ class ServiceTemplateSelect(models.TransientModel):
                 'correction': record.correction,
                 'service_order_line_product_ids' : service_order_product_vals,
                 'service_order_line_service_ids' : service_order_service_vals,
+                'service_template_id': record.id
             }
             self.env['service.order.line'].create(service_order_line_vals)
         self.service_order_id.update_child_sequence()

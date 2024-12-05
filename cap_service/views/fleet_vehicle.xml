@@ -65,6 +65,14 @@
                         </span>
                     </div>
                 </button>
+                <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not is_bus_fleet">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Worksheets</span>
+                        <span class="o_stat_value">
+                            <field name="service_order_worksheet_count" />
+                        </span>
+                    </div>
+                </button>
                 <button name="action_rental_sign_request_ids" type="object" class="oe_stat_button" icon="fa-pencil" invisible="not is_bus_fleet">
                     <field name="rental_sign_request_count" widget="statinfo" string="Rental Agreements"/>
                     <field name="rental_sale_line_ids" invisible="1" />

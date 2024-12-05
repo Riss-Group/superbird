@@ -31,6 +31,7 @@ class ServiceOrder(models.Model):
     sequence = fields.Integer()
     task_attachment_ids = fields.One2many('ir.attachment', related='task_id.attachment_ids')
     task_attachment_count = fields.Integer(string="Attachment Count", compute="_compute_task_attachment_count", store=False)
+    service_template_id = fields.Many2one('service.template')
     
     
     @api.depends('task_id.timesheet_ids.unit_amount')

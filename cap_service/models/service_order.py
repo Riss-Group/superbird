@@ -65,6 +65,7 @@ class ServiceOrder(models.Model):
     planning_hours_total = fields.Float(compute="_compute_planning_hours_total")
     planning_hours_planned = fields.Float(related='sale_order_ids.planning_hours_planned')
     planning_hours_to_plan = fields.Float(related='sale_order_ids.planning_hours_to_plan')
+    company_id = fields.Many2one(comodel_name='res.company', required=True, index=True, default=lambda self: self.env.company)
 
     @api.constrains('state','fleet_vehicle_id','start_date')
     def _check_state_fleet_date(self):
@@ -281,6 +282,7 @@ class ServiceOrder(models.Model):
                 'default_partner_id': self.partner_id.id,
                 'default_start_date': self.start_date,
                 'default_end_date': self.end_date,
+                'default_company_id':self.company_id.id
             },
             'target': 'new',
         }
@@ -352,8 +354,12 @@ class ServiceOrder(models.Model):
             'description': line.name,
             'project_id': line.project_id.id,
             'planned_date_begin': self.start_date,
+            'date_deadline': self.end_date,
+            'fleet_vehicle_id': self.fleet_vehicle_id.id,
             'user_ids': False,
-            'allocated_hours': line.hours
+            'allocated_hours': line.hours,
+            'partner_id': self.partner_id.id,
+            'worksheet_template_id': line.service_template_id.worksheet_template_id.id
         }
         return task_vals
 
@@ -384,7 +390,8 @@ class ServiceOrder(models.Model):
                     'payment_term_id': self.payment_term_id.id,
                     'user_id': self.service_writer_id.id,
                     'service_order_id': self.id,
-                    'service_order_type' : sale_order_type
+                    'service_order_type' : sale_order_type,
+                    'company_id':self.company_id.id
                 }
                 if self.shipping_partner_id:
                     so_vals['partner_shipping_id'] = self.shipping_partner_id.id

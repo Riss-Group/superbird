@@ -20,12 +20,12 @@ class ServiceOrderTemplate(models.Model):
     project_id = fields.Many2one('project.project', string='Department')
     service_template_parts = fields.One2many('service.template.parts', 'service_template_id')
     service_template_service = fields.One2many('service.template.service', 'service_template_id')
+    worksheet_template_id = fields.Many2one('worksheet.template')
 
     @api.constrains('op_code')
     def _check_unique_op_code(self):
         for record in self:
             if record.op_code:
-                # Search for any record with the same op_code but a different ID
                 existing_records = self.search([('op_code', '=', record.op_code), ('id', '!=', record.id)])
                 if existing_records:
                     raise ValidationError(_('The OP Code must be unique. OP Code "%s" is already used.' % record.op_code))

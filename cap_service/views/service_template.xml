@@ -19,6 +19,7 @@
                             <field name="cause" />
                             <field name="correction" />
                             <field name="project_id" domain="[('is_repair_service','=',True)]"/>
+                            <field name="worksheet_template_id" domain="[('res_model','=','project.task')]"/>
                         </group>
                         <sheet>
                             <h3>Parts Template</h3>
