@@ -18,6 +18,11 @@ class ProjectTask(models.Model):
         ('5','high'),
     ],default='1')
     planning_slot_ids = fields.One2many('planning.slot', 'service_task_id')
+    fleet_vehicle_id = fields.Many2one('fleet.vehicle')
+    is_repair_service = fields.Boolean(related='project_id.is_repair_service', string="Repair Service")
+    product_id = fields.Many2one('product.product', related='fleet_vehicle_id.product_id')
+    product_template_variant_value_ids = fields.Many2many('product.template.attribute.value', string='Product Attributes', related='product_id.product_template_variant_value_ids')
+
 
 class ProjectTaskCreateTimesheet(models.TransientModel):
     _inherit = 'project.task.create.timesheet'
