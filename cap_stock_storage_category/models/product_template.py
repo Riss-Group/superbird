@@ -3,7 +3,8 @@ from odoo import models, fields, api
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    velocity_id = fields.Many2one('stock.storage.velocity', string="Velocity")
+    # velocity_id = fields.Many2one('stock.storage.velocity', string="Velocity")
+    velocity_ids = fields.One2many('velocity.warehouse','product_tmpl_id', string="Velocity")
 
     #Todo: check calculation as well
     @api.model
