@@ -12,3 +12,6 @@ class StockPicking(models.Model):
                 line.qty_done = line.barcode_qty_done
         res = super(StockPicking, self).button_validate()
         return res
+
+
+
