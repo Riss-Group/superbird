@@ -38,11 +38,11 @@ class StockPutawayRule(models.Model):
                 if putaway_rule.storage_category_id:
                     child_locations = child_locations.filtered(lambda loc: loc.storage_category_id == putaway_rule.storage_category_id)
                 if putaway_rule.use_of_location:
-                    child_locations = child_locations.filtered(lambda loc: loc.use_of_location == putaway_rule.use_of_location and loc.warehouse_id == putaway_rule.location_out_id.warehouse_id)
+                    child_locations = child_locations.filtered(lambda loc: loc.use_of_location == putaway_rule.use_of_location)
                 if putaway_rule.location_type:
-                    child_locations = child_locations.filtered(lambda loc: loc.location_type == putaway_rule.location_type and loc.warehouse_id == putaway_rule.location_out_id.warehouse_id)
+                    child_locations = child_locations.filtered(lambda loc: loc.location_type == putaway_rule.location_type)
                 if putaway_rule.location_specification:
-                    child_locations = child_locations.filtered(lambda loc: loc.location_specification == putaway_rule.location_specification and loc.warehouse_id == putaway_rule.location_out_id.warehouse_id)
+                    child_locations = child_locations.filtered(lambda loc: loc.location_specification == putaway_rule.location_specification)
                 if putaway_rule.same_velocity:
                     child_locations = child_locations.filtered(lambda loc: loc.velocity_id == product.velocity_id)
 

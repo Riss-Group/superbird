@@ -31,7 +31,6 @@ class StockStorageCategory(models.Model):
     ], string="Location specification", required=True)
 
     velocity_id = fields.Many2one('stock.storage.velocity', string="Velocity")
-    warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse")
 
     length = fields.Float(string="Length")
     depth = fields.Float(string="Depth")
