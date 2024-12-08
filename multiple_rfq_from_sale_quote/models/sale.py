@@ -10,11 +10,20 @@ class SaleOrderLine(models.Model):
     custom_vendor_ids = fields.Many2many(
         'res.partner',
         string="Vendors",
+        compute="_compute_vendor",
+        store=True,
+        readonly=False,
     )
     is_rfq_create = fields.Boolean(
         related='order_id.is_rfq_create',
         string="Create RFQ?",
     )
+
+    @api.depends('product_id')
+    def _compute_vendor(self):
+        for rec in self.filtered(lambda x: x.is_rfq_create):
+            rec.custom_vendor_ids = rec.product_id.seller_ids.filtered(
+                lambda x: x.company_id.id == rec.company_id.id or not x.company_id).mapped('partner_id')
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
