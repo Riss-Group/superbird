@@ -65,6 +65,7 @@ class StockMoveLine(models.Model):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
         fields.append('barcode_qty_done')
         fields.append('product_uom_qty')
+        fields.append('origin')
         return fields
 
 
