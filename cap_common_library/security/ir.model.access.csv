@@ -1,4 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+cap_common.res_partner_class,res_partner_class,cap_common_library.model_res_partner_class,base.group_user,1,1,1,1
 cap_common.res_partner_segmentation,res_partner_segmentation,cap_common_library.model_res_partner_segmentation,base.group_user,1,1,1,1
 cap_common.res_partner_type,res_partner_type,cap_common_library.model_res_partner_type,base.group_user,1,1,1,1
 cap_common.res_partner_level,res_partner_level,cap_common_library.model_res_partner_level,base.group_user,1,1,1,1
