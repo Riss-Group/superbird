@@ -17,8 +17,11 @@
                 <div t-field="o.commercial_partner_id.name"/>
                 <div t-field="o.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
                 <div t-if="o.vat" class="mt16">
-                    <t t-out="company.country_id.vat_label or 'Tax ID'"/>: 
-                    <span t-field="o.vat" /></div>
+                    <t t-out="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.vat" />
+                </div>
+                <div t-if="o.l10n_ca_pst" class="mt6">
+                    <t t-out="'PST Number'"/>: <span t-field="o.l10n_ca_pst" />
+                </div>
                 <br/>
                 <h2>Customer Statement</h2>
                 <div id="informations" class="row mt16 mb16">
@@ -72,7 +75,7 @@
                                 <t t-set="company_residual" t-value="company_residual + move_id.amount_residual_signed" />
                             </t>
                             <tr class="table-secondary">
-                                <td colspan="6" class="text-left">Subtotal for <t t-esc="comp.name" />:</td>
+                                <td colspan="6" class="text-left">Subtotal for <t t-esc="comp.statement_display_name if comp.statement_display_name else comp.name" />:</td>
                                 <td><span t-esc="company_total" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/></td>
                                 <td><span t-esc="company_residual" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/></td>
                             </tr>
