@@ -20,7 +20,7 @@ class ResPartner(models.Model):
         return res
 
     def check_tax_fields(self):
-        for rec in self:
+        for rec in self.filtered(lambda r: not r.parent_id):
             if rec.is_tax_applicable and self.env.company.country_id.code == 'CA':
                 if not rec.l10n_ca_pst or not rec.vat:
                     raise ValidationError(
@@ -37,3 +37,10 @@ class ResPartner(models.Model):
                     rec.property_account_position_id = exemption_fiscal_position_id
             else:
                 rec.property_account_position_id = False
+
+    @api.model
+    def _commercial_fields(self):
+        res = super(ResPartner, self)._commercial_fields()
+        res.append('is_tax_applicable')
+        res.append('l10n_ca_pst')
+        return res
