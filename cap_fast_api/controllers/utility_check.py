@@ -44,6 +44,10 @@ class ReturnValuesPC(BaseModel):
     price_list_name: str = ""
     price_list_currency: str = ""
     price_from_qty: float = 0.0
+    uom_en_US: str = ""
+    uom_fr_CA: str = ""
+    eco_core_fee: float = 0.0
+    is_core_type: bool = False
     prices: List[PriceListEntryPC] = [] 
     message: str = ""
 
@@ -212,6 +216,9 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
         - `price_list_currency` (derived from the partner's pricelist, or defaults if unset)
         - `price_list_name` (derived from the partner's pricelist, or defaults if unset)
         - `price_from_qty` (Highest Quantity discounted pricelist price from the prices object below )
+        - `uom_en_US` and `uom_fr_CA`: The product's UOM name in English and French.
+        - `eco_core_fee`: The product's eco fee or related core part price.
+        - `is_core_type`: Boolean indicating if the product is a core type.
         - `prices` list of objects (calculated from the applicable pricelist)
         - `message` ("OK" for success, otherwise provides handled exception details)
               
@@ -256,6 +263,10 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
                     "price_list_name": "My Special Pricelist",
                     "price_list_currency": "USD",
                     "price_from_qty": 41.01,
+                    "uom_en_US": "each",
+                    "uom_fr_CA": "chaque",
+                    "eco_core_fee": 18.01,
+                    "is_core_type": True
                     "prices": [
                         {
                             "price_list_price": 42.01,
@@ -345,6 +356,10 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
             instance_vals.price_list_name = pricelist_id.name
             instance_vals.price_list_currency = currency_id.name
             instance_vals.price_from_qty = get_price_from_qty(env=env, quantity=data.quantity, price_list_entries=pricelist_entries, product_id=product_id)
+            instance_vals.uom_en_US = product_id.uom_id.with_context(land="en_US").name
+            instance_vals.uom_fr_CA = product_id.uom_id.with_context(lang="fr_CA").name
+            instance_vals.eco_core_fee = product_id.eco_fee if not product_id.is_core_type else product_id.core_part_id.list_price
+            instance_vals.is_core_type = product_id.is_core_type
             instance_vals.prices = pricelist_entries
             instance_vals.message = "OK"
         except Exception as e:
