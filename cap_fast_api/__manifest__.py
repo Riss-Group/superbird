@@ -18,7 +18,8 @@
         'account',
         'sale',
         'product',
-        'delivery'
+        'delivery',
+        'cap_common_library'
     ],
     'data': [
         "data/data.xml",
