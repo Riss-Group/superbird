@@ -65,6 +65,7 @@ class StockMoveLine(models.Model):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
         fields.append('barcode_qty_done')
         fields.append('product_uom_qty')
+        fields.append('origin')
         return fields
 
 
@@ -78,3 +79,8 @@ class StockMoveLine(models.Model):
         for scrap in self:
             return locations_per_company[scrap.company_id.id]
 
+
+class StockMoveLineMail(models.Model):
+    _name = 'stock.move.line'
+    _inherit = 'stock.move.line'
+    _inherit = ['stock.move.line', 'mail.thread', 'mail.activity.mixin']

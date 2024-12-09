@@ -6,8 +6,11 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.stock_picking_kanban"/>
         <field name="arch" type="xml">
+            <xpath expr="//t[@t-esc='record.name.value']" position="replace">
+                <span><field name="origin"/></span>
+            </xpath>
             <xpath expr="//field[@name='picking_properties']" position="after">
-                <field name="origin" display="full"/>
+                <field name="name" display="full"/>
             </xpath>
         </field>
     </record>
