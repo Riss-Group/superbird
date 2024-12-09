@@ -13,5 +13,9 @@ class StockPicking(models.Model):
         res = super(StockPicking, self).button_validate()
         return res
 
-
-
+    def _get_stock_barcode_data(self):
+        data = super(StockPicking, self)._get_stock_barcode_data()
+        for picking in data.get('records').get('stock.picking', []):
+            pick = self.browse(picking.get('id'))
+            picking['name'] = pick.origin + ' ( ' + pick.name + ' ) ' if pick.origin  else pick.name
+        return data
