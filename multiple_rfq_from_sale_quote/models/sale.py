@@ -21,7 +21,7 @@ class SaleOrderLine(models.Model):
 
     @api.depends('product_id')
     def _compute_vendor(self):
-        for rec in self.filtered(lambda x: x.is_rfq_create):
+        for rec in self:
             rec.custom_vendor_ids = rec.product_id.seller_ids.filtered(
                 lambda x: x.company_id.id == rec.company_id.id or not x.company_id).mapped('partner_id')
 
