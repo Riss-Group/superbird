@@ -10,6 +10,9 @@ class ProductTemplate(models.Model):
     price_subclass_id = fields.Many2one('product.price_subclass', string='Price Subclass')
     product_group_id = fields.Many2one('product.group', string='Product Group')
     product_subgroup_id = fields.Many2one('product.subgroup', string='Product Subgroup')
+    #These fields are redefined here to prevent dependency issue for other cores modules which has been frequently reworked
+    is_core_type = fields.Boolean("is Core")
+    
 
     @api.onchange('price_class_id')
     def _onchange_price_class_id(self):
@@ -20,6 +23,13 @@ class ProductTemplate(models.Model):
     def _onchange_product_group_id(self):
         if not self.product_group_id or self.product_subgroup_id not in self.product_group_id.ids:
             self.product_subgroup_id = False
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    #These fields are redefined here to prevent dependency issue for other cores modules which has been frequently reworked
+    core_part_id = fields.Many2one('product.product', string="Core Part")
+    eco_fee = fields.Float()
 
 class ProductStockClass(models.Model):
     _name = "product.stock_class"
