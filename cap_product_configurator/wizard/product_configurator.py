@@ -49,10 +49,12 @@ class ProductConfigurator(models.TransientModel):
         rec = super().apply_onchange_values(values, field_names, field_onchange)
         values = rec.get("value")
         domain = rec.get("domain")
-
-        product_tmpl_id = self.env["product.template"].browse(
-            values.get("product_tmpl_id", [])
-        )
+        product_tmpl_dict = values.get("product_tmpl_id", [])
+        product_tmpl_id = False
+        if product_tmpl_dict :
+            product_tmpl_id = self.env["product.template"].browse(
+                product_tmpl_dict['id']
+            )
         if not product_tmpl_id:
             product_tmpl_id = self.product_tmpl_id
         field_names.append('qty_available')
@@ -68,6 +70,7 @@ class ProductConfigurator(models.TransientModel):
             attribute_value_ids = list(transformed_dict.values())
             template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', attribute_value_ids)])
             qty_available = self._get_product_ids_qty_available(template_values.ids)
+
         values['qty_available'] = qty_available
 
         return {"value": values, "domain": domain}
