@@ -9,7 +9,7 @@ class ResPartner(models.Model):
 
     #CUSTOMER FIELDS
     is_customer = fields.Boolean()
-    customer_class_id = fields.Many2one('res.partner.segmentation', string='Customer Class')
+    partner_class_id = fields.Many2one('res.partner.class', string='Customer Class')
     bus_segmentation_id = fields.Many2one('res.partner.segmentation', string='Bus Segmentation')
     bus_customer_type_id = fields.Many2one('res.partner.type', string='Bus Customer Type')
     customer_level_id = fields.Many2one('res.partner.level', string='Customer Level')
@@ -100,6 +100,12 @@ class ResPartner(models.Model):
         if 'number_MV' in vals:
             vals['last_entered_MV'] = now
         return super().write(vals)
+
+class ResPartnerSegmentation(models.Model):
+    _name = "res.partner.class"
+    _description = "Customer Class"
+
+    name = fields.Char('Name', translate=True)
 
 class ResPartnerSegmentation(models.Model):
     _name = "res.partner.segmentation"
