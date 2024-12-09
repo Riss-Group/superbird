@@ -13,7 +13,7 @@
                 <page name="page_customer_info" string="Customer Info" invisible="not is_customer">
                     <group name="group_customer_info_container">
                         <group name="group_customer_info_left">
-                            <field name="customer_class_id" />
+                            <field name="partner_class_id" />
                             <field name="bus_segmentation_id" />
                             <field name="bus_customer_type_id" />
                             <field name="customer_level_id" />
@@ -94,6 +94,31 @@
     </record>
 
     <!-- Additional Related Views -->
+    <!-- ResPartnerSegmentation Views -->
+    <record id="cap_common_res_partner_class_form" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_class_form</field>
+        <field name="model">res.partner.class</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cap_common_res_partner_class_tree" model="ir.ui.view">
+        <field name="name">cap_common_res_partner_class_tree</field>
+        <field name="model">res.partner.class</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- ResPartnerSegmentation Views -->
     <record id="cap_common_res_partner_segmentation_form" model="ir.ui.view">
         <field name="name">cap_common_res_partner_segmentation_form</field>
@@ -380,6 +405,12 @@
     </record>
 
     <!-- Actions -->
+    <record id="cap_common_res_partner_class_action" model="ir.actions.act_window">
+        <field name="name">Customer Class</field>
+        <field name="res_model">res.partner.class</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <record id="cap_common_res_partner_segmentation_action" model="ir.actions.act_window">
         <field name="name">Customer Segmentations</field>
         <field name="res_model">res.partner.segmentation</field>
@@ -448,6 +479,7 @@
 
     <!-- Menu Items -->
     <menuitem id="cap_common_additional_contact_configuration" name="Additional Contact Configuration" parent="contacts.res_partner_menu_config"/>
+    <menuitem id="cap_common_res_partner_class_menu" name="Customer Class" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_class_action"/>
     <menuitem id="cap_common_res_partner_segmentation_menu" name="Customer Segmentations" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_segmentation_action"/>
     <menuitem id="cap_common_res_partner_type_menu" name="Customer Types" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_type_action"/>
     <menuitem id="cap_common_res_partner_level_menu" name="Customer Levels" parent="cap_common_additional_contact_configuration" action="cap_common_res_partner_level_action"/>
