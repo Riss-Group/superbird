@@ -14,6 +14,7 @@ class CrmLead(models.Model):
                 # Only check for duplicates within crm.lead
                 duplicate_leads = self.search([
                     ('customer_reference', '=', lead.customer_reference),
+                    ('partner_id', '=', lead.partner_id.id),
                     ('id', '!=', lead.id)
                 ])
                 if duplicate_leads:
