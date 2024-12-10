@@ -3,7 +3,7 @@
     'name': 'CAP Sale Finance',
     'category': 'Sales',
     'summary': "Financing Options for Sales",
-    'version': '1.0',
+    'version': '1.1',
     'author': 'Captivea software Consulting, Bassim Elsamaloty',
     'website': 'https://www.captivea.com/',
     'license': 'OPL-1',
