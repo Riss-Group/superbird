@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.view_partner_property_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='misc']" position="inside">
-                <field name="is_tax_applicable" widget="boolean_toggle"/>
+                <field name="is_tax_applicable" readonly="parent_id"/>
             </xpath>
         </field>
     </record>
@@ -29,6 +29,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='l10n_ca_pst']" position="attributes">
                     <attribute name="invisible">'CA' not in fiscal_country_codes or not is_tax_applicable</attribute>
+                    <attribute name="required">(parent_id and ('CA' in fiscal_country_codes or is_tax_applicable))</attribute>
                 </xpath>
             </field>
         </record>

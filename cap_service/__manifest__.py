@@ -39,6 +39,7 @@
         'views/product_product.xml',
         'views/project_project.xml',
         'views/project_task.xml',
+        'views/purchase_order.xml',
         'views/quality_point.xml',
         'views/res_company.xml',
         'views/sale_order.xml',
