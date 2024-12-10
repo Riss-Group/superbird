@@ -61,15 +61,18 @@ class ProductConfigurator(models.TransientModel):
         qty_available = product_tmpl_id.qty_available if product_tmpl_id else 0
 
         if values and   any(item.startswith('__attribute_') for item in list(values.keys())) :
-            transformed_dict = {
-                key.replace('__attribute_', ''): value
-                for key, value in values.items()
-                if key.startswith('__attribute_')
-            }
-            view_attribute_ids = list(map(int, transformed_dict.keys()))
-            attribute_value_ids = list(transformed_dict.values())
-            template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', attribute_value_ids)])
-            qty_available = self._get_product_ids_qty_available(template_values.ids)
+            try:
+                transformed_dict = {
+                    key.replace('__attribute_', ''): value
+                    for key, value in values.items()
+                    if key.startswith('__attribute_')
+                }
+                view_attribute_ids = list(map(int, transformed_dict.keys()))
+                attribute_value_ids = list(transformed_dict.values())
+                template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', attribute_value_ids)])
+                qty_available = self._get_product_ids_qty_available(template_values.ids)
+            except Exception:
+                pass
 
         values['qty_available'] = qty_available
 
