@@ -29,7 +29,7 @@
             </xpath>
             <field name="uom_po_id" position="after">
                <field name="has_core" widget="boolean_toggle" invisible="0"/>
-               <field name="core_part_id" invisible="not has_core"/>
+               <field name="core_part_id" invisible="not has_core" domain="[('id', '!=', id)]"/>
             </field>
         </field>
     </record>
