@@ -10,7 +10,7 @@ class SaleFinanceTerms(models.Model):
 
 
     order_id = fields.Many2one('sale.order')
-    partner_id = fields.Many2one('res.partner')
+    partner_id = fields.Many2one('res.partner', domain="[('financing_partner', '=', True)]")
     deposit_amount = fields.Float()
     trade_amount = fields.Float()
     finance_amount = fields.Float(compute="_compute_finance_amount", store=True, readonly=False)
