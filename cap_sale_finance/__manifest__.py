@@ -11,11 +11,12 @@
         - Adds a new table under the sales order for financing calculations
         """,
     'depends': [
-        'sale',
+        'sale', 'base',
         ],
     'data': [
         'security/ir.model.access.csv',
         'views/sale_order.xml',
+        'views/res_partner_views.xml',
     ],
     'installable': True,
     'auto_install': False,
