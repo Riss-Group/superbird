@@ -9,7 +9,7 @@
     'website': 'https://www.captivea.com/',
     'category': 'Uncategorized',
     'version': '1.0',
-    'depends': ['product_configurator_sale'],
+    'depends': ['product_configurator_sale','stock'],
 
     # always loaded
     'data': [
