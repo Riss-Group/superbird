@@ -104,7 +104,7 @@
         <field name="view_mode">tree</field>
         <field name="view_id" ref="cap_account_expense_extended.unreconciled_bank_statement_line_tree_view" />
         <field name="search_view_id" ref="unreconciled_bank_statement_line_search_view"/>
-        <field name="domain">[('is_reconciled','=',False), ('journal_employee_user_id', '=', uid)]</field>
+        <field name="domain">[('is_reconciled','=',False), ('move_id.state', '=', 'posted'), ('journal_employee_user_id', '=', uid)]</field>
     </record>
 
     <menuitem id="menu_hr_unreported_transactions" name="Unreported Transactions" sequence="4"

@@ -30,13 +30,14 @@ class ResPartner(models.Model):
 
     @api.constrains('is_tax_applicable')
     def _change_tax_applicable(self):
-        for rec in self:
-            if rec.is_tax_applicable:
-                exemption_fiscal_position_id = self.env.company.sudo().tax_exemption_fiscal_position_id
-                if exemption_fiscal_position_id:
-                    rec.property_account_position_id = exemption_fiscal_position_id
-            else:
-                rec.property_account_position_id = False
+        if self.env.company.country_id.code == 'CA':
+            for rec in self:
+                if not rec.is_tax_applicable:
+                    exemption_fiscal_position_id = self.env.company.sudo().tax_exemption_fiscal_position_id
+                    if exemption_fiscal_position_id:
+                        rec.property_account_position_id = exemption_fiscal_position_id
+                else:
+                    rec.property_account_position_id = False
 
     @api.model
     def _commercial_fields(self):
