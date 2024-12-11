@@ -1,8 +1,16 @@
-from odoo import _, api, fields, models, tools
-from collections import defaultdict
-from odoo.fields import Command
+from odoo import _, api, fields, models
 
-from odoo.exceptions import UserError
+
+
+def get_last_list(nested):
+    if type(nested).__name__ == 'dict_values':
+        return get_last_list(list(nested))
+
+    elif isinstance(nested, list):
+        return get_last_list(nested[-1])
+
+    elif isinstance(nested, int):
+        return nested
 
 
 class ProductConfigurator(models.TransientModel):
@@ -71,10 +79,10 @@ class ProductConfigurator(models.TransientModel):
                 if key.startswith('__attribute_')
             }
             view_attribute_ids = list(map(int, transformed_dict.keys()))
-            attribute_value_ids = list(transformed_dict.values())
-            template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', attribute_value_ids)])
+            attribute_value_ids = get_last_list(transformed_dict.values())
+            template_values = self.env['product.template.attribute.value'].search([('product_tmpl_id','=',product_tmpl_id.id),('attribute_id','in',view_attribute_ids),('product_attribute_value_id','in', [attribute_value_ids])])
             data = self._get_lot_ids_qty_available(template_values.ids)
-            qty_available = data.get('qty_available') or qty_available
+            qty_available = data.get('qty_available') or 0
             quant_ids = data.get('quant_ids')
             if quant_ids:
                 values['lot_ids'] = self.generate_lot_table(quant_ids)
@@ -137,3 +145,6 @@ class ProductConfigurator(models.TransientModel):
         table_html += "</tbody></table>"
 
         return table_html
+
+
+
