@@ -5,6 +5,7 @@ from . import fleet_vehicle_model_brand
 from . import fleet_vehicle_model
 from . import fleet_vehicle_warranty_line
 from . import fleet_vehicle
+from . import procurement_group
 from . import planning_slot
 from . import product_template
 from . import product_product
@@ -14,6 +15,7 @@ from . import stock_move
 from . import stock_picking
 from . import project_project
 from . import project_task
+from . import purchase_order
 from . import quality_point
 from . import res_company
 from . import sale_order

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_form_finance_info" model="ir.ui.view">
+        <field name="name">res.partner.form.finance.info</field>
+        <field name="model">res.partner</field>
+        <field name="priority">2</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='misc']" position="inside">
+                <field name="financing_partner"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

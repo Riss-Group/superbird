@@ -10,6 +10,7 @@
         ],
     'data': [
         'views/crm_lead.xml',
+        'views/sale_order_views.xml',
     ],
     'installable': True,
     'application': False,

@@ -17,6 +17,7 @@ class ServiceOrder(models.Model):
     seperate_warranty_docs = fields.Boolean(compute='_compute_seperate_warranty_docs')
     sale_order_ids = fields.One2many('sale.order', 'service_order_id')
     sale_order_count = fields.Integer(compute='_compute_sale_order_count')
+    picking_ids = fields.Many2many('stock.picking', compute="_compute_picking_ids")
     rental_order_ids = fields.One2many('sale.order', 'service_order_rental_id')
     rental_order_count = fields.Integer(compute='_compute_rental_order_count')
     invoice_ids = fields.One2many('account.move', 'service_order_id')
@@ -112,6 +113,11 @@ class ServiceOrder(models.Model):
     def _compute_sale_order_count(self):
         for record in self:
             record.sale_order_count = len(record.sale_order_ids)
+    
+    @api.depends('sale_order_ids')
+    def _compute_picking_ids(self):
+        for record in self:
+            record.picking_ids = record.sale_order_ids.picking_ids
     
     @api.depends('rental_order_ids')
     def _compute_rental_order_count(self):
@@ -329,6 +335,14 @@ class ServiceOrder(models.Model):
         action['context']
         return action
   
+    def action_view_delivery(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
+        pickings = self.sale_order_ids.picking_ids
+        action['domain'] = [('id', 'in', pickings.ids)]
+        #Dont allow create since context will be dirty since there are multiple SOs Involved
+        action['context'] = {'create': 0}
+        return action
+
     def button_add_from_template(self):
         '''
             Service ID is passed through context
@@ -470,7 +484,6 @@ class ServiceOrder(models.Model):
                 so_line_vals.append((0, 0, vals))
             sequence += 1
         return so_line_vals
-
 
     @api.model_create_multi
     def create(self, vals_list):
