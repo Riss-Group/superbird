@@ -20,7 +20,8 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
     
     is_rfq_create = fields.Boolean(
-        string="Create RFQ?"
+        string="Create RFQ?",
+        default = True
     )
 
     def probc_get_purchase_order(self):
