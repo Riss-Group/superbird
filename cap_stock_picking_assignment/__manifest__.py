@@ -19,4 +19,4 @@
     'auto_install': False,
     'application': True,
 }
-
+ 
