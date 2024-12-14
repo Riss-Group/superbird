@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_order_form_inherit_qty_legacy">
+            <field name="name">sale.order.form.inherit.qty_legacy</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="is_legacy"/>
+                </xpath>
+                <xpath expr="//notebook//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='qty_invoiced']"
+                       position="before">
+                    <field name="qty_invoiced_legacy" invisible="not is_legacy" optional="hide"
+                           readonly="parent.state != 'draft'"/>
+                </xpath>
+                <xpath expr="//notebook//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='qty_delivered']" position="before">
+                    <field name="qty_delivered_legacy" invisible="not is_legacy" optional="hide"
+                           readonly="parent.state != 'draft'"/>
+                    <field name="is_legacy" column_invisible="True"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>
