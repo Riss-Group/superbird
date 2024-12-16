@@ -12,8 +12,9 @@ class StockMoveLine(models.Model):
     related_scrap_line = fields.Many2one('stock.move.line')
     barcode_qty_done = fields.Float('Qty Done')
     product_uom_qty = fields.Float(related="move_id.product_uom_qty")
+    is_quarantine = fields.Boolean(default=False)
 
-    @api.onchange('not_done_qty')
+    # @api.onchange('not_done_qty')
     def _onchange_not_done_qty(self):
         for line in self:
             if line.not_done_qty != 0:
@@ -21,6 +22,8 @@ class StockMoveLine(models.Model):
             else:
                 if line.related_scrap_line:
                     line.related_scrap_line.unlink()
+                else :
+                    line.update({'location_dest_id': line.move_id.picking_id.location_dest_id.id, 'is_quarantine':False})
 
     @api.depends( 'move_id.product_uom_qty', 'barcode_qty_done', 'not_done_qty')
     def compute_remaining_qty(self):
@@ -33,12 +36,23 @@ class StockMoveLine(models.Model):
                 line.related_scrap_line.update({'barcode_qty_done': line.not_done_qty})
             else:
                 scrap_location = line.picking_type_id.quarantine_location_id.id or line.get_scrap_location()
-                new_move = line.move_id.copy({'product_uom_qty': line.not_done_qty, 'location_dest_id': scrap_location})
-                new_line = line.copy({'move_id': new_move.id, 'qty_done': line.not_done_qty,'barcode_qty_done': line.not_done_qty, 'location_dest_id': scrap_location})
+                if line.product_uom_qty == 1 :
+                    line.update({'location_dest_id': scrap_location, 'is_quarantine':True})
+                else:
+                    new_move = line.move_id.copy({
+                        'product_uom_qty': line.not_done_qty, 'location_dest_id': scrap_location
+                    })
+                    new_line = line.copy({
+                        'move_id': new_move.id,
+                        'qty_done': line.not_done_qty,
+                        'barcode_qty_done': line.not_done_qty,
+                        'location_dest_id': scrap_location,
+                        'is_quarantine': True
+                    })
 
-                line.update({'related_scrap_line' : new_line.id})
-                self.env.cr.execute(f"update stock_move set product_uom_qty={line.move_id.product_uom_qty - line.not_done_qty} where id={line.move_id.id}")
-                new_move.picking_id.action_confirm()
+                    line.update({'related_scrap_line' : new_line.id})
+                    # self.env.cr.execute(f"update stock_move set product_uom_qty={line.move_id.product_uom_qty - line.not_done_qty} where id={line.move_id.id}")
+                    new_move.picking_id.action_confirm()
 
 
     def _compute_scrap_location_id(self):
@@ -49,7 +63,6 @@ class StockMoveLine(models.Model):
             for company, stock_warehouse_id in groups
         }
         return locations_per_company[self.company_id.id]
-
 
     def update_product_barcode(self, barcode):
         if barcode:
@@ -63,11 +76,8 @@ class StockMoveLine(models.Model):
 
     def _get_fields_stock_barcode(self):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
-        fields.append('barcode_qty_done')
-        fields.append('product_uom_qty')
-        fields.append('origin')
+        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine'])
         return fields
-
 
     def get_scrap_location(self):
         groups = self.env['stock.location']._read_group(
@@ -78,6 +88,13 @@ class StockMoveLine(models.Model):
         }
         for scrap in self:
             return locations_per_company[scrap.company_id.id]
+
+    def write(self, vals):
+        super(StockMoveLine, self).write(vals)
+        save_qty_not_done = self.env.context.get('onchange_not_done_qty')
+        if not save_qty_not_done:
+            for line in self:
+                line.with_context({'onchange_not_done_qty' : True})._onchange_not_done_qty()
 
 
 class StockMoveLineMail(models.Model):
