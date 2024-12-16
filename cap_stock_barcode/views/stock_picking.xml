@@ -14,4 +14,9 @@
             </xpath>
         </field>
     </record>
+    <record id="stock_barcode.stock_picking_action_kanban" model="ir.actions.act_window">
+        <field name="name">Operations</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">kanban,form,tree</field>
+    </record>
 </odoo>
