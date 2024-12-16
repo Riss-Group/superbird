@@ -24,6 +24,7 @@
                     <div class="col-12 my-2 d-flex align-items-baseline">
                         <label for="qty_remaining" string="Remaining"/>
                         <field name="qty_remaining" class="w-100 w-md-50 text-end" options="{'type': 'number'}" placeholder="Remaining"/>
+                        <field name="related_scrap_line" invisible="1"/>
                     </div>
                 </div>
                 <xpath expr="." position="inside">

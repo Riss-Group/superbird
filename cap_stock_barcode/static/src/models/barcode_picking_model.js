@@ -13,13 +13,23 @@ patch(BarcodePickingModel.prototype, {
     async setup() {
         super.setup();
     },
-
+    lineIsFaulty(line) {
+        return this._useReservation && line.barcode_qty_done > line.reserved_uom_qty | line.is_quarantine;
+    },
     getQtyDone(line) {
         return line.barcode_qty_done;
     },
 
     getQtyDemand(line) {
-        return line.product_uom_qty || line.reserved_uom_qty || 0;
+        let qtyDemand;
+        if (this.record.picking_type_code == 'incoming')
+            {
+                qtyDemand = line.product_uom_qty
+            }
+        else {
+            qtyDemand = line.reserved_uom_qty
+        }
+        return  line.reserved_uom_qty || 0;
     },
 
     async save_barcode_qty_done(line) {
@@ -86,7 +96,7 @@ patch(BarcodePickingModel.prototype, {
             const uncompletedLines = [];
             const alreadyChecked = [];
             let atLeastOneLinePartiallyProcessed = false;
-            for (let line of this.currentState.lines) {
+            for (let line of this.currentState.lines.filter(line => !line.is_quarantine)) {
                 line = this._getParentLine(line) || line;
                 if (alreadyChecked.includes(line.virtual_id)) {
                     continue;
