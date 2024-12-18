@@ -43,7 +43,15 @@ class PurchaseOrder(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Vehicles',
-            'view_mode': 'kanban,tree,form',
             'res_model': 'fleet.vehicle',
-            'domain': [('id', 'in', self.fleet_vehicle_ids.ids)]
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', self.fleet_vehicle_ids.ids)],
+            'views': [
+                (self.env.ref('cap_service.fleet_vehicle_view_tree_ack').id, 'tree'),
+                (self.env.ref('fleet.fleet_vehicle_view_form').id, 'form'),
+            ],
+            'context': {
+                'create': 0, 
+                'delete':0,
+            },
         }

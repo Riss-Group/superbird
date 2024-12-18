@@ -373,7 +373,9 @@ class ServiceOrder(models.Model):
             'user_ids': False,
             'allocated_hours': line.hours,
             'partner_id': self.partner_id.id,
-            'worksheet_template_id': line.service_template_id.worksheet_template_id.id
+            'worksheet_template_id': line.service_template_id.worksheet_template_id.id,
+            'service_order_id': line.service_order_id.id,
+            'service_order_line_id': line.id
         }
         return task_vals
 
