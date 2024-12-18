@@ -66,13 +66,9 @@ class ResPartner(models.Model):
                     elif command[0] == 1:  # UPDATE
                         bank_id = command[1]
                         update_vals = command[2]
-                        update_vals.update({
-                            'approval_id': approval.id,
-                            'command': 1,
-                        })
                         existing_bank = self.env['res.partner.bank'].browse(bank_id)
                         if existing_bank:
-                            existing_bank.write(update_vals)
+                            existing_bank.write({'update_vals': update_vals, 'approval_id': approval.id, 'command': 1,})
 
                     elif command[0] == 2:  # DELETE
                         bank_id = command[1]

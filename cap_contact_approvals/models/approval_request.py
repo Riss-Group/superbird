@@ -49,23 +49,9 @@ class ApprovalRequest(models.Model):
             if self.bank_changed:
                 for bank in self.bank_ids.with_context(origin='approval.request'):
                     if bank.command == 0:  # Create
-                        bank_data = {
-                            'acc_number': bank.acc_number,
-                            'allow_out_payment': bank.allow_out_payment,
-                            'acc_holder_name': bank.acc_holder_name,
-                            'partner_id': partner_with_context.id  # Assign to the actual partner
-                        }
-                        self.env['res.partner.bank'].create(bank_data)
-
+                        bank.partner_id = partner_with_context.id # Assign actual partner
                     elif bank.command == 1:  # Update
-                        existing_bank = self.env['res.partner.bank'].browse(bank.id)
-                        if existing_bank:
-                            existing_bank.with_context(origin='approval.request').write({
-                                'acc_number': bank.acc_number,
-                                'allow_out_payment': bank.allow_out_payment,
-                                'acc_holder_name': bank.acc_holder_name,
-                            })
-
+                        bank.with_context(origin='approval.request').write(eval(bank.update_vals))
                     elif bank.command == 2:  # Delete
                         existing_bank = self.env['res.partner.bank'].browse(bank.id)
                         if existing_bank:
@@ -80,7 +66,6 @@ class ApprovalRequest(models.Model):
 
     def action_refuse(self):
         partner_with_context = self.partner_id.with_context(origin='approval.request')
-
         # Remove any temporary bank records that were created and linked to this approval if the approval is refused
         for bank in self.bank_ids:
             if bank.command == 0:
