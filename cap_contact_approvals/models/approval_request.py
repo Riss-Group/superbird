@@ -22,11 +22,28 @@ class ApprovalRequest(models.Model):
             partner_vals = {}
 
             # Process credit limit changes if applicable
-            if self.credit_limits_changed:
-                partner_vals.update({
-                    'use_partner_credit_limit': self.use_partner_credit_limit,
-                    'credit_limit': self.credit_limit,
-                })
+            company_limit = self.env['ir.property']._get('credit_limit', 'res.partner')
+            if self.credit_limits_changed and self.credit_limit != company_limit:
+                fields_id = self.env['ir.model.fields']._get('res.partner', 'credit_limit')
+                property_id = self.env['ir.property'].sudo().search([('company_id', '=', self.company_id.id),
+                                                                     ('res_id', '=', 'res.partner,%s' % partner_with_context.id),
+                                                                     ('name', '=', 'credit_limit')], limit=1)
+                if not property_id:
+                    property_vals = {'fields_id': fields_id.id,
+                                     'company_id': self.company_id.id,
+                                     'res_id': 'res.partner,%s' % partner_with_context.id,
+                                     'name': fields_id.name,
+                                     'value_float': self.credit_limit,
+                                     'type': 'float'}
+                    self.env['ir.property'].sudo().create(property_vals)
+                else:
+                    property_id.write({'value_float': self.credit_limit})
+            elif self.credit_limits_changed and self.credit_limit == company_limit:
+                property_id = self.env['ir.property'].sudo().search([('company_id', '=', self.company_id.id),
+                                                                     ('res_id', '=', 'res.partner,%s' % partner_with_context.id),
+                                                                     ('name', '=', 'credit_limit')], limit=1)
+                if property_id:
+                    property_id.unlink()
 
             # Process each bank_ids command
             if self.bank_changed:
