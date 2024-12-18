@@ -20,14 +20,15 @@ class StockMoveLine(models.Model):
         self.ensure_one()
         fleet_vehicle_id = self.fleet_vehicle_id or self.env['fleet.vehicle'].search([('stock_number','=',self.lot_name)])
         if not fleet_vehicle_id:
-            self.fleet_vehicle_id = fleet_vehicle_id.with_context({'fleet_in_company_id':self.company_id}).create({
+            self.fleet_vehicle_id = fleet_vehicle_id.create({
                 'model_id': self.product_id.vehicle_model_id.id,
                 'model_year': self.product_id.vehicle_year,
                 'customer_id': self.picking_id.company_id.partner_id.id,
                 'stock_number': self.lot_name,
                 'acquisition_date':False,
                 'order_date' : self.picking_id.scheduled_date,   
-                'product_id': self.product_id.id           
+                'product_id': self.product_id.id,
+                'company_id': self.picking_id.company_id.id       
             })
 
     def _process_fleet_vehicle_out(self):

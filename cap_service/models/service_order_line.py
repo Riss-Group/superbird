@@ -118,6 +118,18 @@ class ServiceOrder(models.Model):
             'target': 'new',
         }
     
+    def button_edit_ccc (self):
+        return {
+            'name': 'Edit CCC',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'service.ccc.edit',
+            'context': {
+                'default_service_line_id': self.id,
+            },
+            'target': 'new',
+        }
+    
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
