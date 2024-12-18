@@ -22,33 +22,36 @@ class ApprovalRequest(models.Model):
             partner_vals = {}
 
             # Process credit limit changes if applicable
-            if self.credit_limits_changed:
-                partner_vals.update({
-                    'use_partner_credit_limit': self.use_partner_credit_limit,
-                    'credit_limit': self.credit_limit,
-                })
+            company_limit = self.env['ir.property']._get('credit_limit', 'res.partner')
+            if self.credit_limits_changed and self.credit_limit != company_limit:
+                fields_id = self.env['ir.model.fields']._get('res.partner', 'credit_limit')
+                property_id = self.env['ir.property'].sudo().search([('company_id', '=', self.company_id.id),
+                                                                     ('res_id', '=', 'res.partner,%s' % partner_with_context.id),
+                                                                     ('name', '=', 'credit_limit')], limit=1)
+                if not property_id:
+                    property_vals = {'fields_id': fields_id.id,
+                                     'company_id': self.company_id.id,
+                                     'res_id': 'res.partner,%s' % partner_with_context.id,
+                                     'name': fields_id.name,
+                                     'value_float': self.credit_limit,
+                                     'type': 'float'}
+                    self.env['ir.property'].sudo().create(property_vals)
+                else:
+                    property_id.write({'value_float': self.credit_limit})
+            elif self.credit_limits_changed and self.credit_limit == company_limit:
+                property_id = self.env['ir.property'].sudo().search([('company_id', '=', self.company_id.id),
+                                                                     ('res_id', '=', 'res.partner,%s' % partner_with_context.id),
+                                                                     ('name', '=', 'credit_limit')], limit=1)
+                if property_id:
+                    property_id.unlink()
 
             # Process each bank_ids command
             if self.bank_changed:
                 for bank in self.bank_ids.with_context(origin='approval.request'):
                     if bank.command == 0:  # Create
-                        bank_data = {
-                            'acc_number': bank.acc_number,
-                            'allow_out_payment': bank.allow_out_payment,
-                            'acc_holder_name': bank.acc_holder_name,
-                            'partner_id': partner_with_context.id  # Assign to the actual partner
-                        }
-                        self.env['res.partner.bank'].create(bank_data)
-
+                        bank.partner_id = partner_with_context.id # Assign actual partner
                     elif bank.command == 1:  # Update
-                        existing_bank = self.env['res.partner.bank'].browse(bank.id)
-                        if existing_bank:
-                            existing_bank.with_context(origin='approval.request').write({
-                                'acc_number': bank.acc_number,
-                                'allow_out_payment': bank.allow_out_payment,
-                                'acc_holder_name': bank.acc_holder_name,
-                            })
-
+                        bank.with_context(origin='approval.request').write(eval(bank.update_vals))
                     elif bank.command == 2:  # Delete
                         existing_bank = self.env['res.partner.bank'].browse(bank.id)
                         if existing_bank:
@@ -63,7 +66,6 @@ class ApprovalRequest(models.Model):
 
     def action_refuse(self):
         partner_with_context = self.partner_id.with_context(origin='approval.request')
-
         # Remove any temporary bank records that were created and linked to this approval if the approval is refused
         for bank in self.bank_ids:
             if bank.command == 0:
