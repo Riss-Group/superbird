@@ -1,0 +1,19 @@
+<odoo>
+    <record id="view_ir_model_form_inherit_ocr_exposed_obfuscated" model="ir.ui.view">
+        <field name="name">ir.model.form.inherit.ocr.exposed.obfuscated</field>
+        <field name="model">ir.model</field>
+        <field name="inherit_id" ref="base.view_model_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='modules']" position="after">
+                <group string="AI Settings">
+                    <field name="ocr_enabled" widget="boolean_switch"/>
+                    <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>
+                    <field name="ai_obfuscated_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>
+                    <field name="ai_exposed_domain" placeholder="e.g. [('active', '=', True)]" widget="domain"/>
+                    <field name="max_tokens"/>
+                    <field name="temperature"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

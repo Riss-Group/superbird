@@ -1,0 +1,23 @@
+<odoo>
+    <record id="res_config_settings_view_inherit_ai" model="ir.ui.view">
+        <field name="name">res.config.settings.view.inherit.ai</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block name="integration" position="inside">
+                <group string="AI Integration" help="Integrate with ChatGPT Model">
+                    <field name="ocr_model_id"/>
+                    <field name="ocr_service"/>
+
+                    <!-- Google Vision Fields -->
+                    <field name="google_vision_api_key" invisible="ocr_service != 'google_vision'"/>
+
+                    <!-- AWS Textract Fields -->
+                    <field name="aws_access_key_id" invisible="ocr_service != 'aws_textract'"/>
+                    <field name="aws_secret_access_key" invisible="ocr_service != 'aws_textract'"/>
+                    <field name="aws_region" invisible="ocr_service != 'aws_textract'"/>
+                </group>
+            </block>
+        </field>
+    </record>
+</odoo>

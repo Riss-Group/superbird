@@ -1,3 +1,5 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_purchase_digitalize_user,access_purchase.digitalize_user,model_purchase_digitalize,,1,1,1,1
-
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_model_config_user,access_ai_model_config_user,model_ai_model_config,base.group_user,1,0,0,0
+access_ai_model_config_admin,access_ai_model_config_admin,model_ai_model_config,base.group_system,1,1,1,1
+access_base_digitalize_wizard_user,access_base_digitalize_wizard_user,model_base_digitalize,base.group_user,1,0,1,0
+access_base_digitalize_wizard_admin,access_base_digitalize_wizard_admin,model_base_digitalize,base.group_system,1,1,1,1
