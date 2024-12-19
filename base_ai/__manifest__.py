@@ -9,11 +9,7 @@
     'external_dependencies': {
         'python': [
             'pytesseract',
-            'pypdf',
             'pdf2image',
-            'numpy',
-            'Pillow',
-            'fuzzywuzzy',
             'openai',
             'requests',
             'boto3'
