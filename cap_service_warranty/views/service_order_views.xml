@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="service_order_form_view_warranty" model="ir.ui.view">
+        <field name="name">service_order_form_view_warranty</field>
+        <field name="model">service.order</field>
+        <field name="inherit_id" ref="cap_service.service_order_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name='action_clam_warranty' string="Clam Warranty" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='job_lines']/field[@name='service_order_lines']/tree/field[@name='ttype']" position="after">
+                <field name="warranty_partner_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
