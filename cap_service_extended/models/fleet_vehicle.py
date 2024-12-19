@@ -23,7 +23,6 @@ class FleetVehicle(models.Model):
 
     # accounting fields
     oem_payment_due_date = fields.Date('OEM Payment Due Date', compute='_compute_dates')
-    oem_body_payment_date = fields.Date('OEM Body Payment Date', compute='_compute_dates')
 
     # service fields
     ready_for_inspection_date = fields.Date('Ready for Inspection Date', compute='_compute_service_date')
