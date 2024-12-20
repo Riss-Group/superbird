@@ -37,7 +37,7 @@ class StockMoveLine(models.Model):
             else:
                 scrap_location = line.picking_type_id.quarantine_location_id.id or line.get_scrap_location()
                 if line.product_uom_qty == 1 :
-                    line.update({'location_dest_id': scrap_location, 'is_quarantine':True})
+                    line.update({'location_dest_id': scrap_location, 'is_quarantine':True, 'barcode_qty_done':1, 'not_done_qty':0})
                 else:
                     new_move = line.move_id.copy({
                         'product_uom_qty': line.not_done_qty, 'location_dest_id': scrap_location
@@ -53,7 +53,6 @@ class StockMoveLine(models.Model):
                     line.update({'related_scrap_line' : new_line.id})
                     # self.env.cr.execute(f"update stock_move set product_uom_qty={line.move_id.product_uom_qty - line.not_done_qty} where id={line.move_id.id}")
                     new_move.picking_id.action_confirm()
-
 
     def _compute_scrap_location_id(self):
         groups = self.env['stock.location']._read_group(
@@ -76,7 +75,7 @@ class StockMoveLine(models.Model):
 
     def _get_fields_stock_barcode(self):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
-        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine'])
+        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine','not_done_qty'])
         return fields
 
     def get_scrap_location(self):
@@ -95,6 +94,28 @@ class StockMoveLine(models.Model):
         if not save_qty_not_done:
             for line in self:
                 line.with_context({'onchange_not_done_qty' : True})._onchange_not_done_qty()
+
+    def split_line_with_qty_remaining(self):
+        picking = self.move_id.picking_id
+        for line in self:
+            remaining_qty = line.quantity - line.barcode_qty_done
+            if remaining_qty > 0:  # Proceed only if there's a remaining quantity
+                new_line = self.create({
+                    'move_id': line.move_id.id,
+                    'location_id': line.location_id.id,
+                    'location_dest_id': picking.location_dest_id.id,
+                    'product_id': line.product_id.id,
+                    'product_uom_id': line.product_uom_id.id,
+                    'quantity': 20,
+                    'barcode_qty_done': 0,  # Reset done quantity for the new line
+                    'picking_id': picking.id,  # Ensure it's linked to the same picking
+                })
+                new_line.update({
+                    'quantity': remaining_qty,
+                    'quantity': remaining_qty,
+                })
+
+
 
 
 class StockMoveLineMail(models.Model):
