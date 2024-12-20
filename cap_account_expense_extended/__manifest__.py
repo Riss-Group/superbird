@@ -8,7 +8,7 @@
     'website': 'https://www.captivea.com/',
     'license': 'OPL-1',
     'description': """
-        - Create an expense from the bank statement. based on the employee configure on the journal
+        - Create an expense from the bank statement based on the employee configure on the journal
         """,
     'depends': [
         'account', 'hr_expense',
