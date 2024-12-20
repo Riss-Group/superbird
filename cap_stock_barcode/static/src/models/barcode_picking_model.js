@@ -14,24 +14,23 @@ patch(BarcodePickingModel.prototype, {
         super.setup();
     },
     lineIsFaulty(line) {
-        return this._useReservation && line.barcode_qty_done > line.reserved_uom_qty | line.is_quarantine;
+        return line.is_quarantine || line.barcode_qty_done > line.reserved_uom_qty;
     },
     getQtyDone(line) {
         return line.barcode_qty_done;
     },
-
     getQtyDemand(line) {
-        let qtyDemand;
-        if (this.record.picking_type_code == 'incoming')
-            {
-                qtyDemand = line.product_uom_qty
-            }
-        else {
-            qtyDemand = line.reserved_uom_qty
+        let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
+        if (line.not_done_qty) {
+            qtyDemand -= line.not_done_qty;
         }
-        return  line.reserved_uom_qty || 0;
-    },
 
+        if (line.is_quarantine) {
+            qtyDemand = line.reserved_uom_qty;
+        }
+
+        return qtyDemand;
+    },
     async save_barcode_qty_done(line) {
         await this.orm.write(this.lineModel, [line.id], { barcode_qty_done: line.barcode_qty_done });
     },
