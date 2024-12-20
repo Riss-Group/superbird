@@ -13,6 +13,9 @@
     'depends': [
         'sale', 'base',
         ],
+    'external_dependencies': {
+        'python': ['numpy-financial']
+    },
     'data': [
         'security/ir.model.access.csv',
         'views/sale_order.xml',

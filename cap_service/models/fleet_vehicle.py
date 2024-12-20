@@ -38,6 +38,9 @@ class FleetVehicle(models.Model):
     rental_sign_request_count = fields.Integer(compute='compute_rental_sign_request_ids')
     has_outgoing_pdi = fields.Boolean()
     has_incoming_pdi = fields.Boolean()
+    vin_sn = fields.Char(string="VIN Number")
+    ack_file =fields.Binary(string="Acknowledgement PDF")
+    ack_received = fields.Boolean(store=True, string="Acknowledgement Received", compute='_compute_ack_received')
 
 
     @api.model
@@ -76,6 +79,11 @@ class FleetVehicle(models.Model):
             sign_ids = record.rental_sale_line_ids.order_id.sign_request_ids
             record.rental_sign_request_ids = sign_ids.ids
             record.rental_sign_request_count = len(sign_ids)
+    
+    @api.depends('ack_file')
+    def _compute_ack_received(self):
+        for record in self:
+            record.ack_received = record.ack_file
 
     def action_fleet_move_lines(self):
         return {
@@ -103,6 +111,16 @@ class FleetVehicle(models.Model):
             'res_model': 'service.order.worksheets',
             'context': {'service_order_ids': self.service_order_ids.ids},
             'target': 'current',
+        }
+    
+    def action_fleet_ack(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Fleet Acknowledgement'),
+            'view_mode': 'form',
+            'res_model': 'fleet.ack',
+            'context': {'default_fleet_vehicle_ids': self.ids},
+            'target': 'new',
         }
     
     def action_rental_sign_request_ids(self):
@@ -153,20 +171,11 @@ class FleetVehicle(models.Model):
         vals['model_year'] = self.product_id.vehicle_year
         if vals:
             self.write(vals)
-
-    @api.model_create_multi
-    def create(self, vals):
-        for val in vals:
-            if val.get('active_demo_unit'):
-                val['was_demo_unit'] = True
-        records = super().create(vals)
-        for record in records:
-            if not self.env.context.get('no_sync'):
-                record.with_context(no_sync=True)._synchronize_product_fields()
+    
+    def _create_fleet_in(self):
+        for record in self:
             if record.product_id.create_pdi_receipt and not record.has_incoming_pdi:
-                company_id = self.env.company.service_branch_id
-                if self.env.context.get('fleet_in_company_id'):
-                    company_id = self.env.context.get('fleet_in_company_id').service_branch_id
+                company_id = self.company_id.service_branch_id
                 service_vals = {
                     'end_date' : record.order_date,
                     'partner_id' : record.customer_id.id,
@@ -185,6 +194,16 @@ class FleetVehicle(models.Model):
                 service_template_select.button_save()
                 service_order_id.action_upsert_so()
                 service_order_id.action_create_tasks()
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            if val.get('active_demo_unit'):
+                val['was_demo_unit'] = True
+        records = super().create(vals)
+        for record in records:
+            if not self.env.context.get('no_sync'):
+                record.with_context(no_sync=True)._synchronize_product_fields()
         return records
 
     def write(self, vals):

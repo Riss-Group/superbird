@@ -47,6 +47,8 @@
         'views/service_order.xml',
         'views/service_template.xml',
         'views/stock_picking.xml',
+        'wizard/fleet_acknowledge.xml',
+        'wizard/service_ccc_edit.xml',
         'wizard/service_line_view_product.xml',
         'wizard/service_rental_order.xml',
         'wizard/service_template_select.xml',

@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="action_fleet_vehicle" type="object" class="oe_stat_button" icon="fa-truck" invisible="fleet_vehicle_ids_count == 0">
+                <button name="action_fleet_vehicle" type="object" class="oe_stat_button" icon="fa-truck" >
                     <div class="o_stat_info">
                         <span class="o_stat_text">Vehicles</span>
                         <span class="o_stat_value">
@@ -18,7 +18,7 @@
                 </button>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="action_service_order_ids" type="object" class="oe_stat_button" icon="fa-wrench" invisible="service_order_ids_count == 0">
+                <button name="action_service_order_ids" type="object" class="oe_stat_button" icon="fa-wrench" >
                     <div class="o_stat_info">
                         <span class="o_stat_text">Service Orders</span>
                         <span class="o_stat_value">
@@ -28,7 +28,7 @@
                 </button>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="service_order_worksheet_count == 0">
+                <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-file-text-o" >
                     <div class="o_stat_info">
                         <span class="o_stat_text">Worksheets</span>
                         <span class="o_stat_value">

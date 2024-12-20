@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap notification",
+    'license': 'OPL-1',
 
     'summary': "Add the parameter to set the time the warnings get displayed",
 

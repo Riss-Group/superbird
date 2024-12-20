@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="service_ccc_edit_view_form" model="ir.ui.view">
+        <field name="name">service_ccc_edit_view_form</field>
+        <field name="model">service.ccc.edit</field>
+        <field name="arch" type="xml">
+            <form string="CCC Edit">
+                <group>
+                    <field name="service_line_id" readonly="True" widget='badge'/>
+                    <field name="name" string="Description"/>
+                    <field name="cause" />
+                    <field name="correction" string="Fix"/>
+                </group>
+                <footer>
+                    <button name="button_save" string='Done' class="oe_highlight" type='object' />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

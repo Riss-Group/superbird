@@ -136,14 +136,14 @@
                             <page name="job_lines" string="Job Lines">
                                 <field name="service_order_lines">
                                     <tree editable="bottom">
-                                        <field name="task_attachment_count" invisible="1"/>
+                                        <field name="task_attachment_count" column_invisible="1"/>
                                         <field name="sequence" string='#' optional='show'/>
                                         <field name="ttype" string='Type'/>
                                         <field name="task_stage" string='Status' optional='hide'/>
                                         <field name="op_code_id" readonly='1' force_save='1' optional='hide' />
                                         <field name="name" widget='text' string="Description" />
-                                        <field name="cause" widget='text' optional='show'/>
-                                        <field name="correction" widget='text' string="Fix" optional='show'/>
+                                        <field name="cause" widget='text' optional='hide'/>
+                                        <field name="correction" widget='text' string="Fix" optional='hide'/>
                                         <field name="project_id" string="Department" domain="[('is_repair_service','=',True)]"/>
                                         <field name="task_id" widget='many2one' readonly='1' force_save='1' optional='hide'/>
                                         <field name='user_ids' widget='many2many_avatar_user' optional='hide'/>
@@ -154,6 +154,7 @@
                                         <field name="service_order_line_service_ids" optional='hide' widget='many2many_tags' readonly='1' force_save='1' options="{'no_quick_create':1, 'no_create':1}"/>
                                         <button name='button_view_products' type='object' title="View Products" string="Parts" />
                                         <button name='button_view_services' type='object' title="View Services" string="Labor" />
+                                        <button name='button_edit_ccc' type='object' title="Edit CCC" string="CCC" />
                                         <button name="button_view_attachments" type="object" class="oe_stat_button" icon="fa-paperclip" title="Attachments" invisible="task_attachment_count == 0"/>
                                     </tree>
                                 </field>

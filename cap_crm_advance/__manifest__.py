@@ -2,6 +2,7 @@
     'name': 'cap_crm_advance',
     'version': '1.0',
     'category': 'CRM',
+    'license': 'OPL-1',
     'summary': 'Proposition Stage management and Automatically pushing advancing a lead into the Proposition stage',
     'depends': [
         'base',

@@ -4,6 +4,7 @@
     'version': '17.0.0.1',
     'summary': 'Portal Access Management',
     'description': """Helps To Manage Portal Access""",
+    'license': 'OPL-1',
     'category': '',
     'depends': ['base', 'sale', 'project', 'account', 'hr_timesheet', 'portal'],
     'data': [

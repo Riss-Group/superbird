@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "CAP Pricelist",
+    'license': 'OPL-1',
 
     'summary': "Customize Pricelist",
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap stock barcode",
+    'license': 'OPL-1',
 
     'summary': "Stock Barcode Customization",
 
