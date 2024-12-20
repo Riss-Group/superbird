@@ -7,7 +7,7 @@
                 <sheet>
                     <group>
                         <field name="file" filename="filename"/>
-                        <field name="filename"/>
+                        <field name="filename" invisible="1"/>
                     </group>
                 </sheet>
                 <footer>

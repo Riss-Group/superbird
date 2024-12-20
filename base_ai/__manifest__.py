@@ -2,6 +2,7 @@
     'name': 'AI Integration',
     'version': '17.0.0.1',
     'category': 'Extra Tools',
+    'license': 'OPL-1',
     'summary': "AI integration base module allowing OCR and ChatGPT integration",
     'author': "Captivea",
     'website': 'https://www.captivea.com',
