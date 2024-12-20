@@ -6,7 +6,13 @@
         <field name="inherit_id" ref="cap_service.service_order_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name='action_clam_warranty' string="Clam Warranty" type="object" class="oe_highlight"/>
+                <button name='action_claim_warranty' string="Create Claim" type="object" class="oe_highlight"
+                        invisible="warranty_total == 0"/>
+            </xpath>
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button type="object" name="action_stat_button_warranty_claim" class="oe_stat_button" icon="fa-usd">
+                    <field name="warranty_claim_ids" widget="statinfo" string="Warranty"/>
+                </button>
             </xpath>
             <xpath expr="//notebook/page[@name='job_lines']/field[@name='service_order_lines']/tree/field[@name='ttype']" position="after">
                 <field name="warranty_partner_id"/>

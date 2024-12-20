@@ -13,7 +13,10 @@
         'cap_service',
     ],
     'data': [
-        'views/service_order_views.xml'
+        'data/sequence.xml',
+        'security/ir.model.access.csv',
+        'views/service_order_views.xml',
+        'views/warranty_claim_views.xml'
     ],
     'installable': True,
     'auto_install': False,
