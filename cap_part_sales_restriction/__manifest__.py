@@ -2,6 +2,7 @@
 {
     'name': "Sales Product Restrictions",
 
+    'license': 'OPL-1',
     'summary': "Sales Product Restrictions",
 
     'description': """

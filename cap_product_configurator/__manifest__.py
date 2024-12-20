@@ -2,6 +2,7 @@
 {
     'name': "CAP Product Configurator",
     'summary': "CAP Product Configurator",
+    'license': 'OPL-1',
     'description': """
     TBD
     """,

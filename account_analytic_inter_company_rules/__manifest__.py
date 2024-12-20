@@ -3,6 +3,7 @@
     "name": "Inter Company Module for Invoices Analytic",
     "version": "17.0.0.0.0",
     "summary": "Intercompany INV rules",
+    'license': 'OPL-1',
     "category": "Productivity",
     "description": """
     Module splits invoice lines by analytics if interco automation is selected

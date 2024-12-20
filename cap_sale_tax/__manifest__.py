@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap_sale_tax",
+    'license': 'OPL-1',
 
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 

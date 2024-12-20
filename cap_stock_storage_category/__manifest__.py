@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap stock storage category",
+    'license': 'OPL-1',
 
     'summary': "Storage Category",
 

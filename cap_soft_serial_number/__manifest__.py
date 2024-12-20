@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Soft Serial Number",
+    'license': 'OPL-1',
 
     'summary': "Soft Serial Number",
 

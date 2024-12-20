@@ -1,6 +1,7 @@
 {
     'name': 'cap_default_courier',
     'version': '1.0',
+    'license': 'OPL-1',
     'category': 'Contacts',
     'summary': 'A new Odoo module',
     'depends': [
