@@ -4,7 +4,7 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     ocr_model_id = fields.Many2one(
-        'ai.model.config',
+        'ai.model',
         string='Model to use for OCR',
         config_parameter='base_ai.ocr_model_id'
     )

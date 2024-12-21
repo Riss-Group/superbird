@@ -11,9 +11,6 @@ import requests
 import boto3
 from openai import OpenAI
 import json
-
-from odoo.exceptions import UserError
-
 _logger = logging.getLogger(__name__)
 
 class Base(models.AbstractModel):
@@ -22,15 +19,8 @@ class Base(models.AbstractModel):
     show_ocr_button = fields.Boolean(compute="_compute_show_ocr_button")
 
     def _compute_show_ocr_button(self):
-        for rec in self:
-            rec.show_ocr_button = rec.ocr_enabled() if hasattr(rec, 'ocr_enabled') else False
-
-    @api.model
-    def ocr_enabled(self):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        if not ir_model:
-            return False
-        return ir_model.ocr_enabled
+        self.show_ocr_button = ir_model.ocr_enabled
 
     @api.model
     def ai_exposed_fields(self):
@@ -51,8 +41,6 @@ class Base(models.AbstractModel):
     @api.model
     def ocr_prompt(self, file_content):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        if not ir_model:
-            raise ValueError(f"No ir.model record found for model {self._name}")
 
         json_structure_str = ir_model.get_json_structure()
 
@@ -65,14 +53,7 @@ class Base(models.AbstractModel):
         if not ai_model_id:
             raise ValueError("No AI model configuration found. Please configure it in Settings.")
 
-        ai_model = self.env['ai.model.config'].browse(int(ai_model_id))
-        client = OpenAI(api_key=ai_model.api_key)
-        if not ai_model.exists():
-            raise ValueError("Configured AI model record does not exist.")
-
-
-        max_tokens = ir_model.max_tokens or ai_model.max_tokens
-        temperature = ir_model.temperature if (ir_model.temperature or ir_model.temperature == 0.0) else ai_model.temperature
+        ai_model = self.env['ai.model'].browse(int(ai_model_id))
 
         prompt = f"""
 Below is digitalized text from a document. Please extract the information according to the JSON structure provided.
@@ -93,20 +74,9 @@ Digitalized text:
 {ocr_text}
 ```
 """
-        messages = [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt.strip()},
-        ]
+        system_prompt = "You are a helpful assistant."
 
-        try:
-            response = client.chat.completions.create(model=ai_model.model,
-            messages=messages,
-            max_tokens=max_tokens,
-            temperature=temperature)
-        except Exception as e:
-            raise UserError(f"Error calling the OpenAI API: {e}")
-
-        assistant_reply = response.choices[0].message.content.strip()
+        assistant_reply = ai_model.ai_prompt(prompt, system_prompt, None, ir_model.max_tokens, ir_model.temperature)
         return extract_json_from_response(assistant_reply)
 
     def _perform_ocr_or_extraction(self, file_content, file_name):
@@ -219,41 +189,20 @@ Digitalized text:
         return "\n".join(lines).strip()
 
     def _ocr_image_openai_vision(self, image):
-        # Hypothetical integration with an OpenAI Vision-capable model.
-        # This code is inspired by your snippet.
-        # Adjust the model and message format as per actual supported features.
-
-        # Ensure openai.api_key is set (done in ocr_prompt).
         img_bytes = io.BytesIO()
         image.save(img_bytes, format='JPEG')
         base64_image = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+        image_url = f"data:image/jpeg;base64,{base64_image}"
+        prompt = "Extract the text from this image, ensuring all text is captured accurately. Do not include any markdown or code formatting."
         ConfigParam = self.env['ir.config_parameter'].sudo()
         ai_model_id = ConfigParam.get_param('base_ai.ocr_model_id')
         if not ai_model_id:
             raise ValueError("No AI model configuration found. Please configure it in Settings.")
 
-        ai_model = self.env['ai.model.config'].browse(int(ai_model_id))
-        client = OpenAI(api_key=ai_model.api_key)
+        ai_model = self.env['ai.model'].browse(int(ai_model_id))
         # Hypothetical model
-        response = client.chat.completions.create(model="gpt-4o-mini",  # Hypothetical model
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "Extract the text from this image, ensuring all text is captured accurately. Do not include any markdown or code formatting."
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}"
-                        },
-                    },
-                ],
-            }
-        ])
-        return response.choices[0].message.content.strip()
+        response = ai_model.ai_prompt(prompt, None, image_url)
+        return response
 
 
 def extract_json_from_response(response):

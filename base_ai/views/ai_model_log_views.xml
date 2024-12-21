@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_ai_model_log_tree" model="ir.ui.view">
+        <field name="name">ai.model.log.tree</field>
+        <field name="model">ai.model.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="prompt_date"/>
+                <field name="user_id"/>
+                <field name="ai_model_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_ai_model_log_form" model="ir.ui.view">
+        <field name="name">ai.model.log.form</field>
+        <field name="model">ai.model.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="ai_model_id"/>
+                        <field name="user_id"/>
+                        <field name="prompt_date"/>
+                        <field name="prompt_query"/>
+                        <field name="prompt_response"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_model_log" model="ir.actions.act_window">
+        <field name="name">AI Model Logs</field>
+        <field name="res_model">ai.model.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_ai_model_logs" name="Logs" parent="menu_ai_configuration" action="action_ai_model_log"/>
+</odoo>

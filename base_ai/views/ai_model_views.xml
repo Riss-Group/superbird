@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_ai_model_tree" model="ir.ui.view">
+        <field name="name">ai.model.tree</field>
+        <field name="model">ai.model</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="model"/>
+                <field name="max_tokens"/>
+                <field name="temperature"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_ai_model_form" model="ir.ui.view">
+        <field name="name">ai.model.form</field>
+        <field name="model">ai.model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="open_logs" icon="fa-list">
+                            <field string="Queries" name="log_count" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="model"/>
+                        <field name="api_key" password="True"/>
+                        <field name="max_tokens"/>
+                        <field name="temperature"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_model" model="ir.actions.act_window">
+        <field name="name">AI Models</field>
+        <field name="res_model">ai.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_ai_configuration" name="AI Configuration" parent="base.menu_custom" sequence="10"/>
+    <menuitem id="menu_ai_model" name="AI Models" parent="menu_ai_configuration" action="action_ai_model"/>
+</odoo>

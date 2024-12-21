@@ -18,7 +18,8 @@
     },
     'data': [
         'views/ir_model_views.xml',
-        'views/ai_model_config_views.xml',
+        'views/ai_model_views.xml',
+        'views/ai_model_log_views.xml',
         'views/res_config_settings_views.xml',
         'wizard/base_digitalize_wizard_views.xml',
         'security/ir.model.access.csv',
