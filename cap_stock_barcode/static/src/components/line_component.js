@@ -17,7 +17,20 @@ patch(LineComponent.prototype, {
         this.notification = useService("notification");
         this.dialog = useService('dialog');
     },
-
+    get isComplete() {
+        const result = super.isComplete;
+        const isComplete = this.line.is_quarantine || this.line.barcode_qty_done > this.line.reserved_uom_qty ? false : result;
+        return isComplete
+            },
+    async SplitRemainingQty(line) {
+        await this.env.model.save();
+        const res = await this.orm.call(
+            'stock.move.line',
+            'split_line_with_qty_remaining',
+            [[line.id]]
+        );
+        return this.env.model.trigger('refresh');
+    },
     async printProductBarcode(line) {
         const action = await this.action.loadAction(
             "product.action_open_label_layout"
