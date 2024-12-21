@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='modules']" position="after">
                 <group string="AI Settings">
+                    <field name="ai_query_enabled" widget="boolean_switch"/>
                     <field name="ocr_enabled" widget="boolean_switch"/>
                     <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>
                     <field name="ai_obfuscated_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>

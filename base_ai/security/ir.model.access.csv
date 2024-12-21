@@ -5,3 +5,5 @@ access_ai_model_log_user,access_ai_model_log_user,model_ai_model_log,base.group_
 access_ai_model_log_admin,access_ai_model_log_admin,model_ai_model_log,base.group_system,1,1,1,1
 access_base_digitalize_wizard_user,access_base_digitalize_wizard_user,model_base_digitalize,base.group_user,1,0,1,0
 access_base_digitalize_wizard_admin,access_base_digitalize_wizard_admin,model_base_digitalize,base.group_system,1,1,1,1
+access_base_ai_query_wizard_user,access_base_ai_query_wizard_user,model_base_ai_query,base.group_user,1,0,1,0
+access_base_ai_query_wizard_admin,access_base_ai_query_wizard_admin,model_base_ai_query,base.group_system,1,1,1,1

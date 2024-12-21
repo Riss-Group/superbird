@@ -21,6 +21,7 @@
         'views/ai_model_views.xml',
         'views/ai_model_log_views.xml',
         'views/res_config_settings_views.xml',
+        'wizard/base_ai_query_views.xml',
         'wizard/base_digitalize_wizard_views.xml',
         'security/ir.model.access.csv',
     ],

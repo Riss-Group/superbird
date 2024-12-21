@@ -16,16 +16,20 @@ _logger = logging.getLogger(__name__)
 class Base(models.AbstractModel):
     _inherit = "base"
 
-    show_ocr_button = fields.Boolean(compute="_compute_show_ocr_button")
-
-    def _compute_show_ocr_button(self):
+    def show_ocr_button(self):
+        self.ensure_one()
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        self.show_ocr_button = ir_model.ocr_enabled
+        return ir_model.ocr_enabled
+
+    def show_ai_button(self):
+        self.ensure_one()
+        ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
+        return ir_model.ai_query_enabled
 
     @api.model
     def ai_exposed_fields(self):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        return ir_model.ai_exposed_field_ids.mapped('name') if ir_model else []
+        return ir_model.ai_exposed_field_ids if ir_model else []
 
     @api.model
     def ai_obfuscated_fields(self):
@@ -37,6 +41,32 @@ class Base(models.AbstractModel):
         action = self.env["ir.actions.actions"]._for_xml_id("base_ai.base_digitalize_action")
         action['context'] = {'active_id': self.id, 'active_model': self._name}
         return action
+
+    def action_show_ai_query_wizard(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("base_ai.base_ai_query_action")
+        action['context'] = {'active_id': self.id, 'active_model': self._name}
+        return action
+
+    def ai_query_prompt(self, prompt):
+        self.ensure_one()
+        ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
+        json_structure_str = json.dumps(self._convert_to_dict(), default=str, indent=2)
+        ConfigParam = self.env['ir.config_parameter'].sudo()
+        ai_model_id = ConfigParam.get_param('base_ai.ocr_model_id')
+        if not ai_model_id:
+            raise ValueError("No AI model configuration found. Please configure it in Settings.")
+
+        ai_model = self.env['ai.model'].browse(int(ai_model_id))
+        prompt = f"""
+{prompt}
+
+The record itself is:
+```json
+{json_structure_str}
+```
+"""
+        return ai_model.ai_prompt(prompt, None, None, ir_model.max_tokens, ir_model.temperature)
 
     @api.model
     def ocr_prompt(self, file_content):
@@ -203,6 +233,32 @@ Digitalized text:
         # Hypothetical model
         response = ai_model.ai_prompt(prompt, None, image_url)
         return response
+
+    def _convert_to_dict(self, depth=0):
+        if depth > 5:
+            return {}
+        self.ensure_one()
+
+        # Get the exposed field names
+        exposed_fields = self.ai_exposed_fields()  # Use the existing ai_exposed_fields method
+
+        # Build a dictionary of exposed fields and their values
+        exposed_fields_data = {
+            'id': self.id,
+            'display_name': self.display_name
+        }
+        for field in exposed_fields:
+            if self[field.name]:
+                if field.ttype == 'many2one':
+                    field_value = self[field.name]._convert_to_dict(depth=depth+1)
+                elif field.ttype in ('one2many', 'many2many'):
+                    field_value = [x._convert_to_dict(depth=depth+1) for x in self[field.name]]
+                else:
+                    field_value = self[field.name]
+                exposed_fields_data[field.name] = {'field_description': field.field_description, 'value': field_value}
+
+        # Return the exposed fields as a JSON string
+        return exposed_fields_data
 
 
 def extract_json_from_response(response):

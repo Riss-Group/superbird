@@ -42,3 +42,9 @@ class ResConfigSettings(models.TransientModel):
         help="AWS Region for Textract (e.g. us-east-1).",
         attrs="{'invisible': [('ocr_service', '!=', 'aws_textract')]}"
     )
+
+    query_model_id = fields.Many2one(
+        'ai.model',
+        string='Model to use for AI Query',
+        config_parameter='base_ai.query_model_id'
+    )

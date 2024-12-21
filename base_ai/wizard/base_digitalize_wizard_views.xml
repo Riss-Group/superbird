@@ -21,8 +21,7 @@
     <record id="base_digitalize_action" model="ir.actions.act_window">
         <field name="name">Digitalize Document</field>
         <field name="res_model">base.digitalize</field>
-<!--        <field name="view_mode">form</field>-->
-<!--        <field name="target">new</field>-->
-<!--        <field name="view_id" ref="base_ai.view_base_digitalize_form"/>-->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
     </record>
 </odoo>

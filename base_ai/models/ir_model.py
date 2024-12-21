@@ -6,6 +6,7 @@ class IrModel(models.Model):
     _inherit = 'ir.model'
 
     ocr_enabled = fields.Boolean(string="OCR Enabled", help="Enable or disable OCR for this model.")
+    ai_query_enabled = fields.Boolean(string="AI Query Enabled", help="Enable or disable AI queries for this model.")
     ai_exposed_field_ids = fields.Many2many(
         comodel_name='ir.model.fields',
         relation='model_ai_exposed_field_rel',
@@ -47,7 +48,7 @@ class IrModel(models.Model):
         }
         return json.dumps(data, indent=2)
 
-    def _build_field_structure(self, model_name, field_records, depth=0):
+    def _build_field_structure(self, field_records, depth=0):
         if depth > 5:
             return {}
 
@@ -58,11 +59,8 @@ class IrModel(models.Model):
         for field_rec in field_records:
             field_info = {
                 'type': field_rec.ttype,
-                'string': field_rec.field_description,
+                'description': field_rec.field_description,
                 'required': field_rec.required,
-                'readonly': field_rec.readonly,
-                'index': field_rec.index,
-                'store': field_rec.store,
             }
 
             related_model_name = field_rec.relation

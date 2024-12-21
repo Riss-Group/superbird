@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <block name="integration" position="inside">
                 <group string="AI Integration" help="Integrate with ChatGPT Model">
+                    <field name="query_model_id"/>
                     <field name="ocr_model_id"/>
                     <field name="ocr_service"/>
 
