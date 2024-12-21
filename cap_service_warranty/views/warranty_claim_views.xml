@@ -25,8 +25,8 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="object" name="action_stat_button_invoice_ids" class="oe_stat_button" icon="fa-tasks">
-<!--                            <field name="account_invoice_ids" widget="statinfo" string="Invoice"/>-->
+                        <button type="object" name="action_view_invoice" class="oe_stat_button" icon="fa-pencil-square-o" invisible="invoice_count == 0">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
                     </div>
                     <group>

@@ -25,7 +25,6 @@ class ServiceOrder(models.Model):
            })
            print("warranty_claim :: ",warranty_claim)
 
-
     def _get_so_line_product_details(self, line):
         so_line_vals = []
         for so_line_product_id in line.service_order_line_product_ids:
@@ -33,7 +32,8 @@ class ServiceOrder(models.Model):
                 'product_id': so_line_product_id.product_id.id,
                 'quantity': so_line_product_id.quantity,
                 'unit_price': so_line_product_id.unit_price,
-                'claim_for': 'product'
+                'claim_for': 'product',
+                'service_order_line_id': line.id
             }
             so_line_vals.append((0, 0, vals))
         return so_line_vals
@@ -45,7 +45,8 @@ class ServiceOrder(models.Model):
                 'product_id': so_line_service_id.product_id.id,
                 'quantity': so_line_service_id.quantity,
                 'unit_price': so_line_service_id.unit_price,
-                'claim_for': 'labor'
+                'claim_for': 'labor',
+                'service_order_line_id': line.id
             }
             so_line_vals.append((0, 0, vals))
         return so_line_vals
