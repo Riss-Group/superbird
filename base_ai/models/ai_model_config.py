@@ -2,7 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
-class OcrModelConfig(models.Model):
+class AiModelConfig(models.Model):
     _name = 'ai.model.config'
     _description = 'AI Model Configuration'
 

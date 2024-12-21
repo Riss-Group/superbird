@@ -76,8 +76,8 @@ class Base(models.AbstractModel):
 
         prompt = f"""
 Below is digitalized text from a document. Please extract the information according to the JSON structure provided.
-Return only the JSON dictionary with the extracted values without any additional formatting. If a field cannot be found, set it to False.
-If a field has possible_values, Use odoo's fields.Commands to replace the existing values with the id of the best one if it's a many2one, otherwise the list of best ids if it's many2many
+Return only the JSON dictionary with the extracted values without any additional formatting. If a field cannot be found, don't return it.
+If a field is a many2many or one2may, Use odoo's fields.Commands to replace the existing values with the id of the best one if it's a many2one, otherwise the list of best ids if it's many2many
 
 **Important:** 
 - Return **only** the JSON dictionary.

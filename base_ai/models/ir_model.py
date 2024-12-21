@@ -65,16 +65,24 @@ class IrModel(models.Model):
                 'store': field_rec.store,
             }
 
-            if field_rec.ttype in ('many2one', 'many2many'):
-                related_model_name = field_rec.relation
-                if related_model_name:
-                    related_model = ir_model_obj.search([('model', '=', related_model_name)], limit=1)
-                    if related_model:
+            related_model_name = field_rec.relation
+            if related_model_name:
+                related_model = ir_model_obj.search([('model', '=', related_model_name)], limit=1)
+                if related_model:
+                    if field_rec.ttype in ('many2one', 'many2many'):
+                        # For many2one and many2many, use _get_possible_values
                         related_fields = related_model.ai_exposed_field_ids
                         possible_values = self._get_possible_values(
                             related_model_name, related_fields, related_model, depth=depth+1
                         )
                         field_info['possible_values'] = possible_values
+                    elif field_rec.ttype == 'one2many':
+                        # For one2many, recursively build field structure
+                        related_exposed_fields = related_model.ai_exposed_field_ids
+                        nested_fields = self._build_field_structure(
+                            related_model_name, related_exposed_fields, depth=depth+1
+                        )
+                        field_info['exposed_fields'] = nested_fields
 
             fields_data[field_rec.name] = field_info
 
