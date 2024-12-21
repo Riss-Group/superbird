@@ -235,7 +235,7 @@ Digitalized text:
         return response
 
     def _convert_to_dict(self, depth=0):
-        if depth > 5:
+        if depth > 2:
             return {}
         self.ensure_one()
 
@@ -260,21 +260,7 @@ Digitalized text:
         # Return the exposed fields as a JSON string
         return exposed_fields_data
 
-
 def extract_json_from_response(response):
-    """
-    Extracts JSON content from the AI response.
-
-    Args:
-        response (str): The raw response from the AI.
-
-    Returns:
-        dict: The parsed JSON dictionary.
-
-    Raises:
-        ValueError: If JSON extraction or parsing fails.
-    """
-    # Define possible patterns
     patterns = [
         r'```json\s*(\{.*\})\s*```',  # ```json { ... } ```
         r'```(\{.*\})```',  # ```{ ... }```
@@ -288,7 +274,6 @@ def extract_json_from_response(response):
             try:
                 return json.loads(json_content)
             except json.JSONDecodeError:
-                continue  # Try the next pattern
+                continue
 
-    # If no valid JSON found
     raise ValueError("No valid JSON object found in the response.")

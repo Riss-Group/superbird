@@ -44,12 +44,12 @@ class IrModel(models.Model):
         self.ensure_one()
         data = {
             'model': self.model,
-            'fields': self._build_field_structure(self.model, self.ai_exposed_field_ids)
+            'fields': self._build_field_structure(self.ai_exposed_field_ids)
         }
         return json.dumps(data, indent=2)
 
     def _build_field_structure(self, field_records, depth=0):
-        if depth > 5:
+        if depth > 2:
             return {}
 
         fields_data = {}
@@ -78,7 +78,7 @@ class IrModel(models.Model):
                         # For one2many, recursively build field structure
                         related_exposed_fields = related_model.ai_exposed_field_ids
                         nested_fields = self._build_field_structure(
-                            related_model_name, related_exposed_fields, depth=depth+1
+                            related_exposed_fields, depth=depth+1
                         )
                         field_info['exposed_fields'] = nested_fields
 
@@ -97,7 +97,7 @@ class IrModel(models.Model):
             domain = []
 
         all_records = model_obj.search(domain)
-        fields_data = self._build_field_structure(model_name, field_records, depth=depth)
+        fields_data = self._build_field_structure(field_records, depth=depth)
 
         values = []
         for rec in all_records:
