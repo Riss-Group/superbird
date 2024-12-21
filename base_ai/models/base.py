@@ -1,4 +1,6 @@
 import re
+from ast import literal_eval
+
 from odoo import models, api, fields
 import os
 import io
@@ -9,7 +11,6 @@ from pdf2image import convert_from_bytes
 import base64
 import requests
 import boto3
-from openai import OpenAI
 import json
 _logger = logging.getLogger(__name__)
 
@@ -17,14 +18,16 @@ class Base(models.AbstractModel):
     _inherit = "base"
 
     def show_ocr_button(self):
-        self.ensure_one()
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        return ir_model.ocr_enabled
+        domain = literal_eval(ir_model.ai_exposed_domain) if ir_model.ai_exposed_domain else []
+        domain += [('id', 'in', self.ids)]
+        return ir_model.ocr_enabled and self.search_count(domain)
 
     def show_ai_button(self):
-        self.ensure_one()
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        return ir_model.ai_query_enabled
+        domain = literal_eval(ir_model.ai_exposed_domain) if ir_model.ai_exposed_domain else []
+        domain += [('id', 'in', self.ids)]
+        return ir_model.ai_query_enabled and self.search_count(domain)
 
     @api.model
     def ai_exposed_fields(self):
@@ -88,7 +91,7 @@ The record itself is:
         prompt = f"""
 Below is digitalized text from a document. Please extract the information according to the JSON structure provided.
 Return only the JSON dictionary with the extracted values without any additional formatting. If a field cannot be found, don't return it.
-If a field is a many2many or one2may, Use odoo's fields.Commands to replace the existing values with the id of the best one if it's a many2one, otherwise the list of best ids if it's many2many
+If a field is many2one, return the best id from possible_values. If it's many2many return a list of best ids from possible_values.
 
 **Important:** 
 - Return **only** the JSON dictionary.
@@ -235,7 +238,9 @@ Digitalized text:
         return response
 
     def _convert_to_dict(self, depth=0):
-        if depth > 2:
+        ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
+        max_depth = ir_model.max_depth or 2
+        if depth > max_depth:
             return {}
         self.ensure_one()
 

@@ -4,17 +4,22 @@
         <field name="model">ir.model</field>
         <field name="inherit_id" ref="base.view_model_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='modules']" position="after">
+            <notebook position="before">
                 <group string="AI Settings">
-                    <field name="ai_query_enabled" widget="boolean_switch"/>
-                    <field name="ocr_enabled" widget="boolean_switch"/>
-                    <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>
-                    <field name="ai_obfuscated_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]"/>
-                    <field name="ai_exposed_domain" placeholder="e.g. [('active', '=', True)]" widget="domain"/>
-                    <field name="max_tokens"/>
-                    <field name="temperature"/>
+                    <group>
+                        <field name="ai_query_enabled" widget="boolean_toggle"/>
+                        <field name="ocr_enabled" widget="boolean_toggle"/>
+                        <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]" invisible="not (ai_query_enabled or ocr_enabled)"/>
+                        <field name="ai_obfuscated_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]" invisible="not ai_query_enabled"/>
+                        <field name="ai_exposed_domain" widget="domain" options="{'model': 'model'}" invisible="not (ai_query_enabled or ocr_enabled)"/>
+                    </group>
+                    <group invisible="not (ai_query_enabled or ocr_enabled)">
+                        <field name="max_tokens"/>
+                        <field name="temperature"/>
+                        <field name="max_depth"/>
+                    </group>
                 </group>
-            </xpath>
+            </notebook>
         </field>
     </record>
 </odoo>

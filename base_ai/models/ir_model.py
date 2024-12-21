@@ -40,6 +40,12 @@ class IrModel(models.Model):
         help="Override the temperature defined in the AI model configuration. If empty, uses the AI model's setting."
     )
 
+    max_depth = fields.Integer(
+        string='Maximum recursion depth',
+        help="Set the maximum recursion depth when fetching data from relational fields of this model.",
+        default=2
+    )
+
     def get_json_structure(self):
         self.ensure_one()
         data = {
@@ -49,14 +55,16 @@ class IrModel(models.Model):
         return json.dumps(data, indent=2)
 
     def _build_field_structure(self, field_records, depth=0):
-        if depth > 2:
+        self.ensure_one()
+        max_depth = self.max_depth or 2
+        if depth > max_depth:
             return {}
 
         fields_data = {}
         env = self.env
         ir_model_obj = env['ir.model']
 
-        for field_rec in field_records:
+        for field_rec in field_records.filtered(lambda x: not x.readonly):
             field_info = {
                 'type': field_rec.ttype,
                 'description': field_rec.field_description,
