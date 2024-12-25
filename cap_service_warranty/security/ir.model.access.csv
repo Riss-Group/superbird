@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_warranty_claim_user,access_warranty_claim_user,model_warranty_claim,base.group_user,1,1,1,1
 access_warranty_claim_line_user,access_warranty_claim_line_user,model_warranty_claim_line,base.group_user,1,1,1,1
+access_warranty_claim_return_user,access_warranty_claim_return_user,model_warranty_claim_return,base.group_user,1,1,1,1
+access_warranty_claim_return_line_user,access_warranty_claim_return_line_user,model_warranty_claim_return_line,base.group_user,1,1,1,1
 

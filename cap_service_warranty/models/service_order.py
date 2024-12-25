@@ -17,13 +17,11 @@ class ServiceOrder(models.Model):
                line_vals += self._get_so_line_product_details(line)
                line_vals += self._get_so_line_labor_details(line)
 
-           print("line_vals ::: ",line_vals)
            warranty_claim = self.env['warranty.claim'].create({
                'partner_id': warranty_partner.id,
                'warranty_claim_line_ids': line_vals,
                'service_order_id': self.id
            })
-           print("warranty_claim :: ",warranty_claim)
 
     def _get_so_line_product_details(self, line):
         so_line_vals = []

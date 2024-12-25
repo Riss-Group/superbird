@@ -16,7 +16,8 @@
         'data/sequence.xml',
         'security/ir.model.access.csv',
         'views/service_order_views.xml',
-        'views/warranty_claim_views.xml'
+        'views/warranty_claim_views.xml',
+        'wizard/warranty_claim_return_views.xml',
     ],
     'installable': True,
     'auto_install': False,

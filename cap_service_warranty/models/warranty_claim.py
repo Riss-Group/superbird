@@ -25,6 +25,46 @@ class WarrantyClaim(models.Model):
         compute='_get_invoiced',
         search='_search_invoice_ids',
         copy=False)
+    return_count = fields.Integer(string="Return Count", compute='_get_returned')
+
+
+    def _get_returned(self):
+        for rec in self:
+            picking_ids = self.env['stock.picking'].search([('warranty_claim_id', '=', rec.id)])
+            rec.return_count = len(picking_ids.ids)
+
+    def action_view_return(self):
+        return self._get_action_view_picking()
+
+    def _get_action_view_picking(self):
+        '''
+        This function returns an action that display existing delivery orders
+        of given sales order ids. It can either be a in a list or in a form
+        view, if there is only one delivery order to show.
+        '''
+        action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
+        pickings =self.env['stock.picking'].search([('warranty_claim_id', '=', self.id)])
+        if len(pickings) > 1:
+            action['domain'] = [('id', 'in', pickings.ids)]
+        elif pickings:
+            form_view = [(self.env.ref('stock.view_picking_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pickings.id
+        # Prepare the context.
+        picking_id = pickings.filtered(lambda l: l.picking_type_id.code == 'outgoing')
+        if picking_id:
+            picking_id = picking_id[0]
+        else:
+            picking_id = pickings[0]
+        # View context from sale_renting `rental_schedule_view_form`
+        cleaned_context = {k: v for k, v in self._context.items() if k != 'form_view_ref'}
+        action['context'] = dict(cleaned_context, default_partner_id=self.partner_id.id,
+                                 default_picking_type_id=picking_id.picking_type_id.id, default_origin=self.name,
+                                 default_group_id=picking_id.group_id.id)
+        return action
 
     @api.depends('warranty_claim_line_ids.invoice_lines')
     def _get_invoiced(self):
@@ -55,7 +95,7 @@ class WarrantyClaim(models.Model):
             invoice = self.env['account.move'].sudo().create(
                 rec._prepare_invoice_values(rec, rec.warranty_claim_line_ids)
             )
-            print("invoice>>>>>>>>>>. ", invoice)
+            rec.state = 'in_payment'
         return True
 
     def _prepare_invoice_values(self, order, wc_lines):
@@ -129,6 +169,54 @@ class WarrantyClaim(models.Model):
         action['context'] = context
         return action
 
+    def action_confirm(self):
+        self.write({'state': 'confirmed'})
+
+    def action_approve(self):
+        self.write({'state': 'approved'})
+
+    def action_refuse(self):
+        self.write({'state': 'refused'})
+
+    def create_return(self, is_return, picking_type_id=False):
+        warranty_return_id = self.env['warranty.claim.return'].create({
+            'warranty_claim_id': self.id,
+            'is_return': is_return,
+            'picking_type_id': picking_type_id.id if picking_type_id else False,
+            'partner_id': self.partner_id.id,
+            'return_lines': [Command.create(line._prepare_return_line()) for line in self.warranty_claim_line_ids],
+        })
+        return warranty_return_id
+
+    def action_create_vendor_return(self):
+        picking_type_id = self.env['stock.picking.type'].search([('sequence_code', '=', 'RMA/OUT'),
+                                                                 ('company_id', '=', self.company_id.id)], limit=1)
+        warranty_return_id = self.create_return('to_supplier', picking_type_id)
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'warranty.claim.return',
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': warranty_return_id.id,
+            # 'context': {
+            #     'default_claim_id': self.id
+            # }
+        }
+
+    def action_create_customer_return(self):
+        picking_type_id = self.env['stock.picking.type'].search([('sequence_code', '=', 'RMA/IN'),
+                                                                 ('company_id', '=', self.company_id.id)], limit=1)
+        warranty_return_id = self.create_return('from_customer', picking_type_id)
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'warranty.claim.return',
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': warranty_return_id.id,
+            # 'context': {
+            #     'default_claim_id': self.id
+            # }
+        }
 
 class WarrantyClaimLine(models.Model):
     _name = 'warranty.claim.line'
@@ -186,3 +274,11 @@ class WarrantyClaimLine(models.Model):
     #                 analytic_account_id, 0) + 100
     #         else:
     #             inv_line_vals['analytic_distribution'] = {analytic_account_id: 100}
+
+    def _prepare_return_line(self):
+        return {
+            'product_id': self.product_id.id,
+            'quantity': self.quantity,
+            'unit_price': self.unit_price,
+            'warranty_claim_line_id': self.id,
+        }
