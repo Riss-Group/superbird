@@ -11,7 +11,7 @@
             </xpath>
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
                 <button type="object" name="action_stat_button_warranty_claim" class="oe_stat_button" icon="fa-usd">
-                    <field name="warranty_claim_ids" widget="statinfo" string="Warranty"/>
+                    <field name="warranty_claim_ids" widget="statinfo" string="Claims"/>
                 </button>
             </xpath>
             <xpath expr="//notebook/page[@name='job_lines']/field[@name='service_order_lines']/tree/field[@name='ttype']" position="after">

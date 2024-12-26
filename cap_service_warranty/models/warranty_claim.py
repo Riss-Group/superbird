@@ -1,6 +1,7 @@
-
-from odoo import api, fields, models
+# -*- coding: utf-8 -*-
+from odoo import api, fields, models, _
 from odoo.fields import Command
+from odoo.exceptions import UserError
 
 
 class WarrantyClaim(models.Model):
@@ -10,7 +11,7 @@ class WarrantyClaim(models.Model):
 
 
     name = fields.Char(string="Name")
-    state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed'), ('approved', 'Approved'),
+    state = fields.Selection(selection=[('draft', 'Draft'), ('confirmed', 'Confirmed'), ('approved', 'Approved'),
                               ('refused', 'Refused'), ('in_payment', 'In Payment'), ('paid', 'Paid')], default="draft")
     partner_id = fields.Many2one('res.partner', string="Contact")
     warranty_claim_line_ids = fields.One2many('warranty.claim.line', 'warranty_claim_id', string="Warranty claim Line")
@@ -19,14 +20,18 @@ class WarrantyClaim(models.Model):
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
     ticket_number = fields.Char(string="Ticket Number")
     invoice_count = fields.Integer(string="Invoice Count", compute='_get_invoiced')
-    invoice_ids = fields.Many2many(
-        comodel_name='account.move',
-        string="Invoices",
-        compute='_get_invoiced',
-        search='_search_invoice_ids',
-        copy=False)
+    invoice_ids = fields.Many2many(comodel_name='account.move', string="Invoices", compute='_get_invoiced',
+                                   search='_search_invoice_ids', copy=False)
     return_count = fields.Integer(string="Return Count", compute='_get_returned')
+    warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True,
+                                   compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
+                                   check_company=True)
 
+    @api.depends('company_id')
+    def _compute_warehouse_id(self):
+        for order in self:
+            warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', order.company_id.id)], limit=1)
+            order.warehouse_id = warehouse_id.id
 
     def _get_returned(self):
         for rec in self:
@@ -37,11 +42,6 @@ class WarrantyClaim(models.Model):
         return self._get_action_view_picking()
 
     def _get_action_view_picking(self):
-        '''
-        This function returns an action that display existing delivery orders
-        of given sales order ids. It can either be a in a list or in a form
-        view, if there is only one delivery order to show.
-        '''
         action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
         pickings =self.env['stock.picking'].search([('warranty_claim_id', '=', self.id)])
         if len(pickings) > 1:
@@ -68,10 +68,6 @@ class WarrantyClaim(models.Model):
 
     @api.depends('warranty_claim_line_ids.invoice_lines')
     def _get_invoiced(self):
-        # The invoice_ids are obtained thanks to the invoice lines of the SO
-        # lines, and we also search for possible refunds created directly from
-        # existing invoices. This is necessary since such a refund is not
-        # directly linked to the SO.
         for order in self:
             invoices = order.warranty_claim_line_ids.invoice_lines.move_id.filtered(
                 lambda r: r.move_type in ('out_invoice'))
@@ -105,38 +101,18 @@ class WarrantyClaim(models.Model):
             'invoice_line_ids': [Command.create(line._prepare_invoice_line()) for line in wc_lines],
         }
 
-
     def _prepare_invoice(self):
-        """
-        Prepare the dict of values to create the new invoice for a sales order. This method may be
-        overridden to implement custom invoice generation (making sure to call super() to establish
-        a clean extension chain).
-        """
         self.ensure_one()
-
-        values = {
-            # 'ref': self.client_order_ref or '',
+        return {
             'move_type': 'out_invoice',
-            # 'narration': self.note,
-            # 'currency_id': self.currency_id.id,
-            # 'medium_id': self.medium_id.id,
-            # 'source_id': self.source_id.id,
-            # 'team_id': self.team_id.id,
             'partner_id': self.partner_id.id,
             'partner_shipping_id': self.partner_id.id,
             'fiscal_position_id': self.env['account.fiscal.position']._get_fiscal_position(self.partner_id).id, #partner_invoice_id
             'invoice_origin': self.name,
             'invoice_payment_term_id': self.partner_id.with_company(self.company_id).property_payment_term_id.id,
-            # 'invoice_user_id': self.user_id.id,
-            # 'payment_reference': self.reference,
-            # 'transaction_ids': [Command.set(self.transaction_ids.ids)],
             'company_id': self.company_id.id,
             'invoice_line_ids': [],
-            # 'user_id': self.user_id.id,
         }
-        # if self.journal_id:
-        #     values['journal_id'] = self.journal_id.id
-        return values
 
     def action_view_invoice(self, invoices=False):
         if not invoices:
@@ -157,15 +133,6 @@ class WarrantyClaim(models.Model):
         context = {
             'default_move_type': 'out_invoice',
         }
-        # if len(self) == 1:
-        #     context.update({
-        #         'default_partner_id': self.partner_id.id,
-        #         'default_partner_shipping_id': self.partner_shipping_id.id,
-        #         'default_invoice_payment_term_id': self.payment_term_id.id or self.partner_id.property_payment_term_id.id or
-        #                                            self.env['account.move'].default_get(
-        #                                                ['invoice_payment_term_id']).get('invoice_payment_term_id'),
-        #         'default_invoice_origin': self.name,
-        #     })
         action['context'] = context
         return action
 
@@ -184,38 +151,33 @@ class WarrantyClaim(models.Model):
             'is_return': is_return,
             'picking_type_id': picking_type_id.id if picking_type_id else False,
             'partner_id': self.partner_id.id,
-            'return_lines': [Command.create(line._prepare_return_line()) for line in self.warranty_claim_line_ids],
+            'return_lines': [Command.create(line._prepare_return_line())
+                             for line in self.warranty_claim_line_ids.filtered(lambda l: not l.display_type and l.claim_for == 'product')],
         })
         return warranty_return_id
 
     def action_create_vendor_return(self):
-        picking_type_id = self.env['stock.picking.type'].search([('sequence_code', '=', 'RMA/OUT'),
-                                                                 ('company_id', '=', self.company_id.id)], limit=1)
-        warranty_return_id = self.create_return('to_supplier', picking_type_id)
+        if not self.warehouse_id.rma_out_type_id:
+            raise UserError(_("Please set RMA Out for warehouse %s") % self.warehouse_id.name)
+        warranty_return_id = self.create_return('to_supplier', self.warehouse_id.rma_out_type_id)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'warranty.claim.return',
             'view_mode': 'form',
             'target': 'new',
             'res_id': warranty_return_id.id,
-            # 'context': {
-            #     'default_claim_id': self.id
-            # }
         }
 
     def action_create_customer_return(self):
-        picking_type_id = self.env['stock.picking.type'].search([('sequence_code', '=', 'RMA/IN'),
-                                                                 ('company_id', '=', self.company_id.id)], limit=1)
-        warranty_return_id = self.create_return('from_customer', picking_type_id)
+        if not self.warehouse_id.rma_in_type_id:
+            raise UserError(_("Please set RMA In for warehouse %s") % self.warehouse_id.name)
+        warranty_return_id = self.create_return('from_customer', self.warehouse_id.rma_in_type_id)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'warranty.claim.return',
             'view_mode': 'form',
             'target': 'new',
             'res_id': warranty_return_id.id,
-            # 'context': {
-            #     'default_claim_id': self.id
-            # }
         }
 
 class WarrantyClaimLine(models.Model):
@@ -226,13 +188,21 @@ class WarrantyClaimLine(models.Model):
     product_id = fields.Many2one('product.product', string="Product")
     quantity = fields.Integer(string="Quantity")
     unit_price = fields.Float(string="Unit Price")
-    claim_for = fields.Selection([('product', 'Product'),('labor', 'Labor')])
+    claim_for = fields.Selection(selection=[('product', 'Product'),('labor', 'Labor')], string="Claim For")
     subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
     service_order_line_id = fields.Many2one('service.order.line', string="Service order line")
-    invoice_lines = fields.Many2many('account.move.line',
-                                     relation='warranty_claim_line_invoice_rel',
+    invoice_lines = fields.Many2many('account.move.line', relation='warranty_claim_line_invoice_rel',
                                      column1='warranty_claim_line_id', column2='invoice_line_id',
                                      string='Invoice Lines', copy=False)
+    name = fields.Text(string="Description", compute='_compute_name', store=True, readonly=False, required=True,
+                       precompute=True)
+    display_type = fields.Selection(selection=[('line_section', "Section"), ('line_note', "Note")], default=False)
+
+    @api.depends('product_id')
+    def _compute_name(self):
+        for record in self:
+            if record.product_id:
+                record.name = record.product_id.get_product_multiline_description_sale()
 
     @api.depends('unit_price', 'quantity')
     def _compute_subtotal(self):
@@ -240,40 +210,17 @@ class WarrantyClaimLine(models.Model):
             record.subtotal = record.quantity * record.unit_price
 
     def _prepare_invoice_line(self):
-        """Prepare the values to create the new invoice line for a sales order line.
-
-        :param optional_values: any parameter that should be added to the returned invoice line
-        :rtype: dict
-        """
         self.ensure_one()
         res = {
             'display_type': 'product',
-            # 'sequence': self.sequence,
             'name': self.product_id.name,
             'product_id': self.product_id.id,
             'product_uom_id': self.product_id.uom_id.id,
             'quantity': self.quantity,
-            # 'discount': self.discount,
             'price_unit': self.unit_price,
-            # 'tax_ids': [Command.set(self.tax_id.ids)],
             'warranty_claim_line_ids': [Command.link(self.id)],
-            # 'is_downpayment': self.is_downpayment,
         }
-        # self._set_analytic_distribution(res)
         return res
-
-    # def _set_analytic_distribution(self, inv_line_vals):
-    #     analytic_account_id = self.order_id.analytic_account_id.id
-    #     if self.analytic_distribution:
-    #         inv_line_vals['analytic_distribution'] = self.analytic_distribution
-    #     if analytic_account_id and not self.display_type:
-    #         analytic_account_id = str(analytic_account_id)
-    #         if 'analytic_distribution' in inv_line_vals:
-    #             inv_line_vals['analytic_distribution'][analytic_account_id] = inv_line_vals[
-    #                                                                               'analytic_distribution'].get(
-    #                 analytic_account_id, 0) + 100
-    #         else:
-    #             inv_line_vals['analytic_distribution'] = {analytic_account_id: 100}
 
     def _prepare_return_line(self):
         return {

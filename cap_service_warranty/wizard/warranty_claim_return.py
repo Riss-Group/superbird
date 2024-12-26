@@ -13,13 +13,6 @@ class WarrantyClaimReturn(models.TransientModel):
     return_lines = fields.One2many('warranty.claim.return.line', 'warranty_claim_return_id', string="Return Lines")
     partner_id = fields.Many2one('res.partner', string="Partner")
 
-
-    # @api.model
-    # def default_get(self, fields):
-    #     res = super().default_get(fields)
-    #     res['warranty_claim_id'] = self.env.context.get('active_id')
-    #     return res
-
     def action_create_return(self):
         self.ensure_one()
         return self._create_picking()

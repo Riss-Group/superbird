@@ -4,3 +4,4 @@ from . import service_order
 from . import warranty_claim
 from . import account_move
 from . import stock_picking
+from . import stock_warehouse
