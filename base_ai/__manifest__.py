@@ -1,6 +1,6 @@
 {
     'name': 'AI Integration',
-    'version': '17.0.0.1',
+    'version': '17.0.1.1',
     'category': 'Extra Tools',
     'license': 'OPL-1',
     'summary': "AI integration base module allowing OCR and ChatGPT integration",
@@ -27,13 +27,11 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'base_ai/static/src/js/*',
-            'base_ai/static/src/components/**/*',
+            'base_ai/static/src/js/*.js',
+            'base_ai/static/src/xml/*.xml',
         ],
     },
     'installable': True,
     'application': True,
     'auto_install': False,
-    'license': 'AGPL-3',
-    "images": ["static/ai_completion.gif"],
 }

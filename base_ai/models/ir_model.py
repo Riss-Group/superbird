@@ -6,6 +6,14 @@ class IrModel(models.Model):
     _inherit = 'ir.model'
 
     ocr_enabled = fields.Boolean(string="OCR Enabled", help="Enable or disable OCR for this model.")
+    extra_instructions_ocr = fields.Text(
+        string="Extra Instructions for OCR",
+        help="Extra instructions appended to OCR prompts."
+    )
+    extra_instructions_ai = fields.Text(
+        string="Extra Instructions for AI",
+        help="Extra instructions appended to AI prompts."
+    )
     ai_query_enabled = fields.Boolean(string="AI Query Enabled", help="Enable or disable AI queries for this model.")
     ai_exposed_field_ids = fields.Many2many(
         comodel_name='ir.model.fields',

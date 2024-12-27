@@ -19,28 +19,23 @@ class ResConfigSettings(models.TransientModel):
     google_vision_api_key = fields.Char(
         string='Google Vision API Key',
         config_parameter='base_ai.google_vision_api_key',
-        help="API Key for Google Vision. Actual usage often requires service accounts.",
-        attrs="{'invisible': [('ocr_service', '!=', 'google_vision')]}"
+        help="API Key for Google Vision. Actual usage often requires service accounts."
     )
 
     aws_access_key_id = fields.Char(
         string='AWS Access Key ID',
-        config_parameter='base_ai.aws_access_key_id',
-        attrs="{'invisible': [('ocr_service', '!=', 'aws_textract')]}"
+        config_parameter='base_ai.aws_access_key_id'
 
     )
     aws_secret_access_key = fields.Char(
         string='AWS Secret Access Key',
-        config_parameter='base_ai.aws_secret_access_key',
-        password="True",
-        attrs="{'invisible': [('ocr_service', '!=', 'aws_textract')]}"
+        config_parameter='base_ai.aws_secret_access_key'
     )
     aws_region = fields.Char(
         string='AWS Region',
         config_parameter='base_ai.aws_region',
         default='us-east-1',
-        help="AWS Region for Textract (e.g. us-east-1).",
-        attrs="{'invisible': [('ocr_service', '!=', 'aws_textract')]}"
+        help="AWS Region for Textract (e.g. us-east-1)."
     )
 
     query_model_id = fields.Many2one(

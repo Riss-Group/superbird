@@ -1,5 +1,4 @@
-from odoo import models, fields, api
-import json
+from odoo import models, fields
 import base64
 
 from odoo.exceptions import UserError

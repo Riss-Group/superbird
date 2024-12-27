@@ -17,6 +17,16 @@ _logger = logging.getLogger(__name__)
 class Base(models.AbstractModel):
     _inherit = "base"
 
+    ai_message_ids = fields.One2many(
+        'ai.message',
+        'res_id',
+        string='AI Chat Log',
+        domain=lambda self: [
+            ('res_model', '=', self._name),
+            ('create_uid', '=', self.env.user.id)
+        ],
+    )
+
     def show_ocr_button(self):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
         domain = literal_eval(ir_model.ai_exposed_domain) if ir_model.ai_exposed_domain else []
@@ -54,6 +64,15 @@ class Base(models.AbstractModel):
     def ai_query_prompt(self, prompt):
         self.ensure_one()
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
+          # Gather all previous messages
+        previous_messages = []
+
+        for message in self.ai_message_ids:
+            previous_messages.append({
+                "role": message.role,
+                "content": message.content
+            })
+        extra_instructions = ir_model.extra_instructions_ai or ""
         json_structure_str = json.dumps(self._convert_to_dict(), default=str, indent=2)
         ConfigParam = self.env['ir.config_parameter'].sudo()
         ai_model_id = ConfigParam.get_param('base_ai.ocr_model_id')
@@ -61,20 +80,37 @@ class Base(models.AbstractModel):
             raise ValueError("No AI model configuration found. Please configure it in Settings.")
 
         ai_model = self.env['ai.model'].browse(int(ai_model_id))
-        prompt = f"""
+        final_prompt = f"""
 {prompt}
 
 The record itself is:
 ```json
 {json_structure_str}
 ```
+Extra Instructions:
+```json
+{extra_instructions}
+```
 """
-        return ai_model.ai_prompt(prompt, None, None, ir_model.max_tokens, ir_model.temperature)
+        response = ai_model.ai_prompt(final_prompt, None, None, previous_messages, ir_model.max_tokens, ir_model.temperature)
+        self.env['ai.message'].create({
+            'res_id': self.id,
+            'res_model': self._name,
+            'role': 'user',
+            'content': prompt,
+        })
+        self.env['ai.message'].create({
+            'res_id': self.id,
+            'res_model': self._name,
+            'role': 'assistant',
+            'content': response,
+        })
+        return response
 
     @api.model
     def ocr_prompt(self, file_content):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-
+        extra_instructions = ir_model.extra_instructions_ocr or ""
         json_structure_str = ir_model.get_json_structure()
 
         # file_name should be in context
@@ -105,6 +141,10 @@ JSON Structure:
 Digitalized text:
 ```text
 {ocr_text}
+```
+Extra Instructions:
+```text
+{extra_instructions}
 ```
 """
         system_prompt = "You are a helpful assistant."

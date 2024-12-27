@@ -28,8 +28,9 @@ class AiModel(models.Model):
         action['domain'] = [ ('ai_model_id', '=', self.id)]
         return action
 
-    def ai_prompt(self, prompt, system_prompt=None, image_url=None, max_tokens=None, temperature=None):
+    def ai_prompt(self, prompt, system_prompt=None, image_url=None, previous_messages=[], max_tokens=None, temperature=None):
         self.ensure_one()
+        messages = previous_messages
         max_tokens = max_tokens or self.max_tokens
         temperature = temperature or self.temperature
         client = OpenAI(api_key=self.api_key)
@@ -44,12 +45,12 @@ class AiModel(models.Model):
                             "url": image_url,
                         },
                     })
-        messages = [
+        messages.append(
             {
                 "role": "user",
                 "content": content
             }
-        ]
+        )
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
 
