@@ -14,6 +14,7 @@
     # always loaded
     'data': [
         'wizard/product_configurator.xml',
+        'views/product_attribute_views.xml',
     ],
 
 }
