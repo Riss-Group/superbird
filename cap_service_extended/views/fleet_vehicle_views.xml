@@ -16,6 +16,7 @@
                             <field name="oem_production_date"/>
                             <field name="revised_pick_up_date"/>
                             <field name="dealer_arrival_date"/>
+                            <field name="oem_ready_for_delivery_date"/>
                         </group>
                         <group name="sale" string="Sale Dates">
                             <field name="sold_customer_date"/>
@@ -27,6 +28,8 @@
                     <group>
                         <group name="accounting" string="Accounting Dates">
                             <field name="oem_payment_due_date"/>
+                            <field name="oem_body_payment_date"/>
+                            <field name="oem_chassis_payment_date"/>
                         </group>
                         <group name="service" string="Service Date">
                             <field name="ready_for_inspection_date"/>
