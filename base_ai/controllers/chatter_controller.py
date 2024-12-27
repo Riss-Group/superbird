@@ -26,4 +26,3 @@ class ChatterController(http.Controller):
             'user_message': message,
             'assistant_response': response,
         }
-`
