@@ -11,7 +11,7 @@ class FleetVehicle(models.Model):
     bus_order_date = fields.Date('Bus Order Date', compute='_compute_dates')
     oem_production_date = fields.Date('OEM Production Date')
     revised_pick_up_date = fields.Date('Revised Pick-up Date', compute='_compute_dates')
-    # oem_ready_for_delivery_date = fields.Date('OEM Ready for Delivery Date') #TODO: confirm if it is to compute or it should be on stock move and not here?
+    oem_ready_for_delivery_date = fields.Date('OEM Ready for Delivery Date') #TODO: confirm if it is to compute or it should be on stock move and not here?
     dealer_arrival_date = fields.Date('Dealer Arrival', compute='_compute_dates')
     pick_up_date = fields.Date('Pick-up Date', compute='_compute_dates')
 
@@ -23,6 +23,8 @@ class FleetVehicle(models.Model):
 
     # accounting fields
     oem_payment_due_date = fields.Date('OEM Payment Due Date', compute='_compute_dates')
+    oem_body_payment_date = fields.Date('OEM Body Payment Date')
+    oem_chassis_payment_date = fields.Date('OEM Chassis Payment Date')
 
     # service fields
     ready_for_inspection_date = fields.Date('Ready for Inspection Date', compute='_compute_service_date')

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="warranty_claim_return_view_form" model="ir.ui.view">
+        <field name="name">warranty_claim_return_view_form</field>
+        <field name="model">warranty.claim.return</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="partner_id"/>
+                    <field name="picking_type_id" readonly='1' force_save='1' />
+                    <field name='is_return' invisible='1'/>
+                </group>
+                <notebook>
+                    <page name="warranty_claim_return_line">
+                        <field name="return_lines">
+                            <tree>
+                                <field name="product_id"/>
+                                <field name="quantity"/>
+                                <field name="unit_price"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_create_return" string='Create Return' class="oe_highlight" type='object' />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
