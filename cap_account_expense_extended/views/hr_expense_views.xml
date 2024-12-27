@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hr_expense_form_view_inherit_cap_extended" model="ir.ui.view">
+        <field name="name">hr.expense.form.inherit.cap.extended</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <field name="analytic_distribution" position="after">
+                <field name="fiscal_position_id" options="{'no_create_edit': True, 'no_create': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="unreconciled_bank_statement_line_tree_view" model="ir.ui.view">
+        <field name="name">unreconciled.bank.statement.line.tree.view</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <tree default_order="internal_index desc" create="False">
+                <!--Invisible fields-->
+                <field name="statement_complete" column_invisible="True"/>
+                <field name="statement_valid" column_invisible="True"/>
+                <field name="state" column_invisible="True"/>
+                <field name="is_reconciled" column_invisible="True"/>
+                <field name="to_check" column_invisible="True"/>
+                <field name="country_code" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" column_invisible="True"/>
+
+                <!--Visible fields-->
+                <field name="sequence" widget="handle" column_invisible="True"/> <!--Until we add the JS class-->
+                <field name="date" readonly="is_reconciled and amount != 0" options="{'warn_future': true}"/>
+                <field name="payment_ref" required="1" readonly="is_reconciled and amount != 0"/>
+                <field name="partner_id" readonly="is_reconciled and amount != 0"/>
+                <field name="account_number" optional="hidden"/>
+                <field name="narration" string="Notes" readonly="is_reconciled and amount != 0" optional="hidden"/>
+                <field name="ref" readonly="is_reconciled and amount != 0" optional="hidden"/>
+                <field name="transaction_type" optional="hidden"/>
+                <field name="foreign_currency_id" optional="hidden" groups="base.group_multi_currency" domain="[('id', '!=', currency_id)]" options="{'no_open': True, 'no_create': True}" readonly="is_reconciled and amount != 0"/>
+                <field name="amount_currency" optional="hidden" groups="base.group_multi_currency" invisible="not foreign_currency_id" readonly="is_reconciled and amount != 0"/>
+                <field name="amount" readonly="is_reconciled and amount != 0"/>
+                <field name="journal_id" domain="[('type', 'in', ['bank','cash'])]" column_invisible="bool(context.get('default_journal_id'))" readonly="(statement_id or is_reconciled) and amount != 0"/>
+                <field name="running_balance" class="oe_read_only"/>
+                <field name="statement_id" column_invisible="True" options="{'no_quick_create': True}" domain="['|',('journal_id', '=', journal_id),('journal_id', '=', False)]" context="{                                 'default_journal_id':journal_id,                                 'form_view_ref': 'account_accountant.view_bank_statement_form_bank_rec_widget',                                 'st_line_id':id,                             }" decoration-danger="statement_complete == False or statement_valid == False" widget="bank_rec_list_many2one_multi_id" readonly="not id"/>
+                <field name="expense_id" invisible="1" column_invisible="True"/>
+                <field name="journal_employee_user_id" invisible="1" column_invisible="True"/>
+                <button name="create_expense_action" string="Create Expense" type="object" class="btn-primary" invisible="expense_id"/>
+                <button name="view_expense" type="object" string="View Expense" invisible="not expense_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="unreconciled_bank_statement_line_search_view" model="ir.ui.view">
+        <field name="name">unreconciled.bank.statement.line.search.view</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Transaction"
+                       filter_domain="['|', '|', '|', '|', '|', '|', ('payment_ref', 'ilike', self), ('narration', 'ilike', self), ('partner_id', 'ilike', self), ('partner_name', 'ilike', self), ('partner_bank_id', 'ilike', self), ('account_number', 'ilike', self), ('amount', 'ilike', self)]"/>
+                <field name="id" invisible="1"/>
+                <field name="payment_ref"/>
+                <field name="date"/>
+                <field name="statement_id"/>
+                <field name="partner_id"/>
+                <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"
+                       invisible="context.get('default_journal_id')"/>
+                <field name="narration" string="Notes"/>
+                <field name="transaction_type"/>
+                <field name="amount"/>
+                <field name="is_reconciled"/>
+                <field name="move_id" string="Journal Entry"
+                       filter_domain="['|', ('move_id.name', 'ilike', self), ('move_id.ref', 'ilike', self)]"/>
+                <field name="statement_line_id" string="Statement Line"/>
+                <field name="expense_id" invisible="1"/>
+                <separator/>
+                <filter name="not_expensed" string="To Expense" domain="[('expense_id', '=', False)]"/>
+                <separator/>
+                <filter name="deposits" string="Deposits" domain="[('amount', '&gt;', 0.0)]"/>
+                <filter name="payments" string="Payments" domain="[('amount', '&lt;', 0.0)]"/>
+                <separator/>
+                <filter name="no_statement" string="No statement" domain="[('statement_id', '=', False)]"/>
+                <filter name="invalid_statement" string="Invalid statements"
+                        domain="[('statement_complete', '=', False)]"/>
+                <separator/>
+                <filter name="matched" string="Matched" domain="[('is_reconciled', '=', True)]"/>
+                <filter name="not_matched" string="Not Matched"
+                        domain="[('is_reconciled', '=', False), ('to_check', '=', False)]"/>
+                <filter name="to_check" string="To Check" domain="[('to_check', '=', True)]"/>
+                <separator/>
+                <filter name="date" string="Date" date="date"/>
+                <separator/>
+                <filter name="statement_group" string="Statement" context="{'group_by': 'statement_id'}"/>
+                <filter name="journal_group" string="Journal" context="{'group_by': 'journal_id'}"/>
+                <filter name="date_group" string="Date" context="{'group_by': 'date'}"/>
+                <filter name="invoice_date_group" string="Invoice Date" domain="[]"
+                        context="{'group_by': 'invoice_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="unreconciled_bank_statement_line_actions_all" model="ir.actions.act_window">
+        <field name="name">Bank Statement Line</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="cap_account_expense_extended.unreconciled_bank_statement_line_tree_view" />
+        <field name="search_view_id" ref="unreconciled_bank_statement_line_search_view"/>
+        <field name="domain">[('is_reconciled','=',False), ('move_id.state', '=', 'posted'), ('journal_employee_user_id', '=', uid)]</field>
+    </record>
+
+    <menuitem id="menu_hr_unreported_transactions" name="Unreported Transactions" sequence="4"
+              parent="hr_expense.menu_hr_expense_root" action="unreconciled_bank_statement_line_actions_all"/>
+</odoo>
