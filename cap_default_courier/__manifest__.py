@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'cap_default_courier',
+    'name': 'CAP Default Courier',
     'version': '1.0',
     'license': 'OPL-1',
     'category': 'Contacts',
@@ -10,9 +11,8 @@
         'delivery',
         ],
     'data': [
-        'views/menuitems.xml',
+        'views/delivery_carrier_views.xml',
         'views/res_partner.xml',
-        'security/ir.model.access.csv',
     ],
     'installable': True,
     'application': False,
