@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cap_view_delivery_carrier_form_inherit_delivery" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.inherit.delivery</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='delivery_details']" position="inside">
+                <field name="type" required="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="cap_view_delivery_carrier_tree_inherit_delivery" model="ir.ui.view">
+        <field name="name">delivery.carrier.tree.inherit.delivery</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="before">
+                <field name="type"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
