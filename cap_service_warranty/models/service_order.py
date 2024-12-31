@@ -36,7 +36,7 @@ class ServiceOrder(models.Model):
 
     def _get_so_line_product_details(self, line):
         so_line_vals = []
-        for so_line_product_id in line.service_order_line_product_ids:
+        for so_line_product_id in line.service_order_line_product_ids.filtered(lambda x: x.product_id and x.quantity > 0):
             vals = {
                 'product_id': so_line_product_id.product_id.id,
                 'quantity': so_line_product_id.quantity,
@@ -49,7 +49,7 @@ class ServiceOrder(models.Model):
 
     def _get_so_line_labor_details(self, line):
         so_line_vals = []
-        for so_line_service_id in line.service_order_line_service_ids:
+        for so_line_service_id in line.service_order_line_service_ids.filtered(lambda x: x.product_id and x.quantity > 0):
             vals = {
                 'product_id': so_line_service_id.product_id.id,
                 'quantity': so_line_service_id.quantity,
