@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap stock barcode",
+    'license': 'OPL-1',
 
     'summary': "Stock Barcode Customization",
 
@@ -18,6 +19,7 @@
     'data': [
         'views/stock_product_selector.xml',
         'report/product_barcode.xml',
+        'report/report_deliveryslip.xml',
         'wizard/product_label_layout.xml',
         'views/stock_picking_type.xml',
         'views/stock_picking.xml'
