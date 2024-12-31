@@ -21,7 +21,9 @@ class ScancodeRequest():
         access_url = url_join(self.api_url, endpoint) #API_BASE_URL
         headers = {'Content-Type': 'text/xml; charset=utf-8'}
         try:
-            self.debug_logger(f"URL: {access_url}\nType: {request_type}\nData: {data if data else 'None'}")
+            # self.debug_logger(f"URL: {access_url}\nType: {request_type}\nData: {data if data else 'None'}")
+            self.debug_logger("%s\n%s\n%s" % (access_url, request_type, data if data else None),
+                              'scancode_request_%s' % endpoint)
             if request_type == 'post':
                 response = requests.post(access_url, data=data, headers=headers)
             else:

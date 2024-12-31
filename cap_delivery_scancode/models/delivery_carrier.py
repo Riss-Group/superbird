@@ -20,7 +20,7 @@ class DeliverCarrier(models.Model):
         scancode_request = ScancodeRequest(user_id=self.scancode_user_id,
                                            password=self.scancode_password,
                                            api_url=self.scancode_api_url,
-                                           debug_logger=self.env['ir.logging']._log)
+                                           debug_logger=self.log_xml)
 
         request_xml = f"""<?xml version="1.0"?>
         <RateEngineRequest>
