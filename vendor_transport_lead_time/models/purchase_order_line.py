@@ -1,5 +1,6 @@
 # Copyright 2020 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from operator import index
 
 from odoo import api, fields, models
 
@@ -7,16 +8,14 @@ from odoo import api, fields, models
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
 
-    supplier_date_planned = fields.Datetime(
-        string="Supplier Scheduled Date",
-        compute="_compute_supplier_date_planned",
-    )
+    supplier_date_planned = fields.Datetime(string="Supplier Scheduled Date", compute="_compute_supplier_date_planned",
+                                            store=True, index=True)
     report_date_planned = fields.Datetime(
         string="Date planned (used by report)",
         compute="_compute_report_date_planned",
     )
 
-    @api.depends("date_planned")
+    @api.depends('date_planned', 'product_id', 'product_qty', 'product_uom', 'company_id')
     def _compute_supplier_date_planned(self):
         for line in self:
             line.supplier_date_planned = line._get_supplier_date_planned()
@@ -47,7 +46,7 @@ class PurchaseOrderLine(models.Model):
         )
         if not seller:
             return False
-        return fields.Datetime.subtract(self.date_planned, days=seller.transport_delay)
+        return fields.Datetime.subtract(self.date_planned, days=seller.delay)
 
     def _compute_report_date_planned(self):
         for line in self:

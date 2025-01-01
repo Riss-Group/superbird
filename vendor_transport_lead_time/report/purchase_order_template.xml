@@ -7,7 +7,7 @@
         inherit_id="purchase.report_purchaseorder_document">
         <th name="th_taxes" position="after">
             <th name="th_date_req" class="text-center">
-                <strong>Date Req.</strong>
+                <strong>Ship By</strong>
             </th>
         </th>
         <xpath expr="//t[@t-if='not line.display_type']/td[6]" position="after">
