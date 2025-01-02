@@ -3,7 +3,7 @@
     'name': 'CAP Service',
     'category': 'Service',
     'summary': "CAP Service",
-    'version': '1.2',
+    'version': '1.3',
     'author': 'Captivea software Consulting, Bassim Elsamaloty',
     'website': 'https://www.captivea.com/',
     'license': 'OPL-1',
