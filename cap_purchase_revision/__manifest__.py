@@ -8,6 +8,7 @@
         'base',
         'purchase',
         'purchase_stock',
+        'purchase_requisition',
         ],
     'data': [
         'views/purchase_order.xml',

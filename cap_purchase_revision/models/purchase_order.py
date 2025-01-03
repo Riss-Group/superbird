@@ -1,8 +1,10 @@
 from odoo import models, fields, api
 
+
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    state = fields.Selection(selection_add=[('revised', 'Revised')])
     previous_revision_ids = fields.Many2many(
                 comodel_name='purchase.order',
                 relation='purchase_order_previous_revisions_rel',
@@ -87,6 +89,7 @@ class PurchaseOrder(models.Model):
                 body=f"New revision created: {revision_name}",
                 subtype_xmlid='mail.mt_note'
             )
+            record.state = 'revised'
         return {
             'type': 'ir.actions.act_window',
             'name': f"Revised PO - {revision_name}",
