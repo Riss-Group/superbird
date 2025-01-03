@@ -8,6 +8,8 @@ class PricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
 
+    base = fields.Selection(selection_add=[('purchase_main_price', 'Purchase Main Price')],
+                                  ondelete={'purchase_main_price': 'set default'})
     applied_on = fields.Selection(selection_add=[('4_product_domain', 'Domain')],
                                   ondelete={'4_product_domain': 'set default'})
     product_domain = fields.Char("Domain")
@@ -20,7 +22,7 @@ class PricelistItem(models.Model):
         super(PricelistItem, self)._compute_name_and_price()
         for item in self:
             if item.product_domain and item.applied_on == '4_product_domain':
-                item.name = _("Domain: %s", item.product_domain)
+                item.name = _("Domain")
 
 
 

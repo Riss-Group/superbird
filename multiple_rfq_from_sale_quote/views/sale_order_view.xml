@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="is_rfq_create"/>
+                    <field name="is_rfq_create" invisible="1"/>
                 </xpath>
                 <xpath expr="//header/button[@name='action_draft']" position="after">
                     <!-- <button string="Create RFQ" type="object" name="create_rfq_from_sales" class="oe_highlight" attrs="{'invisible': [('is_rfq_create', '=', False)]}"/> -->

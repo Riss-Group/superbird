@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_service_order_worksheets_tree" model="ir.ui.view">
+        <field name="name">service.order.worksheets.tree</field>
+        <field name="model">service.order.worksheets</field>
+        <field name="arch" type="xml">
+            <tree string="Service Order Worksheets">
+                <field name="service_order_id" column_invisible='True'/>
+                <field name="worksheet_id" column_invisible='True'/>
+                <field name="model_name" column_invisible='True'/>
+                <field name="worksheet_name" column_invisible='True'/>
+                <field name="task_id"/>
+                <button name='task_action_fsm_worksheet' string='View Worksheet' type='object' context="{'task_id': task_id}" />
+            </tree>
+        </field>
+    </record>
+
+</odoo>

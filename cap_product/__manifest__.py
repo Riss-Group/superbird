@@ -2,6 +2,7 @@
 {
     'name': "CAP Product",
     'summary': "CAP Product",
+    'license': 'OPL-1',
     'description': """
     TBD
     """,

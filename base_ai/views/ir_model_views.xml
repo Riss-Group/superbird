@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_ir_model_form_inherit_ocr_exposed_obfuscated" model="ir.ui.view">
+        <field name="name">ir.model.form.inherit.ocr.exposed.obfuscated</field>
+        <field name="model">ir.model</field>
+        <field name="inherit_id" ref="base.view_model_form"/>
+        <field name="arch" type="xml">
+            <notebook position="before">
+                <group string="AI Settings">
+                    <group string="OCR settings">
+                        <field name="ocr_enabled" widget="boolean_toggle"/>
+                        <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]" invisible="not ocr_enabled"/>
+                        <field name="ai_exposed_domain" widget="domain" options="{'model': 'model'}" invisible="not ocr_enabled"/>
+                        <field name="extra_instructions_ocr" invisible="not ocr_enabled"/>
+                    </group>
+                    <group string="AI Query settings">
+                        <field name="ai_query_enabled" widget="boolean_toggle"/>
+                        <field name="ai_exposed_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]" invisible="not ai_query_enabled"/>
+                        <field name="ai_exposed_domain" widget="domain" options="{'model': 'model'}" invisible="not ai_query_enabled "/>
+                        <field name="ai_obfuscated_field_ids" widget="many2many_tags" domain="[('model_id', '=', id)]" invisible="not ai_query_enabled"/>
+                        <field name="extra_instructions_ai" invisible="not ai_query_enabled"/>
+                    </group>
+                    <group string="Common settings" colspan="2" invisible="not (ai_query_enabled or ocr_enabled)">
+                        <field name="max_tokens"/>
+                        <field name="temperature"/>
+                        <field name="max_depth"/>
+                    </group>
+                </group>
+            </notebook>
+        </field>
+    </record>
+</odoo>

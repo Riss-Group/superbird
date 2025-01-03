@@ -10,8 +10,26 @@
                 <page name="repair_info" string="Repair Info">
                     <group>
                         <field name='service_order_id' readonly='1' force_save='1'/>
+                        <field name='service_order_type' readonly='1' force_save='1'/>
                     </group>
                 </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="rental_order_form_view_service" model="ir.ui.view">
+        <field name="name">rental_order_form_view_service</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_renting.rental_order_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rental_start_date']" position="after">
+                <field name="service_order_rental_id" string="Service Order" invisible="not is_rental_order"/>
+                <field name="is_rental_order" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_template_id']" position="after">
+                <field name="create_fleet_vehicle" column_invisible="1"/>
+                <field name="is_rental" column_invisible="1" />
+                <field name="fleet_vehicle_rental_id" domain="[('active_demo_unit','=',True)]" column_invisible="not parent.is_rental_order" required="create_fleet_vehicle and is_rental" readonly="not create_fleet_vehicle"/>
             </xpath>
         </field>
     </record>

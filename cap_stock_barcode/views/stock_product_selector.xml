@@ -7,17 +7,50 @@
             <field eval="17" name="priority"/>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <div class="row" position="inside">
+                 <xpath expr="//div[@class='col-12 my-2 d-flex align-items-baseline']" position="replace">
                     <div class="col-12 my-2 d-flex align-items-baseline">
+                        <i class="fa fa-fw fa-lg fa-cube me-3" title="Quantity"/>
+                        <field name="barcode_qty_done" class="w-100 w-md-50 text-end o_qty_done_field_completed" invisible="barcode_qty_done == quantity" options="{'type': 'number'}" placeholder="Quantity"/>
+                        <field name="barcode_qty_done" class="w-100 w-md-50 text-end o_qty_done_field_not_completed" invisible="barcode_qty_done != quantity" options="{'type': 'number'}" placeholder="Quantity"/>
+                        <field name="quantity" widget="set_reserved_qty_button" field_to_set="barcode_qty_done" invisible="picked"/>
+                    </div>
+                </xpath>
+                <div class="row" position="inside">
+                    <div class="col-12 my-2 d-flex align-items-baseline" invisible="picking_code != 'incoming'">
                         <i class="fa fa-trash me-3" title="Quarantined"/>
                         <label for="not_done_qty" string="Quarantined"/>
                         <field name="not_done_qty" clas3s="w-100 w-md-50 text-end o_qty_done_field_not_completed" options="{'type': 'number'}" placeholder="Quarantined"/>
                     </div>
-                    <div class="col-12 my-2 d-flex align-items-baseline">
+                    <div class="col-12 my-2 d-flex align-items-baseline" invisible="picking_code != 'incoming'">
                         <label for="qty_remaining" string="Remaining"/>
                         <field name="qty_remaining" class="w-100 w-md-50 text-end" options="{'type': 'number'}" placeholder="Remaining"/>
+                        <field name="related_scrap_line" invisible="1"/>
                     </div>
                 </div>
+                <xpath expr="." position="inside">
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    <record id="cap_stock_move_line_form" model="ir.ui.view">
+            <field name="name">stock.move.line.form_cap</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_move_line_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="." position="inside">
+                    <field name="qty_remaining" invisible="1"/>
+                    <div class="oe_chatter" invisible="qty_remaining == 0">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </xpath>
             </field>
         </record>
     </data>

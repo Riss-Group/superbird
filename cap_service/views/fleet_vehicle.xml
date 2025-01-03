@@ -1,20 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="fleet_vehicle_view_form_warranty" model="ir.ui.view">
-        <field name="name">fleet_vehicle_view_form_warranty</field>
+    <record id="fleet_vehicle_view_kanban_service" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_kanban_service</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//strong[hasclass('o_kanban_record_title')]//t" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="after">
+                <div>Stock#: <field name="stock_number"/></div>
+                <div>Body#: <field name="body_number"/></div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_search_service" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_search_service</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="filter_domain">
+                    ['|', ('name', 'ilike', self),
+                        '|', ('brand_id.name', 'ilike', self),
+                        '|', ('vin_sn', 'ilike', self),
+                        '|', ('body_number', 'ilike', self),
+                        '|', ('stock_number', 'ilike', self),
+                        ('customer_ref_num', 'ilike', self)]
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="service_order_ids" filter_domain="[('service_order_ids', 'ilike', self)]" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_tree_ack" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_tree_ack</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="action_fleet_ack" string="Acknowledge" type="object" />
+                </header>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="delete">0</attribute>
+                <attribute name="multi_edit">0</attribute>
+                <attribute name="editable">top</attribute>
+                <attribute name="open_form_view">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_tree_service" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_tree_service</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='license_plate']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='driver_id']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='future_driver_id']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='driver_employee_id']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='future_driver_employee_id']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='manager_id']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='co2']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_renewal_due_soon']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_renewal_overdue']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_renewal_total']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vehicle_properties']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>        
+            <xpath expr="//field[@name='contract_state']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>        
+            <xpath expr="//field[@name='activity_exception_decoration']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>    
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vin_sn']" position="after">
+                <field name="stock_number" optional="show"/>
+                <field name="body_number" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="ack_file" widget="pdf_viewer" readonly="True" optional="hide"/>
+                <field name="ack_received" optional="hide" />
+                <field name="product_template_variant_value_ids" widget="many2many_tags" optional="show"/>
+                <field name="customer_id" optional="show"/>
+            </xpath> 
+            <xpath expr="//tree" position="inside">
+                <field name="customer_ref_num" optional="hide"/>
+                <field name="engine_number" optional="hide"/>
+                <field name="transmission_number" optional="hide"/>
+                <field name="diesel_particulate_number" optional="hide"/>
+                <field name="cat_convert_number" optional="hide"/>
+                <field name="front_axle_number" optional="hide"/>
+                <field name="rear_axle_number" optional="hide"/>
+                <field name="ignition_key_number" optional="hide"/>
+            </xpath>                                   
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_form_service" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_form_service</field>
         <field name="model">fleet.vehicle</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='vin_sn']" position="attributes">
-                <attribute name="string">VIN Number</attribute>
+            <!-- Buttons -->
+            <xpath expr="//form" position="inside">
+                <field name="is_bus_fleet" invisible="1" />
             </xpath>
-            <xpath expr="//field[@name='vin_sn']" position="after">
-                <field name="body_number" />
-                <field name="stock_number" />
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_fleet_move_lines" type="object" class="oe_stat_button" icon="fa-list" invisible="not is_bus_fleet">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Product Moves</span>
+                        <span class="o_stat_value">
+                            <field name="fleet_move_line_ids" invisible='1'/>
+                            <field name="fleet_move_line_count" />
+                        </span>
+                    </div>
+                </button>
+                <button name="action_service_order_ids" type="object" class="oe_stat_button" icon="fa-wrench" invisible="not is_bus_fleet">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Service Orders</span>
+                        <span class="o_stat_value">
+                            <field name="service_order_ids" invisible='1'/>
+                            <field name="service_order_ids_count" />
+                        </span>
+                    </div>
+                </button>
+                <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not is_bus_fleet">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Worksheets</span>
+                        <span class="o_stat_value">
+                            <field name="service_order_worksheet_count" />
+                        </span>
+                    </div>
+                </button>
+                <button name="action_rental_sign_request_ids" type="object" class="oe_stat_button" icon="fa-pencil" invisible="not is_bus_fleet">
+                    <field name="rental_sign_request_count" widget="statinfo" string="Rental Agreements"/>
+                    <field name="rental_sale_line_ids" invisible="1" />
+                    <field name="rental_sign_request_count" invisible="1" />
+                </button>
+            </xpath>
+            <xpath expr="//button[@name='open_assignation_logs']" position="attributes">
+                <attribute name="invisible">is_bus_fleet</attribute>
+            </xpath>
+            <xpath expr="//button[field[@name='service_count']]" position="attributes">
+                <attribute name="invisible">is_bus_fleet</attribute>
+            </xpath>
+            <xpath expr="//button[field[@name='contract_count']]" position="attributes">
+                <attribute name="invisible">is_bus_fleet</attribute>
+            </xpath>
+            <!-- Business Fields -->
+            <xpath expr="//group//field[@name='company_id']" position="after">
+                <field name="active_demo_unit" />
+                <field name="was_demo_unit" force_save="1" readonly="1" />
+            </xpath>
+            <xpath expr="//field[@name='order_date']" position="after">
+                <field name="sold_date" />
+            </xpath>
+            <xpath expr="//field[@name='vin_sn']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='category_id']" position='before'>
                 <field name="customer_id" />
+                <field name="customer_ref_num" />
+                <field name="product_id" />
+                <field name="product_template_variant_value_ids" widget="many2many_tags" readonly="1"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <group name="serial_numbers" string="Serial Numbers">
+                    <field name="vin_sn" string="VIN Number"/>
+                    <field name="stock_number"/>
+                    <field name="body_number"/>
+                    <field name="engine_number" string="Engine SN"/>
+                    <field name="transmission_number" string="Transmission SN"/>
+                    <field name="diesel_particulate_number" string="Diesel Particulate SN"/>
+                    <field name="cat_convert_number" string="Catalytic Converter SN"/>
+                    <field name="front_axle_number" string="Front Axle SN"/>
+                    <field name="rear_axle_number" string="Rear Axle SN"/>
+                    <field name="ignition_key_number" string="Ignition Key SN"/>
+                </group>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="warranty_page" string="Warranty Details">
@@ -25,6 +219,11 @@
                             <field name='date_expiration'/>
                         </tree>
                     </field>
+                </page>
+                <page string="Acknowledgement" name="ack_page">
+                    <label for="ack_received" />
+                    <field name="ack_received" />
+                    <field name="ack_file" widget="pdf_viewer" />
                 </page>
             </xpath>
         </field>

@@ -7,10 +7,12 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Finance" name="finance_page">
-                    <field name="finance_term_lines" readonly="state == 'cancel' or locked">
+                    <field name="finance_term_lines" readonly="state not in ['draft', 'sale', 'sent']">
                         <tree string="Finance Lines" editable="bottom">
                             <field name="order_id" column_invisible="True" />
-                            <field name="partner_id" />
+                            <field name="partner_id" optional="show"/>
+                            <field name="deposit_amount" optional="show"/>
+                            <field name="trade_amount" optional="show"/>
                             <field name="finance_amount" />
                             <field name="periodicity" />
                             <field name="skip_periods" optional="show"/>
@@ -21,6 +23,12 @@
                             <field name="terms_total" optional="show"/>
                         </tree>
                     </field>
+                    <group name="sale_finance_group">
+                        <group class="oe_subtotal_footer" colspan="2" name="sale_total_finance">
+                            <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
+                        </group>
+                         <div class="clearfix"/>
+                    </group>
                 </page>
             </xpath>
         </field>

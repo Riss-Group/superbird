@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "CAP Pricelist",
+    'license': 'OPL-1',
 
     'summary': "Customize Pricelist",
 
@@ -21,6 +22,7 @@
     # always loaded
     'data': [
         'views/product_pricelist_item_view.xml',
+        'views/product.xml',
     ],
 }
 

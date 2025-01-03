@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="view_task_form2_service" model="ir.ui.view">
-        <field name="name">view_task_form2_service</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name='cause' />
-                <field name='correction' />
-            </xpath>
-        </field>
-    </record>
-
-    <record id="project_task_create_timesheet_view_form_cap" model="ir.ui.view">
-        <field name="name">project_task_create_timesheet_view_form_cap</field>
-        <field name="model">project.task.create.timesheet</field>
-        <field name="inherit_id" ref="timesheet_grid.project_task_create_timesheet_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='description']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//group" position="inside">
-                <field name='cause' />
-                <field name='correction' />
-            </xpath>
-        </field>
-    </record>
-
     <record id="view_task_search_form_base_cap" model="ir.ui.view">
         <field name="name">view_task_search_form_base_cap</field>
         <field name="model">project.task</field>
@@ -39,5 +12,93 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_task_form2_service" model="ir.ui.view">
+        <field name="name">view_task_form2_service</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <group name="service_details" string="Service Info" invisible='not is_repair_service'>
+                    <field name='is_repair_service' invisible='1' />
+                    <field name="service_order_id" readonly='1' force_save='1' />
+                    <field name='fleet_vehicle_id'  readonly='1' force_save='1'/>
+                    <field name='product_id' readonly='1' force_save='1'/>
+                    <field name='product_template_variant_value_ids' widget='many2many_tags' readonly='1' force_save='1'/>
+                    <field name='cause' widget="text"/>
+                    <field name='correction' widget="text"/>
+                </group>
+                <group name="tech_notes" string="Tech Notes">
+                    <field name="tech_notes" nolabel="1" colspan='2' placeholder="Add additional tech notes here..."/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="inventory_transfers_page" string="Inventory Transfers" invisible="not is_repair_service">
+                    <field name="picking_ids" readonly="1" widget="section_one2many" options="{'no_create': True, 'no_edit': True, 'no_open': True}" >
+                        <tree create="0" edit="0" delete="0">
+                            <button name="action_open_picking_form" type="object" string="Open" icon="fa-external-link" />
+                            <field name="name" decoration-bf="1"/>
+                            <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show" readonly="state == 'done'"/>
+                            <field name="location_dest_id" options="{'no_create': True}" string="To" groups="stock.group_stock_multi_locations" optional="show" readonly="state == 'done'"/>
+                            <field name="partner_id" optional="show" readonly="state in ['cancel', 'done']"/>
+                            <field name="is_signed" string="Signed" optional="hide" groups="stock.group_stock_sign_delivery"/>
+                            <field name="user_id" optional="hide" widget="many2one_avatar_user" readonly="state in ['cancel', 'done']"/>
+                            <field name="scheduled_date" optional="show" widget="remaining_days" invisible="state in ('done', 'cancel')" readonly="state in ['cancel', 'done']"/>
+                            <field name="picking_type_code" column_invisible="True"/>
+                            <field name="products_availability_state" column_invisible="True" options="{&quot;lazy&quot;: true}"/>
+                            <field name="products_availability" options="{&quot;lazy&quot;: true}" optional="hide" invisible="picking_type_code != 'outgoing' or state not in ['confirmed', 'waiting', 'assigned']" decoration-success="state == 'assigned' or products_availability_state == 'available'" decoration-warning="state != 'assigned' and products_availability_state in ('expected', 'available')" decoration-danger="state != 'assigned' and products_availability_state == 'late'"/>
+                            <field name="date_deadline" optional="hide" widget="remaining_days" invisible="state in ('done', 'cancel')"/>
+                            <field name="date_done" string="Effective Date" optional="hide"/>
+                            <field name="origin" optional="show" readonly="state in ['cancel', 'done']"/>
+                            <field name="backorder_id" optional="hide"/>
+                            <field name="picking_type_id" optional="hide"/>
+                            <field name="state" optional="show" widget="badge" decoration-danger="state=='cancel'" decoration-info="state== 'assigned'" decoration-muted="state == 'draft'" decoration-success="state == 'done'" decoration-warning="state not in ('draft','cancel','done','assigned')"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Task Type/Stage -->
+
+    <record id="task_type_edit_service" model="ir.ui.view">
+        <field name="name">task_type_edit_service</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fold']" position="after">
+                <field name="is_done_stage"/>
+            </xpath> 
+        </field>
+    </record>
+
+    <record id="task_type_tree_service" model="ir.ui.view">
+        <field name="name">task_type_tree_service</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="is_done_stage" optional="show"/>
+            </xpath> 
+        </field>
+    </record>
+
+    <!-- Timesheet Wizard -->
+    <record id="project_task_create_timesheet_view_form_cap" model="ir.ui.view">
+        <field name="name">project_task_create_timesheet_view_form_cap</field>
+        <field name="model">project.task.create.timesheet</field>
+        <field name="inherit_id" ref="timesheet_grid.project_task_create_timesheet_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="before">
+                <label for="description" string="Punch Description" />
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <field name='cause' widget="text" />
+                <field name='correction' widget="text"/>
+            </xpath>
+        </field>
+    </record>
+
 
 </odoo>
