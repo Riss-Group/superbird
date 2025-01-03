@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Finance" name="finance_page">
-                    <field name="finance_term_lines" readonly="state == 'cancel' or locked">
+                    <field name="finance_term_lines" readonly="state not in ['draft', 'sale', 'sent']">
                         <tree string="Finance Lines" editable="bottom">
                             <field name="order_id" column_invisible="True" />
                             <field name="partner_id" optional="show"/>

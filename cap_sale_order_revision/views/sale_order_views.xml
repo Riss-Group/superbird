@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cap_inherited_sale_order_form_view_for_revise" model="ir.ui.view">
+        <field name="name">cap.inherited.sale.order.form.view.for.revise</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+            <field name="partner_invoice_id" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'locked', 'revised']</attribute>
+            </field>
+            <field name="partner_shipping_id" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'locked', 'revised']</attribute>
+            </field>
+            <field name="validity_date" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+            <xpath expr="//group[@name='order_details']/div[1]" position="attributes">
+                <attribute name="invisible">state in ['cancel', 'sale', 'revised']</attribute>
+            </xpath>
+            <xpath expr="//group[@name='order_details']/field[@name='date_order'][1]" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+                <attribute name="invisible">state in ['cancel', 'sale', 'revised']</attribute>
+            </xpath>
+            <xpath expr="//group[@name='order_details']/field[@name='date_order'][2]" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </xpath>
+            <field name="pricelist_id" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+            <field name="order_line" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'locked', 'revised']</attribute>
+            </field>
+            <field name="note" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="user_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="team_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <xpath expr="//group[@name='sales_person']/field[@name='company_id']" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </xpath>
+            <field name="reference" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="client_order_ref" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="tag_ids" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="fiscal_position_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="origin" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="campaign_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="medium_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="source_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="signed_by" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="signed_on" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="signature" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="require_signature" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+            <field name="require_payment" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+            <field name="analytic_account_id" position="attributes">
+                <attribute name="readonly">(invoice_count != 0 and state == 'sale') or state == 'revised'</attribute>
+            </field>
+            <field name="journal_id" position="attributes">
+                <attribute name="readonly">(invoice_count != 0 and state == 'sale') or state == 'revised'</attribute>
+            </field>
+            <field name="commitment_date" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'locked', 'revised']</attribute>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="cap_inherited_sale_order_form_view_for_revise1" model="ir.ui.view">
+        <field name="name">cap.inherited.sale.order.form.view.for.revise1</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+        <field name="arch" type="xml">
+            <field name="sale_order_template_id" position="attributes">
+                <attribute name="readonly">state in ['cancel', 'sale', 'revised']</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="cap_inherited_sale_order_form_view_for_revise2" model="ir.ui.view">
+        <field name="name">cap.inherited.sale.order.form.view.for.revise2</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+            <field name="incoterm" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+            <field name="incoterm_location" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="cap_inherited_sale_order_form_view_for_revise3" model="ir.ui.view">
+        <field name="name">cap.inherited.sale.order.form.view.for.revise3</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_crm.sale_view_inherit123"/>
+        <field name="arch" type="xml">
+            <field name="opportunity_id" position="attributes">
+                <attribute name="readonly">state in ['revised']</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
