@@ -8,10 +8,10 @@
 				<xpath expr="//field[@name='property_delivery_carrier_id']" position="after">
 					<field name="default_courier_id"
 						   domain="[('type','=','courier')]"
-						   options="{'no_create':True, 'no_edit':True}"/>
+						   options="{'no_create':True, 'no_edit':True}" groups="stock.group_stock_user"/>
 					<field name="default_ltl_id" 
 						   domain="[('type','=','ltl')]"
-						   options="{'no_create':True, 'no_edit':True}"/>
+						   options="{'no_create':True, 'no_edit':True}" groups="stock.group_stock_user"/>
 				</xpath>
 			</field>
 		</record>

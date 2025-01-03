@@ -44,7 +44,13 @@ class StockPutawayRule(models.Model):
                 if putaway_rule.location_specification:
                     child_locations = child_locations.filtered(lambda loc: loc.location_specification == putaway_rule.location_specification)
                 if putaway_rule.same_velocity:
-                    child_locations = child_locations.filtered(lambda loc: loc.velocity_id == product.velocity_id)
+                    valid_velocity_mapping = {
+                        (p.velocity_id, p.warehouse_id): p
+                        for p in product.product_tmpl_id.velocity_ids
+                    }
+                    child_locations = child_locations.filtered(
+                        lambda loc: (loc.velocity_id, loc.warehouse_id) in valid_velocity_mapping
+                    )
 
             # check if already have the product/package type stored
             for location in child_locations:

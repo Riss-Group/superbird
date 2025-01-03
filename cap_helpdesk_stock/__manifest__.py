@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "cap helpdesk stock",
+    'license': 'OPL-1',
 
     'summary': "This module customize Helpdesk RMA",
 

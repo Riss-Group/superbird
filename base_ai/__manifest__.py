@@ -1,28 +1,37 @@
 {
-    'name': 'AI Purchase Order Digitalization (OCR)',
-    'version': '17.0.0.0',
+    'name': 'AI Integration',
+    'version': '17.0.1.1',
     'category': 'Extra Tools',
-    'summary': """Digitize Invoices,
-    """,
-    'description': """
-        This module allows users to digitize invoices, extract relevant information using OCR, and complete Odoo records
-         with the extracted data also using artificial intelligence.
-    """,
-    'author': "David Montero Crespo",
-    'website': 'https://odoonext.com',
-    'depends': ['purchase'],
+    'license': 'OPL-1',
+    'summary': "AI integration base module allowing OCR and ChatGPT integration",
+    'author': "Captivea",
+    'website': 'https://www.captivea.com',
+    'depends': ['base_setup', 'web'],
     'external_dependencies': {
-        'python': ['pytesseract', 'pypdf', 'pdf2image', 'numpy', 'Pillow', 'fuzzywuzzy'],
+        'python': [
+            'pytesseract',
+            'pdf2image',
+            'openai',
+            'requests',
+            'boto3'
+        ],
     },
     'data': [
+        'views/ir_model_views.xml',
+        'views/ai_model_views.xml',
+        'views/ai_model_log_views.xml',
+        'views/res_config_settings_views.xml',
+        'wizard/base_ai_query_views.xml',
+        'wizard/base_digitalize_wizard_views.xml',
         'security/ir.model.access.csv',
-        'wizard/purchase_digitalize.xml',
-        'views/purchase_order.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'base_ai/static/src/js/*.js',
+            'base_ai/static/src/xml/*.xml',
+        ],
+    },
     'installable': True,
     'application': True,
-    'price': 125,
     'auto_install': False,
-    'license': 'AGPL-3',
-    "images": ["static/ai_completion.gif"],
 }

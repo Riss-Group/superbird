@@ -8,6 +8,7 @@
     "author": "Captivea CA",
     "category": "Invoices & Payments",
     "data": [
+        'security/access_right_security.xml',
         'views/account_payment_term_views.xml'
     ],
     "installable": True,

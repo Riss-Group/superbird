@@ -5,7 +5,12 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
-                <field name="velocity_id"/>
+                <field name="velocity_ids">
+                    <tree editable="top">
+                        <field name="velocity_id"/>
+                        <field name="warehouse_id"/>
+                    </tree>
+                </field>
             </xpath>
         </field>
     </record>

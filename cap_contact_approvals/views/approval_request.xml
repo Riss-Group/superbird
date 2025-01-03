@@ -8,10 +8,11 @@
 				<xpath expr="//notebook//page[@name='products']" position="after">
 					<page string="Account Contact Changes" 
 						  name="account_contact_changes"
-						  invisible="category_id != %(cap_contact_approvals.approval_category_data_contact_accounting_change)d">
-
+						  invisible="not bank_changed and not credit_limits_changed">
 						<group>
 							<group>
+								<field name="bank_changed" invisible="1"/>
+								<field name="credit_limits_changed" invisible="1"/>
 								<field name="credit" readonly="1"/>
 								<field name="days_sales_outstanding" readonly="1"/>
 								<field name="use_partner_credit_limit" readonly="1"/>

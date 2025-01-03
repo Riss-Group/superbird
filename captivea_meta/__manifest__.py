@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Captivea Modules selection",
+    'license': 'OPL-1',
 
     'summary': """Add some base modules to any installation""",
 

@@ -1,3 +1,1 @@
-# -*- coding: utf-8 -*-
-
-from . import  purchase_digitalize
+from . import base_digitalize, base_ai_query
