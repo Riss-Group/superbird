@@ -43,18 +43,19 @@ class FleetVehicle(models.Model):
             sales_requested_delivery_date = False
             ready_for_delivery_date = False
             customer_delivered_date = False
-            for move_line in rec.fleet_move_line_ids:
+            for move_line in rec.sudo().fleet_move_line_ids:
                 if move_line.picking_type_id.code == 'incoming':
-                    purchase_order_ids = move_line.move_id.purchase_line_id.mapped('order_id')
+                    purchase_order_ids = move_line.move_id.sudo().purchase_line_id.mapped('order_id')
                     bus_order_date = purchase_order_ids[0].date_approve or False
                     pick_up_date = purchase_order_ids[0].date_planned or False
                     revised_pick_up_date = move_line.move_id.date or False
-                    oem_payment_due_date = purchase_order_ids[0].invoice_ids[0].invoice_date_due or False
+                    oem_payment_due_date = purchase_order_ids[0].sudo().invoice_ids and purchase_order_ids[0].sudo().invoice_ids[0].invoice_date_due or False
                     dealer_arrival_date = move_line.picking_id.date_done or False
                 if move_line.picking_type_id.code == 'outgoing':
-                    sale_order_id = move_line.move_id.sale_line_id.mapped('order_id')
-                    sold_customer_date = sale_order_id[0].date_order or False
-                    sales_requested_delivery_date = sale_order_id[0].commitment_date or False
+                    sale_order_id = move_line.move_id.sudo().sale_line_id.mapped('order_id')
+                    if sale_order_id:
+                        sold_customer_date = sale_order_id[0].date_order or False
+                        sales_requested_delivery_date = sale_order_id[0].commitment_date or False
                     ready_for_delivery_date = move_line.move_id.date or False
                     customer_delivered_date = move_line.picking_id.date_done or False
         rec.bus_order_date = bus_order_date
