@@ -3,12 +3,13 @@
     'name': 'CAP Service',
     'category': 'Service',
     'summary': "CAP Service",
-    'version': '1.3',
+    'version': '1.4',
     'author': 'Captivea software Consulting, Bassim Elsamaloty',
     'website': 'https://www.captivea.com/',
     'license': 'OPL-1',
     'description': """
-        TBD
+        Service for superbird.
+        Integrates accounting, sales, fleet, purchase, inventory, rental, project into a custom service order data structure
         """,
     'depends': [
         'account', 
@@ -26,8 +27,9 @@
         'timesheet_grid'],
     'data': [
         'data/sequence.xml',
-        'report/sale_report_views.xml',
+        'security/security_data.xml',
         'security/ir.model.access.csv',
+        'report/sale_report_views.xml',
         'views/_menus_actions.xml',
         'views/account_move.xml',
         'views/fleet_vehicle_model_brand.xml',
@@ -47,8 +49,11 @@
         'views/service_order.xml',
         'views/service_template.xml',
         'views/stock_picking.xml',
+        'views/stock_move.xml',
         'wizard/fleet_acknowledge.xml',
         'wizard/service_ccc_edit.xml',
+        'wizard/service_create_backorder.xml',
+        'wizard/service_create_invoice.xml',
         'wizard/service_line_view_product.xml',
         'wizard/service_rental_order.xml',
         'wizard/service_template_select.xml',

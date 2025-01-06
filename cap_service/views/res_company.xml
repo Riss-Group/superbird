@@ -12,7 +12,8 @@
                         <field name="available_service_branch_ids" invisible="1"/>
                         <field name="service_branch_id" domain="[('id','in',available_service_branch_ids)]"/>
                         <field name="parts_branch_id" domain="[('id','in',available_service_branch_ids)]"/>
-                        <field name="sales_branch_id" domain="[('id','in',available_service_branch_ids)]"/>                        
+                        <field name="sales_branch_id" domain="[('id','in',available_service_branch_ids)]"/>      
+                        <field name="default_service_order_internal_branch_id" domain="[('id','in',available_service_branch_ids)]"/>                                               
                     </group>
                     <group name="branches_right"/>
                 </group>

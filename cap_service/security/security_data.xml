@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data >
+        <record id="module_category_repair_services" model="ir.module.category">
+            <field name="name">Repair Services</field>
+            <field name="sequence">10</field>
+            <field name="parent_id" ref="base.module_category_services" />
+        </record>
+
+        <record id="group_service_user" model="res.groups">
+            <field name="name">Service User</field>
+            <field name="category_id" ref="cap_service.module_category_repair_services"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_service_manager" model="res.groups">
+            <field name="name">Service Manager</field>
+            <field name="category_id" ref="cap_service.module_category_repair_services"/>
+            <field name="implied_ids" eval="[(4, ref('cap_service.group_service_user'))]"/>
+        </record>
+    </data>
+</odoo>

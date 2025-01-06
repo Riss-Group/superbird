@@ -17,6 +17,10 @@
                     </div>
                 </button>
             </xpath>
+            <xpath expr="//header//button[@name='action_assign']" position="after">
+                <field name='show_service_ack' invisible='1'/>
+                <button name="action_ack_fleets" invisible="not show_service_ack" string="Ack Fleets" type="object" class="oe_highlight" groups="base.group_user"/>
+            </xpath>
         </field>
     </record>
 

@@ -25,6 +25,8 @@
                     <field name="vehicle_model_id" force_save="1" required="create_fleet_vehicle" readonly="(tracking != 'serial') or (purchase_ok == False)" domain="[('id','in',available_vehicle_model_ids)]"/>
                     <field name="create_pdi_receipt" force_save="1" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
                     <field name="pdi_receipt_service_template_id" force_save="1" readonly="not create_pdi_receipt"/>
+                    <field name="create_pdi_delivery" force_save="1" readonly="(tracking != 'serial') or (purchase_ok == False)"/>
+                    <field name="pdi_delivery_service_template_id" force_save="1" readonly="not create_pdi_delivery"/>
                 </group>
             </xpath>
         </field>

@@ -7,8 +7,9 @@ class SalesOrder(models.Model):
     service_order_id = fields.Many2one('service.order')
     service_order_rental_id = fields.Many2one('service.order')
     service_order_type = fields.Selection([
-        ('customer','Customer'),
-        ('warranty','Warranty'),
+        ('Customer','Customer'),
+        ('Warranty','Warranty'),
+        ('Internal','Internal'),
     ])
     
     def _prepare_invoice(self):

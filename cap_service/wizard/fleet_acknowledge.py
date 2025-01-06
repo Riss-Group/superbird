@@ -13,5 +13,5 @@ class ServiceRentalOrder(models.TransientModel):
 
     def button_save(self):
         self.fleet_vehicle_ids.ack_file = self.ack_file
-        self.fleet_vehicle_ids._create_fleet_in()
+        self.fleet_vehicle_ids._create_fleet_pdi(direction='in')
         return True
