@@ -24,7 +24,10 @@ class StockMoveLine(models.Model):
                 if line.related_scrap_line:
                     line.related_scrap_line.unlink()
                 else :
-                    line.update({'location_dest_id': line.move_id.picking_id.location_dest_id.id, 'is_quarantine':False})
+                    update_dict = {'is_quarantine':False}
+                    if line.move_id.picking_id and line.move_id.picking_id.location_dest_id:
+                        update_dict.update({'location_dest_id': line.move_id.picking_id.location_dest_id.id})
+                    line.update(update_dict)
 
     @api.depends( 'move_id.product_uom_qty', 'barcode_qty_done', 'not_done_qty')
     def compute_remaining_qty(self):
