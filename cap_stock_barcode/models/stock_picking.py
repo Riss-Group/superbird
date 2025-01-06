@@ -8,7 +8,7 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         for line in self.move_line_ids:
-            if line.barcode_qty_done and self.env.context.get('barcode_trigger'):
+            if line.barcode_qty_done and self.env.context.get('barcode_trigger') and not line.is_splited:
                 line.qty_done = line.barcode_qty_done
         res = super(StockPicking, self).button_validate()
         return res

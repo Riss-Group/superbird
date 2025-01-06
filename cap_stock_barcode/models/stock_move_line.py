@@ -10,9 +10,10 @@ class StockMoveLine(models.Model):
     not_done_qty = fields.Float('Qty Not Done', readonly=False, store=True)
     qty_remaining = fields.Float('Remaining Qty', compute="compute_remaining_qty", store=False)
     related_scrap_line = fields.Many2one('stock.move.line')
-    barcode_qty_done = fields.Float('Qty Done')
+    barcode_qty_done = fields.Float('Qty Done', store=True)
     product_uom_qty = fields.Float(related="move_id.product_uom_qty")
     is_quarantine = fields.Boolean(default=False)
+    is_splited = fields.Boolean(default=False)
 
     # @api.onchange('not_done_qty')
     def _onchange_not_done_qty(self):
@@ -75,7 +76,7 @@ class StockMoveLine(models.Model):
 
     def _get_fields_stock_barcode(self):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
-        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine','not_done_qty'])
+        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine','not_done_qty','is_splited'])
         return fields
 
     def get_scrap_location(self):
@@ -99,21 +100,19 @@ class StockMoveLine(models.Model):
         picking = self.move_id.picking_id
         for line in self:
             remaining_qty = line.quantity - line.barcode_qty_done
-            if remaining_qty > 0:  # Proceed only if there's a remaining quantity
+            if remaining_qty > 0:
                 new_line = self.create({
                     'move_id': line.move_id.id,
                     'location_id': line.location_id.id,
                     'location_dest_id': picking.location_dest_id.id,
                     'product_id': line.product_id.id,
                     'product_uom_id': line.product_uom_id.id,
-                    'quantity': 20,
+                    'quantity': remaining_qty,
                     'barcode_qty_done': 0,  # Reset done quantity for the new line
-                    'picking_id': picking.id,  # Ensure it's linked to the same picking
+                    'picking_id': picking.id,
+                    'is_quarantine': False,
                 })
-                new_line.update({
-                    'quantity': remaining_qty,
-                    'quantity': remaining_qty,
-                })
+                return new_line.id
 
 
 

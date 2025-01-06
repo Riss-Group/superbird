@@ -17,7 +17,11 @@ patch(BarcodePickingModel.prototype, {
         return line.is_quarantine || line.barcode_qty_done > line.reserved_uom_qty;
     },
     getQtyDone(line) {
-        return line.barcode_qty_done;
+        let qtyDone = line.is_splited ? line.reserved_uom_qty : line.barcode_qty_done;
+        if (line.splited){
+            line.barcode_qty_done = line.reserved_uom_qty
+        };
+        return qtyDone;
     },
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
@@ -54,10 +58,16 @@ patch(BarcodePickingModel.prototype, {
                 const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
                     item => item.barcode_qty_done > 0
                 );
+                const allConditionsMet = Object.values(movelines).every(line =>
+                    line.is_splited || line.barcode_qty_done === line.quantity
+                );
 
                 if (hasBarcodeQtyDoneGreaterThanZero) {
                     result = true;
-                }
+                };
+                if (!allConditionsMet) {
+                    result = allConditionsMet;
+                };
             }
         }
 
@@ -134,7 +144,7 @@ patch(BarcodePickingModel.prototype, {
 
     _lineIsNotComplete(line) {
         const currentLine = this._getParentLine(line) || line;
-        const isNotComplete = currentLine.reserved_uom_qty && currentLine.barcode_qty_done < currentLine.reserved_uom_qty;
+        const isNotComplete = currentLine.reserved_uom_qty && currentLine.barcode_qty_done < currentLine.reserved_uom_qty && !line.is_splited;
         if (!isNotComplete && currentLine.lines) { // Grouped lines/package lines have multiple sublines.
             for (const subline of currentLine.lines) {
                 // For tracked product, a line with `qty_done` but no tracking number is considered as not complete.
