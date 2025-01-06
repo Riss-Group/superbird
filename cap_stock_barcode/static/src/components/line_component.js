@@ -17,20 +17,32 @@ patch(LineComponent.prototype, {
         this.notification = useService("notification");
         this.dialog = useService('dialog');
     },
+
+    canBeSplit(line) {
+        const split = this.line.barcode_qty_done > 0 && this.line.barcode_qty_done < this.line.quantity && !line.is_splited ? true : false;
+        return split
+    },
+
     get isComplete() {
         const result = super.isComplete;
         const isComplete = this.line.is_quarantine || this.line.barcode_qty_done > this.line.reserved_uom_qty ? false : result;
         return isComplete
             },
+
     async SplitRemainingQty(line) {
+        const self = this;
         await this.env.model.save();
         const res = await this.orm.call(
             'stock.move.line',
             'split_line_with_qty_remaining',
             [[line.id]]
-        );
+        ).then(async function (res) {
+            await self.orm.write('stock.move.line', [line.id], { quantity: line.barcode_qty_done, barcode_qty_done: line.barcode_qty_done, is_splited:true });
+        });
+        await this.env.model.save();
         return this.env.model.trigger('refresh');
     },
+
     async printProductBarcode(line) {
         const action = await this.action.loadAction(
             "product.action_open_label_layout"
@@ -45,6 +57,7 @@ patch(LineComponent.prototype, {
 //            report_file: reportFile,
 //        });
     },
+
     async updateProductBarcode(line) {
     self = this;
         this.dialog.add(ManualBarcodeScanner, {
