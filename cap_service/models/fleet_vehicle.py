@@ -37,6 +37,7 @@ class FleetVehicle(models.Model):
     rental_sign_request_ids = fields.Many2many('sign.request', compute='compute_rental_sign_request_ids')
     rental_sign_request_count = fields.Integer(compute='compute_rental_sign_request_ids')
     has_outgoing_pdi = fields.Boolean()
+    has_outgoing_package_service = fields.Boolean()
     has_incoming_pdi = fields.Boolean()
     vin_sn = fields.Char(string="VIN Number")
     ack_file =fields.Binary(string="Acknowledgement PDF")
@@ -172,9 +173,19 @@ class FleetVehicle(models.Model):
         if vals:
             self.write(vals)
     
-    def _create_fleet_in(self):
+    def _create_fleet_pdi(self, direction=None):
+        if not direction:
+            return
         for record in self:
-            if record.product_id.create_pdi_receipt and not record.has_incoming_pdi:
+            template_ids = record.product_id.pdi_receipt_service_template_id if direction == 'in' else record.product_id.pdi_delivery_service_template_id
+            create_service = False
+            if direction == 'in' and record.product_id.create_pdi_receipt and not record.has_incoming_pdi:
+                create_service = True
+                record.has_incoming_pdi = True
+            elif direction == 'out' and record.product_id.create_pdi_delivery and not record.has_outgoing_pdi:
+                create_service = True
+                record.has_outgoing_pdi = True
+            if create_service:                
                 company_id = self.company_id.service_branch_id
                 service_vals = {
                     'end_date' : record.order_date,
@@ -189,7 +200,7 @@ class FleetVehicle(models.Model):
                 service_order_id._onchange_fleet_vehicle_id()
                 service_template_select = self.env['service.template.select'].create({
                     'service_order_id': service_order_id.id,
-                    'service_template': [(6,0,record.product_id.pdi_receipt_service_template_id.ids)]
+                    'service_template': [(6,0,template_ids.ids)]
                 })
                 service_template_select.button_save()
                 service_order_id.action_upsert_so()

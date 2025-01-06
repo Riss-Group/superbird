@@ -6,7 +6,7 @@
             <field name="res_model">service.order</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_filter_service_todo':1}</field>
         </record>
 
         <record id="service_template_action" model="ir.actions.act_window">
@@ -34,9 +34,9 @@
             <field name="sequence" eval="1"/>
         </record>
 
-        <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" sequence="60" />
+        <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" groups="cap_service.group_service_user" sequence="60" />
         <menuitem id="service_order_menu_menu" name="Repair Orders" parent="service_order_main_menu"  sequence="0"/>
-        <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  sequence="0"/>
+        <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  groups="cap_service.group_service_manager" sequence="0"/>
         <menuitem id="service_order_template_menu" name="Service Templates" parent="service_order_config_menu"  sequence="0"/>
         <menuitem id="service_template_action_menu" name="Service Templates" action="service_template_action"  parent="service_order_template_menu" sequence="10"/>
         <menuitem id="service_template_type_action_menu" name="Service Template Type" action="service_template_type_action"  parent="service_order_template_menu" sequence="10"/>

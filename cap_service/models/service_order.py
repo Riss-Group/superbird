@@ -6,22 +6,22 @@ from markupsafe import Markup
 class ServiceOrder(models.Model):
     _name = 'service.order' 
     _description = "Service Order"  
+    _order = 'name desc, end_date desc , id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
 
     name = fields.Char(default=lambda self: '', copy=False)
     partner_id = fields.Many2one('res.partner', tracking=True)
+    warranty_partner_id = fields.Many2one('res.partner', tracking=True) #How do I remove this deprecated field without an error
     service_order_lines = fields.One2many('service.order.line', 'service_order_id', )
-    warranty_partner_id = fields.Many2one('res.partner', tracking=True)
-    shipping_partner_id = fields.Many2one('res.partner', tracking=True)
-    seperate_warranty_docs = fields.Boolean(compute='_compute_seperate_warranty_docs')
-    sale_order_ids = fields.One2many('sale.order', 'service_order_id')
-    sale_order_count = fields.Integer(compute='_compute_sale_order_count')
+    sale_order_ids = fields.Many2many('sale.order', compute='_compute_sale_orders', store=True, readonly=False)
+    sale_order_count = fields.Integer(compute='_compute_sale_orders',store=True)
     picking_ids = fields.Many2many('stock.picking', compute="_compute_picking_ids")
     rental_order_ids = fields.One2many('sale.order', 'service_order_rental_id')
     rental_order_count = fields.Integer(compute='_compute_rental_order_count')
     invoice_ids = fields.One2many('account.move', 'service_order_id')
     invoice_count = fields.Integer(compute='_compute_invoice_count')
+    show_invoice_button = fields.Boolean(compute='_compute_show_invoice_button')
     available_fleet_vehicle_ids = fields.Many2many('fleet.vehicle', compute='_compute_available_fleet_vehicle_ids', store=False)
     fleet_vehicle_id = fields.Many2one('fleet.vehicle', tracking=True)
     fleet_vehicle_make = fields.Many2one('fleet.vehicle.model.brand', related='fleet_vehicle_id.model_id.brand_id')
@@ -54,6 +54,7 @@ class ServiceOrder(models.Model):
     end_date = fields.Datetime(tracking=True)
     task_ids = fields.Many2many('project.task', compute='_compute_task_ids')
     task_ids_count = fields.Integer(compute='_compute_task_ids')
+    show_task_button = fields.Boolean(compute='_compute_show_task_button')
     worksheet_references = fields.Json(string="Worksheets", compute="_compute_worksheet_references")
     worksheet_references_count = fields.Integer(string="Worksheets", compute="_compute_worksheet_references")
     state = fields.Selection([
@@ -98,21 +99,13 @@ class ServiceOrder(models.Model):
                 record.available_fleet_vehicle_ids = self.env['fleet.vehicle'].search(partner_domain)
             else:
                 record.available_fleet_vehicle_ids = self.env['fleet.vehicle'].search([])
-    
-    @api.depends('warranty_partner_id', 'service_order_lines.ttype')
-    def _compute_seperate_warranty_docs(self):
+      
+    @api.depends('service_order_lines.sale_line_ids')
+    def _compute_sale_orders(self):
         for record in self:
-            is_warranty = False
-            has_warranty_partner = bool(record.warranty_partner_id)
-            has_warranty_line = any(x.ttype == 'Warranty' for x in record.service_order_lines)
-            if has_warranty_line and has_warranty_partner:
-                is_warranty = True
-            record.seperate_warranty_docs = is_warranty
-    
-    @api.depends('sale_order_ids')
-    def _compute_sale_order_count(self):
-        for record in self:
-            record.sale_order_count = len(record.sale_order_ids)
+            sale_order_ids = record.service_order_lines.sale_line_ids.mapped('order_id')
+            record.sale_order_ids = sale_order_ids.ids
+            record.sale_order_count = len(sale_order_ids)
     
     @api.depends('sale_order_ids')
     def _compute_picking_ids(self):
@@ -124,10 +117,20 @@ class ServiceOrder(models.Model):
         for record in self:
             record.rental_order_count = len(record.rental_order_ids)
 
+    @api.depends('service_order_lines.task_id')
+    def _compute_show_task_button(self):
+        for record in self:
+            record.show_task_button = any(record.service_order_lines.filtered(lambda x: not x.task_id))
+
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
         for record in self:
             record.invoice_count = len(record.invoice_ids)
+    
+    @api.depends('service_order_lines.should_invoice')
+    def _compute_show_invoice_button(self):
+        for record in self:
+            record.show_invoice_button = any(record.service_order_lines.filtered(lambda x: x.should_invoice))
     
     @api.depends('service_order_lines.service_order_line_service_ids.sale_line_id.planning_slot_ids')
     def _compute_planning_slot_ids(self):
@@ -240,7 +243,6 @@ class ServiceOrder(models.Model):
                     )
                 elif batch.get('so_vals'):
                     sale_order_id = self.env['sale.order'].create(batch.get('so_vals'))
-                    record.sale_order_ids += sale_order_id
                     record.message_post(
                         body=Markup("<b>%s</b> %s") % (_("Sale Order Created:"), sale_order_id.name),
                         subtype_xmlid="mail.mt_note"
@@ -293,6 +295,30 @@ class ServiceOrder(models.Model):
             'target': 'new',
         }
 
+    def button_create_invoices(self):
+        return {
+            'name': 'Create Invoices',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'service.create.invoice',
+            'context': {
+                'default_service_order_id': self.id,
+            },
+            'target': 'new',
+        }
+
+    def button_create_backorder(self):
+        return {
+            'name': 'Create Backourder',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'service.create.backorder',
+            'context': {
+                'default_service_order_id': self.id,
+            },
+            'target': 'new',
+        }
+
     def action_stat_button_task_ids(self):
         return {
             'type': 'ir.actions.act_window',
@@ -330,8 +356,6 @@ class ServiceOrder(models.Model):
             'default_invoice_payment_term_id': self.payment_term_id.id or self.partner_id.property_payment_term_id.id or self.env['account.move'].default_get(['invoice_payment_term_id']).get('invoice_payment_term_id'),
             'default_invoice_origin': self.name,
         }
-        if self.shipping_partner_id:
-            ctx.update({'default_partner_shipping_id': self.shipping_partner_id.id,})
         action['context']
         return action
   
@@ -364,7 +388,7 @@ class ServiceOrder(models.Model):
     def _get_task_vals(self, line):
         self.ensure_one()
         task_vals = {
-            'name': f"{self.name} - {line.name}",
+            'name': f"{self.name} - Line: {line.sequence}",
             'description': line.name,
             'project_id': line.project_id.id,
             'planned_date_begin': self.start_date,
@@ -381,42 +405,37 @@ class ServiceOrder(models.Model):
 
     def _get_so_vals(self):
         self.ensure_one()
-        so_batch_vals=[]
-        for sale_order_type in ['customer','warranty']:
-            if sale_order_type == 'warranty' and not self.seperate_warranty_docs:
-                continue
-            existing_sale_order = self.sale_order_ids.filtered(lambda x: x.service_order_type == sale_order_type)
-            if len(existing_sale_order) > 1:
-                existing_sale_order[0]
-            so_line_vals=[]
-            for line in self.service_order_lines:
-                if line.ttype == 'Customer' and sale_order_type == 'warranty':
-                    continue
+        so_batch_vals = []
+        grouped_lines = {}
+        for line in self.service_order_lines:
+            key = (line.bill_to_partner_id, line.ttype)
+            if key not in grouped_lines:
+                grouped_lines[key] = self.env['service.order.line']
+            grouped_lines[key] |= line
+        for (bill_to_partner, ttype), lines in grouped_lines.items():
+            existing_sale_order = self.sale_order_ids.filtered(lambda so: so.partner_id == bill_to_partner and so.service_order_type == ttype)
+            so_line_vals = []
+            for line in lines:
                 so_line_vals.extend(self._get_so_line_section_note_details(line, order_id=existing_sale_order))
-                so_line_vals.extend(self._get_so_line_details(line, order_id=existing_sale_order, ttype=sale_order_type ))
-            so_vals = {}
+                so_line_vals.extend(self._get_so_line_details(line, order_id=existing_sale_order))
             if so_line_vals:
-                partner_id = self.partner_id
-                if sale_order_type == 'warranty' and self.warranty_partner_id:
-                    partner_id = self.warranty_partner_id
                 so_vals = {
-                    'partner_id' : partner_id.id,
+                    'partner_id': bill_to_partner.id,
                     'client_order_ref': self.ref,
                     'order_line': so_line_vals,
                     'payment_term_id': self.payment_term_id.id,
                     'user_id': self.service_writer_id.id,
                     'service_order_id': self.id,
-                    'service_order_type' : sale_order_type,
-                    'company_id':self.company_id.id
+                    'service_order_type': ttype, 
+                    'company_id': self.company_id.id,
                 }
-                if self.shipping_partner_id:
-                    so_vals['partner_shipping_id'] = self.shipping_partner_id.id
                 so_batch_vals.append({
                     'so_vals': so_vals,
-                    'existing_sale_order': existing_sale_order
-                    })
+                    'existing_sale_order': existing_sale_order,
+                })
+
         return so_batch_vals
-    
+        
     def _get_so_line_section_note_details(self, service_line, order_id=False):
         so_line_vals = []
         sol_service_details = service_line.sale_line_ids.filtered(lambda x: x.display_type_ccc and x.order_id == order_id)
@@ -449,7 +468,7 @@ class ServiceOrder(models.Model):
                 so_line_vals.append((0,0,vals))
         return so_line_vals
 
-    def _get_so_line_details(self, service_line, order_id=False, ttype='customer'):
+    def _get_so_line_details(self, service_line, order_id=False):
         so_line_vals = []
         line_service_ids = service_line.service_order_line_service_ids
         line_product_ids = service_line.service_order_line_product_ids
@@ -458,7 +477,7 @@ class ServiceOrder(models.Model):
             vals = {
                 'product_id': line_product.product_id.id,
                 'product_uom_qty': line_product.quantity,
-                'price_unit': 0 if ttype =='customer' and service_line.ttype == 'Warranty' else line_product.unit_price,
+                'price_unit': line_product.unit_price,
                 'sequence': sequence,
                 'service_order_line_id': service_line.id,
                 'service_order_line_product_id': line_product.id
@@ -474,7 +493,7 @@ class ServiceOrder(models.Model):
             vals = {
                 'product_id': line_service.product_id.id,
                 'product_uom_qty': line_service.quantity,
-                'price_unit': 0 if ttype =='customer' and service_line.ttype == 'Warranty' else line_service.unit_price,
+                'price_unit': line_service.unit_price,
                 'sequence': sequence,
                 'service_order_line_id': service_line.id,
                 'service_order_line_service_id': line_service.id
@@ -486,6 +505,98 @@ class ServiceOrder(models.Model):
                 so_line_vals.append((0, 0, vals))
             sequence += 1
         return so_line_vals
+    
+    def _get_invoice_vals(self, service_lines):
+        self.ensure_one()
+        invoice_batches = []
+        grouped_lines = {}
+        for line in service_lines:
+            key = (line.bill_to_partner_id, line.ttype)
+            if key not in grouped_lines:
+                grouped_lines[key] = self.env['service.order.line']
+            grouped_lines[key] |= line
+        for (partner, ttype), lines in grouped_lines.items():
+            invoice_line_vals = []
+            for line in lines:
+                section_note_details = self._get_invoice_line_section_note_details(line)
+                for section_note in section_note_details:
+                    invoice_line_vals.append((0, 0, section_note))
+                product_service_details = self._get_invoice_line_details(line)
+                for product_service in product_service_details:
+                    invoice_line_vals.append((0, 0, product_service))
+            if invoice_line_vals:
+                invoice_vals = {
+                    'partner_id': partner.id,
+                    'move_type': 'out_invoice',
+                    'invoice_date': fields.Date.context_today(self),
+                    'invoice_origin': self.name,
+                    'invoice_line_ids': invoice_line_vals,
+                    'company_id': self.company_id.id,
+                }
+                invoice_batches.append(invoice_vals)
+        return invoice_batches
+
+    def _get_invoice_line_section_note_details(self, service_line):
+        invoice_line_vals = []
+        sequence = service_line.sequence * 1000
+        invoice_line_vals.append({
+            'display_type': 'line_section',
+            'name': f"{service_line.ttype} Service Issue #{service_line.sequence}",
+            'sequence': sequence,
+        })
+        sequence += 1
+        if service_line.name:
+            invoice_line_vals.append({
+                'display_type': 'line_note',
+                'name': f"Description: {service_line.name}",
+                'sequence': sequence,
+            })
+            sequence += 1
+        if service_line.cause:
+            invoice_line_vals.append({
+                'display_type': 'line_note',
+                'name': f"Cause: {service_line.cause}",
+                'sequence': sequence,
+            })
+            sequence += 1
+        if service_line.correction:
+            invoice_line_vals.append({
+                'display_type': 'line_note',
+                'name': f"Fix: {service_line.correction}",
+                'sequence': sequence,
+            })
+        return invoice_line_vals
+
+    def _get_invoice_line_details(self, service_line):
+        invoice_line_vals = []
+        sequence = service_line.sequence * 1000
+        for line_product in service_line.service_order_line_product_ids:
+            sale_line_ids = line_product.sale_line_id.ids if line_product.sale_line_id else []
+            invoice_line_vals.append({
+                'product_id': line_product.product_id.id,
+                'quantity': line_product.qty_to_invoice,
+                'price_unit': line_product.unit_price,
+                'name': line_product.product_id.display_name or 'NA',
+                'sequence': sequence,
+                'service_order_line_id': service_line.id,
+                'service_order_line_product_id': line_product.id,
+                'sale_line_ids': [(6, 0, sale_line_ids)] if sale_line_ids else [],
+            })
+            sequence += 1
+        for line_service in service_line.service_order_line_service_ids:
+            sale_line_ids = line_service.sale_line_id.ids if line_service.sale_line_id else []
+            invoice_line_vals.append({
+                'product_id': line_service.product_id.id,
+                'quantity': line_service.qty_to_invoice,
+                'price_unit': line_service.unit_price,
+                'name': line_service.product_id.display_name or 'NA',
+                'sequence': sequence,
+                'service_order_line_id': service_line.id,
+                'service_order_line_service_id': line_service.id,
+                'sale_line_ids': [(6, 0, sale_line_ids)] if sale_line_ids else [],
+            })
+            sequence += 1
+        return invoice_line_vals
 
     @api.model_create_multi
     def create(self, vals_list):

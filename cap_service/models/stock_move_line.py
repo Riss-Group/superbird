@@ -6,7 +6,19 @@ class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
 
-    fleet_vehicle_id = fields.Many2one('fleet.vehicle')
+    fleet_vehicle_id = fields.Many2one('fleet.vehicle',compute='_compute_fleet_vehicle_id',store=True, readonly=False)
+    service_ack = fields.Boolean(string="Service Acknowledged", readonly=False)
+
+    @api.depends('lot_id','lot_name')
+    def _compute_fleet_vehicle_id(self):
+        for record in self:
+            fleet_vehicle_id = False
+            if record.product_id.create_fleet_vehicle:
+                if record.lot_id:
+                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_id.name)])
+                elif record.lot_name:
+                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_name)])
+            record.fleet_vehicle_id = fleet_vehicle_id
 
     def _action_done(self):
         super()._action_done()
@@ -41,7 +53,7 @@ class StockMoveLine(models.Model):
                 'customer_id': self.picking_id.partner_id.id,
                 'sold_date': self.picking_id.scheduled_date,
             }
-            if not fleet_vehicle_id.has_outgoing_pdi:
+            if not fleet_vehicle_id.has_outgoing_package_service and self.service_ack:
                 package_product_ids = self.picking_id.sale_id.order_line.filtered(lambda x:x.product_id.package_service_template_id).product_id
                 if package_product_ids:
                     service_vals = {
@@ -62,6 +74,8 @@ class StockMoveLine(models.Model):
                     service_template_select.button_save()
                     service_order_id.action_upsert_so()
                     service_order_id.action_create_tasks()                
-                    vals.update({'has_outgoing_pdi': True})
+                    vals.update({'has_outgoing_package_service': True})
+            if not fleet_vehicle_id.has_outgoing_pdi and self.product_id.create_pdi_delivery and self.service_ack:
+                fleet_vehicle_id._create_fleet_pdi(direction='out')
             if vals:
                 fleet_vehicle_id.write(vals)

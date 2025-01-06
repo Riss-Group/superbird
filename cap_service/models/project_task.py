@@ -34,19 +34,36 @@ class ProjectTask(models.Model):
             record.picking_ids = self.env['stock.picking'].sudo().search([('group_id', 'in', group_ids.ids)]) if group_ids else False
     
     def action_fsm_validate(self, stop_running_timers=False):
-        res = super().action_fsm_validate()
+        res = super().action_fsm_validate(stop_running_timers=stop_running_timers)
         for record in self:
-            done_stage_int = record.done_stage_find()
+            done_stage_int = record._done_stage_find()
             if record.project_id.is_repair_service and done_stage_int:
                 record.write({'stage_id':done_stage_int})
         return res
 
-    def done_stage_find(self):
+    def write(self, vals):
+        if 'stage_id' in vals or 'state' in vals:
+            for record in self.filtered(lambda x: x.project_id.is_repair_service):
+                if 'stage_id' in vals and vals['stage_id'] != record.stage_id.id:
+                    new_stage = self.env['project.task.type'].browse(vals['stage_id'])
+                    if new_stage.is_done_stage:
+                        record._validate_related_pickings()
+                if 'state' in vals and vals['state'] == '1_done':
+                    record._validate_related_pickings()
+        return super().write(vals)
+
+    def _done_stage_find(self):
         search_domain = [
             ('project_ids', '=', self.project_id.id),
             ('is_done_stage', '=', True)
         ]
         return self.env['project.task.type'].search(search_domain, limit=1).id
+
+    def _validate_related_pickings(self):
+        if self.picking_ids:
+            incomplete_pickings = self.picking_ids.filtered(lambda p: p.state not in ['done', 'cancel'])
+            if incomplete_pickings:
+                raise UserError(f"You cannot mark this task as done because there are incomplete pickings: {', '.join(incomplete_pickings.mapped('name'))}")
 
 class ProjectTaskType(models.Model):
     _inherit = 'project.task.type'
