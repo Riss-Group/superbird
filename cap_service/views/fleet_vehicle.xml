@@ -106,8 +106,14 @@
             <xpath expr="//field[@name='category_id']" position="attributes">
                 <attribute name="optional">hide</attribute>
             </xpath>
-            <xpath expr="//field[@name='vin_sn']" position="after">
+            <xpath expr="//field[@name='vin_sn']" position="attributes">
+                <attribute name="optional">show</attribute>
+                <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vin_sn']" position="before">
                 <field name="stock_number" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='vin_sn']" position="after">
                 <field name="body_number" optional="show"/>
                 <field name="product_id" optional="show"/>
                 <field name="ack_file" widget="pdf_viewer" readonly="True" optional="hide"/>

@@ -16,7 +16,9 @@ class ProductTemplate(models.Model):
     vehicle_make_id = fields.Many2one('fleet.vehicle.model.brand', string="Make")
     vehicle_model_id = fields.Many2one('fleet.vehicle.model', string="Model")
     create_pdi_receipt = fields.Boolean(string="Create Receipt PDI")
-    pdi_receipt_service_template_id = fields.Many2one('service.template', string='Service PDI Template')
+    pdi_receipt_service_template_id = fields.Many2one('service.template', string='Service PDI Rcpt')
+    create_pdi_delivery = fields.Boolean(string="Create Delivery PDI")
+    pdi_delivery_service_template_id = fields.Many2one('service.template', string='Service PDI Del')
     available_vehicle_model_ids = fields.Many2many('fleet.vehicle.model', compute='_compute_available_vehicle_model_ids')
     options_package_ok = fields.Boolean(string="Options Package")
     package_service_template_id = fields.Many2one('service.template', string='Service Packages Template')
@@ -48,6 +50,8 @@ class ProductTemplate(models.Model):
             self.vehicle_year = False
             self.create_pdi_receipt = False
             self.pdi_receipt_service_template_id = False
+            self.create_pdi_delivery = False
+            self.pdi_delivery_service_template_id = False
     
     @api.onchange('create_fleet_vehicle')
     def _onchange_create_fleet_vehicle(self):
@@ -57,9 +61,14 @@ class ProductTemplate(models.Model):
             self.vehicle_year = False
     
     @api.onchange('create_pdi_receipt')
-    def _onchange_create_fleet_vehicle(self):
+    def _onchange_create_pdi_receipt(self):
         if not self.create_pdi_receipt:
             self.pdi_receipt_service_template_id = False
+    
+    @api.onchange('create_pdi_delivery')
+    def _onchange_create_pdi_delivery(self):
+        if not self.create_pdi_delivery:
+            self.pdi_delivery_service_template_id = False
     
     @api.onchange('vehicle_model_id')
     def _onchange_vehicle_model_id(self):
