@@ -155,7 +155,11 @@ patch(BarcodePickingModel.prototype, {
             }
         }
         return isNotComplete;
-    }
+    },
 
+    async save() {
+        this.context = { ...this.context, ...{'barcode_save':1} }; // Merge with existing context
+        return super.save();
+    }
 
 })

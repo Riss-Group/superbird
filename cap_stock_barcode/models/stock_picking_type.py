@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from pygments.lexer import default
+
 from odoo import models, fields, api, Command
 
 
@@ -6,6 +8,12 @@ class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
     quarantine_location_id = fields.Many2one('stock.location', compute="_compute_scrap_location_id", store=True, readonly=False)
+    split_lines = fields.Boolean(string="Split Lines", default=False)
+    machinegun_scan = fields.Boolean(string="machinegun Scan", default=False)
+
+    def _get_fields_stock_barcode(self):
+        return super()._get_fields_stock_barcode() + ['split_lines', 'machinegun_scan']
+
 
     def _compute_scrap_location_id(self):
         for record in self:

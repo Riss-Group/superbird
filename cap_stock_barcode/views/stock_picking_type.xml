@@ -9,6 +9,10 @@
             <xpath expr="//field[@name='default_location_dest_id']" position="after">
                 <field name="quarantine_location_id"/>
             </xpath>
+            <xpath expr="//field[@name='restrict_scan_dest_location']" position="after">
+                <field name="split_lines"/>
+                <field name="machinegun_scan"/>
+            </xpath>
         </field>
     </record>
 

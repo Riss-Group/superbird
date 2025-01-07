@@ -19,7 +19,9 @@ patch(LineComponent.prototype, {
     },
 
     canBeSplit(line) {
-        const split = this.line.barcode_qty_done > 0 && this.line.barcode_qty_done < this.line.quantity && !line.is_splited ? true : false;
+        const split = this.line.barcode_qty_done > 0 &&
+                        this.line.barcode_qty_done < this.line.quantity &&
+                        !line.is_splited && this.env.model.record.picking_type_id.split_lines ? true : false;
         return split
     },
 
