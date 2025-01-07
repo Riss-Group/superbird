@@ -46,9 +46,10 @@ class StockMoveLine(models.Model):
     @api.depends('soft_serial_ids')
     def _compute_barcode_qty_done(self):
         for line in self:
-            line.barcode_qty_done = 0
-            if line.soft_serial_ids:
-                line.barcode_qty_done = len(line.soft_serial_ids)
+            if line.product_id.product_tmpl_id.soft_tracking:
+                line.barcode_qty_done = 0
+                if line.soft_serial_ids:
+                    line.barcode_qty_done = len(line.soft_serial_ids)
 
     @api.depends('move_id.soft_serial_ids')
     def _compute_soft_serial_ids(self):

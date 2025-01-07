@@ -31,16 +31,18 @@ patch(LineComponent.prototype, {
 
     async SplitRemainingQty(line) {
         const self = this;
-        await this.env.model.save();
         const res = await this.orm.call(
             'stock.move.line',
             'split_line_with_qty_remaining',
-            [[line.id]]
-        ).then(async function (res) {
-            await self.orm.write('stock.move.line', [line.id], { quantity: line.barcode_qty_done, barcode_qty_done: line.barcode_qty_done, is_splited:true });
-        });
+            [[line.id]],
+            {
+                'barcode_qty_done': line.barcode_qty_done,
+            }
+        );
         await this.env.model.save();
-        return this.env.model.trigger('refresh');
+        window.location.reload();
+
+//        return this.env.model.trigger('refresh');
     },
 
     async printProductBarcode(line) {
