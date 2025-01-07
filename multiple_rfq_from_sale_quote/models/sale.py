@@ -10,17 +10,27 @@ class SaleOrderLine(models.Model):
     custom_vendor_ids = fields.Many2many(
         'res.partner',
         string="Vendors",
+        compute="_compute_vendor",
+        store=True,
+        readonly=False,
     )
     is_rfq_create = fields.Boolean(
         related='order_id.is_rfq_create',
         string="Create RFQ?",
     )
 
+    @api.depends('product_id')
+    def _compute_vendor(self):
+        for rec in self:
+            rec.custom_vendor_ids = rec.product_id.seller_ids.filtered(
+                lambda x: x.company_id.id == rec.company_id.id or not x.company_id).mapped('partner_id')
+
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     
     is_rfq_create = fields.Boolean(
-        string="Create RFQ?"
+        string="Create RFQ?",
+        default = True
     )
 
     def probc_get_purchase_order(self):
@@ -73,7 +83,7 @@ class SaleOrder(models.Model):
         #         company_id=sale_order_id.company_id.id).get_fiscal_position(partner.id)
         vals = {
             'partner_id': partner.id,
-            'picking_type_id': self._get_picking_type(),
+            'picking_type_id': self._get_picking_type(sale_order_id.company_id),
             'company_id': sale_order_id.company_id.id,
             'currency_id': partner.property_purchase_currency_id.id \
                             or self.env.user.company_id.currency_id.id,
@@ -130,10 +140,9 @@ class SaleOrder(models.Model):
         return purchase_line
 
     @api.model
-    def _get_picking_type(self):
+    def _get_picking_type(self, company_id=lambda self: self.env.user.company_id):
         type_obj = self.env['stock.picking.type']
-        company_id = self.env.user.company_id.id
         types = type_obj.search([('code', '=', 'incoming'),
-                                ('warehouse_id.company_id', '=', company_id),])
+                                ('warehouse_id.company_id', '=', company_id.id),])
         return types[0].id if types else False
 

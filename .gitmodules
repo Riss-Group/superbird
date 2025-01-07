@@ -323,3 +323,17 @@
 	url = https://github.com/OCA/l10n-canada
 	branch = 17.0
 
+[submodule "OCA/web-api"]
+	path = OCA/web-api
+	url = https://github.com/OCA/web-api.git
+	branch = 17.0
+
+[submodule "OCA/rest-framework"]
+	path = OCA/rest-framework
+	url = https://github.com/OCA/rest-framework.git
+	branch = 17.0
+
+[submodule "OCA/product-pack"]
+	path = OCA/product-pack
+	url = https://github.com/OCA/product-pack.git
+	branch = 17.0

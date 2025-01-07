@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cap_sale_replacement_cap_sale_replacement,cap_sale_replacement.cap_sale_replacement,model_cap_sale_replacement_cap_sale_replacement,base.group_user,1,1,1,1

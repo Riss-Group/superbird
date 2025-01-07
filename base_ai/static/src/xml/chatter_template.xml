@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<templates xml:space="preserve">
+    <t t-name="AIChatterTemplate">
+                <style>
+            /* Force the AI chatter container to float on the left with a max width */
+            .ai_chatter {
+                float: left;
+                max-width: 500px;
+                max-height: 100%;
+                overflow: scroll;
+                height: 100vh;       // Full viewport height
+                overflow-y: auto;
+                margin: 0 15px 15px 0;
+            }
+
+            .chatter-messages {
+                list-style-type: none;
+                padding-left: 0;
+                margin: 0 0 1em 0;
+            }
+
+            .chatter-message {
+                margin-bottom: 8px;
+            }
+
+            .chatter-message::before {
+                content: "• ";
+                font-weight: bold;
+                margin-right: 4px;
+            }
+
+            .chatter-message.user::before {
+                background-color: lightgreen;
+            }
+            .chatter-message.user {
+                background-color: lightgreen;
+            }
+
+            .chatter-message.assistant::before {
+                background-color: lightblue;
+            }
+            .chatter-message.assistant {
+                background-color: lightblue;
+            }
+                </style>
+        <div class="ai_chatter">
+            <div class="chatter-messages">
+                <t t-foreach="state.messages" t-as="message" t-key="message.id">
+                    <div t-attf-class="chatter-message #{message.role}">
+                        <span class="chatter-author"><t t-esc="message.author"/></span>:
+                        <div class="chatter-text" t-raw="message.content"/>
+                    </div>
+                </t>
+            </div>
+            <div class="chatter-input">
+                <input
+                    t-ref="messageInput"
+                    type="text"
+                    t-model="state.newMessage"
+                    placeholder="Type a message..."
+                />
+                <button type="button" t-on-click="sendMessage">Ask</button>
+            </div>
+        </div>
+    </t>
+</templates>

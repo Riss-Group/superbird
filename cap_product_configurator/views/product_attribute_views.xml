@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cap_product_attribute_value_tree_view" model="ir.ui.view">
+        <field name="name">product.attribute.value.tree_cap</field>
+        <field name="model">product.attribute.value</field>
+        <field name="inherit_id" ref="product.product_attribute_value_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="multi_edit">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='default_extra_price']" position="after">
+                <field name="description" optional="show"/>
+                <field name="manufacturer" optional="show"/>
+                <field name="chassis_model" optional="show"/>
+                <field name="chassis_model_number" optional="show"/>
+                <field name="option_number" optional="show"/>
+                <field name="option_name" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="cap_product_attribute_value_form_view" model="ir.ui.view">
+        <field name="name">product.attribute.value.form_cap</field>
+        <field name="model">product.attribute.value</field>
+        <field name="inherit_id" ref="product_configurator.product_attribute_value_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="General">
+                    <group>
+                        <field name="description"/>
+                        <field name="chassis_model"/>
+                        <field name="chassis_model_number"/>
+                    </group>
+                    <group>
+                        <field name="manufacturer"/>
+                        <field name="option_number"/>
+                        <field name="option_name"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_attribute_value_view_search" model="ir.ui.view">
+        <field name="name">product.attribute.value.view.search</field>
+        <field name="model">product.attribute.value</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="chassis_model"/>
+                <field name="manufacturer"/>
+                <group expand="1" string="Group By">
+                    <filter string="Chassis Model" name="groupby_chassis_model" domain="[]"
+                            context="{'group_by': 'chassis_model'}"/>
+                    <filter string="Manufacturer" name="groupby_manufacturer" domain="[]"
+                            context="{'group_by': 'manufacturer'}"/>
+                    <filter string="description" name="groupby_description" domain="[]"
+                            context="{'group_by': 'description'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="route_core_type_sale" model='stock.route'>
+            <field name="name">Core Type Sale</field>
+            <field name="company_id"></field>
+            <field name="sequence">50</field>
+            <field name="sale_selectable">True</field>
+            <field name="product_categ_selectable">True</field>
+        </record>
+
+        <record id="core_part_categ" model="product.category">
+            <field name="parent_id" ref="product.product_category_all"/>
+            <field name="name">Core Part</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,107 @@
+<odoo>
+	<data>
+		<record id="cap_purchase_revision_purchase_order_form" model="ir.ui.view">
+			<field name="name">cap.purchase.revision.purchase.order.form</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='state']" position="attributes">
+					<attribute name="statusbar_visible">draft,sent,purchase,revised</attribute>
+				</xpath>
+				<xpath expr="//button[@name='button_draft']" position="after">
+					<button name="button_revise"
+							type="object" 
+							string="Revise"
+							class="btn btn-primary"
+							invisible="state != 'cancel' or revision_id != False"
+							data-hotkey="r"/>
+				</xpath>
+				<xpath expr="//field[@name='picking_type_id']" position="after">
+					<field name="source_id" 
+						   invisible="source_id == False" 
+						   readonly="1"/>
+					<field name="revision_id" 
+						   invisible="revision_id == False" 
+						   readonly="1"/>
+					<field name="previous_revision_ids"
+						   invisible="1"
+						   readonly="1"/>
+				</xpath>
+				<xpath expr="//button[@name='action_view_invoice']" position="after">
+					<button
+						name="action_view_revisions"
+						type="object"
+						class="oe_stat_button"
+						icon="fa-file-archive-o"
+						invisible="not previous_revision_ids or previous_revision_count == 0">
+						<field
+							name="previous_revision_count"
+							widget="statinfo"
+							string="Prev. revisions"
+						/>
+					</button>
+				</xpath>
+				<!--		Readonly when state is revised		-->
+				<xpath expr="//group[@name='other_info']/field[@name='company_id']" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'purchase', 'revised']</attribute>
+				</xpath>
+				<field name="partner_id" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'purchase', 'revised']</attribute>
+				</field>
+				<field name="currency_id" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'purchase', 'revised']</attribute>
+				</field>
+				<field name="date_order" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'purchase', 'revised']</attribute>
+				</field>
+				<field name="picking_type_id" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'purchase', 'revised']</attribute>
+				</field>
+				<field name="user_id" position="attributes">
+					<attribute name="readonly">state in ['revised']</attribute>
+				</field>
+				<field name="origin" position="attributes">
+					<attribute name="readonly">state in ['revised']</attribute>
+				</field>
+				<field name="order_line" position="attributes">
+					<attribute name="readonly">state in ['cancel', 'done', 'revised']</attribute>
+				</field>
+				<field name="partner_ref" position="attributes">
+					<attribute name="readonly">state == 'revised'</attribute>
+				</field>
+				<field name="payment_term_id" position="attributes">
+					<attribute name="readonly">invoice_status == 'invoiced' or state in ['done', 'revised']</attribute>
+				</field>
+				<field name="fiscal_position_id" position="attributes">
+					<attribute name="readonly">invoice_status == 'invoiced' or state in ['done', 'revised']</attribute>
+				</field>
+			</field>
+		</record>
+		<record id="cap_purchase_revision_purchase_order_form2" model="ir.ui.view">
+			<field name="name">cap.purchase.revision.purchase.order.form2</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit" />
+			<field name="arch" type="xml">
+				<field name="incoterm_id" position="attributes">
+					<attribute name="readonly">state in ['done', 'revised']</attribute>
+				</field>
+				<field name="incoterm_location" position="attributes">
+					<attribute name="readonly">state in ['done', 'revised']</attribute>
+				</field>
+			</field>
+		</record>
+		<record id="cap_purchase_revision_purchase_order_form3" model="ir.ui.view">
+			<field name="name">cap.purchase.revision.purchase.order.form3</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit" />
+			<field name="arch" type="xml">
+				<xpath expr="//button[@name='action_create_alternative']" position="attributes">
+					<attribute name="invisible">state == 'revised'</attribute>
+				</xpath>
+				<field name="alternative_po_ids" position="attributes">
+					<attribute name="readonly">not id or state == 'revised'</attribute>
+				</field>
+			</field>
+		</record>
+	</data>
+</odoo>

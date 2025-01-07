@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="sequence_res_partner" model="ir.sequence">
+        <field name="name">Sequence Contacts</field>
+        <field name="code">res.partner.sequence</field>
+        <field name="prefix"></field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="id_number_res_partner" model="ir.sequence">
+        <field name="name">ID Number Contacts</field>
+        <field name="code">res.partner.id_number</field>
+        <field name="prefix"></field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

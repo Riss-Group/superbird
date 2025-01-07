@@ -1,0 +1,102 @@
+@font-face {
+    font-family: 'MICR';
+    src: url('/cap_l10n_blank_check/static/src/font/micrenc.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.ckblnk_top_page {
+    .ckblnk_check {
+        top: 0in;
+    }
+    .ckblnk_stub_1 {
+        top: 3.45in;
+    }
+
+    .ckblnk_check .sequence_number {
+        top: 0.1in;
+        left: 7.1in;
+        width: 0.7in;
+        text-align: right;
+    }
+    .ckblnk_check .currency_name {
+        top: 0.3in;
+        left: 7.1in;
+        width: 0.7in;
+        text-align: right;
+    }
+    .ckblnk_check .company_logo {
+        top: 0.1in;
+        left: 0.3in;
+        width: 2in;
+    }
+    .ckblnk_company_address {
+        top: 0.1in;
+        left: 2.6in;
+        width: 2.2in;
+        text-align: left;
+        font-size: 0.9em;
+    }
+    .ckblnk_date_label {
+        top: 0.55in;
+        left: 6in;
+        width: .75in;
+        text-align: center;
+    }
+    .ckblnk_date {
+        top: 0.6in;
+        left: 6.37in;
+        width: 1.47in;
+        text-align: center;
+    }
+    .ckblnk_date_format {
+        top: 0.75in;
+        left: 6.37in;
+        width: 1.47in;
+        text-align: center;
+        font-size: 0.8em;
+    }
+    .ckblnk_amount {
+        top: 1.17in;
+        left: 6.77in;
+        width: 1.08in;
+        text-align: left;
+    }
+    .ckblnk_amount_in_word {
+        top: 1.17in;
+        left: 0.25in;
+        width: 6in;
+        text-align: left;
+        font-weight: bold;
+        overflow: hidden;
+    }
+    .ckblnk_payee_name {
+        top: 1.57in;
+        left: 0.5in;
+        width: 4.0in;
+        text-align: left;
+    }
+    .ckblnk_payee_address {
+        top: 1.67in;
+        left: 0.5in;
+        width: 4.0in;
+        text-align: left;
+        font-size: 0.9em;
+    }
+    .ckblnk_memo {
+        top: 2.7in;
+        left: 0.65in;
+        width: 2.9in;
+        text-align: left;
+        font-size: 0.9em;
+        overflow: hidden;
+    }
+    .ckblnk_scanner {
+        top: 3.1in;
+        left: 0.65in;
+        width: 5in;
+        text-align: left;
+        font-size: 14pt;
+        overflow: hidden;
+        font-family: 'MICR';
+    }
+}

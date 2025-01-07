@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="stock_barcode.LineComponent" t-inherit-mode="extension">
+        <xpath expr="//button[@class='o_line_button o_edit btn']" position="replace">
+           <button t-if="this.env.model.record.picking_type_code != 'outgoing'" t-on-click="() => this.props.editLine(this.line)" class="o_line_button o_edit btn"
+                t-att-class="this.env.model.lineCanBeEdited(line) ? 'btn-secondary' : ''"
+                t-att-disabled="!this.env.model.lineCanBeEdited(line)">
+                <i class="fa fa-2x fa-pencil"/>
+            </button>
+        </xpath>
+        <xpath expr="//div[@class='o_line_buttons py-1 m-auto text-end']" position="inside">
+<!--            <button-->
+<!--                t-if="this.env.model.record.picking_type_code == 'internal'"-->
+<!--                t-on-click="(ev) => this.SplitRemainingQty(line)" title="Split"-->
+<!--                class="o_line_button btn btn-secondary ms-2 ms-sm-4">-->
+<!--                <i class="fa fa-2x fa-plus"/>-->
+<!--            </button>-->
+            <button
+                t-if="this.env.model.record.picking_type_code == 'incoming'"
+                t-on-click="(ev) => this.printProductBarcode(line)" title="Print"
+                class="o_line_button btn btn-secondary ms-2 ms-sm-4">
+                <i class="fa fa-2x fa-print"/>
+            </button>
+            <button
+                t-if="this.env.model.record.picking_type_code == 'incoming'"
+                t-on-click="(ev) => this.updateProductBarcode(line)" title="Update Barcode"
+                class="o_line_button btn btn-secondary ms-2 ms-sm-4">
+                <i class="fa fa-2x fa-barcode"/>
+            </button>
+        </xpath>
+    </t>
+
+</templates>

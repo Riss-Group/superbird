@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fleet_vehicle_view_form_service_extended" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_form_service_extended</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="dates" string="Dates">
+                    <group>
+                        <group name="purchase" string="Purchase Dates">
+                            <field name="chassis_built_date"/>
+                            <field name="chassis_manufacturer_arrival_date"/>
+                            <field name="bus_order_date" />
+                            <field name="pick_up_date"/>
+                            <field name="oem_production_date"/>
+                            <field name="revised_pick_up_date"/>
+                            <field name="dealer_arrival_date"/>
+                            <field name="oem_ready_for_delivery_date"/>
+                        </group>
+                        <group name="sale" string="Sale Dates">
+                            <field name="sold_customer_date"/>
+                            <field name="sales_requested_delivery_date"/>
+                            <field name="ready_for_delivery_date"/>
+                            <field name="customer_delivered_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group name="accounting" string="Accounting Dates">
+                            <field name="oem_payment_due_date"/>
+                            <field name="oem_body_payment_date"/>
+                            <field name="oem_chassis_payment_date"/>
+                        </group>
+                        <group name="service" string="Service Date">
+                            <field name="ready_for_inspection_date"/>
+                            <field name="in_service_date"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

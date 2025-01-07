@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_warranty_claim_tree_view" model="ir.ui.view">
+        <field name="name">view_warranty_claim_tree_view</field>
+        <field name="model">warranty.claim</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="service_order_id"/>
+                <field name="order_total"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_warranty_claim_form_view" model="ir.ui.view">
+        <field name="name">view_warranty_claim_form_view</field>
+        <field name="model">warranty.claim</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Calm">
+                <header>
+                    <field name="state" widget="statusbar" nolabel='1' options="{'clickable':0}"/>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_refuse" type="object" string="Refuse"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_create_invoice" type="object" string="Create Invoice"
+                            invisible="invoice_count > 0 or state != 'approved'"/>
+                    <button name="action_create_customer_return" type="object" string="Create Customer Return" />
+                    <button name="action_create_vendor_return" type="object" string="Create Supplier Return" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_invoice" class="oe_stat_button"
+                                icon="fa-pencil-square-o" invisible="invoice_count == 0">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                        <button type="object" name="action_view_return" class="oe_stat_button" icon="fa-truck"
+                                invisible="return_count == 0">
+                            <field name="return_count" widget="statinfo" string="Returns"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly='1' force_save='1'/>
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="ticket_number" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Claim Lines" name="claim_lines">
+                            <field name="warranty_claim_line_ids" widget="section_and_note_one2many" readonly="state != 'draft'">
+                                <tree editable="bottom">
+                                    <control>
+                                        <create name="add_product_control" string="Add a product"/>
+                                        <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                    </control>
+                                    <field name="display_type" column_invisible="True"/>
+                                    <field name="product_id"/>
+                                     <field name="name" widget="section_and_note_text" optional="show"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="claim_for"/>
+                                    <field name="subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group class='oe_subtotal_footer'>
+                        <field name="order_total" readonly="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="warranty_claim_action" model="ir.actions.act_window">
+        <field name="name">Warranty Claim</field>
+        <field name="res_model">warranty.claim</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="warranty_claim_menu" name="Warranty Claim" parent="cap_service.service_order_main_menu"
+              action="warranty_claim_action" sequence="1"/>
+</odoo>

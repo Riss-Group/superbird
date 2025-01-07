@@ -1,0 +1,7 @@
+numpy-financial
+pytesseract
+pdf2image
+openai
+requests
+boto3
+numpy==1.26.4

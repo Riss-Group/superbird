@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="cap_sale.product_configurator_product" t-inherit="sale_product_configurator.product" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@t-if='this.props.optional']" position="attributes">
+            <attribute name="t-att-class">{'disabled': !this.env.isPossibleCombination(this.props) or this.props.replacement_product or this.props.alternate_products}</attribute>
+        </xpath>
+    </t>
+</templates>

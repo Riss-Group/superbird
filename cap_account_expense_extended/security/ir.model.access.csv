@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_bank_statement_line_read,account.bank.statement.line.read,account.model_account_bank_statement_line,base.group_user,1,0,0,0
+access_account_move_read_internal_user,account.move.read.internal.user,account.model_account_move,base.group_user,1,0,0,0

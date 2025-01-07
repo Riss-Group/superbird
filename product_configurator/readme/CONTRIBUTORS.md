@@ -1,2 +1,0 @@
-- Nikul Chaudhary \<<nchaudhary@opensourceintegrators.com>\>
-- Murtaza Mithaiwala \<<mmithaiwala@opensourceintegrators.com>\>

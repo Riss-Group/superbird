@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_move_form_invoice_soft_serial" model="ir.ui.view">
+            <field name="name">account.move.form.invoice_soft_serial</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='quantity']" position="after">
+                    <field name="soft_serial_ids" widget="many2many_tags" string="Serial" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

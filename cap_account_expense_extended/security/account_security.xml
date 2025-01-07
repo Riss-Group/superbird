@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="account_move_rule_all_internal_user_for_expense" model="ir.rule">
+        <field name="name">User create expense from statement line</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">[('id', 'in', user.env["account.bank.statement.line"].search([('journal_id.employee_id.user_id', '=', user.id)]).mapped('move_id').ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+</odoo>

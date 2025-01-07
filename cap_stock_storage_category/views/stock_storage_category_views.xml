@@ -1,0 +1,47 @@
+<odoo>
+    <record id="view_stock_storage_category_form" model="ir.ui.view">
+        <field name="name">stock.storage.category.form.inherited</field>
+        <field name="model">stock.storage.category</field>
+        <field name="inherit_id" ref="stock.stock_storage_category_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="use_of_location"/>
+                <field name="pallets"/>
+                <field name="location_type"/>
+                <field name="location_specification"/>
+                <field name="velocity_id"/>
+            </field>
+            <label for="max_weight" position="before">
+                <label for="length"/>
+                <div class="o_row">
+                    <field name="length"/>
+                    <span>
+                        <field name="length_uom_name"/>
+                    </span>
+                </div>
+                <label for="depth"/>
+
+                <div class="o_row">
+                    <field name="depth"/>
+                    <span>
+                        <field name="length_uom_name"/>
+                    </span>
+                </div>
+                <label for="height"/>
+                <div class="o_row">
+                    <field name="height"/>
+                    <span>
+                        <field name="length_uom_name"/>
+                    </span>
+                </div>
+                <label for="volume"/>
+                <div class="o_row">
+                    <field name="volume"/>
+                    <span>
+                        <field name="volume_uom_name"/>
+                    </span>
+                </div>
+            </label>
+        </field>
+    </record>
+</odoo>

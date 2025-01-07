@@ -1,0 +1,23 @@
+name: Verify Staging Branch Sync
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if `17.0-staging` is merged
+        run: |
+          git fetch origin
+          if git merge-base --is-ancestor origin/17.0-staging HEAD; then
+            echo "All changes from 17.0-staging are present in this branch."
+          else
+            echo "main is not fully synced with 17.0-staging." >&2
+            exit 1
+          fi

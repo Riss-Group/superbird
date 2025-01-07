@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="cap_view_account_journal_form" model="ir.ui.view">
+			<field name="name">cap_view_account_journal_form</field>
+			<field name="model">account.journal</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="account.view_account_journal_form"/>
+			<field name="arch" type="xml">
+				 <field name="account_control_ids" position="after">
+                    <field name="employee_id" options="{'no_create_edit': True, 'no_create': True}"/>
+				 </field>
+            </field>
+    </record>
+</odoo>
