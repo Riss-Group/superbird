@@ -96,7 +96,7 @@ class StockMoveLine(models.Model):
             for line in self:
                 line.with_context({'onchange_not_done_qty' : True})._onchange_not_done_qty()
 
-    def split_line_with_qty_remaining(self):
+    def split_line_with_qty_remaining(self, **kwargs):
         picking = self.move_id.picking_id
         for line in self:
             remaining_qty = line.quantity - line.barcode_qty_done
@@ -112,6 +112,12 @@ class StockMoveLine(models.Model):
                     'picking_id': picking.id,
                     'is_quarantine': False,
                 })
+                barcode_qty_done = kwargs.get('barcode_qty_done') or 0
+                line.update({
+                    'quantity':barcode_qty_done,
+                    'barcode_qty_done':barcode_qty_done
+                })
+                self.env.cr.commit()
                 return new_line.id
 
 

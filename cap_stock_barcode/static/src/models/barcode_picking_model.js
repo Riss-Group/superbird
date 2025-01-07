@@ -17,10 +17,7 @@ patch(BarcodePickingModel.prototype, {
         return line.is_quarantine || line.barcode_qty_done > line.reserved_uom_qty;
     },
     getQtyDone(line) {
-        let qtyDone = line.is_splited ? line.reserved_uom_qty : line.barcode_qty_done;
-        if (line.splited){
-            line.barcode_qty_done = line.reserved_uom_qty
-        };
+        let qtyDone = line.barcode_qty_done;
         return qtyDone;
     },
     getQtyDemand(line) {
@@ -65,7 +62,7 @@ patch(BarcodePickingModel.prototype, {
                 if (hasBarcodeQtyDoneGreaterThanZero) {
                     result = true;
                 };
-                if (!allConditionsMet) {
+                if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
                     result = allConditionsMet;
                 };
             }
