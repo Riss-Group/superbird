@@ -251,8 +251,8 @@ patch(BarcodeModel.prototype, {
         this.trigger('update');
     },
 
-    lineCanBeSelected() {
-        return false;
-    },
+//    lineCanBeSelected() {
+//        return false;
+//    },
 })
 
