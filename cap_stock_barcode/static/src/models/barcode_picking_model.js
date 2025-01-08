@@ -20,6 +20,11 @@ patch(BarcodePickingModel.prototype, {
         let qtyDone = line.barcode_qty_done;
         return qtyDone;
     },
+
+    shouldSplitLine(line) {
+        return line.barcode_qty_done && line.reserved_uom_qty && line.barcode_qty_done < line.reserved_uom_qty;
+    },
+
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
         if (line.not_done_qty) {
@@ -35,6 +40,9 @@ patch(BarcodePickingModel.prototype, {
 
     async save_barcode_qty_done(line) {
         await this.orm.write(this.lineModel, [line.id], { barcode_qty_done: line.barcode_qty_done });
+    },
+    async save_barcode_data(line,data) {
+        await this.orm.write(this.lineModel, [line.id], data);
     },
 
     updateLineQty(virtualId, qty = 1) {
@@ -164,5 +172,42 @@ patch(BarcodePickingModel.prototype, {
             this.save_barcode_qty_done(line);
         };
         super._updateLineQty(...arguments);
+    },
+
+    _getFieldToWrite() {
+        const fields = super._getFieldToWrite(...arguments);
+        fields.push('barcode_qty_done');
+        return fields;
+    },
+
+    _createCommandVals(line) {
+        const values = super._createCommandVals(...arguments);
+        values.barcode_qty_done = line.barcode_qty_done;
+        return values;
+    },
+
+    async splitLine(line) {
+        if (!this.shouldSplitLine(line)) {
+            return false;
+        }
+        // Use line's locations otherwise the picking's locations are used as default locations.
+        const fieldsParams = {
+            location_id: line.location_id.id,
+            location_dest_id: line.location_dest_id.id,
+        };
+        const newLine = await this._createNewLine({ copyOf: line, fieldsParams });
+        // Update the reservation of the both old and new lines.
+        newLine.qty_done = newLine.barcode_qty_done;
+        newLine.quantity = newLine.barcode_qty_done;
+        newLine.reserved_uom_qty = newLine.barcode_qty_done;
+        // Be sure the new line has no lot by default.
+        newLine.lot_id = false;
+        newLine.lot_name = false;
+        let data = {
+            'quantity': line.reserved_uom_qty - line.barcode_qty_done,
+            'barcode_qty_done': 0,
+            };
+        this.save_barcode_data(line,data);
+        return newLine;
     }
 })
