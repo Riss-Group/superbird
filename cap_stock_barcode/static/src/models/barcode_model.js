@@ -217,11 +217,12 @@ patch(BarcodeModel.prototype, {
                     barcodeData.quantity = remainingQty;
                 }
             }
-            if (barcodeData.quantity > 0 || barcodeData.lot || barcodeData.lotName) {
+            if (this.record.picking_type_id.machinegun_scan || barcodeData.quantity > 0 || barcodeData.lot || barcodeData.lotName) {
                 const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;
                 }
+                fieldsParams.barcode_qty_done = 1;
                 await this.updateLine(currentLine, fieldsParams);
             }
             if (exceedingQuantity) { // Creates a new line for the excess quantity.
