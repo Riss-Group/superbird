@@ -32,6 +32,7 @@ patch(BarcodePickingModel.prototype, {
 
         return qtyDemand;
     },
+
     async save_barcode_qty_done(line) {
         await this.orm.write(this.lineModel, [line.id], { barcode_qty_done: line.barcode_qty_done });
     },
@@ -157,9 +158,11 @@ patch(BarcodePickingModel.prototype, {
         return isNotComplete;
     },
 
-    async save() {
-        this.context = { ...this.context, ...{'barcode_save':1} }; // Merge with existing context
-        return super.save();
+    _updateLineQty(line, args) {
+        if (args.barcode_qty_done) {
+            line.barcode_qty_done += args.barcode_qty_done;
+            this.save_barcode_qty_done(line);
+        };
+        super._updateLineQty(...arguments);
     }
-
 })
