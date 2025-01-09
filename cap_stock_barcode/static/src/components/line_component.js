@@ -32,19 +32,33 @@ patch(LineComponent.prototype, {
             },
 
     async SplitRemainingQty(line) {
-        const self = this;
-        const res = await this.orm.call(
-            'stock.move.line',
-            'split_line_with_qty_remaining',
-            [[line.id]],
-            {
-                'barcode_qty_done': line.barcode_qty_done,
-            }
-        );
-        await this.env.model.save();
-        window.location.reload();
+        const fieldsParams = {
+            location_id: line.location_id.id,
+            location_dest_id: line.location_dest_id.id,
+        };
 
-//        return this.env.model.trigger('refresh');
+        const newLine = await this.env.model._createNewLine({ copyOf: line, fieldsParams });
+
+        const remainingQty = line.quantity - line.barcode_qty_done;
+        Object.assign(newLine, {
+            qty_done: remainingQty,
+            quantity: remainingQty,
+            reserved_uom_qty: remainingQty,
+            barcode_qty_done: 0,
+            lot_id: false, // Ensure no lot is associated
+            lot_name: false,
+        });
+
+        Object.assign(line, {
+            qty_done: line.barcode_qty_done,
+            quantity: line.barcode_qty_done,
+            reserved_uom_qty: line.barcode_qty_done,
+        });
+        await this.env.model.save();
+        const data = { quantity: line.barcode_qty_done };
+        await this.env.model.save_barcode_data(line, data);
+
+        return this.env.model.trigger('refresh');
     },
 
     async printProductBarcode(line) {

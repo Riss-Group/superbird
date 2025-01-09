@@ -65,7 +65,7 @@ patch(BarcodePickingModel.prototype, {
                     item => item.barcode_qty_done > 0
                 );
                 const allConditionsMet = Object.values(movelines).every(line =>
-                    line.is_splited || line.barcode_qty_done === line.quantity
+                    line.barcode_qty_done === line.quantity
                 );
 
                 if (hasBarcodeQtyDoneGreaterThanZero) {
@@ -150,7 +150,7 @@ patch(BarcodePickingModel.prototype, {
 
     _lineIsNotComplete(line) {
         const currentLine = this._getParentLine(line) || line;
-        const isNotComplete = currentLine.reserved_uom_qty && currentLine.barcode_qty_done < currentLine.reserved_uom_qty && !line.is_splited;
+        const isNotComplete = currentLine.reserved_uom_qty && currentLine.barcode_qty_done < currentLine.reserved_uom_qty;
         if (!isNotComplete && currentLine.lines) { // Grouped lines/package lines have multiple sublines.
             for (const subline of currentLine.lines) {
                 // For tracked product, a line with `qty_done` but no tracking number is considered as not complete.
