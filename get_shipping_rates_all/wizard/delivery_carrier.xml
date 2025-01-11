@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="choose_delivery_carrier_view_form" model="ir.ui.view">
+        <field name="name">choose.delivery.carrier.form</field>
+        <field name="model">choose.delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//group[1]" position="before">
+                <button name="get_all_rates" type="object" class="btn btn-primary" string="Get Rates"/>
+            </xpath>
+            <xpath expr="//form//group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form//div[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form//div[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="available_carrier_ids" position="after">
+                <field name="shipping_rates_all_ids">
+                    <tree create="0" editable="bottom">
+                        <field name="order_id" invisible="1"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="carrier_id" readonly="1"/>
+                        <field name="delivery_type" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name='display_price' widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="delivery_price" invisible="1"/>
+                        <field name="select" attrs="{'readonly':[('success','!=', True)]}"/>
+                        <field name="success" invisible="1"/>
+                        <field name="msg" readonly="1"/>
+                        <field name="choose_delivery_carrier_id" invisible="1"/>
+                    </tree>
+                    <form>
+                        <group>
+                            <field name="order_id" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="carrier_id" readonly="1"/>
+                            <field name="delivery_type" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name='display_price' widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="delivery_price" invisible="1"/>
+                            <field name="select" attrs="{'readonly':[('success','!=', True)]}"/>
+                            <field name="success" invisible="1"/>
+                            <field name="msg" readonly="1"/>
+                            <field name="choose_delivery_carrier_id" invisible="1"/>
+                        </group>
+                    </form>
+                </field>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_delivery_carrier_form_inherit_delivery_scancode" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.inherit.delivery.scancode</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <page name="destination" position="before">
+                <page string="Scancode" name="scancode_configuration" invisible="delivery_type != 'scancode'">
+                    <group>
+                        <group>
+                            <field name="scancode_user_id" required="delivery_type == 'scancode'"/>
+                            <field name="scancode_password" required="delivery_type == 'scancode'" widget="password"/>
+                            <field name="scancode_api_url" required="delivery_type == 'scancode'"/>
+                            <field name="carrier_code" required="delivery_type == 'scancode'"/>
+                            <field name="service_code" required="delivery_type == 'scancode'"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>
