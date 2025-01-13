@@ -46,7 +46,7 @@ class ResPartner(models.Model):
         if 'credit_limit' in val_keys and vals['credit_limit'] != self.env['ir.property']._get('credit_limit', 'res.partner'):
             field_keys = set(field_keys | credit_fields)
 
-        if field_keys & val_keys and not self.waiting_on_approval:
+        if field_keys & val_keys and not any(partner.waiting_on_approval for partner in self):
             for partner in self:
                 approval = partner.create_approval_request()
                 if bool(bank_fields & val_keys):
@@ -91,7 +91,7 @@ class ResPartner(models.Model):
                 approval.action_confirm()
 
                 # Set flag to indicate waiting on approval
-                self.waiting_on_approval = True
+                partner.waiting_on_approval = True
                 self.env.cr.commit()
 
                 raise UserError(
@@ -99,7 +99,7 @@ class ResPartner(models.Model):
                     f"and/or Credit Limits has begun."
                 )
 
-        elif self.waiting_on_approval and self.env.context.get('origin') != 'approval.request':
+        elif all(partner.waiting_on_approval for partner in self) and self.env.context.get('origin') != 'approval.request':
             raise UserError("There is already an Approval for this Contact's Accounting Changes.")
 
         return super(ResPartner, self).write(vals)
