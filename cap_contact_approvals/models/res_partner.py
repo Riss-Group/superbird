@@ -9,13 +9,14 @@ class ResPartner(models.Model):
 
     @api.model
     def create(self, vals):
+        ctx = self._context.copy()
         credit_limit = 0.0
         if 'credit_limit' in vals.keys() and vals['credit_limit'] != self.env['ir.property']._get('credit_limit', 'res.partner'):
             credit_limit = vals.get('credit_limit')
             vals['use_partner_credit_limit'] = False
             vals['credit_limit'] = self.env['ir.property']._get('credit_limit', 'res.partner')
         partner = super(ResPartner, self).create(vals)
-        if credit_limit:
+        if credit_limit and not ctx.get('skip_approval_test', False):
             approval = partner.create_approval_request()
             approval.credit_limit = credit_limit
             approval.credit_limits_changed = True
