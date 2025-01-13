@@ -47,7 +47,7 @@ class ResPartner(models.Model):
             field_keys = set(field_keys | credit_fields)
 
         if field_keys & val_keys and not any(partner.waiting_on_approval for partner in self):
-            for partner in self:
+            for partner in self.filtered(lambda p: not p.waiting_on_approval):
                 approval = partner.create_approval_request()
                 if bool(bank_fields & val_keys):
                     approval.bank_changed = True
