@@ -33,6 +33,9 @@ class ResPartner(models.Model):
         return partner
 
     def write(self, vals):
+        ctx = self._context.copy()
+        if ctx.get('skip_approval_test', False):
+            return super(ResPartner, self).write(vals)
         bank_fields = {'bank_ids', 'acc_number', 'allow_payment', 'acc_holder_name'}
         credit_fields = {'credit_limit'}
         use_partner_credit_limit = {'use_partner_credit_limit'}
