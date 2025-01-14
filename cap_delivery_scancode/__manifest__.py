@@ -10,7 +10,7 @@
     'description': """
         """,
     'depends': [
-        'stock_delivery', 'mail'
+        'stock_delivery', 'mail', 'get_shipping_rates_all'
         ],
     'data': [
         'views/res_config_settings_views.xml',

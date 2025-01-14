@@ -3,7 +3,6 @@ import requests
 import urllib.parse
 import xml.etree.ElementTree as ET
 from werkzeug.urls import url_join
-from lxml import etree
 
 from odoo.exceptions import UserError
 
