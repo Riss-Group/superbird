@@ -24,6 +24,9 @@ class PurchaseOrder(models.Model):
                 comodel_name='purchase.order',
                 string='Revised PO'
             )
+    vendor_related_buyer = fields.Many2one(related="partner_id.buyer_id", string="Vendor Buyer")
+
+
     @api.depends('previous_revision_ids')
     def _compute_previous_revision_count(self):
         """
