@@ -16,9 +16,10 @@
                     </div>
                 </xpath>
                 <div class="row" position="inside">
-                    <div class="col-12 my-2 d-flex align-items-baseline" invisible="picking_code != 'incoming'">
+                    <div class="col-12 my-2 d-flex align-items-baseline" invisible="picking_code != 'incoming' or is_quarantine">
                         <i class="fa fa-trash me-3" title="Quarantined"/>
                         <label for="not_done_qty" string="Quarantined"/>
+                        <field name="is_quarantine" invisible="1"/>
                         <field name="not_done_qty" clas3s="w-100 w-md-50 text-end o_qty_done_field_not_completed" options="{'type': 'number'}" placeholder="Quarantined"/>
                     </div>
                     <div class="col-12 my-2 d-flex align-items-baseline" invisible="picking_code != 'incoming'">
