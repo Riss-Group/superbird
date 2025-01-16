@@ -90,7 +90,7 @@ def set_record_context(record_id, lang, company_id, allowed_company_ids):
         Returns:
             ctx_record: The record with the updated context.
     '''
-    ctx_record = record_id.with_company(company_id)
+    allowed_company_ids = company_id.ids + [x for x in allowed_company_ids if x not in company_id.ids]
     ctx_record = record_id.with_context({
             'allowed_company_ids':allowed_company_ids,
             'lang':lang
@@ -248,25 +248,23 @@ def dynamic_upsert(payload: DataPayload, env: Environment = Depends(odoo_env)) -
     '''
         FastAPI Route that will dynamically UPSERT any data passed via XML ID
 
-        lang and company_id can be passed in for context specific results (optional)... See sample payload
-        m2o/o2m/m2m fields can be processed as well. 
+        - `lang` and `company_id` can be passed in for context specific results (optional)
+        - m2o/o2m/m2m fields can be processed as well. 
+        - m2o requires XML ID to exist or will return a not found error
+        - o2m will create the XML ID if it does not exist
+        - m2m also requires the XML ID 
+            - It does not require a 'fields' payload since it could be linked or unlinked. 
+            - To specify a record to be unlinked an optional 'm2m_link' parameter can be passed that accepts values of 'link' (default) or 'unlink'
         
-        m2o requires XML ID to exist or will return a not found error for obvious reasons
-
-        o2m will create the XML ID if it does not exist for obvious reasons
-        
-        m2m also requires the XML ID for obvious reasons. 
-        It does not require a 'fields' payload since it could be linked or unlinked.
-        To specify a record to be unlinked an optional 'm2m_link' parameter can be passed that accepts values of 'link' (default) or 'unlink'
-        
-        Sample payload would be something like 
+        Sample payload:
+        ```
         {
         "model": "res.partner",
         "company_id": "42",
         "lang": "fr_CA",
         "data": [
             {
-            "external_id": "SYNTAX.CUST_G_115066",
+            "external_id": "SYNTAX_TEST.Partner123",
             "fields": {
                 "company_id": 42,
                 "name": "test12345",
@@ -287,8 +285,10 @@ def dynamic_upsert(payload: DataPayload, env: Environment = Depends(odoo_env)) -
             }
         ]
         }
+        ```
 
-        Sample return would be something like:
+        Sample Response:
+        ```
         {
             "model":"res.partner",
             "returnvalues":[
@@ -298,6 +298,7 @@ def dynamic_upsert(payload: DataPayload, env: Environment = Depends(odoo_env)) -
                 }
             ]
         }
+        ```
 
         Record Errors are returned per record level
         Other errors would be returned from FastAPI as {"detail":"I am Exception Text"}
