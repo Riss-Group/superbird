@@ -7,7 +7,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     id_number = fields.Integer(string="ID Number")
-    historical_id_number = fields.Integer(string="Historical ID Number")
+    historical_id_number = fields.Integer(string="Legacy Number")
     sequence = fields.Integer()
 
     @api.model_create_multi
