@@ -48,7 +48,7 @@ class ServiceOrder(models.Model):
     internal_total = fields.Float(compute='_compute_totals')
     internal_parts_total = fields.Float(compute='_compute_totals')
     internal_service_total = fields.Float(compute='_compute_totals')
-    service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user, tracking=True)
+    service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user if self.env.context.get('is_repair_order') else False, tracking=True)
     payment_term_id = fields.Many2one('account.payment.term', compute='_compute_payment_term_id', store=True, readonly=False)
     start_date = fields.Datetime(default=fields.Datetime.now(), tracking=True)
     end_date = fields.Datetime(tracking=True)
@@ -63,10 +63,6 @@ class ServiceOrder(models.Model):
         ('confirmed','In Repair'),
         ('done','Done'),
         ],default='draft', tracking=True)
-    planning_slot_ids = fields.One2many('planning.slot', compute="_compute_planning_slot_ids")
-    planning_hours_total = fields.Float(compute="_compute_planning_hours_total")
-    planning_hours_planned = fields.Float(related='sale_order_ids.planning_hours_planned')
-    planning_hours_to_plan = fields.Float(related='sale_order_ids.planning_hours_to_plan')
     company_id = fields.Many2one(comodel_name='res.company', required=True, index=True, default=lambda self: self.env.company)
 
     @api.constrains('state','fleet_vehicle_id','start_date')
@@ -74,22 +70,33 @@ class ServiceOrder(models.Model):
         for record in self:
             if record.state != 'draft' and (not record.fleet_vehicle_id or not record.start_date):
                 raise ValidationError(_("The vehicle and start date must be set before changing the state to anything other than 'Draft'."))
+    
+    @api.constrains('start_date', 'end_date')
+    def _check_start_end_dates(self):
+        for record in self:
+            if record.start_date and record.end_date:
+                if record.start_date > record.end_date:
+                    raise ValidationError(
+                        _("The start date must be earlier than the end date:\n\nRecord id/name: %(id)s, %(name)s\nStart Date: %(start_date)s\nEnd Date: %(end_date)s.") % {
+                            'name': record.display_name,
+                            'id': record.id,
+                            'start_date': record.start_date,
+                            'end_date': record.end_date,
+                        }
+                    )
 
     @api.onchange('fleet_vehicle_id')
     def _onchange_fleet_vehicle_id(self):
         for record in self:
             record.fleet_odometer_in = record.fleet_vehicle_id.odometer
             record.fleet_odometer_unit = record.fleet_vehicle_id.odometer_unit
+            record.partner_id = record.fleet_vehicle_id.customer_id
+            record.fleet_vehicle_ymm = f"{record.fleet_vehicle_id.model_year or 'NA'}/{record.fleet_vehicle_make.name or 'NA'}/{record.fleet_vehicle_id.model_id.name or 'NA'}"
     
     @api.depends('partner_id')
     def _compute_payment_term_id(self):
         for order in self:
-            order.payment_term_id = order.partner_id.property_payment_term_id
-    
-    @api.depends('fleet_vehicle_id')
-    def _compute_fleet_vehicle_ymm(self):
-        for record in self:
-            record.fleet_vehicle_ymm = f"{record.fleet_vehicle_id.model_year or 'NA'}/{record.fleet_vehicle_make.name or 'NA'}/{record.fleet_vehicle_id.model_id.name or 'NA'}"
+            order.payment_term_id = order.partner_id.property_payment_term_id            
     
     @api.depends('partner_id')
     def _compute_available_fleet_vehicle_ids(self):
@@ -131,20 +138,6 @@ class ServiceOrder(models.Model):
     def _compute_show_invoice_button(self):
         for record in self:
             record.show_invoice_button = any(record.service_order_lines.filtered(lambda x: x.should_invoice))
-    
-    @api.depends('service_order_lines.service_order_line_service_ids.sale_line_id.planning_slot_ids')
-    def _compute_planning_slot_ids(self):
-        for record in self:
-            planning_slot_ids = self.env['planning.slot']
-            for service_line in record.service_order_lines:
-                for line in service_line.service_order_line_service_ids:
-                    planning_slot_ids += line.sale_line_id.planning_slot_ids
-            record.planning_slot_ids = planning_slot_ids.ids if planning_slot_ids else False
-    
-    @api.depends('sale_order_ids.planning_hours_planned', 'sale_order_ids.planning_hours_to_plan')
-    def _compute_planning_hours_total(self):
-        for record in self:
-            record.planning_hours_total = record.planning_hours_planned + record.planning_hours_to_plan
 
     def update_child_sequence(self):
         for parent in self:
@@ -223,15 +216,6 @@ class ServiceOrder(models.Model):
             'target': 'current',
         }
     
-    def action_view_planning(self):
-        self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
-        action.update({
-            'name': _('View Planning'),
-            'domain': [('id','in',self.planning_slot_ids.ids)]
-        })
-        return action
-    
     def action_upsert_so(self):
         for record in self:
             for batch in record._get_so_vals():
@@ -261,9 +245,6 @@ class ServiceOrder(models.Model):
                     body=Markup("<b>%s</b> %s") % (_("Task Created:"), line.task_id.name),
                     subtype_xmlid="mail.mt_note"
                 )
-                planning_slot_to_update_ids = line.sale_line_ids.planning_slot_ids.filtered(lambda x: not x.project_id)
-                if planning_slot_to_update_ids:
-                    planning_slot_to_update_ids.project_id = line.project_id
             record.state = 'confirmed'
         if warning_service_line_names:
             warning_message = 'Not all tasks were created because some service lines do not have a project defined. Line numbers to review are: '
@@ -612,4 +593,11 @@ class ServiceOrder(models.Model):
         result = super().write(vals)
         for rec in self:
             rec.update_child_sequence()
+            if vals.get('start_date') or vals.get('end_date'):
+                task_ids = rec.service_order_lines.task_id.filtered(lambda x: not x.stage_id.is_done_stage and not x.stage_id.is_wip_stage)
+                if task_ids:
+                    task_ids.write({
+                        'planned_date_begin': rec.start_date,
+                        'date_deadline': rec.end_date,
+                    })
         return result

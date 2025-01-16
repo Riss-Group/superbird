@@ -49,7 +49,6 @@
                 </header>
             </xpath>
             <xpath expr="//tree" position="attributes">
-                <attribute name="create">0</attribute>
                 <attribute name="delete">0</attribute>
                 <attribute name="multi_edit">0</attribute>
                 <attribute name="editable">top</attribute>

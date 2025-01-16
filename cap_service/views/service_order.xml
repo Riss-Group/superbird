@@ -114,15 +114,6 @@
                             <button type="object" name="action_view_worksheets" class="oe_stat_button" icon="fa-file-text-o">
                                 <field name="worksheet_references_count" widget="statinfo" string="Worksheets"/>
                             </button>
-                            <button type="object" name="action_view_planning" class="oe_stat_button" icon="fa-tasks">
-                                <div class="o_stat_info">
-                                    <span class="o_stat_text">Planning</span>
-                                    <span class="o_stat_value">
-                                        <field name="planning_hours_planned"/> / <field name="planning_hours_total"/> To Plan
-                                        <field name="planning_hours_to_plan" invisible="1"/>
-                                    </span>
-                                </div>
-                            </button>
                             <button type="object" name="action_stat_button_rental_order_ids" class="oe_stat_button" icon="fa-key">
                                 <field name="rental_order_ids" widget="statinfo" string="Rentals"/>
                             </button>
@@ -228,6 +219,8 @@
                         </group>
                     </sheet>
                     <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
                         <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </form>

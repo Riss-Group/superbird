@@ -52,10 +52,6 @@ class PurchaseOrder(models.Model):
                 (self.env.ref('cap_service.fleet_vehicle_view_tree_ack').id, 'tree'),
                 (self.env.ref('fleet.fleet_vehicle_view_form').id, 'form'),
             ],
-            'context': {
-                'create': 0, 
-                'delete':0,
-            },
         }
     
     def _create_picking(self):
