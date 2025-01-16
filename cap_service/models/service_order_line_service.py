@@ -12,7 +12,7 @@ class ServiceOrderLineService(models.Model):
     qty_to_invoice = fields.Float(compute='_compute_qty_invoice', store=True, readonly=False)
     qty_invoiced = fields.Float(compute='_compute_qty_invoice', store=True, readonly=False)
     product_id = fields.Many2one('product.product')
-    quantity = fields.Integer()
+    quantity = fields.Float()
     unit_price = fields.Float()
 
     def _compute_display_name(self):
