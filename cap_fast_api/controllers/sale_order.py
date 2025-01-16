@@ -95,7 +95,7 @@ def get_product(env: Environment, itemnno=False):
     '''
     if not itemnno:
         return False
-    product_id = env['product.product'].search([('name','=',itemnno)])
+    product_id = env['product.product'].search([('default_code','=',itemnno)])
     return product_id
 
 def get_company(env: Environment, companycode=False):
@@ -157,13 +157,14 @@ def sale_order_create(payload: DataPayloadSO, env: Environment = Depends(odoo_en
         - If free shipping is indicated, apply the free shipping method to the sale order.
 
         Args:
-            payload (DataPayloadSO): The sale order data payload.
-            env (Environment): The Odoo environment object.
+            - payload (DataPayloadSO): The sale order data payload.
+            - env (Environment): The Odoo environment object.
 
         Returns:
-            ReturnValuesSO: The response containing sale order ID, sale order name, and a message indicating success or failure.
+            - ReturnValuesSO: The response containing sale order ID, sale order name, and a message indicating success or failure.
 
         Sample payload:
+        ```
         {
             "companycode": "P",
             "ponumber": "PO123456",
@@ -192,13 +193,16 @@ def sale_order_create(payload: DataPayloadSO, env: Environment = Depends(odoo_en
                 }
             ]
         }
-
+        ```
+        
         Sample return:
+        ```
         {
             "sale_order_id": "123",
             "sale_order_name": "SO001",
             "message": "OK"
         }
+        ```
     '''
     return_values = ReturnValuesSO()
     #Handle company context
