@@ -13,7 +13,7 @@ class ServiceOrderTemplate(models.Model):
     tttype = fields.Selection([
         ('Customer','Customer'),
         ('Internal','Internal'),
-        ('Warranty','Warranty'),], string="Job Type")
+        ('Warranty','Warranty'),], string="Job Type", required=True)
     complaint = fields.Text(string="Complaint")
     cause = fields.Text()
     correction = fields.Text(string='Fix')
@@ -29,6 +29,17 @@ class ServiceOrderTemplate(models.Model):
                 existing_records = self.search([('op_code', '=', record.op_code), ('id', '!=', record.id)])
                 if existing_records:
                     raise ValidationError(_('The OP Code must be unique. OP Code "%s" is already used.' % record.op_code))
+    
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        self.ensure_one()
+        if default is None:
+            default = {}
+        if 'op_code' not in default:
+            default['op_code'] = _("%s (copy)", self.op_code)
+        res = super().copy(default=default)
+        return res
+
 
 class ServiceOrderTemplateParts(models.Model):
     _name = 'service.template.parts'   
@@ -63,8 +74,10 @@ class ServiceOrderTemplateParts(models.Model):
         for record in self:
             record.est_subtotal = record.est_list_price * record.quantity
 
+
 class ServiceOrderTemplate(models.Model):
     _name = 'service.template.type'   
     _description = 'Service Templates'
+
 
     name = fields.Text(string="Type")
