@@ -230,7 +230,7 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
             "data": [
                 {
                     "product_external_id": "SYNTAX.PRODUCT_TEMPLATE_99",
-                    "product_sku": "Odoo product_id.name value",
+                    "product_sku": "Odoo product_id.default_code value",
                     "partner_external_id": "SYNTAX.RES_PARTNER_18",
                     "partner_ref": "Partner Reference",
                     "quantity": 99.0,
@@ -238,7 +238,7 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
                 },
                 {
                     "product_external_id": "SYNTAX.PRODUCT_TEMPLATE_100",
-                    "product_sku": "Odoo product_id.name value",
+                    "product_sku": "Odoo product_id.default_code value",
                     "partner_external_id": "SYNTAX.RES_PARTNER_19",
                     "partner_ref": "Another Partner Reference",
                     "quantity": 50.0,
@@ -255,7 +255,7 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
                 {
                     "product_external_id": "SYNTAX.PRODUCT_TEMPLATE_99",
                     "product_id": 99,
-                    "product_sku": "Odoo product_id.name value",
+                    "product_sku": "Odoo product_id.default_code value",
                     "product_model": "product.product",
                     "partner_external_id": "SYNTAX.RES_PARTNER_18",
                     "partner_id": 18,
@@ -310,7 +310,7 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
             if data.product_external_id:
                 product_id = env.ref(data.product_external_id, raise_if_not_found=False)
             elif data.product_sku:
-                product_id = env['product.product'].search([('name', '=', data.product_sku)], limit=1)
+                product_id = env['product.product'].search([('default_code', '=', data.product_sku)], limit=1)
             if not product_id:
                 instance_vals.message = f"Product not found. Checked External ID: {data.product_external_id}, SKU: {data.product_sku}"
                 return_values.append(instance_vals)
@@ -348,7 +348,7 @@ def price_checker(payload: DataPayloadPC, env: Environment = Depends(odoo_env)) 
                 pricelist_entries.append(PriceListEntryPC(price_list_price=product_id.list_price, min_qty=0))
             instance_vals.product_external_id = data.product_external_id
             instance_vals.product_id = product_id.id
-            instance_vals.product_sku = product_id.name
+            instance_vals.product_sku = product_id.default_code
             instance_vals.product_model = product_id._name
             instance_vals.partner_external_id = data.partner_external_id
             instance_vals.partner_id = partner_id.id
@@ -443,13 +443,13 @@ def stock_checker(payload: DataPayloadWH, env: Environment = Depends(odoo_env)) 
             if data.product_external_id:
                 product_id = env.ref(data.product_external_id, raise_if_not_found=False)
             elif data.product_sku:
-                product_id = product_id.search([('name','=',data.product_sku)],limit=1)
+                product_id = product_id.search([('default_code','=',data.product_sku)],limit=1)
             if not product_id:
                 instance_vals.message = f"Product external id or sku was not found."
                 return_values.append(instance_vals)
                 continue
             if product_id.detailed_type != 'product':
-                instance_vals.message = f"Product '{product_id.name}' is not storable, thus inventory quantities are not tracked. Product Type: [{product_id.detailed_type}]"
+                instance_vals.message = f"Product '{product_id.default_code}' is not storable, thus inventory quantities are not tracked. Product Type: [{product_id.detailed_type}]"
                 return_values.append(instance_vals)
                 continue
             whse_data_list = []
@@ -471,7 +471,7 @@ def stock_checker(payload: DataPayloadWH, env: Environment = Depends(odoo_env)) 
                 whse_data_list.append(whse_data)
             instance_vals.warehouse_data = whse_data_list
             instance_vals.product_external_id = data.product_external_id or get_product_external_id(env=env, product_id=product_id)
-            instance_vals.product_sku = data.product_sku or product_id.name
+            instance_vals.product_sku = data.product_sku or product_id.default_code
             instance_vals.message = "OK"
         except Exception as e:
             instance_vals.message = f"EX Occured: {e}"
