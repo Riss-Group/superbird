@@ -11,6 +11,7 @@ import {_t} from "@web/core/l10n/translation";
 patch(BarcodeModel.prototype, {
 
     async _processBarcode(barcode) {
+//        super._processBarcode(barcode);
         let barcodeData = {};
         let currentLine = false;
         // Creates a filter if needed, which can help to get the right record
@@ -78,12 +79,12 @@ patch(BarcodeModel.prototype, {
         }
 
         if (barcodeData.weight) { // Convert the weight into quantity.
-            barcodeData.quantity = barcodeData.weight.value;
+            barcodeData.barcode_qty_done = barcodeData.weight.value;
         }
 
         // If no product found, take the one from last scanned line if possible.
         if (!barcodeData.product) {
-            if (barcodeData.quantity) {
+            if (barcodeData.barcode_qty_done) {
                 currentLine = this.selectedLine || this.lastScannedLine;
             } else if (this.selectedLine && this.selectedLine.product_id.tracking !== 'none') {
                 currentLine = this.selectedLine;
@@ -101,7 +102,7 @@ patch(BarcodeModel.prototype, {
                     barcodeData.product = previousProduct;
                 }
                 if (barcodeData.lot || barcodeData.lotName ||
-                    barcodeData.quantity) {
+                    barcodeData.barcode_qty_done) {
                     barcodeData.product = previousProduct;
                 }
             }
@@ -153,9 +154,9 @@ patch(BarcodeModel.prototype, {
             const hasUnassignedQty = currentLine && currentLine.qty_done && !currentLine.lot_id && !currentLine.lot_name;
             const isTrackingNumber = barcodeData.lot || barcodeData.lotName;
             const defaultQuantity = 0;
-            barcodeData.quantity = barcodeData.quantity || defaultQuantity;
-            if (product.tracking === 'serial' && barcodeData.quantity > 1 && (barcodeData.lot || barcodeData.lotName)) {
-                barcodeData.quantity = 1;
+            barcodeData.barcode_qty_done = barcodeData.barcode_qty_done || defaultQuantity;
+            if (product.tracking === 'serial' && barcodeData.barcode_qty_done > 1 && (barcodeData.lot || barcodeData.lotName)) {
+                barcodeData.barcode_qty_done = 1;
                 this.notification(
                     _t(`A product tracked by serial numbers can't have multiple quantities for the same serial number.`),
                     { type: 'danger' }
@@ -204,20 +205,20 @@ patch(BarcodeModel.prototype, {
             let exceedingQuantity = 0;
             if (product.tracking !== 'serial' && barcodeData.uom && barcodeData.uom.category_id == currentLine.product_uom_id.category_id) {
                 // convert to current line's uom
-                barcodeData.quantity = (barcodeData.quantity / barcodeData.uom.factor) * currentLine.product_uom_id.factor;
+                barcodeData.barcode_qty_done = (barcodeData.barcode_qty_done / barcodeData.uom.factor) * currentLine.product_uom_id.factor;
                 barcodeData.uom = currentLine.product_uom_id;
             }
             // Checks the quantity doesn't exceed the line's remaining quantity.
             if (currentLine.reserved_uom_qty && product.tracking === 'none') {
                 const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
-                if (barcodeData.quantity > remainingQty && this._shouldCreateLineOnExceed(currentLine)) {
+                if (barcodeData.barcode_qty_done > remainingQty && this._shouldCreateLineOnExceed(currentLine)) {
                     // In this case, lowers the increment quantity and keeps
                     // the excess quantity to create a new line.
-                    exceedingQuantity = barcodeData.quantity - remainingQty;
-                    barcodeData.quantity = remainingQty;
+                    exceedingQuantity = barcodeData.barcode_qty_done - remainingQty;
+                    barcodeData.barcode_qty_done = remainingQty;
                 }
             }
-            if (this.record.picking_type_id.machinegun_scan || barcodeData.quantity > 0 || barcodeData.lot || barcodeData.lotName) {
+            if (this.record.picking_type_id.machinegun_scan || barcodeData.barcode_qty_done > 0 || barcodeData.lot || barcodeData.lotName) {
                 const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;
@@ -226,7 +227,7 @@ patch(BarcodeModel.prototype, {
                 await this.updateLine(currentLine, fieldsParams);
             }
             if (exceedingQuantity) { // Creates a new line for the excess quantity.
-                barcodeData.quantity = exceedingQuantity;
+                barcodeData.barcode_qty_done = exceedingQuantity;
                 const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;

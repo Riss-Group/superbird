@@ -95,7 +95,7 @@ class StockMoveLine(models.Model):
     def write(self, vals):
         super(StockMoveLine, self).write(vals)
         save_qty_not_done = self.env.context.get('onchange_not_done_qty')
-        if not save_qty_not_done:
+        if not save_qty_not_done and 'not_done_qty' in vals.keys():
             for line in self:
                 line.with_context({'onchange_not_done_qty' : True})._onchange_not_done_qty()
 

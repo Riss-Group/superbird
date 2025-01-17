@@ -24,7 +24,13 @@ patch(BarcodePickingModel.prototype, {
     shouldSplitLine(line) {
         return line.barcode_qty_done && line.reserved_uom_qty && line.barcode_qty_done < line.reserved_uom_qty;
     },
-
+    async _processLocation(barcodeData) {
+        super._processLocation(...arguments);
+        if (barcodeData.destLocation) {
+            await this._processLocationDestination(barcodeData);
+            await this.save()
+        }
+    },
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
         if (line.not_done_qty) {
@@ -190,6 +196,11 @@ patch(BarcodePickingModel.prototype, {
         if (!this.shouldSplitLine(line)) {
             return false;
         }
+        if (this.validateContext.putInPack){
+            this.validateContext['putInPack'] = false;
+        } else {
+            return false;
+        }
         // Use line's locations otherwise the picking's locations are used as default locations.
         const fieldsParams = {
             location_id: line.location_id.id,
@@ -206,8 +217,14 @@ patch(BarcodePickingModel.prototype, {
         let data = {
             'quantity': line.reserved_uom_qty - line.barcode_qty_done,
             'barcode_qty_done': 0,
+            'location_dest_id': line.location_dest_id.id,
             };
         this.save_barcode_data(line,data);
         return newLine;
-    }
+    },
+    async _putInPack(additionalContext = {}) {
+        const context = this.validateContext;
+        context['putInPack'] = true;
+        return super._putInPack(additionalContext = {});
+        }
 })
