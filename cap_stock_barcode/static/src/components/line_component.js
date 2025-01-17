@@ -34,7 +34,7 @@ patch(LineComponent.prototype, {
     async SplitRemainingQty(line) {
         const fieldsParams = {
             location_id: line.location_id.id,
-            location_dest_id: line.location_dest_id.id,
+            location_dest_id: this.env.model.record.location_dest_id,
         };
 
         const newLine = await this.env.model._createNewLine({ copyOf: line, fieldsParams });
@@ -54,8 +54,8 @@ patch(LineComponent.prototype, {
             quantity: line.barcode_qty_done,
             reserved_uom_qty: line.barcode_qty_done,
         });
-        await this.env.model.save();
         const data = { quantity: line.barcode_qty_done };
+        await this.env.model.save();
         await this.env.model.save_barcode_data(line, data);
 
         return this.env.model.trigger('refresh');
