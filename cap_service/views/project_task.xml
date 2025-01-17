@@ -10,6 +10,9 @@
                 <attribute name="context">{'group_by': 'stage_id'}</attribute>
                 <attribute name="string">Task View</attribute>
             </xpath>
+            <xpath expr="//filter[@name='followed_by_me']" position="before">
+                <filter string="My Tasks" name="my_tasks_service" domain="[('user_ids', 'in', uid)]" groups="base.group_user"/>
+            </xpath>
         </field>
     </record>
 
@@ -31,6 +34,12 @@
                 <group name="tech_notes" string="Tech Notes">
                     <field name="tech_notes" nolabel="1" colspan='2' placeholder="Add additional tech notes here..."/>
                 </group>
+            </xpath>
+            <xpath expr="//button[@name='action_recurring_tasks']" position="attributes">
+                <attribute name="invisible">is_repair_service or not active or not recurrence_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='recurring_task']" position="attributes">
+                <attribute name="invisible">is_repair_service or not active or not recurrence_id</attribute>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="inventory_transfers_page" string="Inventory Transfers" invisible="not is_repair_service">
@@ -69,6 +78,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='fold']" position="after">
                 <field name="is_done_stage"/>
+                <field name="is_wip_stage"/>
             </xpath> 
         </field>
     </record>
@@ -80,6 +90,7 @@
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
                 <field name="is_done_stage" optional="show"/>
+                <field name="is_wip_stage" optional="show"/>
             </xpath> 
         </field>
     </record>

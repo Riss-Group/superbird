@@ -18,5 +18,23 @@
             <field name="category_id" ref="cap_service.module_category_repair_services"/>
             <field name="implied_ids" eval="[(4, ref('cap_service.group_service_user'))]"/>
         </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'project'), '|', ('name', '=', 'task_comp_rule'), ('name', '=', 'project_comp_rule')]"/>
+            </function>
+            <value eval="{'noupdate': False}" />
+        </function>
+
+        <record model="ir.rule" id="project.task_comp_rule">
+            <field name="name">Project/Task: multi-company</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="domain_force">[ '|', ('branch_company_ids', 'in', company_ids), ('company_id','=',False) ]</field>
+        </record>
+        <record model="ir.rule" id="project.project_comp_rule">
+            <field name="name">Project: multi-company</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="domain_force">[ '|', ('branch_company_ids', 'in', company_ids), ('company_id','=',False) ]</field>
+        </record>
     </data>
 </odoo>

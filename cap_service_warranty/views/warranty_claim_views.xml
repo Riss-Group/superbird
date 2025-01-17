@@ -93,5 +93,5 @@
     </record>
 
     <menuitem id="warranty_claim_menu" name="Warranty Claim" parent="cap_service.service_order_main_menu"
-              action="warranty_claim_action" sequence="1"/>
+              action="warranty_claim_action" sequence="80"/>
 </odoo>
