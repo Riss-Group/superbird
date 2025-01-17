@@ -79,11 +79,14 @@ patch(BarcodePickingModel.prototype, {
 //                if (hasBarcodeQtyDoneGreaterThanZero) {
 //                    result = true;
 //                };
+                if (allConditionsMet) {
+                    return allConditionsMet;
+                };
                 if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
-                    result = allConditionsMet;
+                    return false;
                 };
                 if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
-                    result = true;
+                    return true;
                 };
             }
         }
@@ -156,7 +159,16 @@ patch(BarcodePickingModel.prototype, {
         if (this.record.return_id) {
             this.validateContext = {...this.validateContext, picking_ids_not_to_backorder: this.resId};
         }
-        return await super.validate();
+        // Dynamically Traverse the Prototype Chain
+        let nextValidate = Object.getPrototypeOf(this).validate;
+
+        while (nextValidate === this.validate) {
+            nextValidate = Object.getPrototypeOf(Object.getPrototypeOf(this)).validate;
+        }
+
+        if (nextValidate) {
+            return await nextValidate.apply(this, arguments);
+        }
     },
 
     _lineIsNotComplete(line) {
