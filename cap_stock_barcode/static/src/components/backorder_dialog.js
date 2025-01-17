@@ -15,11 +15,11 @@ patch(BackorderDialog.prototype, {
         this.loadScrapQuantities();
     },
     async loadScrapQuantities() {
-    for (const line of this.props.uncompletedLines) {
-        const qty = await this.get_scrap_qty(line);
-        this.scrap_quantities[line.id] = qty; // Reactive update
-    }
-},
+        for (const line of this.props.uncompletedLines) {
+            const qty = await this.get_scrap_qty(line);
+            this.scrap_quantities[line.id] = qty; // Reactive update
+        }
+    },
 
     async get_scrap_qty(line){
      const not_done_qty_id = await this.orm.searchRead(
