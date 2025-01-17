@@ -73,12 +73,17 @@ patch(BarcodePickingModel.prototype, {
                 const allConditionsMet = Object.values(movelines).every(line =>
                     line.barcode_qty_done === line.quantity
                 );
-
-                if (hasBarcodeQtyDoneGreaterThanZero) {
-                    result = true;
-                };
+                const allLinesZero = Object.values(movelines).every(line =>
+                    line.barcode_qty_done === 0
+                );
+//                if (hasBarcodeQtyDoneGreaterThanZero) {
+//                    result = true;
+//                };
                 if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
                     result = allConditionsMet;
+                };
+                if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
+                    result = true;
                 };
             }
         }
@@ -217,7 +222,6 @@ patch(BarcodePickingModel.prototype, {
         let data = {
             'quantity': line.reserved_uom_qty - line.barcode_qty_done,
             'barcode_qty_done': 0,
-            'location_dest_id': line.location_dest_id.id,
             };
         this.save_barcode_data(line,data);
         return newLine;
