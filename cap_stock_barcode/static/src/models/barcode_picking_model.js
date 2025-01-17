@@ -82,12 +82,13 @@ patch(BarcodePickingModel.prototype, {
                 if (allConditionsMet) {
                     return allConditionsMet;
                 };
-                if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
-                    return false;
-                };
                 if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
                     return true;
                 };
+                if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
+                    return false;
+                };
+
             }
         }
 
