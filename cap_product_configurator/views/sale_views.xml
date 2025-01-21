@@ -7,7 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_config_start']" position="after">
                 <button name="action_tradein_start" string="Add trade-in" style="margin-top: 15px;" type="object"
-                        groups="product_configurator.group_product_configurator" class="oe_highlight"/>
+                        groups="product_configurator.group_product_configurator" class="oe_highlight"
+                        invisible="state not in ['draft','sent']"/>
             </xpath>
         </field>
     </record>
