@@ -10,4 +10,5 @@ class PurchaseOrder(models.Model):
         'sale.order',
         string='Sales Order'
     )
+    customer_id = fields.Many2one('res.partner', related='custom_sale_order_id.partner_id', string='Final Customer')
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
