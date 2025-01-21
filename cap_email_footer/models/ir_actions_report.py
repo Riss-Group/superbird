@@ -32,6 +32,9 @@ from itertools import islice
 # Allow truncated images
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+_logger = logging.getLogger(__name__)
+
+
 try:
     from PyPDF2.errors import PdfReadError
 except ImportError:
