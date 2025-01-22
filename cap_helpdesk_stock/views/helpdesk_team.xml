@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="helpdesk_team_view_form_inherit_cap" model="ir.ui.view">
+        <field name="name">helpdesk.team.form_inherit_cap</field>
+        <field name="model">helpdesk.team</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='use_product_returns']" position="after">
+                <div class="mt-2" invisible="not use_product_returns">
+                    <label for="default_return_operation_type" string="Default Return Operation" class="me-2"/>
+                    <field name="default_return_operation_type"/>
+                </div>
+                <div class="mt-2" invisible="not use_product_returns">
+                    <label for="sequence_id" class="me-2"/>
+                    <field name="sequence_id"/>
+                </div>
+                <div class="mt-2" invisible="not use_product_returns">
+                    <label for="sequence_code" class="me-2"/>
+                    <field name="sequence_code"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

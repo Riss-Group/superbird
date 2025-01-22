@@ -19,7 +19,10 @@
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'views/stock_picking_return.xml',
+        'views/helpdesk_team.xml',
+        'views/stock_return_reason.xml',
     ],
 
 }
