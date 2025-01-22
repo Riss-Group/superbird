@@ -1,0 +1,1 @@
+from . import ir_property, res_company, res_config_settings
