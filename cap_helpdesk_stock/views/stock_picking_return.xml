@@ -6,12 +6,56 @@
         <field name="model">stock.return.picking</field>
         <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_grey')]" position="attributes">
+                <attribute name="invisible">not move_dest_exists or ticket_id</attribute>
+            </xpath>
             <field name="move_dest_exists" position="before">
-                <group invisible="context.get('active_model') != 'helpdesk.ticket'">
+                <group invisible="not ticket_id">
                     <field name="suitable_product_ids_domain" invisible="1" />
                     <field name="suitable_product_ids" widget="many2many_tags" domain="suitable_product_ids_domain"/>
                 </group>
             </field>
+            <xpath expr="//field[@name='product_return_moves']" position="attributes">
+                <attribute name="invisible">ticket_id</attribute>
+            </xpath>
+            <field name="product_return_moves" position="after">
+                <field name="product_return_move_lines" invisible="not ticket_id">
+                    <tree editable="top" create="1">
+                        <field name="product_id" options="{'no_create': True, 'no_open': True}" force_save="1" domain="suitable_product_ids_domain"/>
+                        <field name="wizard_id" column_invisible="1"/>
+                        <field name="suitable_product_ids_domain" column_invisible="1" />
+                        <field name="sale_id"  domain="sale_domain" readonly="not product_id"/>
+                        <field name="sale_domain" column_invisible="1"/>
+                        <field name="picking_id" optional="hide"/>
+                        <field name="quantity"/>
+                        <field name="return_reason" optional="show"/>
+                        <field name="uom_id" optional="hide" groups="uom.group_uom"/>
+                        <field name="move_id" column_invisible="1"/>
+                        <field name="to_refund"/>
+                    </tree>
+                </field>
+            </field>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="invisible">ticket_id</attribute>
+            </xpath>
+            <xpath expr="//button[@name='create_returns']" position="attributes">
+                <attribute name="invisible">ticket_id</attribute>
+            </xpath>
+            <xpath expr="//button[@name='create_returns']" position="after">
+                <button name="create_picking_returns" string="Return" type="object" class="btn-primary" data-hotkey="q"/>
+            </xpath>
+        </field>
+    </record>
+        <record id="view_stock_return_picking_helpdesk_inherit_form" model="ir.ui.view">
+        <field name="name">Return lines helpdesk inherit CAP RMA</field>
+        <field name="model">stock.return.picking</field>
+        <field name="inherit_id" ref="helpdesk_stock.view_stock_return_picking_form_inherit_helpdesk_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]" position="replace">
+                <group invisible="not ticket_id">
+                    <field name="default_operation_type"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -2,3 +2,4 @@
 
 from . import product_conf
 from . import product_attribute
+from . import sale

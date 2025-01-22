@@ -7,7 +7,11 @@ class ResPartner(models.Model):
 
 
     send_as_company_id = fields.Many2one('res.company', store=False, readonly=True, compute="_compute_send_as_company_id",)
-    include_company_ids = fields.Many2many('res.company', store=False, readonly=True, compute="_compute_include_company_ids",)
+    include_company_ids = fields.Many2many('res.company', store=False, readonly=True,
+                                                relation='partner_company_statement_rel',
+                                                column1='partner_id',
+                                                column2='company_id',
+                                                compute="_compute_include_company_ids",)
     due_move_ids = fields.One2many('account.move', string='Due Invoices', compute='_compute_due_invoice_ids')
     company_warning_message = fields.Html(compute='_compute_due_invoice_ids')
     current_due = fields.Monetary(string='Current', compute='_compute_aging_buckets')
