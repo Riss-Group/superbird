@@ -43,7 +43,7 @@ class FleetVehicle(models.Model):
             sales_requested_delivery_date = False
             ready_for_delivery_date = False
             customer_delivered_date = False
-            for move_line in rec.fleet_move_line_ids:
+            for move_line in rec.sudo().fleet_move_line_ids:
                 if move_line.picking_type_id.code == 'incoming':
                     purchase_order_ids = move_line.move_id.purchase_line_id.mapped('order_id')
                     bus_order_date = purchase_order_ids and purchase_order_ids[0].date_approve or False
@@ -53,8 +53,9 @@ class FleetVehicle(models.Model):
                     dealer_arrival_date = move_line.picking_id.date_done or False
                 if move_line.picking_type_id.code == 'outgoing':
                     sale_order_id = move_line.move_id.sale_line_id.mapped('order_id')
-                    sold_customer_date = sale_order_id and sale_order_id[0].date_order or False
-                    sales_requested_delivery_date = sale_order_id and sale_order_id[0].commitment_date or False
+                    if sale_order_id:
+                        sold_customer_date = sale_order_id[0].date_order or False
+                        sales_requested_delivery_date = sale_order_id[0].commitment_date or False
                     ready_for_delivery_date = move_line.move_id.date or False
                     customer_delivered_date = move_line.picking_id.date_done or False
         rec.bus_order_date = bus_order_date
