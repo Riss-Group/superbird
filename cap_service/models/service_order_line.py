@@ -26,14 +26,78 @@ class ServiceOrder(models.Model):
     subtotal = fields.Float(compute="_compute_subtotal")
     service_order_id = fields.Many2one('service.order', ondelete='cascade')
     sale_line_ids = fields.One2many('sale.order.line', 'service_order_line_id')
+    invoice_line_ids = fields.One2many('account.move.line', 'service_order_line_id')
+    should_invoice = fields.Boolean(compute='_compute_should_invoice', store=True)
+    fully_invoiced = fields.Boolean(compute='_compute_should_invoice', store=True)
     service_order_line_product_ids = fields.One2many('service.order.line.product', 'service_order_line_id',)
     service_order_line_service_ids = fields.One2many('service.order.line.service', 'service_order_line_id',)
     sequence = fields.Integer()
     task_attachment_ids = fields.One2many('ir.attachment', related='task_id.attachment_ids')
     task_attachment_count = fields.Integer(string="Attachment Count", compute="_compute_task_attachment_count", store=False)
     service_template_id = fields.Many2one('service.template')
+    bill_to_partner_id = fields.Many2one('res.partner', string="Bill To", compute="_compute_bill_to_partner_id", store=True, readonly=False,)
+    available_bill_to_partner_ids = fields.Many2many('res.partner', compute="_compute_available_bill_to_partner_ids",)
+    task_state = fields.Selection(compute='_compute_task_state', store=True, selection=[
+        ('not_started', 'Not Started'),
+        ('wip', 'Work in Progress'),
+        ('done', 'Done'),])
+
+    @api.depends('ttype', 'service_order_id.partner_id')
+    def _compute_bill_to_partner_id(self):
+        for record in self:
+            if record.ttype == 'Customer':
+                record.bill_to_partner_id = record.service_order_id.partner_id
+            elif record.ttype == 'Internal':
+                record.bill_to_partner_id = record.service_order_id.company_id.default_service_order_internal_branch_id.partner_id or record.service_order_id.company_id.partner_id
+            elif record.ttype == 'Warranty':
+                record.bill_to_partner_id = False
+            else:
+                record.bill_to_partner_id = False
+
+    @api.depends('ttype', 'service_order_id.company_id')
+    def _compute_available_bill_to_partner_ids(self):
+        for record in self:
+            if record.ttype == 'Internal':
+                parent_company = record.service_order_id.company_id.parent_id
+                child_companies = parent_company.child_ids if parent_company else []
+                partner_ids = child_companies.mapped('partner_id')
+                record.available_bill_to_partner_ids = partner_ids
+            else:
+                company = record.service_order_id.company_id
+                parent_company = company.parent_id
+                partner_domain = [
+                    '|',
+                    ('company_id', '=', company.id),
+                    '|',
+                    ('company_id', '=', parent_company.id if parent_company else None),
+                    ('company_id', '=', False),
+                    ('customer_rank', '>', 1),
+                ]
+                record.available_bill_to_partner_ids = self.env['res.partner'].search(partner_domain)
     
-    
+    @api.depends('service_order_line_product_ids.qty_to_invoice', 'service_order_line_service_ids.qty_to_invoice', 'task_state')
+    def _compute_should_invoice(self):
+        for record in self:
+            record.should_invoice = False
+            record.fully_invoiced = False
+            if record.task_state != 'done':
+                continue
+            product_qty_to_invoice = sum(line.qty_to_invoice for line in record.service_order_line_product_ids)
+            service_qty_to_invoice = sum(line.qty_to_invoice for line in record.service_order_line_service_ids)
+            total_qty_to_invoice = product_qty_to_invoice + service_qty_to_invoice
+            record.should_invoice = total_qty_to_invoice > 0
+            record.fully_invoiced = total_qty_to_invoice == 0
+
+    @api.depends('task_id.state', 'task_id.timesheet_ids.unit_amount', 'task_id.timer_start')
+    def _compute_task_state(self):
+        for record in self:
+            if record.task_id.state in ['1_done', '1_canceled']:
+                record.task_state = 'done'
+            elif record.task_id.timer_start or record.task_id.timesheet_ids:
+                record.task_state = 'wip'
+            else:
+                record.task_state = 'not_started'
+
     @api.depends('task_id.timesheet_ids.unit_amount')
     def _compute_hours_consumed(self):
         for record in self:

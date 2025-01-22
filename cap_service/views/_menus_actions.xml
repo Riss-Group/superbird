@@ -6,7 +6,7 @@
             <field name="res_model">service.order</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_filter_service_todo':1, 'is_repair_order':1}</field>
         </record>
 
         <record id="service_template_action" model="ir.actions.act_window">
@@ -25,21 +25,57 @@
             <field name="context">{}</field>
         </record>
 
-        <record id="project.action_view_all_task" model="ir.actions.act_window">
-            <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
-            <field name="context">{'search_default_open_tasks': 1, 'default_user_ids': [(4, uid)]}</field>
+        <record id="service_project_action" model="ir.actions.act_window">
+            <field name="name">Service Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_repair_service','=',True)]</field>
+            <field name="context">{'default_is_repair_service':1, 'default_is_fsm': 1, 'default_allow_worksheets': 1, }</field>
+        </record>
+
+        <record id="action_view_all_service_task" model="ir.actions.act_window">
+            <field name="name">Service Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,kanban,form,calendar,gantt</field>
+            <field name="domain">[('is_repair_service', '=', True)]</field>
+            <field name="context">{'create':0 'search_default_open_tasks': 1, 'default_user_ids': [(4, uid)]}</field>
+            <field name="search_view_id" ref="cap_service.view_task_search_form_base_cap"/>
+        </record>
+
+        <record id="action_view_my_service_task" model="ir.actions.act_window">
+            <field name="name">My Service Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,kanban,form,calendar,gantt</field>
+            <field name="domain">[('is_repair_service', '=', True)]</field>
+            <field name="context">{'create':0 'search_default_open_tasks': 1, 'search_default_my_tasks_service':1, 'default_user_ids': [(4, uid)]}</field>
+            <field name="search_view_id" ref="cap_service.view_task_search_form_base_cap"/>
         </record>
 
         <record id="project.open_view_all_task_list_kanban" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
         </record>
 
-        <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" sequence="60" />
-        <menuitem id="service_order_menu_menu" name="Repair Orders" parent="service_order_main_menu"  sequence="0"/>
-        <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  sequence="0"/>
-        <menuitem id="service_order_template_menu" name="Service Templates" parent="service_order_config_menu"  sequence="0"/>
-        <menuitem id="service_template_action_menu" name="Service Templates" action="service_template_action"  parent="service_order_template_menu" sequence="10"/>
-        <menuitem id="service_template_type_action_menu" name="Service Template Type" action="service_template_type_action"  parent="service_order_template_menu" sequence="10"/>
+        <!-- Main Menu -->
+        <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" groups="cap_service.group_service_user" sequence="60" />
+        
+        <!-- Mega Menus -->
+        <menuitem id="service_order_menu_menu" name="Repair Orders" parent="service_order_main_menu"  sequence="10"/>
+        <menuitem id="service_order_project_menu_menu" name="Projects" parent="service_order_main_menu"  groups="cap_service.group_service_user" sequence="20"/>
+        <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  groups="cap_service.group_service_manager" sequence="90"/>
+        
+        <!-- Action Menus -->
+        <!-- Repairs -->
         <menuitem id="service_order_action_menu" name="Repair Orders" action="service_order_action"  parent="service_order_menu_menu" sequence="10"/>
+        
+        <!-- Projects -->
+        <menuitem id="service_order_project_my_task_menu" name="My Tasks" action="action_view_my_service_task" parent="service_order_project_menu_menu"  groups="cap_service.group_service_user" sequence="10"/>
+        <menuitem id="service_order_project_task_menu" name="Tasks" action="action_view_all_service_task" parent="service_order_project_menu_menu"  groups="cap_service.group_service_manager" sequence="11"/>
+        <menuitem id="service_order_project_project_menu" name="Projects" action="service_project_action" parent="service_order_project_menu_menu"  groups="cap_service.group_service_manager" sequence="20"/>
+        <menuitem id="service_order_project_task_stage_menu" name="Task Stages" action="project.open_task_type_form" parent="service_order_project_menu_menu"  groups="cap_service.group_service_manager" sequence="30"/>
+        
+        <!-- Configuration -->
+        <menuitem id="service_order_template_menu" name="Service Templates" parent="service_order_config_menu"  sequence="10"/>
+        <menuitem id="service_template_action_menu" name="Service Templates" action="service_template_action"  parent="service_order_template_menu" sequence="11"/>
+        <menuitem id="service_template_type_action_menu" name="Service Template Type" action="service_template_type_action"  parent="service_order_template_menu" sequence="12"/>
     </data>
 </odoo>

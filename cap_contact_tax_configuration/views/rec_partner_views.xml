@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.view_partner_property_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='misc']" position="inside">
-                <field name="is_tax_applicable" readonly="parent_id"/>
+                <field name="is_tax_applicable" readonly="parent_id" required="not parent_id and is_customer or is_supplier"/>
             </xpath>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='vat']" position="attributes">
-                <attribute name="invisible">not is_tax_applicable</attribute>
+                <attribute name="invisible">not is_tax_applicable == 'yes'</attribute>
             </xpath>
         </field>
     </record>
@@ -28,8 +28,8 @@
             <field name="inherit_id" ref="l10n_ca.res_partner_form_inherit_ca"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='l10n_ca_pst']" position="attributes">
-                    <attribute name="invisible">'CA' not in fiscal_country_codes or not is_tax_applicable</attribute>
-                    <attribute name="required">(parent_id and ('CA' in fiscal_country_codes or is_tax_applicable))</attribute>
+                    <attribute name="invisible">'CA' not in fiscal_country_codes or not is_tax_applicable == 'yes'</attribute>
+                    <attribute name="required">(parent_id and ('CA' in fiscal_country_codes or is_tax_applicable == 'yes'))</attribute>
                 </xpath>
             </field>
         </record>

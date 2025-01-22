@@ -8,7 +8,7 @@
             <xpath expr="//notebook" position="inside">
                 <page name="dates" string="Dates">
                     <group>
-                        <group name="purchase" string="Purchase Dates">
+                        <group name="purchase" string="Purchase Dates" groups="purchase.group_purchase_user">
                             <field name="chassis_built_date"/>
                             <field name="chassis_manufacturer_arrival_date"/>
                             <field name="bus_order_date" />
@@ -18,7 +18,7 @@
                             <field name="dealer_arrival_date"/>
                             <field name="oem_ready_for_delivery_date"/>
                         </group>
-                        <group name="sale" string="Sale Dates">
+                        <group name="sale" string="Sale Dates" groups="sales_team.group_sale_salesman">
                             <field name="sold_customer_date"/>
                             <field name="sales_requested_delivery_date"/>
                             <field name="ready_for_delivery_date"/>
@@ -26,10 +26,10 @@
                         </group>
                     </group>
                     <group>
-                        <group name="accounting" string="Accounting Dates">
-                            <field name="oem_payment_due_date"/>
-                            <field name="oem_body_payment_date"/>
-                            <field name="oem_chassis_payment_date"/>
+                        <group name="accounting" string="Accounting Dates" groups="account.group_account_invoice">
+                            <field name="oem_payment_due_date" />
+                            <field name="oem_body_payment_date" />
+                            <field name="oem_chassis_payment_date" />
                         </group>
                         <group name="service" string="Service Date">
                             <field name="ready_for_inspection_date"/>
@@ -38,6 +38,36 @@
                     </group>
                 </page>
             </xpath>
+        </field>
+    </record>
+    <record id="fleet_vehicle_view_tree_service_extended" model="ir.ui.view">
+        <field name="name">fleet_vehicle_view_tree_service_extended</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="before">
+            <!--        Purchase Dates           -->
+                <field name="chassis_built_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="chassis_manufacturer_arrival_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="bus_order_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="pick_up_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="oem_production_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="revised_pick_up_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="dealer_arrival_date" optional="show" groups="purchase.group_purchase_user"/>
+                <field name="oem_ready_for_delivery_date" optional="show" groups="purchase.group_purchase_user"/>
+            <!--      Sales Dates          -->
+                <field name="sold_customer_date" optional="show" groups="sales_team.group_sale_salesman"/>
+                <field name="sales_requested_delivery_date" optional="show" groups="sales_team.group_sale_salesman"/>
+                <field name="ready_for_delivery_date" optional="show" groups="sales_team.group_sale_salesman"/>
+                <field name="customer_delivered_date" optional="show" groups="sales_team.group_sale_salesman"/>
+            <!--     Accounting Dates           -->
+                <field name="oem_payment_due_date" optional="show" groups="account.group_account_invoice"/>
+                <field name="oem_body_payment_date" optional="show" groups="account.group_account_invoice"/>
+                <field name="oem_chassis_payment_date" optional="show" groups="account.group_account_invoice"/>
+            <!--     Service Dates           -->
+                <field name="ready_for_inspection_date" optional="show"/>
+                <field name="in_service_date" optional="show"/>
+            </field>
         </field>
     </record>
 </odoo>

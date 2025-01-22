@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchase_order_form_inherited_quality_check" model="ir.ui.view">
+          <field name="name">view.purchase.order.form.inherit.quality_check</field>
+          <field name="model">purchase.order</field>
+          <field name="inherit_id" ref="purchase.purchase_order_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="//div[@name='button_box']" position="inside">
+                  <button string="Quality Checks" name="check_quality" type="object" class="oe_highlight"
+                          invisible="quality_check_count == 0" groups="quality.group_quality_user">
+                      <field name="quality_check_count" widget="statinfo" string="Quality Checks"/>
+                  </button>
+              </xpath>
+          </field>
+    </record>
+</odoo>

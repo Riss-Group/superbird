@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="view_res_config_settings_inherit_autoprop" model="ir.ui.view">
+            <field name="name">res.config.settings.inherit.autoprop</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <setting id="inter_company" position="after">
+                    <setting id="autopropagate_properties" string="Company-specific data sync" company_dependent="1" help="Automatically propagate company-dependent settings between companies and branches" groups="base.group_multi_company">
+                        <field name="autopropagate_properties"/>
+                        <div class="row ml32" invisible="not autopropagate_properties">
+                            <field name="autopropagate_properties_name_search" class="col-1 col-lg-1"/>
+                            <label for="autopropagate_properties_name_search" class="col o_light_label" string="Try to find records with similar name"/>
+                        </div>
+                    </setting>
+                </setting>
+            </field>
+        </record>
+    </data>
+</odoo>

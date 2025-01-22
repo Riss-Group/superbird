@@ -10,9 +10,10 @@ class StockMoveLine(models.Model):
     not_done_qty = fields.Float('Qty Not Done', readonly=False, store=True)
     qty_remaining = fields.Float('Remaining Qty', compute="compute_remaining_qty", store=False)
     related_scrap_line = fields.Many2one('stock.move.line')
-    barcode_qty_done = fields.Float('Qty Done')
+    barcode_qty_done = fields.Float('Qty Done', store=True)
     product_uom_qty = fields.Float(related="move_id.product_uom_qty")
     is_quarantine = fields.Boolean(default=False)
+    is_splited = fields.Boolean(default=False)
 
     # @api.onchange('not_done_qty')
     def _onchange_not_done_qty(self):
@@ -23,7 +24,10 @@ class StockMoveLine(models.Model):
                 if line.related_scrap_line:
                     line.related_scrap_line.unlink()
                 else :
-                    line.update({'location_dest_id': line.move_id.picking_id.location_dest_id.id, 'is_quarantine':False})
+                    update_dict = {'is_quarantine':False}
+                    if line.move_id.picking_id and line.move_id.picking_id.location_dest_id:
+                        update_dict.update({'location_dest_id': line.move_id.picking_id.location_dest_id.id})
+                    line.update(update_dict)
 
     @api.depends( 'move_id.product_uom_qty', 'barcode_qty_done', 'not_done_qty')
     def compute_remaining_qty(self):
@@ -75,7 +79,7 @@ class StockMoveLine(models.Model):
 
     def _get_fields_stock_barcode(self):
         fields = super(StockMoveLine, self)._get_fields_stock_barcode()
-        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine','not_done_qty'])
+        fields.extend(['barcode_qty_done', 'product_uom_qty', 'origin', 'is_quarantine','not_done_qty','is_splited'])
         return fields
 
     def get_scrap_location(self):
@@ -91,30 +95,9 @@ class StockMoveLine(models.Model):
     def write(self, vals):
         super(StockMoveLine, self).write(vals)
         save_qty_not_done = self.env.context.get('onchange_not_done_qty')
-        if not save_qty_not_done:
+        if not save_qty_not_done and 'not_done_qty' in vals.keys():
             for line in self:
                 line.with_context({'onchange_not_done_qty' : True})._onchange_not_done_qty()
-
-    def split_line_with_qty_remaining(self):
-        picking = self.move_id.picking_id
-        for line in self:
-            remaining_qty = line.quantity - line.barcode_qty_done
-            if remaining_qty > 0:  # Proceed only if there's a remaining quantity
-                new_line = self.create({
-                    'move_id': line.move_id.id,
-                    'location_id': line.location_id.id,
-                    'location_dest_id': picking.location_dest_id.id,
-                    'product_id': line.product_id.id,
-                    'product_uom_id': line.product_uom_id.id,
-                    'quantity': 20,
-                    'barcode_qty_done': 0,  # Reset done quantity for the new line
-                    'picking_id': picking.id,  # Ensure it's linked to the same picking
-                })
-                new_line.update({
-                    'quantity': remaining_qty,
-                    'quantity': remaining_qty,
-                })
-
 
 
 

@@ -17,20 +17,50 @@ patch(LineComponent.prototype, {
         this.notification = useService("notification");
         this.dialog = useService('dialog');
     },
+
+    canBeSplit(line) {
+        const split = this.line.barcode_qty_done > 0 &&
+                        this.line.barcode_qty_done < this.line.quantity &&
+                        !line.is_splited && this.env.model.record.picking_type_id.split_lines ? true : false;
+        return split
+    },
+
     get isComplete() {
         const result = super.isComplete;
         const isComplete = this.line.is_quarantine || this.line.barcode_qty_done > this.line.reserved_uom_qty ? false : result;
         return isComplete
             },
+
     async SplitRemainingQty(line) {
+        const fieldsParams = {
+            location_id: line.location_id.id,
+            location_dest_id: this.env.model.record.location_dest_id,
+        };
+
+        const newLine = await this.env.model._createNewLine({ copyOf: line, fieldsParams });
+
+        const remainingQty = line.quantity - line.barcode_qty_done;
+        Object.assign(newLine, {
+            qty_done: remainingQty,
+            quantity: remainingQty,
+            reserved_uom_qty: remainingQty,
+            barcode_qty_done: 0,
+            lot_id: false, // Ensure no lot is associated
+            lot_name: false,
+        });
+
+        Object.assign(line, {
+            qty_done: line.barcode_qty_done,
+            quantity: line.barcode_qty_done,
+            reserved_uom_qty: line.barcode_qty_done,
+        });
+        const data = { quantity: line.barcode_qty_done };
         await this.env.model.save();
-        const res = await this.orm.call(
-            'stock.move.line',
-            'split_line_with_qty_remaining',
-            [[line.id]]
-        );
+        await this.env.model.save_barcode_data(line, data);
+
         return this.env.model.trigger('refresh');
     },
+
     async printProductBarcode(line) {
         const action = await this.action.loadAction(
             "product.action_open_label_layout"
@@ -45,6 +75,7 @@ patch(LineComponent.prototype, {
 //            report_file: reportFile,
 //        });
     },
+
     async updateProductBarcode(line) {
     self = this;
         this.dialog.add(ManualBarcodeScanner, {

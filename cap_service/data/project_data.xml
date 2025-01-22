@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+        <record id="service_task_stage_new" model="project.task.type">
+            <field name="active" eval="True"/>
+            <field name="name">New</field>      
+            <field name="user_id" eval="False"/>
+        </record>
+        <record id="service_task_stage_wip" model="project.task.type">
+            <field name="active" eval="True"/>
+            <field name="name">WIP</field>
+            <field name="is_wip_stage" eval="True"/>
+            <field name="user_id" eval="False"/>
+        </record>
+        <record id="service_task_stage_done" model="project.task.type">
+            <field name="active" eval="True"/>
+            <field name="name">Done</field>
+            <field name="is_done_stage" eval="True"/>
+            <field name="user_id" eval="False"/>
+        </record>
+    </data>  
+</odoo>
