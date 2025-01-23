@@ -5,7 +5,7 @@
             <field name="name">Service Order</field>
             <field name="res_model">service.order</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
+            <field name="domain">[('branch_company_ids', 'in', context.get('allowed_company_ids'))]</field>
             <field name="context">{'search_default_filter_service_todo':1, 'is_repair_order':1}</field>
         </record>
 

@@ -75,22 +75,28 @@
                 <t t-foreach="doc.addl_service_line_ids" t-as="addl_line">
                     <tr class="bg-200 fw-bold o_line_section">
                         <td name="td_section_line" colspan="99">
-                            <span t-esc='f"{addl_line.ttype} Service Issue #{addl_line.sequence}"' />
+                            <span>
+                                <span t-esc="addl_line.ttype"/> Service Issue #
+                                <span t-esc="addl_line.sequence"/>
+                            </span>
                         </td>
                     </tr>
                     <tr class="fst-italic o_line_note">
                         <td name="td_note_line" colspan="99">
-                            <span t-esc='f"Complaint: {addl_line.name}"' />
+                            <span>Complaint: </span>
+                            <span t-esc="addl_line.name"/>
                         </td>
                     </tr>
                     <tr class="fst-italic o_line_note">
                         <td name="td_note_line" colspan="99">
-                            <span t-esc='f"Cause: {addl_line.cause}"' />
+                            <span>Cause: </span>
+                            <span t-esc="addl_line.cause"/>
                         </td>
                     </tr>
                     <tr class="fst-italic o_line_note">
                         <td name="td_note_line" colspan="99">
-                            <span t-esc='f"Fix: {addl_line.correction}"' />
+                            <span>Fix: </span>
+                            <span t-esc="addl_line.correction"/>
                         </td>
                     </tr>
                     <t t-foreach="addl_line.service_order_line_product_ids" t-as="addl_product_line">

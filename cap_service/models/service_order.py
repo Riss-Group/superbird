@@ -75,6 +75,7 @@ class ServiceOrder(models.Model):
         ('5','high'),
     ],default='1')
     company_id = fields.Many2one(comodel_name='res.company', required=True, index=True, default=lambda self: self.env.company)
+    branch_company_ids = fields.Many2many('res.company', compute="_compute_branch_company_ids", store=True, readonly=False)
 
     @api.constrains('state','fleet_vehicle_id','start_date')
     def _check_state_fleet_date(self):
@@ -172,6 +173,21 @@ class ServiceOrder(models.Model):
     def _compute_currency_id(self):
         for record in self:
             record.currency_id = record.company_id.currency_id
+    
+    @api.depends('company_id')
+    def _compute_branch_company_ids(self):
+        for record in self:
+            if record.company_id:
+                company_id = record.company_id.parent_id if record.company_id.parent_id else record.company_id
+                linked_companies = [
+                    company_id.service_branch_id,
+                    company_id.parts_branch_id,
+                    company_id.sales_branch_id,
+                    company_id
+                ]
+                record.branch_company_ids = [(6, 0, {c.id for c in linked_companies if c})]
+            else:
+                record.branch_company_ids = [(5,)] 
     
     @api.depends('service_order_lines.service_order_line_product_ids.quantity',
         'service_order_lines.service_order_line_product_ids.unit_price',
