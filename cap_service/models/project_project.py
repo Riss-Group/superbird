@@ -34,21 +34,18 @@ class ProjectProject(models.Model):
 
     @api.depends('is_fsm', 'is_repair_service')
     def _compute_allow_quotations(self):
-        logger.warning(f"compute allow quotes {record.is_fsm} {record.is_repair_service}  Set {not record.is_repair_service}")
         super()._compute_allow_quotations()
         for record in self:
             record.allow_quotations = not record.is_repair_service
 
     @api.depends('is_fsm', 'allow_material', 'is_repair_service')
     def _compute_allow_billable(self):
-        logger.warning(f"compute allow bill {self.is_fsm} {self.is_repair_service}  Set {not self.is_repair_service}")
         super()._compute_allow_billable()
         for project in self:
             project.allow_billable = not project.is_repair_service
 
     @api.depends('allow_billable', 'is_fsm', 'is_repair_service')
     def _compute_allow_material(self):
-        logger.warning(f"compute allow mat {self.is_fsm} {self.is_repair_service}  Set {not self.is_repair_service}")
         super()._compute_allow_material()
         for project in self:
             project.allow_material = not project.is_repair_service

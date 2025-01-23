@@ -7,11 +7,16 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page name="repair_info" string="Repair Info">
-                    <group>
+                <page name="page_repair_info" string="Repair Info" groups="cap_service.group_service_user">
+                    <group name="group_repair_info">
                         <field name='service_order_id' readonly='1' force_save='1'/>
                         <field name='service_order_type' readonly='1' force_save='1'/>
                     </group>
+                    <sheet>                        
+                        <h4>Additional Service Lines to Print</h4>
+                        <field name='addl_service_line_ids' nolabel='1' colspan='2'  domain="[('id','in', available_service_line_ids)]"/>
+                        <field name='available_service_line_ids' invisible='1'/>
+                    </sheet>
                 </page>
             </xpath>
         </field>
