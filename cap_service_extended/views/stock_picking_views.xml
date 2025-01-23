@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form_inherit_service" model="ir.ui.view">
+        <field name="name">view.picking.form.inherit.service</field>
+        <field name="model">stock.picking</field>
+        <field name="priority">24</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="fleet_vehicle_count" invisible="1"/>
+                <field name="vin_number" invisible="not fleet_vehicle_count"/>
+                <field name="stock_number" invisible="not fleet_vehicle_count"/>
+                <field name="body_number" invisible="not fleet_vehicle_count"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
