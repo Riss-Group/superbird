@@ -46,7 +46,7 @@ class StockMoveLine(models.Model):
     def _process_fleet_vehicle_out(self):
         self.ensure_one()
         lot_name = self.lot_name or self.lot_id.name
-        fleet_vehicle_id = self.env['fleet.vehicle'].search([('stock_number','=',lot_name)])
+        fleet_vehicle_id = self.env['fleet.vehicle'].search([('stock_number','=',lot_name)], limit=1)
         if fleet_vehicle_id:
             self.fleet_vehicle_id = fleet_vehicle_id
             vals = {
