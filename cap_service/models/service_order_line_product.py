@@ -12,8 +12,10 @@ class ServiceOrderLineProduct(models.Model):
     qty_to_invoice = fields.Float(compute='_compute_qty_invoice', store=True, readonly=False)
     qty_invoiced = fields.Float(compute='_compute_qty_invoice', store=True, readonly=False)
     product_id = fields.Many2one('product.product')
-    quantity = fields.Float()
+    product_name = fields.Char()
+    quantity = fields.Float(digits='Product Unit of Measure')
     unit_price = fields.Float()
+    subtotal = fields.Float(compute='_compute_subtotal', store=True, readonly=False)
 
     def _compute_display_name(self):
         super()._compute_display_name()
@@ -31,7 +33,16 @@ class ServiceOrderLineProduct(models.Model):
     def _onchange_product_id(self):
         for record in self:
             record.unit_price = record.product_id.list_price
+            record.product_name = record.product_id.display_name
     
+    @api.depends('quantity', 'unit_price')
+    def _compute_subtotal(self):
+        for record in self:
+            record.subtotal = record.quantity * record.unit_price
+    
+    def button_view_products(self):
+        return self.service_order_line_id.button_view_products()
+
     def write(self, vals):
         if 'service_order_line_id' in vals and not vals['service_order_line_id']:
             self.unlink()

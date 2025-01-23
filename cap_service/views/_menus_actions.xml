@@ -9,6 +9,14 @@
             <field name="context">{'search_default_filter_service_todo':1, 'is_repair_order':1}</field>
         </record>
 
+        <record id="service_order_line_action" model="ir.actions.act_window">
+            <field name="name">Service Order Lines</field>
+            <field name="res_model">service.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'create':0}</field>
+        </record>
+
         <record id="service_template_action" model="ir.actions.act_window">
             <field name="name">Service Templates</field>
             <field name="res_model">service.template</field>
@@ -56,16 +64,17 @@
         </record>
 
         <!-- Main Menu -->
-        <menuitem id="service_order_main_menu" name="Repair Orders"  web_icon="cap_service,static/description/bus_icon_sb.png" groups="cap_service.group_service_user" sequence="60" />
+        <menuitem id="service_order_main_menu" name="Service"  web_icon="cap_service,static/description/bus_icon_sb.png" groups="cap_service.group_service_user" sequence="60" />
         
         <!-- Mega Menus -->
-        <menuitem id="service_order_menu_menu" name="Repair Orders" parent="service_order_main_menu"  sequence="10"/>
+        <menuitem id="service_order_menu_menu" name="Repairs" parent="service_order_main_menu"  sequence="10"/>
         <menuitem id="service_order_project_menu_menu" name="Projects" parent="service_order_main_menu"  groups="cap_service.group_service_user" sequence="20"/>
         <menuitem id="service_order_config_menu" name="Configuration" parent="service_order_main_menu"  groups="cap_service.group_service_manager" sequence="90"/>
         
         <!-- Action Menus -->
         <!-- Repairs -->
         <menuitem id="service_order_action_menu" name="Repair Orders" action="service_order_action"  parent="service_order_menu_menu" sequence="10"/>
+        <menuitem id="service_order_line_action_menu" name="Repair Order Lines" action="service_order_line_action"  parent="service_order_menu_menu" groups="base.group_system" sequence="11"/>
         
         <!-- Projects -->
         <menuitem id="service_order_project_my_task_menu" name="My Tasks" action="action_view_my_service_task" parent="service_order_project_menu_menu"  groups="cap_service.group_service_user" sequence="10"/>

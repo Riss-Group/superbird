@@ -1,78 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="report_invoice_document_repair" name="report_invoice_document_repair" inherit_id="account.report_invoice_document">
+        
+        <!-- Info Block Overrides -->
+        <xpath expr="//div[@name='origin']" position="attributes">
+            <attribute name="t-if">o.invoice_origin and not o.service_order_id</attribute>
+        </xpath>
 
-    <template id="report_saleorder_document_repair" name="report_saleorder_document_repair" inherit_id="sale.report_saleorder_document">
-        <xpath expr="//div[@name='informations_reference']//strong" position="replace">
-            <strong>PO Number:</strong>           
+        <xpath expr="//div[@name='customer_code']" position="attributes">
+            <attribute name="t-if">o.partner_id.ref and not o.service_order_id</attribute>
+        </xpath>
+
+        <xpath expr="//div[@name='customer_code']" position="after">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.ref" name="info_payment_term">
+                <strong>Terms:</strong><br/>
+                <span t-field="o.invoice_payment_term_id" />
+            </div>        
+        </xpath>
+
+        <xpath expr="//div[@name='reference']//strong" position="replace">
+            <strong t-if="o.move_type not in ['in_invoice', 'in_invoice']">PO Number:</strong>
+            <strong t-if="o.move_type in ['in_invoice', 'in_refund']">Claim Number:</strong>
         </xpath>
         
+        <!-- Repair Details Block -->
         <xpath expr="//div[@id='informations']" position="after">
-            <t t-if="doc.service_order_id">
+            <t t-if="o.service_order_id">
                 <p/>
                 <h5><strong>Vehicle &amp; Repair Details</strong></h5>
                 <div class='container mt-2 mb-2'>
-                    <div class='row border' t-if="doc.service_order_id.printed_memo">
+                    <div class='row border' t-if="o.service_order_id.printed_memo">
                         <div class="col-3">
                             <strong><span>Repair Memo:</span></strong>
-                            <span t-field='doc.service_order_id.printed_memo' />
+                            <span t-field='o.service_order_id.printed_memo' />
                         </div>
                     </div>
                     <div class="row border" name='repair_info'>
                         <div class="col-3">
                             <strong>RO Number:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.name"/>
+                            <span class="m-0" t-field="o.service_order_id.name"/>
                         </div>
                         <div class="col-3">
                             <strong>RO Date:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.start_date" t-options='{"widget": "date"}'/>
+                            <span class="m-0" t-field="o.service_order_id.start_date" t-options='{"widget": "date"}'/>
                         </div>
                         <div class="col-3">
                             <strong>Mileage</strong><br/>
                             <span>In:</span>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_odometer_in"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_odometer_in"/>
                             <br/>
                             <span>Out:</span>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_odometer_out"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_odometer_out"/>
                         </div>
                         <div class="col-3">
                             <strong>Service Writer:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.service_writer_id"/>
+                            <span class="m-0" t-field="o.service_order_id.service_writer_id"/>
                         </div>
                     </div>
                     <div class='row border'>
                         <div class="col-3">
                             <strong>Year/Make/Model:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_ymm"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_vehicle_ymm"/>
                         </div>
                         <div class="col-3">
                             <strong>Body No:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_body_number"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_vehicle_body_number"/>
                         </div>
                         <div class="col-3">
                             <strong>Serial No:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_vin_sn"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_vehicle_vin_sn"/>
                         </div>
                         <div class="col-3">
                             <strong>Fleet No:</strong><br/>
-                            <span class="m-0" t-field="doc.service_order_id.fleet_vehicle_id.customer_ref_num"/>
+                            <span class="m-0" t-field="o.service_order_id.fleet_vehicle_id.customer_ref_num"/>
                         </div>
                     </div>
                 </div>
             </t>
         </xpath>
 
+        <!-- Standard Invoice Lines Column/Cells -->
         <xpath expr="//th[@name='th_description']" position='before'>
-            <th t-if="doc.service_order_id" name="th_type" class="text-start">Type</th>
+            <th t-if="o.service_order_id" name="th_type" class="text-start">Type</th>
         </xpath>
-        <xpath expr="//td[@name='td_name']" position='before'>
-            <td t-if="doc.service_order_id" name="td_type" class="text-start">
+        <xpath expr="//td[@name='account_invoice_line_name']" position='before'>
+            <td t-if="o.service_order_id" name="td_type" class="text-start">
                 <span t-esc="'Labor' if str(line.product_id.detailed_type) == 'service' else 'Parts'"/>
             </td>
         </xpath>
 
-        <xpath expr="//tbody[hasclass('sale_tbody')]" position='inside'>
-            <t t-if="doc.service_order_id">
-                <t t-foreach="doc.addl_service_line_ids" t-as="addl_line">
+        <!-- Repair Referenced Lines -->
+
+        <xpath expr="//tbody[hasclass('invoice_tbody')]" position='inside'>
+            <t t-if="o.service_order_id">
+                <t t-foreach="o.addl_service_line_ids" t-as="addl_line">
                     <tr class="bg-200 fw-bold o_line_section">
                         <td name="td_section_line" colspan="99">
                             <span t-esc='f"{addl_line.ttype} Service Issue #{addl_line.sequence}"' />
@@ -133,5 +154,4 @@
             </t>   
         </xpath>
     </template>
-
 </odoo>
