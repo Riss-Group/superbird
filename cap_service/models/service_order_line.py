@@ -36,6 +36,10 @@ class ServiceOrder(models.Model):
     task_attachment_count = fields.Integer(string="Attachment Count", compute="_compute_task_attachment_count", store=False)
     service_template_id = fields.Many2one('service.template')
     bill_to_partner_id = fields.Many2one('res.partner', string="Bill To", compute="_compute_bill_to_partner_id", store=True, readonly=False,)
+    bill_type = fields.Selection([
+        ('estimate','Estimated'),
+        ('actual','Actual'),
+    ],default='estimate', required=True)
     available_bill_to_partner_ids = fields.Many2many('res.partner', compute="_compute_available_bill_to_partner_ids",)
     task_state = fields.Selection(compute='_compute_task_state', store=True, selection=[
         ('not_started', 'Not Started'),
@@ -194,6 +198,22 @@ class ServiceOrder(models.Model):
             'target': 'new',
         }
     
+    def button_display_form_view(self):
+        return {
+            'name': f"{self.service_order_id.name}-{self.sequence}",
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.id,
+            'res_model': 'service.order.line',
+            'target': 'current',
+            'view_id': self.env.ref('cap_service.view_service_order_line_form').id,
+            'context': {
+                'default_service_order_id': self.service_order_id.id,
+                'service_form_view': True,
+            }
+        }
+    
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
@@ -207,6 +227,8 @@ class ServiceOrder(models.Model):
                 )
             msg += Markup("</ul>")
             service_order.message_post(body=msg,subtype_xmlid="mail.mt_note")
+            if self.env.context.get('service_form_view'):
+                service_order.update_child_sequence()
         return records
 
     def unlink(self):

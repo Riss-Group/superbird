@@ -15,9 +15,9 @@ class StockMoveLine(models.Model):
             fleet_vehicle_id = False
             if record.product_id.create_fleet_vehicle:
                 if record.lot_id:
-                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_id.name)])
+                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_id.name)], limit=1)
                 elif record.lot_name:
-                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_name)])
+                    fleet_vehicle_id = record.env['fleet.vehicle'].search([('stock_number','=',record.lot_name)], limit=1)
             record.fleet_vehicle_id = fleet_vehicle_id
 
     def _action_done(self):

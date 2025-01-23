@@ -1,12 +1,14 @@
 from odoo import  models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
 from markupsafe import Markup
+import logging
+logger = logging.getLogger(__name__)
 
 
 class ServiceOrder(models.Model):
     _name = 'service.order' 
     _description = "Service Order"  
-    _order = 'name desc, end_date desc , id desc'
+    _order = 'priority desc, name desc, end_date desc , id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
 
@@ -14,7 +16,7 @@ class ServiceOrder(models.Model):
     partner_id = fields.Many2one('res.partner', tracking=True)
     warranty_partner_id = fields.Many2one('res.partner', tracking=True) #How do I remove this deprecated field without an error
     service_order_lines = fields.One2many('service.order.line', 'service_order_id', )
-    sale_order_ids = fields.Many2many('sale.order', compute='_compute_sale_orders', store=True, readonly=False)
+    sale_order_ids = fields.Many2many('sale.order', compute='_compute_sale_orders', store=True, readonly=False, copy=False)
     sale_order_count = fields.Integer(compute='_compute_sale_orders',store=True)
     picking_ids = fields.Many2many('stock.picking', compute="_compute_picking_ids")
     rental_order_ids = fields.One2many('sale.order', 'service_order_rental_id')
@@ -38,16 +40,17 @@ class ServiceOrder(models.Model):
     internal_memo = fields.Text()
     printed_memo = fields.Text()
     ref = fields.Char()
-    total = fields.Float(compute="_compute_totals")
-    customer_total = fields.Float(compute="_compute_totals")
-    customer_parts_total = fields.Float(compute="_compute_totals")
-    customer_service_total = fields.Float(compute="_compute_totals")
-    warranty_total = fields.Float(compute="_compute_totals")
-    warranty_parts_total = fields.Float(compute="_compute_totals")
-    warranty_service_total = fields.Float(compute="_compute_totals")
-    internal_total = fields.Float(compute='_compute_totals')
-    internal_parts_total = fields.Float(compute='_compute_totals')
-    internal_service_total = fields.Float(compute='_compute_totals')
+    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id', store=True, readonly=False)
+    total = fields.Monetary(compute="_compute_totals")
+    customer_total = fields.Monetary(compute="_compute_totals")
+    customer_parts_total = fields.Monetary(compute="_compute_totals")
+    customer_service_total = fields.Monetary(compute="_compute_totals")
+    warranty_total = fields.Monetary(compute="_compute_totals")
+    warranty_parts_total = fields.Monetary(compute="_compute_totals")
+    warranty_service_total = fields.Monetary(compute="_compute_totals")
+    internal_total = fields.Monetary(compute='_compute_totals')
+    internal_parts_total = fields.Monetary(compute='_compute_totals')
+    internal_service_total = fields.Monetary(compute='_compute_totals')
     service_writer_id = fields.Many2one('res.users', default=lambda self: self.env.user if self.env.context.get('is_repair_order') else False, tracking=True)
     payment_term_id = fields.Many2one('account.payment.term', compute='_compute_payment_term_id', store=True, readonly=False)
     start_date = fields.Datetime(default=fields.Datetime.now(), tracking=True)
@@ -63,6 +66,14 @@ class ServiceOrder(models.Model):
         ('confirmed','In Repair'),
         ('done','Done'),
         ],default='draft', tracking=True)
+    priority = fields.Selection(selection=[
+        ('0','Low'),
+        ('1','low'),
+        ('2','med-low'),
+        ('3','med'),
+        ('4','med-high'),
+        ('5','high'),
+    ],default='1')
     company_id = fields.Many2one(comodel_name='res.company', required=True, index=True, default=lambda self: self.env.company)
 
     @api.constrains('state','fleet_vehicle_id','start_date')
@@ -91,6 +102,10 @@ class ServiceOrder(models.Model):
             record.fleet_odometer_in = record.fleet_vehicle_id.odometer
             record.fleet_odometer_unit = record.fleet_vehicle_id.odometer_unit
             record.partner_id = record.fleet_vehicle_id.customer_id
+            
+    @api.depends('fleet_vehicle_id')
+    def _compute_fleet_vehicle_ymm(self):
+        for record in self:
             record.fleet_vehicle_ymm = f"{record.fleet_vehicle_id.model_year or 'NA'}/{record.fleet_vehicle_make.name or 'NA'}/{record.fleet_vehicle_id.model_id.name or 'NA'}"
     
     @api.depends('partner_id')
@@ -107,7 +122,7 @@ class ServiceOrder(models.Model):
             else:
                 record.available_fleet_vehicle_ids = self.env['fleet.vehicle'].search([])
       
-    @api.depends('service_order_lines.sale_line_ids')
+    @api.depends('service_order_lines.sale_line_ids', 'service_order_lines')
     def _compute_sale_orders(self):
         for record in self:
             sale_order_ids = record.service_order_lines.sale_line_ids.mapped('order_id')
@@ -124,7 +139,7 @@ class ServiceOrder(models.Model):
         for record in self:
             record.rental_order_count = len(record.rental_order_ids)
 
-    @api.depends('service_order_lines.task_id')
+    @api.depends('service_order_lines.task_id', 'service_order_lines')
     def _compute_show_task_button(self):
         for record in self:
             record.show_task_button = any(record.service_order_lines.filtered(lambda x: not x.task_id))
@@ -134,7 +149,7 @@ class ServiceOrder(models.Model):
         for record in self:
             record.invoice_count = len(record.invoice_ids)
     
-    @api.depends('service_order_lines.should_invoice')
+    @api.depends('service_order_lines.should_invoice', 'service_order_lines')
     def _compute_show_invoice_button(self):
         for record in self:
             record.show_invoice_button = any(record.service_order_lines.filtered(lambda x: x.should_invoice))
@@ -152,6 +167,11 @@ class ServiceOrder(models.Model):
             task_ids = record.service_order_lines.mapped('task_id')
             record.task_ids = task_ids
             record.task_ids_count = len(task_ids)
+    
+    @api.depends('company_id')
+    def _compute_currency_id(self):
+        for record in self:
+            record.currency_id = record.company_id.currency_id
     
     @api.depends('service_order_lines.service_order_line_product_ids.quantity',
         'service_order_lines.service_order_line_product_ids.unit_price',
@@ -366,8 +386,18 @@ class ServiceOrder(models.Model):
             'target': 'new',
         }
     
+    def _display_line_missing_product_id_error(self, service_order_line=False):
+        if not service_order_line:
+            return False
+        product_lines = service_order_line.service_order_line_product_ids.filtered(lambda x: not x.product_id)
+        service_lines = service_order_line.service_order_line_service_ids.filtered(lambda x: not x.product_id)
+        if product_lines or service_lines:
+            message = f"Service Order Line {service_order_line.sequence} is missing a product id on one of the product/service lines."
+            raise UserError(message)
+    
     def _get_task_vals(self, line):
         self.ensure_one()
+        self._display_line_missing_product_id_error(line)
         task_vals = {
             'name': f"{self.name} - Line: {line.sequence}",
             'description': line.name,
@@ -389,6 +419,7 @@ class ServiceOrder(models.Model):
         so_batch_vals = []
         grouped_lines = {}
         for line in self.service_order_lines:
+            self._display_line_missing_product_id_error(line)
             key = (line.bill_to_partner_id, line.ttype)
             if key not in grouped_lines:
                 grouped_lines[key] = self.env['service.order.line']
@@ -471,9 +502,12 @@ class ServiceOrder(models.Model):
             sequence += 1
         sequence = (service_line.sequence * 1000) + 500
         for line_service in line_service_ids:
+            product_uom_qty = line_service.quantity
+            if service_line.bill_type == 'actual':
+                product_uom_qty = line_service.quantity_consumed
             vals = {
                 'product_id': line_service.product_id.id,
-                'product_uom_qty': line_service.quantity,
+                'product_uom_qty': product_uom_qty,
                 'price_unit': line_service.unit_price,
                 'sequence': sequence,
                 'service_order_line_id': service_line.id,
@@ -509,6 +543,8 @@ class ServiceOrder(models.Model):
                 invoice_vals = {
                     'partner_id': partner.id,
                     'move_type': 'out_invoice',
+                    'service_order_type' : ttype,
+                    'ref': self.ref,
                     'invoice_date': fields.Date.context_today(self),
                     'invoice_origin': self.name,
                     'invoice_line_ids': invoice_line_vals,
@@ -550,7 +586,8 @@ class ServiceOrder(models.Model):
 
     def _get_invoice_line_details(self, service_line):
         invoice_line_vals = []
-        sequence = service_line.sequence * 1000
+        product_sequence = (service_line.sequence * 1000) + 10
+        service_sequence = (service_line.sequence * 1000) + 500
         for line_product in service_line.service_order_line_product_ids:
             sale_line_ids = line_product.sale_line_id.ids if line_product.sale_line_id else []
             invoice_line_vals.append({
@@ -558,12 +595,12 @@ class ServiceOrder(models.Model):
                 'quantity': line_product.qty_to_invoice,
                 'price_unit': line_product.unit_price,
                 'name': line_product.product_id.display_name or 'NA',
-                'sequence': sequence,
+                'sequence': product_sequence,
                 'service_order_line_id': service_line.id,
                 'service_order_line_product_id': line_product.id,
                 'sale_line_ids': [(6, 0, sale_line_ids)] if sale_line_ids else [],
             })
-            sequence += 1
+            product_sequence += 1
         for line_service in service_line.service_order_line_service_ids:
             sale_line_ids = line_service.sale_line_id.ids if line_service.sale_line_id else []
             invoice_line_vals.append({
@@ -571,12 +608,12 @@ class ServiceOrder(models.Model):
                 'quantity': line_service.qty_to_invoice,
                 'price_unit': line_service.unit_price,
                 'name': line_service.product_id.display_name or 'NA',
-                'sequence': sequence,
+                'sequence': service_sequence,
                 'service_order_line_id': service_line.id,
                 'service_order_line_service_id': line_service.id,
                 'sale_line_ids': [(6, 0, sale_line_ids)] if sale_line_ids else [],
             })
-            sequence += 1
+            service_sequence += 1
         return invoice_line_vals
 
     @api.model_create_multi
@@ -593,11 +630,20 @@ class ServiceOrder(models.Model):
         result = super().write(vals)
         for rec in self:
             rec.update_child_sequence()
+            task_vals = {}
             if vals.get('start_date') or vals.get('end_date'):
                 task_ids = rec.service_order_lines.task_id.filtered(lambda x: not x.stage_id.is_done_stage and not x.stage_id.is_wip_stage)
                 if task_ids:
-                    task_ids.write({
+                    task_vals.update({
                         'planned_date_begin': rec.start_date,
                         'date_deadline': rec.end_date,
                     })
+            if vals.get('priority'):
+                task_ids = rec.service_order_lines.task_id.filtered(lambda x: not x.stage_id.is_done_stage and not x.stage_id.is_wip_stage)
+                if task_ids:
+                    task_vals.update({
+                        'priority': rec.priority,
+                    })
+            if task_vals:
+                task_ids.write(task_vals)
         return result
