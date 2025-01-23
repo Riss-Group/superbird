@@ -28,7 +28,7 @@ class ProjectTask(models.Model):
     tech_notes = fields.Text()
 
 
-    @api.onchange('date_dealine', 'planned_date_begin')
+    @api.onchange('date_deadline', 'planned_date_begin')
     def _onchange_constrain_dates(self):
         for record in self:
             if record.is_repair_service and record.service_order_id:
