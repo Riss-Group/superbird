@@ -30,8 +30,8 @@
         'data/project_data.xml',
         'security/security_data.xml',
         'security/ir.model.access.csv',
+        'report/report_invoice.xml',
         'report/sale_report_views.xml',
-        'views/_menus_actions.xml',
         'views/account_move.xml',
         'views/fleet_vehicle_model_brand.xml',
         'views/fleet_vehicle_model.xml',
@@ -57,7 +57,8 @@
         'wizard/service_line_view_product.xml',
         'wizard/service_rental_order.xml',
         'wizard/service_template_select.xml',
-
+        #Intentionally last to prevent dependency issues
+        'views/_menus_actions.xml',
     ],
     'installable': True,
     'auto_install': False,

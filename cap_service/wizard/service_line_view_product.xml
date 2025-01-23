@@ -14,7 +14,8 @@
                 <field name="service_order_line_product_ids" readonly="False" invisible="ttype == 'service'">
                     <tree editable='bottom'>
                         <field name='service_order_line_id' column_invisible='1'/>
-                        <field name='product_id' domain="[('detailed_type','!=','service')]"/>
+                        <field name='product_name' readonly='product_id' force_save='1'/>
+                        <field name='product_id' options="{'no_quick_create':1, 'no_create':1}" domain="[('detailed_type','!=','service')]"/>
                         <field name='quantity' />
                         <field name='unit_price' />
                     </tree>
@@ -22,8 +23,10 @@
                 <field name="service_order_line_service_ids" readonly="False" invisible="ttype == 'product'">
                     <tree editable='bottom'>
                         <field name='service_order_line_id' column_invisible='1'/>
-                        <field name='product_id' domain="[('detailed_type','=','service')]"/>
-                        <field name='quantity' />
+                        <field name='product_name' readonly='product_id' force_save='1'/>
+                        <field name='product_id' options="{'no_quick_create':1, 'no_create':1}" domain="[('detailed_type','=','service')]"/>
+                        <field name='quantity' string="Qty"/>
+                        <field name='quantity_consumed' string="Consumed Qty"/>
                         <field name='unit_price' />
                     </tree>
                 </field>
