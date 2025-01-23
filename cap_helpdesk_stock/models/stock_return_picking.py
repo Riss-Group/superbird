@@ -23,6 +23,26 @@ class StockReturnPickingLines(models.TransientModel):
         help='Trigger a decrease of the delivered/received quantity in the associated Sale Order/Purchase Order')
     return_reason = fields.Many2one('stock.return.reason', string="Return Reason")
 
+    @api.onchange('sale_id','move_id')
+    def _check_sale_order(self):
+        for rec in self:
+            move = rec.move_id
+            if move:
+                # check if there is already a ready / waiting RMA return for the same Sale and Product
+                existing_rma_return =move.sale_line_id.move_ids.filtered(
+                    lambda m:m.picking_id.picking_type_id == rec.wizard_id.default_operation_type and m.state not in ('draft','done','cancel'))
+                if existing_rma_return:
+                    return {
+                        'warning': {
+                            'title': _('RMA Return Already Exists'),
+                            'message': _(
+                                f"There is already an RMA Return for the Product {rec.product_id.name} "
+                                f"and Sale {rec.sale_id.name}.\n\n"
+                                f"Please check the following jobs : {existing_rma_return.mapped('picking_id.name')} before confirming."
+                            ),
+                        }
+                    }
+
     @api.onchange('product_id')
     def _compute_sale_order(self):
         for rec in self:
@@ -44,15 +64,15 @@ class StockReturnPickingLines(models.TransientModel):
     @api.onchange('quantity')
     def _check_quantity_allowed_to_return(self):
         for rec in self:
-            if rec.quantity and rec.quantity > rec.move_id.quantity:
+            allowed_qty = rec.move_id.sale_line_id.qty_delivered if rec.move_id.sale_line_id else rec.move_id.quantity
+            if rec.quantity and rec.quantity > allowed_qty:
                 rec.quantity = 0
                 return {
                     'warning': {
-                        'title': _(f'Quantity Allowed is {rec.move_id.quantity}'),
+                        'title': _(f'Quantity Allowed is {allowed_qty}'),
                         'message': _("You can't returned more than you have delivered."),
                     }
                 }
-
 
     @api.depends('product_id','sale_id')
     def _compute_picking(self):
@@ -70,12 +90,16 @@ class StockReturnPickingLines(models.TransientModel):
                          if m.product_id == rec.product_id),
                         None
                     )
-                    if move:
-                        rec.update({
+                    if move :
+                        data = ({
                             'picking_id': outgoing_picking.id,
                             'move_id': move.id,
-                            'quantity': 0
                         })
+                        if not rec.quantity:
+                            data.update({
+                                'quantity': 0,
+                            })
+                        rec.update(data)
                         continue
             # Default values if no conditions are met
             rec.update({'picking_id': False, 'move_id': False, 'quantity': 0})
@@ -254,7 +278,17 @@ class StockReturnPicking(models.TransientModel):
             'search_default_ready': False,
             'search_default_planning_issues': False,
             'search_default_available': False,
+            'create': False,
         })
+        picking_ids = self.env['stock.picking'].browse(new_picking_ids.ids)
+        ticket_id = self.ticket_id
+        if ticket_id:
+            ticket_id.picking_ids |= new_picking_ids
+            new_picking_ids.message_post_with_source(
+                'helpdesk.ticket_creation',
+                render_values={'self': new_picking_ids, 'ticket': ticket_id},
+                subtype_xmlid='mail.mt_note',
+            )
         return {
             'name': _('Returned Picking'),
             'view_mode': 'tree,form,calendar',
