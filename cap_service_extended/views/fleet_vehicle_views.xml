@@ -11,28 +11,30 @@
                         <group name="purchase" string="Purchase Dates" groups="purchase.group_purchase_user">
                             <field name="chassis_built_date"/>
                             <field name="chassis_manufacturer_arrival_date"/>
-                            <field name="bus_order_date" />
-                            <field name="pick_up_date"/>
+                            <!-- Computed fields -->
+                            <field name="bus_order_date" readonly="1"/>
+                            <field name="pick_up_date" readonly="1"/>
                             <field name="oem_production_date"/>
-                            <field name="revised_pick_up_date"/>
-                            <field name="dealer_arrival_date"/>
+                            <field name="revised_pick_up_date" readonly="1"/>
+                            <field name="dealer_arrival_date" readonly="1"/>
                             <field name="oem_ready_for_delivery_date"/>
                         </group>
                         <group name="sale" string="Sale Dates" groups="sales_team.group_sale_salesman">
-                            <field name="sold_customer_date"/>
-                            <field name="sales_requested_delivery_date"/>
-                            <field name="ready_for_delivery_date"/>
-                            <field name="customer_delivered_date"/>
+                            <field name="sold_customer_date" readonly="1"/>
+                            <field name="sales_requested_delivery_date" readonly="1"/>
+                            <field name="ready_for_delivery_date" readonly="1"/>
+                            <field name="customer_delivered_date" readonly="1"/>
                         </group>
                     </group>
                     <group>
                         <group name="accounting" string="Accounting Dates" groups="account.group_account_invoice">
-                            <field name="oem_payment_due_date" />
-                            <field name="oem_body_payment_date" />
-                            <field name="oem_chassis_payment_date" />
+                            <field name="oem_payment_due_date" readonly="1"/>
+                            <field name="oem_body_payment_date"/>
+                            <field name="oem_chassis_payment_date"/>
                         </group>
                         <group name="service" string="Service Date">
-                            <field name="ready_for_inspection_date"/>
+                            <!-- Computed field -->
+                            <field name="ready_for_inspection_date" readonly="1"/>
                             <field name="in_service_date"/>
                         </group>
                     </group>

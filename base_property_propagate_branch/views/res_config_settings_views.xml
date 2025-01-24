@@ -12,6 +12,10 @@
                             <field name="autopropagate_properties_name_search" class="col-1 col-lg-1"/>
                             <label for="autopropagate_properties_name_search" class="col o_light_label" string="Try to find records with similar name"/>
                         </div>
+                        <div class="row ml32" invisible="not autopropagate_properties">
+                            <field name="autopropagate_properties_all" class="col-1 col-lg-1"/>
+                            <label for="autopropagate_properties_all" class="col o_light_label" string="Set properties for all other companies"/>
+                        </div>
                     </setting>
                 </setting>
             </field>
