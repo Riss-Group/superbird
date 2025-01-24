@@ -1,22 +1,21 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
 
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        args = args or []
 
+    @api.model
+    def _name_search(self, name, domain=None, operator="ilike", limit=None, order=None):
         res_partner_search_mode = self.env.context.get('res_partner_search_mode')
         if res_partner_search_mode == 'customer':
-            args = [('customer_rank', '=', True)] + args
+            domain = ['|', ('customer_rank', '=', True)] + domain
         elif res_partner_search_mode == 'supplier':
-            args = [('supplier_rank', '=', True)] + args
-
-        return super().name_search(name,args,operator,limit)
+            domain = ['|', ('supplier_rank', '=', True)] + domain
+        return super()._name_search(name, domain, operator, limit, order)
 
     @api.model_create_multi
     def create(self, vals_list):

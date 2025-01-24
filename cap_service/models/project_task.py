@@ -28,7 +28,7 @@ class ProjectTask(models.Model):
     tech_notes = fields.Text()
 
 
-    @api.onchange('date_dealine', 'planned_date_begin')
+    @api.onchange('date_deadline', 'planned_date_begin')
     def _onchange_constrain_dates(self):
         for record in self:
             if record.is_repair_service and record.service_order_id:
@@ -52,6 +52,13 @@ class ProjectTask(models.Model):
     def action_fsm_validate(self, stop_running_timers=False):
         res = super().action_fsm_validate(stop_running_timers=stop_running_timers)
         for record in self:
+            if record.project_id.is_repair_service and (not record.cause or not record.correction):
+                raise UserError(_("You must enter a cause and correction before completing this task."))
+            bill_type = record.service_order_line_id.bill_type
+            missing_service_labor_product = record.timesheet_ids.filtered(lambda x: not x.service_labor_product_id)
+            if record.project_id.is_repair_service and missing_service_labor_product and bill_type == 'actual':
+                raise UserError(_("There are timesheets without a service labor product assigned to it and the billing type is based on actual labor.\
+                    \n\nPlease assign an service labor prouct to all punches before closing the task."))
             done_stage_int = record._done_stage_find()
             if record.project_id.is_repair_service and done_stage_int:
                 record.write({'stage_id':done_stage_int})
@@ -97,14 +104,62 @@ class ProjectTask(models.Model):
             if incomplete_pickings:
                 raise UserError(f"You cannot mark this task as done because there are incomplete pickings: {', '.join(incomplete_pickings.mapped('name'))}")
 
+
 class ProjectTaskType(models.Model):
     _inherit = 'project.task.type'
+
 
     is_done_stage = fields.Boolean()
     is_wip_stage = fields.Boolean()
 
+
 class ProjectTaskCreateTimesheet(models.TransientModel):
     _inherit = 'project.task.create.timesheet'
 
+
     cause = fields.Text(related='task_id.cause', store=True, readonly=False)
     correction = fields.Text(related='task_id.correction', store=True, readonly=False)
+    service_labor_product_id  = fields.Many2one('product.product', compute="_compute_service_labor_product_id", store=True, readonly=False)
+    available_service_labor_product_id = fields.Many2many('product.product', compute="_compute_available_service_labor_product_id")
+
+
+    @api.depends('task_id')
+    def _compute_service_labor_product_id(self):
+        for record in self:
+            available_products = record.task_id.service_order_line_id.service_order_line_service_ids.mapped('product_id')
+            if len(available_products) > 1:
+                available_products = available_products[0]
+            record.service_labor_product_id = available_products.id
+
+    @api.depends('task_id.service_order_line_id.service_order_line_service_ids.product_id')
+    def _compute_available_service_labor_product_id(self):
+        for record in self:
+            record.available_service_labor_product_id = record.task_id.service_order_line_id.service_order_line_service_ids.mapped('product_id')
+
+    def save_timesheet(self):
+        aa_line_ids = super().save_timesheet()
+        if self.task_id.project_id.is_repair_service:
+            aa_line_ids.write({'service_labor_product_id': self.service_labor_product_id.id})
+        return aa_line_ids
+
+
+class AccountAnalyticLine(models.Model):
+    _inherit = 'account.analytic.line'
+
+
+    service_labor_product_id  = fields.Many2one('product.product', compute="_compute_service_labor_product_id", store=True, readonly=False)
+    available_service_labor_product_id = fields.Many2many('product.product', compute="_compute_available_service_labor_product_id")
+
+
+    @api.depends('task_id')
+    def _compute_service_labor_product_id(self):
+        for record in self:
+            available_products = record.task_id.service_order_line_id.service_order_line_service_ids.mapped('product_id')
+            if len(available_products) > 1:
+                available_products = available_products[0]
+            record.service_labor_product_id = available_products.id
+
+    @api.depends('task_id.service_order_line_id.service_order_line_service_ids.product_id')
+    def _compute_available_service_labor_product_id(self):
+        for record in self:
+            record.available_service_labor_product_id = record.task_id.service_order_line_id.service_order_line_service_ids.mapped('product_id')

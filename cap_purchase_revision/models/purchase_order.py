@@ -93,6 +93,7 @@ class PurchaseOrder(models.Model):
                 subtype_xmlid='mail.mt_note'
             )
             record.state = 'revised'
+            record.action_copy_chatter(revised_po)
         return {
             'type': 'ir.actions.act_window',
             'name': f"Revised PO - {revision_name}",
@@ -101,3 +102,20 @@ class PurchaseOrder(models.Model):
             'res_id': revised_po.id,  
             'target': 'current',  
             }
+
+    def action_copy_chatter(self, revised_id):
+        self.ensure_one()
+        # Copy messages
+        messages = self.env['mail.message'].search([('res_id', '=', self.id), ('model', '=', self._name), ])
+        for message in messages:
+            tracking_values = self.env['mail.tracking.value'].search([('mail_message_id', '=', message.id)])
+            new_message_id = message.copy({'res_id': revised_id.id, 'model': self._name, })
+            if tracking_values:
+                for tracking in tracking_values:
+                    tracking.copy({'mail_message_id': new_message_id.id})
+
+        # Move attachments
+        Attachment = self.env['ir.attachment']
+        attachments = Attachment.search([('res_id', '=', self.id), ('res_model', '=', self._name), ])
+        for attachment in attachments:
+            attachment.write({'res_id': revised_id.id, 'res_model': self._name, })
