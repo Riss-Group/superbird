@@ -13,3 +13,8 @@ class ResCompany(models.Model):
         default=False,
         help="If a property is not shared to a child branch, find a matching with the same name to use."
     )
+    autopropagate_properties_all = fields.Boolean(
+        string="Auto-propagate Properties to all companies",
+        default=False,
+        help="Set properties for all other companies"
+    )

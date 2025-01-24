@@ -13,8 +13,14 @@ class ResConfigSettings(models.TransientModel):
         related='company_id.autopropagate_properties_name_search',
         readonly=False
     )
+    autopropagate_properties_all = fields.Boolean(
+        string="Auto-propagate Properties to all companies",
+        related='company_id.autopropagate_properties_all',
+        readonly=False
+    )
 
     @api.onchange('autopropagate_properties')
     def _onchange_autopropagate_properties(self):
         if not self.autopropagate_properties:
             self.autopropagate_properties_name_search = False
+            self.autopropagate_properties_all = False
