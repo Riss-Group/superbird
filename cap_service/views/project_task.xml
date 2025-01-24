@@ -24,12 +24,13 @@
             <xpath expr="//group" position="inside">
                 <group name="service_details" string="Service Info" invisible='not is_repair_service'>
                     <field name='is_repair_service' invisible='1' />
+                    <field name='fsm_done' invisible='1' />
                     <field name="service_order_id" readonly='1' force_save='1' />
                     <field name='fleet_vehicle_id'  readonly='1' force_save='1'/>
                     <field name='product_id' readonly='1' force_save='1'/>
                     <field name='product_template_variant_value_ids' widget='many2many_tags' readonly='1' force_save='1'/>
-                    <field name='cause' widget="text"/>
-                    <field name='correction' widget="text"/>
+                    <field name='cause' widget="text" readonly="fsm_done" force_save='1'/>
+                    <field name='correction' widget="text" readonly="fsm_done" force_save='1' />
                 </group>
                 <group name="tech_notes" string="Tech Notes">
                     <field name="tech_notes" nolabel="1" colspan='2' placeholder="Add additional tech notes here..."/>
@@ -40,6 +41,10 @@
             </xpath>
             <xpath expr="//field[@name='recurring_task']" position="attributes">
                 <attribute name="invisible">is_repair_service or not active or not recurrence_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='timesheet_ids']//tree//field[@name='employee_id']" position="before">
+                <field name='service_labor_product_id' domain="[('id','in',available_service_labor_product_id)]" column_invisible='not parent.is_repair_service' options="{'no_quick_create':1, 'no_create':1}"/>
+                <field name='available_service_labor_product_id' column_invisible='1' />
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page name="inventory_transfers_page" string="Inventory Transfers" invisible="not is_repair_service">
@@ -107,6 +112,8 @@
             <xpath expr="//group" position="inside">
                 <field name='cause' widget="text" />
                 <field name='correction' widget="text"/>
+                <field name='service_labor_product_id' domain="[('id','in',available_service_labor_product_id)]" invisible='not task_id.is_repair_service' options="{'no_quick_create':1, 'no_create':1}"/>
+                <field name='available_service_labor_product_id' invisible='1' />
             </xpath>
         </field>
     </record>

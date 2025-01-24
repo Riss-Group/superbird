@@ -8,8 +8,6 @@ class ChatterController(http.Controller):
         record = request.env[model].browse(id)
         messages = record.ai_message_ids.mapped(lambda m: {
             'id': m.id,
-            # If you still want an "author" name to display,
-            # you could map the create_uid's name:
             'author': m.create_uid.name if m.role == 'user' else 'Odoo AI',
             'content': markdown.markdown(m.content) if m.content else False,
             'role': m.role,
