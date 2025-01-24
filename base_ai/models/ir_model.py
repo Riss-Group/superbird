@@ -112,6 +112,8 @@ class IrModel(models.Model):
         except Exception:
             domain = []
 
+        if self.env.context.get('force_company', False):
+            model_obj = model_obj.with_company(self.env.context['force_company']).with_context(allowed_company_ids=self.env.context['force_company'].ids)
         all_records = model_obj.search(domain)
         fields_data = self._build_field_structure(field_records, depth=depth)
 

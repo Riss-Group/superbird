@@ -149,7 +149,7 @@ Extra Instructions:
 """
         system_prompt = "You are a helpful assistant."
 
-        assistant_reply = ai_model.ai_prompt(prompt, system_prompt, None, ir_model.max_tokens, ir_model.temperature)
+        assistant_reply = ai_model.ai_prompt(prompt, system_prompt, None, [], ir_model.max_tokens, ir_model.temperature)
         return extract_json_from_response(assistant_reply)
 
     def _perform_ocr_or_extraction(self, file_content, file_name):

@@ -19,7 +19,11 @@ class BaseDigitalize(models.TransientModel):
             return
 
         record = self.env[active_model].browse(active_id)
-        data = record.with_context(file_name=self.filename).ocr_prompt(base64.b64decode(self.file))
+        force_company = record.company_id if hasattr(record, 'company_id') else False
+        data = record.with_context(
+            file_name=self.filename,
+            force_company=record.company_id if hasattr(record, 'company_id') else False
+        ).ocr_prompt(base64.b64decode(self.file))
 
         fields_data = data.get('fields', {})
         vals = self.convert_commands(record, fields_data)
