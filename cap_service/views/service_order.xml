@@ -140,6 +140,7 @@
                                 <field name="end_date" />
                                 <field name="service_writer_id" options="{'no_quick_create':1, 'no_create':1}"/>
                                 <field name="company_id" options="{'no_quick_create':1, 'no_create':1}"/>
+                                <field name="branch_company_ids" invisible='1'/>
                                 <field name="currency_id" options="{'no_quick_create':1, 'no_create':1}"/>
                             </group>
                             <group name='general_other_container' string='Other General'>
@@ -148,7 +149,7 @@
                                 <field name='ref' string='Customer Reference' />
                             </group>
                             <group name='customer_container' string='Customer Details'>
-                                <field name="partner_id" string='Customer' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}" options="{'no_quick_create':1, 'no_create':1}"/>
+                                <field name="partner_id" string='Customer' widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1,}" domain="['|', ('company_id','=', False), ('company_id', 'in', branch_company_ids)]" options="{'no_quick_create':1, 'no_create':1}"/>
                                 <field name="payment_term_id" options="{'no_quick_create':1, 'no_create':1}"/>
                             </group>
                             <group name='fleet_container' string='Vehicle Details'>
