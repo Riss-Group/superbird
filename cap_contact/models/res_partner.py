@@ -11,6 +11,8 @@ class ResPartner(models.Model):
     @api.model
     def _name_search(self, name, domain=None, operator="ilike", limit=None, order=None):
         res_partner_search_mode = self.env.context.get('res_partner_search_mode')
+        if not domain:
+            return super()._name_search(name, domain, operator, limit, order)
         if res_partner_search_mode == 'customer':
             domain = ['|', ('customer_rank', '=', True)] + domain
         elif res_partner_search_mode == 'supplier':
