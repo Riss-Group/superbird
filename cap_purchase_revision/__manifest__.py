@@ -11,6 +11,7 @@
         'purchase_requisition',
         ],
     'data': [
+        'data/mail_template_chatter.xml',
         'views/purchase_order.xml',
     ],
     'installable': True,

@@ -20,9 +20,9 @@ class SaleOrder(models.Model):
     def action_copy_chatter(self, revised_id):
         self.ensure_one()
         # Copy messages
-        messages = self.env['mail.message'].search([('res_id', '=', self.id), ('model', '=', self._name),])
+        messages = self.env['mail.message'].search([('res_id', '=', self.id), ('model', '=', self._name),], order='create_date')
         for message in messages:
-            tracking_values = self.env['mail.tracking.value'].search([('mail_message_id', '=', message.id)])
+            tracking_values = self.env['mail.tracking.value'].search([('mail_message_id', '=', message.id)], order='create_date')
             new_message_id = message.copy({'res_id': revised_id.id, 'model': self._name,})
             if tracking_values:
                 for tracking in tracking_values:
@@ -30,6 +30,6 @@ class SaleOrder(models.Model):
 
         # Move attachments
         Attachment = self.env['ir.attachment']
-        attachments = Attachment.search([('res_id', '=', self.id), ('res_model', '=', self._name),])
+        attachments = Attachment.search([('res_id', '=', self.id), ('res_model', '=', self._name),], order='create_date')
         for attachment in attachments:
             attachment.write({'res_id': revised_id.id, 'res_model': self._name,})
