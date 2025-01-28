@@ -37,43 +37,42 @@
         <field name="model">sale.finance.terms</field>
         <field name="arch" type="xml">
             <form string="Sale Finance Terms">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_accept" string="Accept" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state == 'cancelled'"/>
+                    <!-- The widget="statusbar" will display the state in a progress style -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,accepted,rejected,cancelled" statusbar_status="state"/>
+                </header>
                 <sheet>
                     <group>
-                        <field name="state" readonly="1"/>
-                        <field name="order_id"/>
-                        <field name="company_id" readonly="1"/>
-                        <field name="partner_id"/>
-                        <field name="deposit_amount"/>
-                        <field name="trade_amount"/>
-                        <field name="finance_amount"/>
-                        <field name="interest_rate_percent"/>
-                        <field name="skip_periods"/>
-                        <field name="years_financed"/>
-                        <field name="periodicity"/>
+                        <group>
+                            <field name="order_id"/>
+                            <field name="company_id" readonly="1"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="deposit_amount"/>
+                            <field name="trade_amount"/>
+                            <field name="finance_amount"/>
+                            <field name="interest_rate_percent"/>
+                            <field name="skip_periods"/>
+                            <field name="years_financed"/>
+                            <field name="periodicity"/>
+                        </group>
+                    </group>
+                    <group colspan="2">
                         <field name="terms_total"/>
                         <field name="terms_interest_total"/>
                         <field name="period_total"/>
                     </group>
-                    <footer>
-                        <button name="action_submit"
-                                string="Submit"
-                                type="object"
-                                invisible="state != 'draft'"
-                                class="oe_highlight"/>
-                        <button name="action_accept"
-                                string="Accept"
-                                type="object"
-                                invisible="state != 'submitted'"/>
-                        <button name="action_reject"
-                                string="Reject"
-                                type="object"
-                                invisible="state != 'submitted'"/>
-                        <button name="action_cancel"
-                                string="Cancel"
-                                type="object"
-                                invisible="state == 'cancelled'"/>
-                    </footer>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
