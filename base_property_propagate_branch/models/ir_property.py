@@ -1,3 +1,5 @@
+import psycopg2
+
 from odoo import models, fields, api
 from odoo.exceptions import AccessError
 
@@ -17,8 +19,13 @@ class IrProperty(models.Model):
                 if self.env[model]._fields[name].type == 'many2one':
                     comodel = self.env[model]._fields[name].comodel_name
                     try:
-                        record = self.env[comodel].sudo(False).with_context(allowed_company_ids=branch.ids).browse(list(values.values()))
-                        record.check_access_rule('read')
+                        try:
+                            record = self.env[comodel].sudo(False).with_context(allowed_company_ids=branch.ids).browse(list(values.values()))
+                            record.check_access_rule('read')
+                        except psycopg2.ProgrammingError:
+                            ids = [x.id for x in values.values()]
+                            record = self.env[comodel].sudo(False).with_context(allowed_company_ids=branch.ids).browse(ids)
+                            record.check_access_rule('read')
                     except AccessError:
                         if company.autopropagate_properties_name_search:
                             alternate_record = (self.env[comodel]
