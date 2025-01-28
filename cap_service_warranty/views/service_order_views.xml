@@ -15,7 +15,7 @@
                 </button>
             </xpath>
             <xpath expr="//notebook/page[@name='job_lines']/field[@name='service_order_lines']/tree/field[@name='ttype']" position="after">
-                <field name="warranty_partner_id"/>
+                <field name="warranty_partner_id" optional="hide"/>
             </xpath>
         </field>
     </record>

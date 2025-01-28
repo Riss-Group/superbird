@@ -12,7 +12,8 @@ class WarrantyClaim(models.Model):
 
     name = fields.Char(string="Name")
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirmed', 'Confirmed'), ('approved', 'Approved'),
-                              ('refused', 'Refused'), ('in_payment', 'In Payment'), ('paid', 'Paid')], default="draft")
+                                        ('refused', 'Refused'), ('in_payment', 'In Payment'), ('paid', 'Paid'),
+                                        ('cancel', 'Cancel')], default="draft")
     partner_id = fields.Many2one('res.partner', string="Contact")
     warranty_claim_line_ids = fields.One2many('warranty.claim.line', 'warranty_claim_id', string="Warranty claim Line")
     service_order_id = fields.Many2one('service.order', string="Service Order")
@@ -40,6 +41,10 @@ class WarrantyClaim(models.Model):
 
     def action_view_return(self):
         return self._get_action_view_picking()
+
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
 
     def _get_action_view_picking(self):
         action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
