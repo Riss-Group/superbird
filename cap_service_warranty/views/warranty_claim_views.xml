@@ -31,6 +31,8 @@
                             invisible="invoice_count > 0 or state != 'approved'"/>
                     <button name="action_create_customer_return" type="object" string="Create Customer Return" />
                     <button name="action_create_vendor_return" type="object" string="Create Supplier Return" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ['paid', 'cancel']"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

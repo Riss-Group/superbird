@@ -11,6 +11,8 @@ class ServiceOrder(models.Model):
        service_order_line = self.service_order_lines.filtered(lambda x: x.ttype == 'Warranty' and x.warranty_partner_id)
        warranty_partner_ids = service_order_line.mapped('warranty_partner_id')
        for warranty_partner in warranty_partner_ids:
+           if self.warranty_claim_ids.filtered(lambda x: x.partner_id == warranty_partner and x.state != 'cancel'):
+               continue
            line_vals = []
            for line in service_order_line.filtered(lambda x: x.warranty_partner_id == warranty_partner):
                line_vals += self._get_so_line_section_details(line)
