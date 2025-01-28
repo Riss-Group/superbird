@@ -26,7 +26,7 @@ class IrProperty(models.Model):
                             ids = [x.id for x in values.values()]
                             record = self.env[comodel].sudo(False).with_context(allowed_company_ids=branch.ids).browse(ids)
                             record.check_access_rule('read')
-                    except AccessError:
+                    except Exception:
                         if company.autopropagate_properties_name_search:
                             alternate_record = (self.env[comodel]
                                                 .sudo(False)
