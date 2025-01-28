@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="action_sale_finance_terms_order" model="ir.actions.act_window">
+        <field name="name">Financing Terms</field>
+        <field name="res_model">sale.finance.terms</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('order_id', '=', active_id)]</field>
+    </record>
+
     <record id="view_order_form_sale_finance" model="ir.ui.view">
         <field name="name">view_order_form_sale_finance</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet//div[@name='button_box']" position="inside">
+                <button type="action"
+                        name="%(action_sale_finance_terms_order)d"
+                        string="Financing Terms"
+                        icon="fa-money"
+                        context="{'search_default_order_id': active_id}"/>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Finance" name="finance_page">
                     <field name="finance_term_lines" readonly="state not in ['draft', 'sale', 'sent']">
