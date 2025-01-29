@@ -69,10 +69,9 @@ patch(BarcodeModel.prototype, {
         if (barcodeData.lot && !barcodeData.product) {
             Object.assign(barcodeData, this._retrieveTrackingNumberInfo(barcodeData.lot));
         }
-        const restrict_scan_source_location = this.cache.dbIdCache['stock.picking.type'].restrict_scan_source_location;
-
+        const restrict_scan_source_location = this.cache?.dbIdCache?.['stock.picking.type']?.restrict_scan_source_location || false;
         // Vérifie si location existe et s'il faut le renommer en location_dest
-        if (barcodeData.location && !restrict_scan_source_location) {
+        if (barcodeData.location && !restrict_scan_source_location && this.resModel == 'stock.picking') {
             barcodeData = {
                 ...barcodeData,
                 destLocation: barcodeData.location
@@ -227,7 +226,8 @@ patch(BarcodeModel.prototype, {
                     barcodeData.barcode_qty_done = remainingQty;
                 }
             }
-            if (this.record.picking_type_id.machinegun_scan || barcodeData.barcode_qty_done > 0 || barcodeData.lot || barcodeData.lotName) {
+            let machinegun_scan = this.record?.picking_type_id?.machinegun_scan || false;
+            if ( machinegun_scan || barcodeData.barcode_qty_done > 0 || barcodeData.lot || barcodeData.lotName) {
                 const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;
