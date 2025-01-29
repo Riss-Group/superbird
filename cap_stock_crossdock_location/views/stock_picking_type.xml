@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="cap_view_picking_type_form_inherited" model="ir.ui.view">
+            <field name="name">Operation Types Inherited_cap</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='auto_print']" position="after">
+                    <group name="operation_type" invisible="code != 'internal'">
+                        <field name="is_put_away"/>
+                        <field name="is_pick"/>
+                        <field name="is_pack"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
