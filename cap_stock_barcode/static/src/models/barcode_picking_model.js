@@ -191,6 +191,7 @@ patch(BarcodePickingModel.prototype, {
         if (nextValidate) {
             return await nextValidate.apply(this, arguments);
         }
+        return nextValidate
     },
 
     _lineIsNotComplete(line) {
