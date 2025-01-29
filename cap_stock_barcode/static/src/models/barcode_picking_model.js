@@ -24,13 +24,29 @@ patch(BarcodePickingModel.prototype, {
     shouldSplitLine(line) {
         return line.barcode_qty_done && line.reserved_uom_qty && line.barcode_qty_done < line.reserved_uom_qty;
     },
-    async _processLocation(barcodeData) {
-        super._processLocation(...arguments);
-        if (barcodeData.destLocation) {
-            await this._processLocationDestination(barcodeData);
-            await this.save()
-        }
-    },
+
+//    async _processLocation(barcodeData) {
+//        const restrict_scan_source_location = this.cache.dbIdCache['stock.picking.type'].restrict_scan_source_location;
+//
+//        // Vérifie si location existe et s'il faut le renommer en location_dest
+//        if (barcodeData.location && !restrict_scan_source_location) {
+//            barcodeData = {
+//                ...barcodeData,
+//                destLocation: barcodeData.location
+//            };
+//            delete barcodeData.location;
+//        }
+//        if (barcodeData.location) {
+//            await super._processLocation(barcodeData);
+//        }
+//
+//        if (barcodeData.destLocation) {
+//            await this._processLocationDestination(barcodeData);
+//            await this.save();
+//            debugger;
+//            await this.trigger('reload');
+//        }
+//    },
 
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0

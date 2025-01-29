@@ -69,7 +69,16 @@ patch(BarcodeModel.prototype, {
         if (barcodeData.lot && !barcodeData.product) {
             Object.assign(barcodeData, this._retrieveTrackingNumberInfo(barcodeData.lot));
         }
+        const restrict_scan_source_location = this.cache.dbIdCache['stock.picking.type'].restrict_scan_source_location;
 
+        // Vérifie si location existe et s'il faut le renommer en location_dest
+        if (barcodeData.location && !restrict_scan_source_location) {
+            barcodeData = {
+                ...barcodeData,
+                destLocation: barcodeData.location
+            };
+            delete barcodeData.location;
+        }
         await this._processLocation(barcodeData);
         await this._processPackage(barcodeData);
         if (barcodeData.stopped) {
@@ -255,5 +264,6 @@ patch(BarcodeModel.prototype, {
 //    lineCanBeSelected() {
 //        return false;
 //    },
+
 })
 
