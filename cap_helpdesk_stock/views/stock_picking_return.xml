@@ -42,7 +42,7 @@
                 <attribute name="invisible">ticket_id</attribute>
             </xpath>
             <xpath expr="//button[@name='create_returns']" position="after">
-                <button name="create_picking_returns" string="Return" type="object" class="btn-primary" data-hotkey="q"/>
+                <button name="create_picking_returns" string="Return" type="object" invisible="not ticket_id" class="btn-primary" data-hotkey="q"/>
             </xpath>
         </field>
     </record>

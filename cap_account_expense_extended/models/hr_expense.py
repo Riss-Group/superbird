@@ -10,9 +10,10 @@ class HrExpense(models.Model):
 
     def _get_default_expense_sheet_values(self):
         res = super(HrExpense, self)._get_default_expense_sheet_values()
-        statement_line_id = self.env['account.bank.statement.line'].sudo().search([('expense_id', '=', self.id)])
-        if statement_line_id and statement_line_id.journal_id and statement_line_id.journal_id.outbound_payment_method_line_ids:
-            for values in res:
+        for values in res:
+            statement_line_id = self.env['account.bank.statement.line'].sudo().search(
+                [('expense_id', 'in', values['expense_line_ids'][0][2])], limit=1)
+            if statement_line_id:
                 values.update({'payment_method_line_id': statement_line_id.journal_id.outbound_payment_method_line_ids[:1].id})
         return res
 

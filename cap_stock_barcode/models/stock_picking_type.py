@@ -12,7 +12,7 @@ class StockPickingType(models.Model):
     machinegun_scan = fields.Boolean(string="machinegun Scan", default=False)
 
     def _get_fields_stock_barcode(self):
-        return super()._get_fields_stock_barcode() + ['split_lines', 'machinegun_scan', 'barcode_validation_full']
+        return super()._get_fields_stock_barcode() + ['split_lines', 'machinegun_scan', 'barcode_validation_full','restrict_scan_source_location']
 
 
     def _compute_scrap_location_id(self):

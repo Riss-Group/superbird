@@ -16,6 +16,7 @@
     # always loaded
     'data': [
         'views/stock_warehouse.xml',
+        'views/stock_picking_type.xml',
     ],
 
 }
