@@ -47,6 +47,10 @@ class IrProperty(models.Model):
                                 continue
                         else:
                             continue
-                if old_value == old_branch_value or (alternate_record and all(old_value[x].display_name == old_branch_value[x].display_name for x in old_value.keys())):
+                if (
+                    self.env.context.get('force_propagate', False) or
+                    old_value == old_branch_value or
+                    (alternate_record and all(old_value[x].display_name == old_branch_value[x].display_name for x in old_value.keys()))
+                ):
                     self.with_company(branch).with_context(excluded_companies=excluded_companies)._set_multi(name, model, branch_values, default_value)
         super()._set_multi(name, model, values, default_value)
