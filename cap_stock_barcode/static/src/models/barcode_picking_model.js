@@ -31,6 +31,7 @@ patch(BarcodePickingModel.prototype, {
             await this.save()
         }
     },
+
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
         if (line.not_done_qty) {
@@ -42,6 +43,10 @@ patch(BarcodePickingModel.prototype, {
         }
 
         return qtyDemand;
+    },
+
+    getDisplayIncrementPackagingBtn(line) {
+        return false;
     },
 
     async save_barcode_qty_done(line) {
