@@ -67,7 +67,7 @@ class ProductProduct(models.Model):
     def action_sync_out_of_bound_prices(self):
         # Filter products where the variation is out of bounds
         out_of_bound_products = self.filtered(
-            lambda p: p.cost_percent_variation > 5 or p.cost_percent_variation < -10
+            lambda p: p.cost_percent_variation > 0.05 or p.cost_percent_variation < -0.10
         )
         for product in out_of_bound_products:
             product.sale_cost = product.standard_price
