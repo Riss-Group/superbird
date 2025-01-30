@@ -28,6 +28,7 @@ class IrProperty(models.Model):
                         record = self.env[comodel].sudo(False).with_context(allowed_company_ids=branch.ids).browse([clean(x) for x in branch_values.values() if x])
                         if not record or isinstance(record, AccessError):
                             raise AccessError('')
+                        record = record[0]
                         record.check_access_rights("write")
                         record.check_access_rule("write")
                         # except psycopg2.ProgrammingError:
@@ -47,6 +48,10 @@ class IrProperty(models.Model):
                                 continue
                         else:
                             continue
-                if old_value == old_branch_value or (alternate_record and all(old_value[x].display_name == old_branch_value[x].display_name for x in old_value.keys())):
+                if (
+                    self.env.context.get('force_propagate', False) or
+                    old_value == old_branch_value or
+                    (alternate_record and all(old_value[x].display_name == old_branch_value[x].display_name for x in old_value.keys()))
+                ):
                     self.with_company(branch).with_context(excluded_companies=excluded_companies)._set_multi(name, model, branch_values, default_value)
         super()._set_multi(name, model, values, default_value)
