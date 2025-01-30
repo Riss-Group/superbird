@@ -69,7 +69,7 @@ patch(BarcodeModel.prototype, {
         if (barcodeData.lot && !barcodeData.product) {
             Object.assign(barcodeData, this._retrieveTrackingNumberInfo(barcodeData.lot));
         }
-        const restrict_scan_source_location = this.cache?.dbIdCache?.['stock.picking.type']?.restrict_scan_source_location || false;
+        const restrict_scan_source_location = this.config?.restrict_scan_source_location || false;
         // Vérifie si location existe et s'il faut le renommer en location_dest
         if (barcodeData.location && !restrict_scan_source_location && this.resModel == 'stock.picking') {
             barcodeData = {

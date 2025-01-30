@@ -7,7 +7,11 @@
         <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="before">
-                <field name="main_purchase_price"/>
+                <label for="main_purchase_price"/>
+                <div name="main_purchase_price" class="o_row">
+                  <field name="main_purchase_price" class="oe_inline" widget="monetary" options="{'currency_field': 'main_purchase_currency_id', 'field_digits': True}"/>
+                    <field name="main_purchase_currency_id" invisible="1"/>
+                </div>
             </xpath>
             <xpath expr="//field[@name='standard_price']" position="after">
                 <field name="sale_cost"/>
@@ -29,7 +33,11 @@
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="before">
-                <field name="main_purchase_price"/>
+                <label for="main_purchase_price"/>
+                <div name="main_purchase_price" class="o_row">
+                    <field name="main_purchase_price" class="oe_inline" widget="monetary" options="{'currency_field': 'main_purchase_currency_id', 'field_digits': True}"/>
+                    <field name="main_purchase_currency_id" invisible="1"/>
+                </div>
             </xpath>
             <xpath expr="//field[@name='standard_price']" position="after">
                 <field name="sale_cost"/>
