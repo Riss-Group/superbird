@@ -7,15 +7,22 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
 
-    main_purchase_price = fields.Float(string="Main Purchase Price", compute="_compute_main_purchase_price", store=True)
+    main_purchase_price = fields.Float(string="Main Purchase Price", compute="_compute_main_purchase_price")
+    main_purchase_currency_id = fields.Many2one('res.currency', string="Main Purchase Price Currency", compute="_compute_main_purchase_price")
 
-    @api.depends('seller_ids')
+    @api.depends_context('company')
+    @api.depends('seller_ids','seller_ids.company_id','seller_ids.price','seller_ids.sequence')
     def _compute_main_purchase_price(self):
         for product in self:
             product.main_purchase_price = 0
-            suppliers  = product.seller_ids
+            product.main_purchase_currency_id = False
+            suppliers  = product.seller_ids.filtered(lambda p:p.company_id == self.env.company or p.company_id is False)
             if suppliers :
-                product.main_purchase_price = suppliers[0].price
+                product.write({
+                    'main_purchase_price': suppliers[0].price,
+                    'main_purchase_currency_id': suppliers[0].currency_id
+                })
+
 
     def _price_compute(self, price_type, uom=None, currency=None, company=None, date=False):
         if price_type == "purchase_main_price" :
