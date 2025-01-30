@@ -16,11 +16,15 @@ class StockMove(models.Model):
                 ('product_id', 'in', self.mapped('product_id.id')),
                 ('id', 'not in', self.ids)
             ])
-            outgoing_waiting_moves.mapped('picking_id').action_assign()
+            try :
+                outgoing_waiting_moves.mapped('picking_id').action_assign()
+            except:
+                pass
         return res
 
     def _action_assign(self, force_qty=False):
         res = super()._action_assign(force_qty)
+        skip_check_waiting_sale_picking = self.env.context.get('skip_check_waiting_sale_picking')
         for move in self:
             if move.picking_code == 'internal' and move.picking_type_id.is_pick:
                 putaway_waiting_picking = self.search([
@@ -30,8 +34,9 @@ class StockMove(models.Model):
                 if putaway_waiting_picking:
                     putaway_waiting_picking._check_waiting_sale_picking()
 
-        if any(move.picking_code == 'internal' and move.picking_type_id.is_put_away for move in self):
+        if not skip_check_waiting_sale_picking and any(move.picking_code == 'internal' and move.picking_type_id.is_put_away for move in self):
             self.filtered(lambda m: m.picking_code == 'internal')._check_waiting_sale_picking()
+            self.mapped('picking_id').with_context({'skip_check_waiting_sale_picking': True}).action_assign()
 
         return res
 
