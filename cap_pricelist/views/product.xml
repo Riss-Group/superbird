@@ -9,6 +9,17 @@
             <xpath expr="//field[@name='categ_id']" position="before">
                 <field name="main_purchase_price"/>
             </xpath>
+            <xpath expr="//field[@name='standard_price']" position="after">
+                <field name="sale_cost"/>
+
+                <label for="standard_price" invisible="id and product_variant_count != 1 and not is_product_variant"/>
+                <div name="standard_price_uom" invisible="id and product_variant_count != 1 and not is_product_variant">
+                    <field name="standard_price" class="oe_inline" widget="monetary" options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
+                    <span groups="uom.group_uom">per
+                        <field name="uom_name" class="oe_inline"/>
+                    </span>
+                </div>
+            </xpath>
         </field>
     </record>
 
@@ -19,6 +30,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="before">
                 <field name="main_purchase_price"/>
+            </xpath>
+            <xpath expr="//field[@name='standard_price']" position="after">
+                <field name="sale_cost"/>
             </xpath>
         </field>
     </record>

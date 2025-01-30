@@ -6,6 +6,7 @@ from odoo import models, _
 class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
+    #If there are multiple applicable rules. Choose the cheapest
     def _get_applicable_rules(self, products, date, **kwargs):
         res = super(Pricelist, self)._get_applicable_rules(products, date, **kwargs)
         applicable_rules = []
