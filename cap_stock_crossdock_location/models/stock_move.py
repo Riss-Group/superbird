@@ -16,7 +16,10 @@ class StockMove(models.Model):
                 ('product_id', 'in', self.mapped('product_id.id')),
                 ('id', 'not in', self.ids)
             ])
-            outgoing_waiting_moves.mapped('picking_id').action_assign()
+            try :
+                outgoing_waiting_moves.mapped('picking_id').action_assign()
+            except:
+                pass
         return res
 
     def _action_assign(self, force_qty=False):
