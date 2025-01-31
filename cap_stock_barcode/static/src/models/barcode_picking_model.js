@@ -82,39 +82,39 @@ patch(BarcodePickingModel.prototype, {
     },
 
     get canBeValidate() {
-        let result = super.canBeValidate;
+    let result = super.canBeValidate;
 
-        if (this.cache && this.cache.dbIdCache && this.cache.dbIdCache['stock.move.line']) {
-            let movelines = this.cache.dbIdCache['stock.move.line'];
+    if (this.cache && this.cache.dbIdCache && this.cache.dbIdCache['stock.move.line']) {
+        let movelines = this.cache.dbIdCache['stock.move.line'];
 
-            if (typeof movelines === 'object' && movelines !== null) {
-                const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
-                    item => item.barcode_qty_done > 0
-                );
-                const allConditionsMet = Object.values(movelines).every(line =>
-                    line.barcode_qty_done === line.quantity
-                );
-                const allLinesZero = Object.values(movelines).every(line =>
-                    line.barcode_qty_done === 0
-                );
+        if (typeof movelines === 'object' && movelines !== null) {
+            const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
+                item => item.barcode_qty_done > 0
+            );
+            const allConditionsMet = Object.values(movelines).every(line =>
+                line.barcode_qty_done === line.quantity
+            );
+            const allLinesZero = Object.values(movelines).every(line =>
+                line.barcode_qty_done === 0
+            );
 //                if (hasBarcodeQtyDoneGreaterThanZero) {
 //                    result = true;
 //                };
-                if (allConditionsMet) {
-                    return allConditionsMet;
-                };
-                if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
-                    return true;
-                };
-                if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
-                    return false;
-                };
+            if (allConditionsMet) {
+                return allConditionsMet;
+            };
+            if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
+                return true;
+            };
+            if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
+                return false;
+            };
 
             }
         }
 
-    return result;
-},
+        return result;
+    },
 
     lineCanBeEdited(line) {
         let res = super.lineCanBeEdited(line);
@@ -261,9 +261,17 @@ patch(BarcodePickingModel.prototype, {
         this.save_barcode_data(line,data);
         return newLine;
     },
+
     async _putInPack(additionalContext = {}) {
         const context = this.validateContext;
         context['putInPack'] = true;
         return super._putInPack(additionalContext = {});
+        },
+
+    get canPutInPack() {
+        if (this.config.restrict_scan_product) {
+            return this.pageLines.some(line => line.barcode_qty_done && !line.result_package_id);
         }
+        return true;
+    }
 })
