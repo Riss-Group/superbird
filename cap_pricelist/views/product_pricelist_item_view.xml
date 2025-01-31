@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+    <record id="product_pricelist_supplier_item_tree_view" model="ir.ui.view">
+        <field name="name">product.pricelist.item.tree</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='min_quantity']" position="after">
+                <field name="compute_price" optional="hide"/>
+                <field name="base" optional="hide" invisible="compute_price != 'formula'"/>
+                <field name="price_discount" optional="hide" invisible="compute_price != 'formula'"/>
+                <field name="price_surcharge" optional="hide" invisible="compute_price != 'formula'"/>
+                <field name="percent_price" optional="hide" invisible="compute_price != 'percentage'"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="product_pricelist_supplier_item_form_view" model="ir.ui.view">
         <field name="name">product.pricelist.item.form</field>
         <field name="model">product.pricelist.item</field>
