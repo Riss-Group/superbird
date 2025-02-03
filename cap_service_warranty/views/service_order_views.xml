@@ -19,4 +19,21 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_service_order_line_tree_view_1" model="ir.ui.view">
+        <field name="name">view_service_order_line_tree_view</field>
+        <field name="model">service.order.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ttype"/>
+                <field name="warranty_partner_id"/>
+                <field name="bill_to_partner_id"/>
+                <field name="task_stage"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="hours"/>
+                <field name="subtotal"/>
+            </tree>
+        </field>
+    </record>
 </odoo>
