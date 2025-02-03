@@ -7,23 +7,25 @@ class StockMove(models.Model):
 
 
     def _action_done(self, cancel_backorder=False):
-        res = super()._action_done(cancel_backorder=cancel_backorder)
+        res = super(StockMove, self)._action_done(cancel_backorder=cancel_backorder)
         if self.filtered(lambda m: m.picking_code == 'internal' and m.picking_type_id.is_put_away):
             outgoing_waiting_moves = self.search([
                 ('state', 'in', ['confirmed', 'partially_available']),
                 ('picking_code', '=', 'internal'),
-                ('picking_type_id.is_pick', '=', True),
+                ('picking_type_id.is_pick', '=', 1),
                 ('product_id', 'in', self.mapped('product_id.id')),
                 ('id', 'not in', self.ids)
             ])
             try :
+                # sometimes the picking is already assigned so this will trigger an exception
+                # add try to bypass that exception
                 outgoing_waiting_moves.mapped('picking_id').action_assign()
             except:
                 pass
         return res
 
     def _action_assign(self, force_qty=False):
-        res = super()._action_assign(force_qty)
+        res = super(StockMove, self)._action_assign(force_qty)
         skip_check_waiting_sale_picking = self.env.context.get('skip_check_waiting_sale_picking')
         for move in self:
             if move.picking_code == 'internal' and move.picking_type_id.is_pick:
@@ -46,12 +48,12 @@ class StockMove(models.Model):
             outgoing_waiting_moves = self.search([
                 ('state', 'in', ['confirmed', 'partially_available']),
                 ('picking_code', '=', 'internal'),
-                ('picking_type_id.is_pick', '=', True),
+                ('picking_type_id.is_pick', '=', 1),
                 ('product_id', '=', move.product_id.id),
                 ('id', '!=', move.id)
             ])
 
-            crossdock_location_id = move.warehouse_id.crossdock_location_id
+            crossdock_location_id = move.warehouse_id.crossdock_location_id if move.warehouse_id else False
 
             if outgoing_waiting_moves and crossdock_location_id:
                 sale_qty = sum(outgoing_waiting_moves.mapped('product_uom_qty'))
