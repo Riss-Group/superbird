@@ -1,0 +1,49 @@
+<odoo>
+    <template id="report_sale_finance_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@name='so_total_summary']" position="after">
+            <t t-if="doc.finance_term_lines">
+                <h3>Financing Offers</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Financing Partner</th>
+                            <th>Deposit</th>
+                            <th>Trade-in</th>
+                            <th>Finance Amt</th>
+                            <th>Interest Rate (%)</th>
+                            <th>Years</th>
+                            <th>Total Payment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.finance_term_lines" t-as="line">
+                            <tr>
+                                <td><span t-field="line.partner_id.name"/></td>
+                                <td>
+                                    <span t-field="line.deposit_amount"
+                                          t-options='{"widget": "monetary", "display_currency":doc.currency_id}'/>
+                                </td>
+                                <td>
+                                    <span t-field="line.trade_amount"
+                                          t-options='{"widget": "monetary", "display_currency":doc.currency_id}'/>
+                                </td>
+                                <td>
+                                    <span t-field="line.finance_amount"
+                                          t-options='{"widget": "monetary", "display_currency":doc.currency_id}'/>
+                                </td>
+                                <td><span t-field="line.interest_rate_percent"/></td>
+                                <td><span t-field="line.years_financed"/></td>
+                                <td>
+                                    <span t-field="line.terms_total"
+                                          t-options='{"widget": "monetary", "display_currency":doc.currency_id}'/>
+                                </td>
+                                <td><span t-field="line.state"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+        </xpath>
+    </template>
+</odoo>

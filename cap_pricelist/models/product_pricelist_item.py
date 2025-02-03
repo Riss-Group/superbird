@@ -8,13 +8,14 @@ class PricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
 
-    base = fields.Selection(selection_add=[('purchase_main_price', 'Purchase Main Price')],
-                                  ondelete={'purchase_main_price': 'set default'})
+    base = fields.Selection(selection_add=[('purchase_main_price', 'Purchase Main Price'), ('sale_cost', 'Sale Cost')],
+                                  ondelete={
+                                      'purchase_main_price': 'set default',
+                                      'sale_cost': 'set default'
+                                  })
     applied_on = fields.Selection(selection_add=[('4_product_domain', 'Domain')],
                                   ondelete={'4_product_domain': 'set default'})
     product_domain = fields.Char("Domain")
-
-
 
     @api.depends('applied_on', 'categ_id', 'product_tmpl_id', 'product_id', 'compute_price', 'fixed_price', \
         'pricelist_id', 'percent_price', 'price_discount', 'price_surcharge')
@@ -23,8 +24,6 @@ class PricelistItem(models.Model):
         for item in self:
             if item.product_domain and item.applied_on == '4_product_domain':
                 item.name = _("Domain")
-
-
 
     def _is_applicable_for(self, product, qty_in_product_uom):
         res = super(PricelistItem, self)._is_applicable_for(product, qty_in_product_uom)

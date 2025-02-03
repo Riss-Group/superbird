@@ -7,8 +7,8 @@ import math
 import logging
 
 
-_logger = logging.getLogger()
-
+import logging
+_logger = logging.getLogger(__name__)
 class StockWarehouseOrderpoint(models.Model):
     _inherit = 'stock.warehouse.orderpoint'
 
@@ -18,6 +18,38 @@ class StockWarehouseOrderpoint(models.Model):
     suggested_min = fields.Float(readonly=True, store=True)
     suggested_max = fields.Float(readonly=True, store=True)
     has_pending_changes = fields.Boolean(compute='_has_pending_changes', store=True)
+    product_main_vendor_id = fields.Many2one(
+        'res.partner',
+        string="Product Main Vendor",
+        compute='_compute_product_main_vendor_id',store=False,
+        search='_search_product_main_vendor_id'
+    )
+
+    @api.depends_context('company')
+    @api.depends('product_id.seller_ids', 'product_id.seller_ids.company_id')
+    def _compute_product_main_vendor_id(self):
+        for record in self:
+            record.product_main_vendor_id = False  # Default to no vendor
+            if record.product_id:
+                suppliers = record.product_id.seller_ids.filtered(
+                    lambda p: not p.company_id or p.company_id == self.env.company
+                )
+                if suppliers:
+                    record.product_main_vendor_id = suppliers[0].partner_id.id
+
+    def _search_product_main_vendor_id(self, operator, value):
+        if operator not in ('=', '!=', 'ilike', 'not ilike'):
+            return []
+
+        domain = [
+            ('seller_ids.partner_id.id' if operator == '=' else 'seller_ids.partner_id.name', operator, value),
+            '|', ('seller_ids.company_id', '=', False),
+            ('seller_ids.company_id', '=', self.env.company.id)
+        ]
+
+        products = self.env['product.product'].search(domain)
+        return [('product_id', 'in', products.ids)]
+
 
     @api.depends('suggested_min', 'suggested_max', 'product_min_qty', 'product_max_qty', 'formula_type', 'python_code_id')
     def _has_pending_changes(self):

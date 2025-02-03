@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class PurchaseOrder(models.Model):
@@ -88,9 +88,11 @@ class PurchaseOrder(models.Model):
             record.revision_id = revised_po.id
             revised_po.previous_revision_ids = [(6, 0, all_previous_revisions)] 
 
-            record.message_post(
-                body=f"New revision created: {revision_name}",
-                subtype_xmlid='mail.mt_note'
+            record.message_post_with_source(
+                'cap_purchase_revision.message_revise_order_link',
+                render_values={'self': record, 'created_record': revised_po.id,
+                               'message': _('New revision created: %s') % revised_po.name, 'origin': revised_po},
+                subtype_xmlid='mail.mt_note',
             )
             record.state = 'revised'
             record.action_copy_chatter(revised_po)
@@ -106,9 +108,10 @@ class PurchaseOrder(models.Model):
     def action_copy_chatter(self, revised_id):
         self.ensure_one()
         # Copy messages
-        messages = self.env['mail.message'].search([('res_id', '=', self.id), ('model', '=', self._name), ])
+        messages = self.env['mail.message'].search([('res_id', '=', self.id), ('model', '=', self._name), ], order='create_date')
         for message in messages:
-            tracking_values = self.env['mail.tracking.value'].search([('mail_message_id', '=', message.id)])
+            tracking_values = self.env['mail.tracking.value'].search([('mail_message_id', '=', message.id)],
+                                                                     order='create_date')
             new_message_id = message.copy({'res_id': revised_id.id, 'model': self._name, })
             if tracking_values:
                 for tracking in tracking_values:
@@ -116,6 +119,6 @@ class PurchaseOrder(models.Model):
 
         # Move attachments
         Attachment = self.env['ir.attachment']
-        attachments = Attachment.search([('res_id', '=', self.id), ('res_model', '=', self._name), ])
+        attachments = Attachment.search([('res_id', '=', self.id), ('res_model', '=', self._name),], order='create_date')
         for attachment in attachments:
             attachment.write({'res_id': revised_id.id, 'res_model': self._name, })

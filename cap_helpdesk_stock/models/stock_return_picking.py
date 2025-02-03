@@ -114,6 +114,8 @@ class StockReturnPickingLines(models.TransientModel):
 
             if filtered_product_ids:
                 domain += [('id', 'in', filtered_product_ids)]
+            else:
+                domain = [('id', 'in', [])]
         if self.wizard_id.suitable_product_ids:
             domain += [('id', 'in', self.wizard_id.suitable_product_ids.ids)]
 
@@ -165,6 +167,9 @@ class StockReturnPicking(models.TransientModel):
 
             if filtered_product_ids:
                 domain += [('id', 'in', filtered_product_ids)]
+            else:
+                domain = [('id','in',[])]
+
         self.suitable_product_ids_domain = domain
 
     @api.depends('picking_id', 'suitable_product_ids')

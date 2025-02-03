@@ -7,6 +7,8 @@ class SaleFinanceTerms(models.Model):
     _name = 'sale.finance.terms'
     _description = 'Sale Finance Terms'
     _rec_name = 'order_id'
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+
 
 
     order_id = fields.Many2one('sale.order')
@@ -24,7 +26,21 @@ class SaleFinanceTerms(models.Model):
         ('week', 'Weekly'),
         ('bi_week', 'Biweekly' ),
         ('monthly','Monthly')])
+    # Track the record status
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('submitted', 'Submitted'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+        ('cancelled', 'Cancelled'),
+    ], string='Status', default='draft', tracking=True)
 
+    # Relate company to the sale order's company
+    company_id = fields.Many2one('res.company',
+                                 string="Company",
+                                 related='order_id.company_id',
+                                 store=True,
+                                 readonly=True)
     
     @api.depends('order_id.amount_total', 'deposit_amount', 'trade_amount')
     def _compute_finance_amount(self):
@@ -56,3 +72,26 @@ class SaleFinanceTerms(models.Model):
             record.terms_total = terms_total
             record.terms_interest_total = terms_interest_total
             record.period_total = period_total
+
+    def action_submit(self):
+        self.write({'state': 'submitted'})
+
+    def action_accept(self):
+        self.write({'state': 'accepted'})
+        # Cancel all other financing terms linked to this sale order
+        other_terms = self.search([
+            ('order_id', '=', self.order_id.id),
+            ('id', '!=', self.id),
+            ('state', 'not in', ['cancelled'])
+        ])
+        other_terms.write({'state': 'cancelled'})
+
+    def action_reject(self):
+        self.write({'state': 'rejected'})
+
+    def action_cancel(self):
+        self.write({'state': 'cancelled'})
+
+    def action_draft(self):
+        self.write({'state': 'draft'})
+

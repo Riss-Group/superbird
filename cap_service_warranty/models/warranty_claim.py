@@ -12,13 +12,14 @@ class WarrantyClaim(models.Model):
 
     name = fields.Char(string="Name")
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirmed', 'Confirmed'), ('approved', 'Approved'),
-                              ('refused', 'Refused'), ('in_payment', 'In Payment'), ('paid', 'Paid')], default="draft")
+                                        ('refused', 'Refused'), ('in_payment', 'In Payment'), ('paid', 'Paid'),
+                                        ('cancel', 'Cancel')], default="draft")
     partner_id = fields.Many2one('res.partner', string="Contact")
     warranty_claim_line_ids = fields.One2many('warranty.claim.line', 'warranty_claim_id', string="Warranty claim Line")
     service_order_id = fields.Many2one('service.order', string="Service Order")
     order_total = fields.Float(string="Order Total", compute="_compute_order_total", store=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
-    ticket_number = fields.Char(string="Ticket Number")
+    ticket_number = fields.Char(string="Claim Number")
     invoice_count = fields.Integer(string="Invoice Count", compute='_get_invoiced')
     invoice_ids = fields.Many2many(comodel_name='account.move', string="Invoices", compute='_get_invoiced',
                                    search='_search_invoice_ids', copy=False)
@@ -26,6 +27,12 @@ class WarrantyClaim(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True,
                                    compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
                                    check_company=True)
+    service_order_line_ids = fields.Many2many('service.order.line',  compute='_compute_service_order_line', store=True,
+                                              readonly=False, string="Service order line")
+
+    def _compute_service_order_line(self):
+        for rec in self:
+            rec.service_order_line_ids = rec.warranty_claim_line_ids.mapped('service_order_line_id')
 
     @api.depends('company_id')
     def _compute_warehouse_id(self):
@@ -40,6 +47,10 @@ class WarrantyClaim(models.Model):
 
     def action_view_return(self):
         return self._get_action_view_picking()
+
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
 
     def _get_action_view_picking(self):
         action = self.env["ir.actions.actions"]._for_xml_id("stock.action_picking_tree_all")
@@ -178,6 +189,18 @@ class WarrantyClaim(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'res_id': warranty_return_id.id,
+        }
+
+    def action_view_job_line(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Job Line',
+            'view_mode': 'tree',
+            'view_id': self.env.ref('cap_service_warranty.view_service_order_line_tree_view_1').id,
+            'res_model': 'service.order.line',
+            'context': {
+            },
+            'domain': [('id', 'in', self.warranty_claim_line_ids.mapped('service_order_line_id').ids)]
         }
 
 class WarrantyClaimLine(models.Model):

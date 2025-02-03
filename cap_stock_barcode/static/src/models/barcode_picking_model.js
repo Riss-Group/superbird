@@ -24,13 +24,30 @@ patch(BarcodePickingModel.prototype, {
     shouldSplitLine(line) {
         return line.barcode_qty_done && line.reserved_uom_qty && line.barcode_qty_done < line.reserved_uom_qty;
     },
-    async _processLocation(barcodeData) {
-        super._processLocation(...arguments);
-        if (barcodeData.destLocation) {
-            await this._processLocationDestination(barcodeData);
-            await this.save()
-        }
-    },
+
+//    async _processLocation(barcodeData) {
+//        const restrict_scan_source_location = this.cache.dbIdCache['stock.picking.type'].restrict_scan_source_location;
+//
+//        // Vérifie si location existe et s'il faut le renommer en location_dest
+//        if (barcodeData.location && !restrict_scan_source_location) {
+//            barcodeData = {
+//                ...barcodeData,
+//                destLocation: barcodeData.location
+//            };
+//            delete barcodeData.location;
+//        }
+//        if (barcodeData.location) {
+//            await super._processLocation(barcodeData);
+//        }
+//
+//        if (barcodeData.destLocation) {
+//            await this._processLocationDestination(barcodeData);
+//            await this.save();
+//            debugger;
+//            await this.trigger('reload');
+//        }
+//    },
+
     getQtyDemand(line) {
         let qtyDemand = line.reserved_uom_qty || 0; // Start with reserved_uom_qty or default to 0
         if (line.not_done_qty) {
@@ -42,6 +59,10 @@ patch(BarcodePickingModel.prototype, {
         }
 
         return qtyDemand;
+    },
+
+    getDisplayIncrementPackagingBtn(line) {
+        return false;
     },
 
     async save_barcode_qty_done(line) {
@@ -61,39 +82,39 @@ patch(BarcodePickingModel.prototype, {
     },
 
     get canBeValidate() {
-        let result = super.canBeValidate;
+    let result = super.canBeValidate;
 
-        if (this.cache && this.cache.dbIdCache && this.cache.dbIdCache['stock.move.line']) {
-            let movelines = this.cache.dbIdCache['stock.move.line'];
+    if (this.cache && this.cache.dbIdCache && this.cache.dbIdCache['stock.move.line']) {
+        let movelines = this.cache.dbIdCache['stock.move.line'];
 
-            if (typeof movelines === 'object' && movelines !== null) {
-                const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
-                    item => item.barcode_qty_done > 0
-                );
-                const allConditionsMet = Object.values(movelines).every(line =>
-                    line.barcode_qty_done === line.quantity
-                );
-                const allLinesZero = Object.values(movelines).every(line =>
-                    line.barcode_qty_done === 0
-                );
+        if (typeof movelines === 'object' && movelines !== null) {
+            const hasBarcodeQtyDoneGreaterThanZero = Object.values(movelines).some(
+                item => item.barcode_qty_done > 0
+            );
+            const allConditionsMet = Object.values(movelines).every(line =>
+                line.barcode_qty_done === line.quantity
+            );
+            const allLinesZero = Object.values(movelines).every(line =>
+                line.barcode_qty_done === 0
+            );
 //                if (hasBarcodeQtyDoneGreaterThanZero) {
 //                    result = true;
 //                };
-                if (allConditionsMet) {
-                    return allConditionsMet;
-                };
-                if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
-                    return true;
-                };
-                if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
-                    return false;
-                };
+            if (allConditionsMet) {
+                return allConditionsMet;
+            };
+            if (allLinesZero && this.record.picking_type_id.barcode_validation_full) {
+                return true;
+            };
+            if (!allConditionsMet && this.record.picking_type_code != 'incoming') {
+                return false;
+            };
 
             }
         }
 
-    return result;
-},
+        return result;
+    },
 
     lineCanBeEdited(line) {
         let res = super.lineCanBeEdited(line);
@@ -170,6 +191,7 @@ patch(BarcodePickingModel.prototype, {
         if (nextValidate) {
             return await nextValidate.apply(this, arguments);
         }
+        return nextValidate
     },
 
     _lineIsNotComplete(line) {
@@ -239,9 +261,17 @@ patch(BarcodePickingModel.prototype, {
         this.save_barcode_data(line,data);
         return newLine;
     },
+
     async _putInPack(additionalContext = {}) {
         const context = this.validateContext;
         context['putInPack'] = true;
         return super._putInPack(additionalContext = {});
+        },
+
+    get canPutInPack() {
+        if (this.config.restrict_scan_product) {
+            return this.pageLines.some(line => line.barcode_qty_done && !line.result_package_id);
         }
+        return true;
+    }
 })

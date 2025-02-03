@@ -18,8 +18,11 @@
     },
     'data': [
         'security/ir.model.access.csv',
-        'views/sale_order.xml',
+        'security/sale_finance_terms_security.xml',
+        'views/sale_order_views.xml',
         'views/res_partner_views.xml',
+        'views/sale_finance_terms_views.xml',
+        'reports/sale_finance_report_inherit.xml',
     ],
     'installable': True,
     'auto_install': False,

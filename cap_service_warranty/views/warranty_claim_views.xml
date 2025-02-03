@@ -10,6 +10,7 @@
                 <field name="service_order_id"/>
                 <field name="order_total"/>
                 <field name="state"/>
+                <field name="service_order_line_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -31,6 +32,8 @@
                             invisible="invoice_count > 0 or state != 'approved'"/>
                     <button name="action_create_customer_return" type="object" string="Create Customer Return" />
                     <button name="action_create_vendor_return" type="object" string="Create Supplier Return" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ['paid', 'cancel']"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -41,6 +44,9 @@
                         <button type="object" name="action_view_return" class="oe_stat_button" icon="fa-truck"
                                 invisible="return_count == 0">
                             <field name="return_count" widget="statinfo" string="Returns"/>
+                        </button>
+                        <button type="object" name="action_view_job_line" class="oe_stat_button"
+                                icon="fa-file-text-o" string="Job Lines">
                         </button>
                     </div>
                     <group>
