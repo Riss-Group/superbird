@@ -15,6 +15,7 @@
     # always loaded
     'data': [
         'views/ecommerce_categories.xml',
+        'views/res_partner.xml',
     ],
 
 }
