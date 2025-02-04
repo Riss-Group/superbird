@@ -34,6 +34,9 @@
                     <button name="action_create_vendor_return" type="object" string="Create Supplier Return" />
                     <button name="action_cancel" type="object" string="Cancel"
                             invisible="state in ['paid', 'cancel']"/>
+                    <button name="action_reset_draft" type="object" string="Reset To Draft"
+                            groups="cap_service.group_service_manager"
+                            invisible="state in ['paid', 'draft', 'in_payment']"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

@@ -148,7 +148,10 @@ class WarrantyClaim(models.Model):
         return action
 
     def action_confirm(self):
-        self.write({'state': 'confirmed'})
+        for rec in self:
+            if not rec.ticket_number or not rec.ticket_number.strip():
+                raise UserError(_('Claim number cannot be empty'))
+            rec.write({'state': 'confirmed'})
 
     def action_approve(self):
         self.write({'state': 'approved'})
@@ -202,6 +205,11 @@ class WarrantyClaim(models.Model):
             },
             'domain': [('id', 'in', self.warranty_claim_line_ids.mapped('service_order_line_id').ids)]
         }
+
+    def action_reset_draft(self):
+        for rec in self:
+            rec.write({'state': 'draft'})
+
 
 class WarrantyClaimLine(models.Model):
     _name = 'warranty.claim.line'
