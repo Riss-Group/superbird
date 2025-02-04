@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 class ServiceOrder(models.Model):
     _inherit = 'service.order'
@@ -15,6 +16,8 @@ class ServiceOrder(models.Model):
                continue
            line_vals = []
            for line in service_order_line.filtered(lambda x: x.warranty_partner_id == warranty_partner):
+               if not line.name or not line.name.strip():
+                   raise UserError(_('Warranty description cannot be empty for # %s') % line.sequence)
                line_vals += self._get_so_line_section_details(line)
                line_vals += self._get_so_line_product_details(line)
                line_vals += self._get_so_line_labor_details(line)
