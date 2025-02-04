@@ -13,7 +13,8 @@
     'depends': [
         'crm',
         'sale',
-        'base'],
+        'base',
+        'web_notify'],
     'data': [
         'security/ir.model.access.csv',
         'views/crm_lead_views.xml',

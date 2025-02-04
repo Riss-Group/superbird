@@ -4,22 +4,26 @@ from odoo.exceptions import UserError
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
+    _order = "priority desc, expected_revenue desc"
 
     customer_reference = fields.Char("Customer Reference")
 
-    @api.constrains('customer_reference')
-    def _check_customer_reference_unique(self):
-        for lead in self:
-            if lead.customer_reference:
-                # Only check for duplicates within crm.lead
-                duplicate_leads = self.search([
-                    ('customer_reference', '=', lead.customer_reference),
-                    ('partner_id', '=', lead.partner_id.id),
-                    ('id', '!=', lead.id)
-                ])
-                if duplicate_leads:
-                    raise UserError(
-                        _("Customer Reference must be unique among Leads. Please update the Customer Reference value"))
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(CrmLead, self).create(vals_list)
+        for lead in res:
+            if lead.partner_id and lead.partner_id.user_id and lead.partner_id.user_id != self.env.user:
+                lead.create_activity_for_sales_person()
+                self.env.user.notify_danger(message='Associated customer is already assigned to another sales person!')
+        return res
+
+    def create_activity_for_sales_person(self):
+        self.partner_id.activity_schedule(
+            activity_type_id=self.env.ref('mail.mail_activity_data_todo').id,  # 'To Do' activity type
+            summary="Opportunity Created",
+            note="New opportunity created with associated customer for sales person : %s" % (self.user_id.name),
+            user_id=self.partner_id.user_id.id,
+        )
 
     def write(self, vals):
         res = super(CrmLead, self).write(vals)
