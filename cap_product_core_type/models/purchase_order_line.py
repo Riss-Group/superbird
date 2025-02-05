@@ -63,5 +63,10 @@ class PurchaseOrderLine(models.Model):
                 qty_deliverd = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing' and m.location_dest_id == supplier_location).mapped('quantity')) or 0
                 line.qty_received += line.core_parent_line_id.qty_received - qty_deliverd
 
-    def _prepare_stock_move_vals(self, picking, price_unit, product_uom_qty, product_uom):
-        return super()._prepare_stock_move_vals(picking, price_unit, product_uom_qty if not self.is_core_part else -product_uom_qty, product_uom)
+    # def _prepare_stock_move_vals(self, picking, price_unit, product_uom_qty, product_uom):
+    #     return super()._prepare_stock_move_vals(picking, price_unit, product_uom_qty if not self.is_core_part else -product_uom_qty, product_uom)
+
+    def _create_stock_moves(self, picking):
+        if len(self) == 1 and self.is_core_part :
+            return self.env['stock.move'] # this create an empty picking receipt, but the aim is to not create a thing
+        return super(PurchaseOrderLine, self.filtered(lambda l: not l.is_core_part))._create_stock_moves(picking)
