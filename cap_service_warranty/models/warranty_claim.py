@@ -19,7 +19,7 @@ class WarrantyClaim(models.Model):
     service_order_id = fields.Many2one('service.order', string="Service Order")
     order_total = fields.Float(string="Order Total", compute="_compute_order_total", store=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
-    ticket_number = fields.Char(string="Ticket Number")
+    ticket_number = fields.Char(string="Claim Number")
     invoice_count = fields.Integer(string="Invoice Count", compute='_get_invoiced')
     invoice_ids = fields.Many2many(comodel_name='account.move', string="Invoices", compute='_get_invoiced',
                                    search='_search_invoice_ids', copy=False)
@@ -27,6 +27,12 @@ class WarrantyClaim(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', required=True,
                                    compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
                                    check_company=True)
+    service_order_line_ids = fields.Many2many('service.order.line',  compute='_compute_service_order_line', store=True,
+                                              readonly=False, string="Service order line")
+
+    def _compute_service_order_line(self):
+        for rec in self:
+            rec.service_order_line_ids = rec.warranty_claim_line_ids.mapped('service_order_line_id')
 
     @api.depends('company_id')
     def _compute_warehouse_id(self):
@@ -142,7 +148,10 @@ class WarrantyClaim(models.Model):
         return action
 
     def action_confirm(self):
-        self.write({'state': 'confirmed'})
+        for rec in self:
+            if not rec.ticket_number or not rec.ticket_number.strip():
+                raise UserError(_('Claim number cannot be empty'))
+            rec.write({'state': 'confirmed'})
 
     def action_approve(self):
         self.write({'state': 'approved'})
@@ -184,6 +193,23 @@ class WarrantyClaim(models.Model):
             'target': 'new',
             'res_id': warranty_return_id.id,
         }
+
+    def action_view_job_line(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Job Line',
+            'view_mode': 'tree',
+            'view_id': self.env.ref('cap_service_warranty.view_service_order_line_tree_view_1').id,
+            'res_model': 'service.order.line',
+            'context': {
+            },
+            'domain': [('id', 'in', self.warranty_claim_line_ids.mapped('service_order_line_id').ids)]
+        }
+
+    def action_reset_draft(self):
+        for rec in self:
+            rec.write({'state': 'draft'})
+
 
 class WarrantyClaimLine(models.Model):
     _name = 'warranty.claim.line'
