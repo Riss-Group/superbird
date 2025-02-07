@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_warehouse_orderpoint_tree_editable_inherited_incoming_outgoing" model="ir.ui.view">
+        <field name="name">view.warehouse.orderpoint.tree.editable.incoming.outgoing</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="priority">24</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_on_hand']" position="after">
+                <field name="incoming_qty" force_save="1"/>
+                <field name="outgoing_qty" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
