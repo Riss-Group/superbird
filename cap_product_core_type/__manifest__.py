@@ -24,6 +24,7 @@ Long description of module's purpose
         'data/core_part_data.xml',
         'views/products.xml',
         'views/sale.xml',
+        'views/vendor_core_return.xml',
         'wizards/core_returns.xml',
     ],
 }

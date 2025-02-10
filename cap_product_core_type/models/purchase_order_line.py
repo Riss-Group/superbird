@@ -67,6 +67,9 @@ class PurchaseOrderLine(models.Model):
     #     return super()._prepare_stock_move_vals(picking, price_unit, product_uom_qty if not self.is_core_part else -product_uom_qty, product_uom)
 
     def _create_stock_moves(self, picking):
-        if len(self) == 1 and self.is_core_part :
-            return self.env['stock.move'] # this create an empty picking receipt, but the aim is to not create a thing
-        return super(PurchaseOrderLine, self.filtered(lambda l: not l.is_core_part))._create_stock_moves(picking)
+        if self.env.context.get('create_moves_for_cores'):
+            return super(PurchaseOrderLine, self)._create_stock_moves(picking)
+        else:
+            if len(self) == 1 and self.is_core_part :
+                return self.env['stock.move'] # this create an empty picking receipt, but the aim is to not create a thing
+            return super(PurchaseOrderLine, self.filtered(lambda l: not l.is_core_part))._create_stock_moves(picking)

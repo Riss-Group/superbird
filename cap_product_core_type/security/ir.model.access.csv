@@ -1,3 +1,4 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_core_return","core return","model_dirty_core_return",,1,1,1,1
 "access_core_return_line","core return lines","model_dirty_core_return_line",,1,1,1,1
+"access_core_vendor_return","core vendor return","model_core_return",,1,1,1,1
