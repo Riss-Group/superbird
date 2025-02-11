@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _, SUPERUSER_ID, Command
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from dateutil import relativedelta
 
 
 class dirtyCoreReturn(models.TransientModel):
@@ -137,11 +138,19 @@ class dirtyCoreReturnLine(models.TransientModel):
 
     core_return_id = fields.Many2one('dirty_core.return')
     product_id = fields.Many2one('product.product', string="Product")
-    suitable_product_ids_domain = fields.Char(related="core_return_id.suitable_product_ids_domain")
+    suitable_product_ids_domain = fields.Char(compute="_compute_suitable_product_ids_domain")
     original_moves = fields.Many2many('stock.move')
     po_lines = fields.Many2many('purchase.order.line')
     quantity = fields.Float("Return Quantity")
     allowed_quantity = fields.Float("Allowed Quantity")
+
+    @api.depends('product_id','core_return_id')
+    def _compute_suitable_product_ids_domain(self):
+        domain = [('is_core_type','=', True)]
+        if self.core_return_id:
+            domain = [('id','in',self.core_return_id.suitable_product_ids.ids)]
+
+        self.suitable_product_ids_domain = domain
 
     @api.onchange('product_id')
     def _compute_quantity_allowed(self):
@@ -164,7 +173,8 @@ class dirtyCoreReturnLine(models.TransientModel):
         if lines:
             if self.core_return_id.model == 'sale.order':
                 lines = lines.filtered(
-                    lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == self.product_id).move_ids.filtered(lambda m:m.picking_code == 'incoming' and m.state not in ['draft','cancel','done']).ids
+                    lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == self.product_id).move_ids.filtered(
+                    lambda m:m.picking_code == 'incoming' and m.state not in ['draft','cancel','done'] and m.create_date > fields.date.today() + relativedelta(days=365)).ids
             elif self.core_return_id.model == 'purchase.order':
                 moves = lines.filtered(
                     lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == self.product_id)

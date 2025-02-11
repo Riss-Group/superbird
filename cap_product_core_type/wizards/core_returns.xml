@@ -16,12 +16,10 @@
                     <field name="suitable_product_ids" widget="many2many_tags" domain="suitable_product_ids_domain"/>
                     <field name="put_in_batch" invisible="model != 'sale.order'"/>
                 </group>
-            </sheet>
-
                 <field name="lines" >
                     <tree editable="top" create="1">
                         <field name="product_id" options="{'no_create': True, 'no_open': True}" domain="suitable_product_ids_domain"/>
-                        <field name="suitable_product_ids_domain" column_invisible="1" invisible="1"/>
+                        <field name="suitable_product_ids_domain" column_invisible="1"/>
                         <field name="core_return_id" column_invisible="1"/>
                         <field name="original_moves" column_invisible="1"/>
                         <field name="po_lines" column_invisible="1"/>
@@ -29,6 +27,7 @@
                         <field name="allowed_quantity" readonly="1" optional="show"/>
                     </tree>
                 </field>
+            </sheet>
                 <footer>
                     <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     <button string="Confirm" type="object" name="action_confirm" class="btn btn-primary" data-hotkey="q"/>
