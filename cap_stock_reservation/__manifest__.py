@@ -1,34 +1,29 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "cap stock barcode",
+    'name': "cap stock reservation",
     'license': 'OPL-1',
 
-    'summary': "Stock Barcode Customization",
+    'summary': "CAP Stock reservation",
 
     'description': """
-        Stock Barcode
+        CAP Stock Reservation
     """,
 
     'author': "Captivea",
     'website': "https://www.captivea.com",
 
     'version': '0.1',
-    'depends': ['product_multi_barcode','product'],
+    'depends': ['cap_stock_barcode'],
 
     # always loaded
     'data': [
-        'views/stock_product_selector.xml',
-        'report/product_barcode.xml',
-        'report/report_deliveryslip.xml',
-        'wizard/product_label_layout.xml',
         'views/stock_picking_type.xml',
-        'views/stock_picking.xml'
     ],
      'assets': {
         'web.assets_backend': [
-            'cap_stock_barcode/static/src/**/*.js',
-            'cap_stock_barcode/static/src/*.js',
-            'cap_stock_barcode/static/src/**/*.xml',
+            'cap_stock_reservation/static/src/**/*.js',
+            'cap_stock_reservation/static/src/*.js',
+            'cap_stock_reservation/static/src/**/*.xml',
         ],
 
     }
