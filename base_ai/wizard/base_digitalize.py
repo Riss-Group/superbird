@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 import base64
 
 from odoo.exceptions import UserError
@@ -8,8 +8,49 @@ class BaseDigitalize(models.TransientModel):
     _name = 'base.digitalize'
     _description = 'Wizard to upload a file for OCR and update the current record'
 
-    file = fields.Binary(string="File", required=True)
+    file = fields.Binary(string="File", required=False)
     filename = fields.Char(string="Filename")
+    res_model = fields.Char(default=lambda self: self._context.get('active_model'))
+    res_id = fields.Integer(default=lambda self: self._context.get('active_id'))
+    attachment_ids = fields.Many2many('ir.attachment', string="Possible attachments", store=False, compute='_compute_attachment_ids')
+    attachment_id = fields.Many2one(
+        'ir.attachment',
+        string='Existing attachment',
+        domain="[('id', 'in', attachment_ids)]",
+        compute='_compute_attachment_id',
+        readonly=False
+    )
+
+    @api.depends('res_model', 'res_id')
+    def _compute_attachment_ids(self):
+        for rec in self:
+            record = self.env[rec.res_model].browse(rec.res_id)
+            if hasattr(record, 'attachment_ids'):
+                rec.attachment_ids = record.attachment_ids
+            else:
+                rec.attachment_ids = False
+
+    @api.depends('res_model', 'res_id')
+    def _compute_attachment_id(self):
+        for rec in self:
+            record = self.env[rec.res_model].browse(rec.res_id)
+            if hasattr(record, 'message_main_attachment_id'):
+                rec.attachment_id = record.message_main_attachment_id
+            else:
+                rec.attachment_ids = False
+
+    def action_load_attachment(self):
+        self.ensure_one()
+        if self.attachment_id:
+            self.file = self.attachment_id.datas
+            self.filename = self.attachment_id.name
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': self._name,
+                'res_id': self.id,
+                'view_mode': 'form',
+                'target': 'new',
+            }
 
     def action_confirm(self):
         self.ensure_one()
@@ -24,7 +65,13 @@ class BaseDigitalize(models.TransientModel):
             file_name=self.filename,
             force_company=record.company_id if hasattr(record, 'company_id') else False
         ).ocr_prompt(base64.b64decode(self.file))
-
+        if hasattr(record, 'attachment_ids') and self.file not in record.attachment_ids.mapped('datas'):
+            self.env['ir.attachment'].create({
+                'name': self.filename,
+                'datas': self.file,
+                'res_model': self.res_model,
+                'res_id': self.res_id,
+            })
         fields_data = data.get('fields', {})
         vals = self.convert_commands(record, fields_data)
 
