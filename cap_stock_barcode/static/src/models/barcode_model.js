@@ -218,7 +218,7 @@ patch(BarcodeModel.prototype, {
             }
             // Checks the quantity doesn't exceed the line's remaining quantity.
             if (currentLine.reserved_uom_qty && product.tracking === 'none') {
-                const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
+                const remainingQty = currentLine.reserved_uom_qty - currentLine.barcode_qty_done;
                 if (barcodeData.barcode_qty_done > remainingQty && this._shouldCreateLineOnExceed(currentLine)) {
                     // In this case, lowers the increment quantity and keeps
                     // the excess quantity to create a new line.

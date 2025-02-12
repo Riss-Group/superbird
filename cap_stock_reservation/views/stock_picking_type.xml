@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_picking_type_form_quarantine">
+        <field name="name">stock.picking.type.tree.quarantine</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_location_dest_id']" position="after">
+                <field name="quarantine_location_id"/>
+                <field name="bypass_reservation"/>
+            </xpath>
+            <xpath expr="//field[@name='restrict_scan_dest_location']" position="after">
+                <field name="split_lines"/>
+                <field name="machinegun_scan"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
