@@ -35,5 +35,4 @@ class StockPickingType(models.Model):
             action = self.env["ir.actions.act_window"]._for_xml_id("cap_stock_barcode.stock_picking_action_pick")
             return action
         else:
-            return self._get_action('stock.stock_picking_action_picking_type')
-
+            return super(StockPickingType, self).get_stock_picking_action_picking_type()
