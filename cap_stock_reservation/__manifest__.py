@@ -13,16 +13,16 @@
     'website': "https://www.captivea.com",
 
     'version': '0.1',
-    'depends': ['cap_stock_barcode'],
+    'depends': ['stock_barcode'],
 
     # always loaded
     'data': [
         'views/stock_picking_type.xml',
+        'views/stock_location.xml',
     ],
      'assets': {
         'web.assets_backend': [
             'cap_stock_reservation/static/src/**/*.js',
-            'cap_stock_reservation/static/src/*.js',
             'cap_stock_reservation/static/src/**/*.xml',
         ],
 

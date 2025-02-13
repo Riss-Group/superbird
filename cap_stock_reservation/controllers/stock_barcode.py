@@ -3,7 +3,8 @@
 
 from odoo import http, _
 from odoo.http import request
-
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class StockBarcodeController(http.Controller):
@@ -14,6 +15,7 @@ class StockBarcodeController(http.Controller):
 
     @http.route('/stock_barcode/reassign_moves', type='json', auth='user')
     def reassign_moves(self, model, res_id):
+
         if not res_id:
             target_pick = request.env[model].with_context(allowed_company_ids=self._get_allowed_company_ids())
         else:
@@ -23,14 +25,17 @@ class StockBarcodeController(http.Controller):
             products = target_pick.move_ids.mapped('product_id')
             all_product_reserved_moves = request.env['stock.move'].search([('state','in', ['assigned', 'partially_available']),('product_id','in',products.ids),
                                                                         ('picking_type_id','=',target_pick.picking_type_id.id)])
+            _logger.info('unreserving picking %s' % (all_product_reserved_moves.mapped('picking_id')))
             all_product_reserved_moves.mapped('picking_id').do_unreserve()
             request.env.cr.commit()
             # after removing all the reservations, reassign it back
             target_pick.action_assign()
+            _logger.info('check availability for pick %s' % (target_pick.name))
 
             picks = all_product_reserved_moves.filtered(lambda m:m.picking_id != target_pick).mapped('picking_id')
             for pick in picks:
                 try:
+                    _logger.info('check availability for pick %s' % (pick.name))
                     pick.action_assign()
                 except:
                     pass
