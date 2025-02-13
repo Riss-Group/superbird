@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from odoo import models, _
+from dataclasses import fields
+
+from odoo import models, _, fields
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
@@ -7,6 +9,20 @@ from odoo.tools import float_compare
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    has_oversize_part = fields.Boolean("Oversize Part", compute="_compute_has_oversize_part")
+    products_nbr = fields.Integer("Number of SKUs", compute="_compute_products_nbr")
+    overall_qty = fields.Float("Overall Quantities", compute="_compute_products_nbr")
+    partner_country_id = fields.Many2one(related="partner_id.country_id")
+    partner_street = fields.Char(related="partner_id.street")
+
+    def _compute_has_oversize_part(self):
+        for pick in self:
+            pick.has_oversize_part = any(p.product_id.is_oversize for p in pick.move_ids)
+
+    def _compute_products_nbr(self):
+        for pick in self:
+            pick.products_nbr = len(pick.move_ids.mapped('product_id')) or 0
+            pick.overall_qty = sum(pick.move_ids.mapped('quantity')) or 0
 
     def button_validate(self):
         for line in self.move_line_ids:
@@ -41,3 +57,4 @@ class StockPicking(models.Model):
             return move_line_ids
         else:
             return super(StockPicking, self)._package_move_lines(batch_pack)
+
