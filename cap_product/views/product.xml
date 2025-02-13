@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_product_product_form_inherited_cap_product" model="ir.ui.view">
+            <field name="name">product.product.form.inherited_cap_product</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='name']" position="before">
+                    <label for="default_code" string="Item Number"/>
+                    <h1>
+                        <div class="d-flex">
+                            <field class="text-break" name="default_code" options="{'line_breaks': False}" widget="text" placeholder="e.g. Cheese Burger"/>
+                        </div>
+                    </h1>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
