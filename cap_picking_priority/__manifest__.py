@@ -16,6 +16,7 @@ Long description of module's purpose
     'depends': ['sale_stock'],
     'data': [
         "views/sale_order.xml",
+        "views/res_partner.xml",
     ],
 
 }

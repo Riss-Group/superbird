@@ -14,3 +14,12 @@ class SaleOrder(models.Model):
         for rec in self:
             rec.picking_ids.write({'priority': "3" if rec.is_customer_pick_up else "1" })
         return res
+
+    @api.onchange('partner_id')
+    def _compute_sale_is_customer_pick_up(self):
+        for sale in self:
+            if sale.partner_id and sale.partner_id.is_customer_pick_up:
+                sale.is_customer_pick_up = True
+            else:
+                sale.is_customer_pick_up = False
+
