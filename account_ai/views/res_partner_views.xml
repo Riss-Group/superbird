@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_res_partner_form_inherit_ocr" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.ocr</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='banks']" position="after">
+                <group string="OCR Settings" name="ocr_settings">
+                    <field name="extra_instructions"/>
+                    <field name="ocr_template_move_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -60,18 +60,20 @@ class BaseDigitalize(models.TransientModel):
             return
 
         record = self.env[active_model].browse(active_id)
-        force_company = record.company_id if hasattr(record, 'company_id') else False
+        # force_company = record.company_id if hasattr(record, 'company_id') else False
         data = record.with_context(
             file_name=self.filename,
-            force_company=record.company_id if hasattr(record, 'company_id') else False
+            # force_company=record.company_id if hasattr(record, 'company_id') else False
         ).ocr_prompt(base64.b64decode(self.file))
         if hasattr(record, 'attachment_ids') and self.file not in record.attachment_ids.mapped('datas'):
-            self.env['ir.attachment'].create({
+            attachment = self.env['ir.attachment'].create({
                 'name': self.filename,
                 'datas': self.file,
                 'res_model': self.res_model,
                 'res_id': self.res_id,
             })
+            if hasattr(record, 'ocr_attachment_id'):
+                record.ocr_attachment_id = attachment
         fields_data = data.get('fields', {})
         vals = self.convert_commands(record, fields_data)
 
