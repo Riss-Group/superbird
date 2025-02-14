@@ -13,7 +13,7 @@
     'website': "https://www.captivea.com",
 
     'version': '0.1',
-    'depends': ['stock_barcode'],
+    'depends': ['stock_barcode','cap_stock_crossdock_location'],
 
     # always loaded
     'data': [

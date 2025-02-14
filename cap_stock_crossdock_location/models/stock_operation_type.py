@@ -11,3 +11,5 @@ class StockPickingType(models.Model):
     is_pick = fields.Boolean('Is Pick')
     is_pack = fields.Boolean('Is Pack')
 
+
+

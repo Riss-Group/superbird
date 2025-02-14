@@ -19,21 +19,23 @@ patch(LineComponent.prototype, {
     },
 
     get displayAvailableLocation(){
-        const bypass_reservation = this?.env?.model?.record?.picking_type_id?.bypass_reservation ? true : false
-        const jsonString = this.line.qty_onhand_in_locations.replace(/'/g, '"');
-        const locations = JSON.parse(jsonString);
-        const location_in_available_locations = locations.map(l=> l.id).includes(this.line.location_id.id)
-        return bypass_reservation && !location_in_available_locations
+        const is_putaway = this?.env?.model?.record?.picking_type_id?.is_put_away && this.line.qty_onhand_in_locations ? true : false
+        // the below code is not necessary anymore
+//        const bypass_reservation = this?.env?.model?.record?.picking_type_id?.bypass_reservation ? true : false
+//        const jsonString = this.line.qty_onhand_in_locations.replace(/'/g, '"');
+//        const locations = JSON.parse(jsonString);
+//        const location_in_available_locations = locations.map(l=> l.id).includes(this.line.location_id.id)
+//        return bypass_reservation && !location_in_available_locations
+        return is_putaway
     },
 
     get availableLocations(){
-        const jsonString = this.line.qty_onhand_in_locations.replace(/'/g, '"');
-        const locations = JSON.parse(jsonString);
-        return locations
+        return this.line.qty_onhand_in_locations
     },
 
     LocationPath(location){
-        return this._getLocationPath(this.env.model._defaultLocation(), location);
+        const default_location =  this?.env?.model?.record?.picking_type_id?.is_put_away ? this.env.model._defaultDestLocation() : this.env.model._defaultLocation()
+        return this._getLocationPath(default_location, location);
     },
 
 });

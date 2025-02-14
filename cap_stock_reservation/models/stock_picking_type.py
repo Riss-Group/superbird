@@ -12,7 +12,8 @@ class StockPickingType(models.Model):
 
 
     def _get_fields_stock_barcode(self):
-        return super()._get_fields_stock_barcode() + ['bypass_reservation']
+        return super()._get_fields_stock_barcode() + ['bypass_reservation', 'is_put_away', 'is_pick']
+
 
 
 
