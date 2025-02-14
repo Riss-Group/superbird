@@ -146,3 +146,20 @@ class SaleOrder(models.Model):
                                 ('warehouse_id.company_id', '=', company_id.id),])
         return types[0].id if types else False
 
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        for rec in self:
+            related_rfq = self.env['purchase.order'].search([('custom_sale_order_id', '=', rec.id)])
+            for po in related_rfq:
+                todos = {
+                    'res_id': po.id,
+                    'res_model_id': self.env['ir.model'].search([('model', '=', 'purchase.order')]).id,
+                    'user_id': po.user_id.id,
+                    'summary': 'Sale Order Confirmed',
+                    'note': 'Related Sale Order: %s has been confirmed' % (rec.name),
+                    'activity_type_id': 4,
+                    'date_deadline': datetime.today(),
+                    }
+                self.env['mail.activity'].create(todos)
+        return res
+        
