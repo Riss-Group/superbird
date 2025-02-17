@@ -60,7 +60,10 @@ class PurchaseOrderLine(models.Model):
         for line in self:
             supplier_location = self.env.ref('stock.stock_location_suppliers')
             if line.is_core_part:
-                qty_deliverd = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing' and m.location_dest_id == supplier_location).mapped('quantity')) or 0
+                print(sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing' and m.location_dest_id == supplier_location)
+                                   .mapped('quantity')))
+                qty_deliverd = sum(line.move_ids.filtered(lambda m: m.state == 'done' and m.picking_code == 'outgoing' and m.location_dest_id == supplier_location)
+                                   .mapped('quantity')) or 0
                 line.qty_received += line.core_parent_line_id.qty_received - qty_deliverd
 
     # def _prepare_stock_move_vals(self, picking, price_unit, product_uom_qty, product_uom):

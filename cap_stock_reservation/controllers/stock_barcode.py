@@ -26,7 +26,7 @@ class StockBarcodeController(http.Controller):
             all_product_reserved_moves = request.env['stock.move'].search([('state','in', ['assigned', 'partially_available']),('product_id','in',products.ids),
                                                                         ('picking_type_id','=',target_pick.picking_type_id.id)])
             _logger.info('unreserving picking %s' % (all_product_reserved_moves.mapped('picking_id')))
-            all_product_reserved_moves._do_unreserve()
+            all_product_reserved_moves.mapped('picking_id').do_unreserve()
             request.env.cr.commit()
             # after removing all the reservations, reassign it back
             target_pick.action_assign()

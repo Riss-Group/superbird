@@ -2,8 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from dateutil import relativedelta
-
+from dateutil.relativedelta import relativedelta
 
 class dirtyCoreReturn(models.TransientModel):
     _name = 'dirty_core.return'
@@ -40,15 +39,11 @@ class dirtyCoreReturn(models.TransientModel):
 
     def action_confirm(self):
         for rec in self:
-            if rec.model == 'purchase.order':
-                pickings = rec.create_purchase_return()
-                return pickings
-            else:
-                pickings = rec.sales_return()
-                return pickings
+            return rec.create_purchase_return() if rec.model == 'purchase.order' else rec.sales_return()
 
     def sales_return(self):
-        # we only need to assign a total of moves that have same quantities as we are returning
+        # because the returns are already created (using the dirty core route)
+        # we only need to assign a total of moves that have same quantities as what we are returning
         moves = self.select_moves_for_return(self.lines)
 
         try:
@@ -118,12 +113,12 @@ class dirtyCoreReturn(models.TransientModel):
                 line_uom = line.product_id.uom_id
                 procurements.append(line._create_procurement(product_qty, line_uom, values))
         if procurements:
-            self.env['procurement.group'].sudo().run(procurements)
+            self.env['procurement.group'].sudo().with_context({'create_moves_for_cores': True}).run(procurements)
 
         new_picking_ids = self.env['stock.picking'].search([('origin','=', self.core_return_id.name)])
         if new_picking_ids:
             if self.core_return_id:
-                # link to helpdesk ticket
+                # link to vendor core return record
                 self.core_return_id.picking_ids |= new_picking_ids
             result = self.env["ir.actions.actions"]._for_xml_id('stock.action_picking_tree_all')
             result['domain'] = [('id', 'in', new_picking_ids.ids)]
@@ -157,9 +152,14 @@ class dirtyCoreReturnLine(models.TransientModel):
         for line in self:
             line.allowed_quantity = 0
             if line.product_id:
-                suitable_order_lines = self.env[self.core_return_id.model].search([('state','in',['sale','purchase','done']),('partner_id', '=', self.core_return_id.partner_id.id)]).order_line
-                filtered_product_qty = suitable_order_lines.filtered(
-                    lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == line.product_id).mapped('qty_delivered' if self.core_return_id.model == 'sale.order' else 'qty_received')
+                suitable_order_lines = self.env[self.core_return_id.model].search([
+                    ('state','in',['sale','purchase','done']),
+                    ('partner_id', '=', self.core_return_id.partner_id.id)]).order_line
+                filtered_product_qty = (suitable_order_lines.filtered(
+                    lambda l: l.product_id.is_core_type
+                              and l.is_core_part
+                              and l.product_id == line.product_id).
+                                        mapped('qty_delivered' if self.core_return_id.model == 'sale.order' else 'qty_received'))
                 line.allowed_quantity = sum(filtered_product_qty) or 0
                 line.compute_original_moves(lines=suitable_order_lines)
 
@@ -169,18 +169,40 @@ class dirtyCoreReturnLine(models.TransientModel):
             raise ValidationError (f" Quantity Allowed is {self.allowed_quantity}")
         self._compute_quantity_allowed()
 
+    from odoo import fields
+    from dateutil.relativedelta import relativedelta
+
     def compute_original_moves(self, lines=False):
-        if lines:
-            if self.core_return_id.model == 'sale.order':
-                lines = lines.filtered(
-                    lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == self.product_id).move_ids.filtered(
-                    lambda m:m.picking_code == 'incoming' and m.state not in ['draft','cancel','done'] and m.create_date > fields.date.today() + relativedelta(days=365)).ids
-            elif self.core_return_id.model == 'purchase.order':
-                moves = lines.filtered(
-                    lambda l: l.product_id.is_core_type and l.is_core_part and l.product_id == self.product_id)
-                self.po_lines = self.get_po_lines(moves)
-                lines = False
-            self.original_moves = lines
+        if not lines:
+            return  # No need to proceed if lines is False
+
+        core_model = self.core_return_id.model
+
+        if core_model == 'sale.order':
+            self.original_moves = lines.filtered(
+                lambda l: (
+                        l.product_id.is_core_type and
+                        l.is_core_part and
+                        l.product_id == self.product_id
+                )
+            ).mapped('move_ids').filtered(
+                lambda m: (
+                        m.picking_code == 'incoming' and
+                        m.state not in {'draft', 'cancel', 'done'} and
+                        m.create_date.date() < (fields.Date.today() + relativedelta(days=365))
+                )
+            ).ids
+
+        elif core_model == 'purchase.order':
+            moves = lines.filtered(
+                lambda l: (
+                        l.product_id.is_core_type and
+                        l.is_core_part and
+                        l.product_id == self.product_id
+                )
+            )
+            self.po_lines = self.get_po_lines(moves)
+            self.original_moves = False  # Ensure consistency
 
     def get_po_lines(self,lines):
         for line in self:
