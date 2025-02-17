@@ -6,6 +6,21 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     state = fields.Selection(selection_add=[('revised', 'Revised')])
+    quote_name = fields.Char(string="Quote Name")
+    partner_shipping_id = fields.Many2one(
+        comodel_name='res.partner',
+        string="Delivery Address",
+        compute='_compute_partner_shipping_id',
+        store=True, readonly=False, required=True, precompute=True,
+        check_company=True,
+        index='btree_not_null', domain="[('type', '=', 'delivery')]")
+    partner_invoice_id = fields.Many2one(
+        comodel_name='res.partner',
+        string="Invoice Address",
+        compute='_compute_partner_invoice_id',
+        store=True, readonly=False, required=True, precompute=True,
+        check_company=True,
+        index='btree_not_null', domain="[('type', '=', 'invoice')]")
 
     def _prepare_revision_data(self, new_revision):
         vals = super()._prepare_revision_data(new_revision)

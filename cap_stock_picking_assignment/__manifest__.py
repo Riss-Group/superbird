@@ -15,6 +15,7 @@
     'data': [
         'views/stock_warehouse_views.xml',
         'views/stock_picking_views.xml',
+        'views/stock_orderpoint_views.xml'
     ],
     'installable': True,
     'auto_install': False,

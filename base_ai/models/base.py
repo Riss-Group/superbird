@@ -108,9 +108,9 @@ Extra Instructions:
         return response
 
     @api.model
-    def ocr_prompt(self, file_content):
+    def ocr_prompt(self, file_content, extra_instructions=""):
         ir_model = self.env['ir.model'].search([('model', '=', self._name)], limit=1)
-        extra_instructions = ir_model.extra_instructions_ocr or ""
+        extra_instructions = '\n'.join([ir_model.extra_instructions_ocr, extra_instructions]) if ir_model.extra_instructions_ocr and extra_instructions else ""
         json_structure_str = ir_model.get_json_structure()
 
         # file_name should be in context
@@ -150,7 +150,7 @@ Extra Instructions:
         system_prompt = "You are a helpful assistant."
 
         assistant_reply = ai_model.ai_prompt(prompt, system_prompt, None, [], ir_model.max_tokens, ir_model.temperature)
-        return extract_json_from_response(assistant_reply)
+        return self.extract_json_from_response(assistant_reply)
 
     def _perform_ocr_or_extraction(self, file_content, file_name):
         extension = os.path.splitext(file_name)[1].lower()
@@ -305,20 +305,21 @@ Extra Instructions:
         # Return the exposed fields as a JSON string
         return exposed_fields_data
 
-def extract_json_from_response(response):
-    patterns = [
-        r'```json\s*(\{.*\})\s*```',  # ```json { ... } ```
-        r'```(\{.*\})```',  # ```{ ... }```
-        r'(\{.*\})',  # { ... }
-    ]
+    @api.model
+    def extract_json_from_response(self, response):
+        patterns = [
+            r'```json\s*(\{.*\})\s*```',  # ```json { ... } ```
+            r'```(\{.*\})```',  # ```{ ... }```
+            r'(\{.*\})',  # { ... }
+        ]
 
-    for pattern in patterns:
-        match = re.search(pattern, response, re.DOTALL)
-        if match:
-            json_content = match.group(1)
-            try:
-                return json.loads(json_content)
-            except json.JSONDecodeError:
-                continue
+        for pattern in patterns:
+            match = re.search(pattern, response, re.DOTALL)
+            if match:
+                json_content = match.group(1)
+                try:
+                    return json.loads(json_content)
+                except json.JSONDecodeError:
+                    continue
 
-    raise ValueError("No valid JSON object found in the response.")
+        raise ValueError("No valid JSON object found in the response.")

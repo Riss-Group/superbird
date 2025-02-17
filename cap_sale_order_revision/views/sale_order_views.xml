@@ -96,7 +96,9 @@
             <field name="commitment_date" position="attributes">
                 <attribute name="readonly">state in ['cancel', 'locked', 'revised']</attribute>
             </field>
-
+             <xpath expr="//group[@name='partner_details']" position="inside">
+                 <field name="quote_name"/>
+             </xpath>
         </field>
     </record>
 
@@ -133,6 +135,17 @@
             <field name="opportunity_id" position="attributes">
                 <attribute name="readonly">state in ['revised']</attribute>
             </field>
+        </field>
+    </record>
+
+    <record id="view_order_tree_access_req" model="ir.ui.view">
+        <field name="name">sale.order.tree.access.req</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="name"]' position="after">
+                <field name="quote_name" optional="hide"/>
+            </xpath>
         </field>
     </record>
 </odoo>
