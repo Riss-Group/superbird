@@ -24,6 +24,6 @@ class StockMove(models.Model):
         ('1', 'Low'),
         ('2', 'Normal'),
         ('3', 'High'),
-        ('4', 'Very High')], string="Priority")
+        ('4', 'Very High')], string="Priority", default="1")
 
 

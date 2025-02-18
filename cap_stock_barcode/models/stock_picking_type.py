@@ -30,3 +30,9 @@ class StockPickingType(models.Model):
 
             record.quarantine_location_id = locations_per_company.get(record.company_id.id, False)
 
+    def get_stock_picking_action_picking_type(self):
+        if self.is_pick:
+            action = self.env["ir.actions.act_window"]._for_xml_id("cap_stock_barcode.stock_picking_action_pick")
+            return action
+        else:
+            return super(StockPickingType, self).get_stock_picking_action_picking_type()

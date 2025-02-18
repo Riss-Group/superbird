@@ -13,7 +13,7 @@
     'website': "https://www.captivea.com",
 
     'version': '0.1',
-    'depends': ['product_multi_barcode','product'],
+    'depends': ['product_multi_barcode','product','stock_delivery'],
 
     # always loaded
     'data': [
@@ -22,7 +22,8 @@
         'report/report_deliveryslip.xml',
         'wizard/product_label_layout.xml',
         'views/stock_picking_type.xml',
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
+        'views/product.xml'
     ],
      'assets': {
         'web.assets_backend': [

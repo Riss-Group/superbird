@@ -13,8 +13,10 @@ Long description of module's purpose
     'website': "https://www.captivea.com",
     'category': 'Uncategorized',
     'version': '0.1',
-    'depends': ['stock'],
+    'depends': ['sale_stock'],
     'data': [
+        "views/sale_order.xml",
+        "views/res_partner.xml",
     ],
 
 }

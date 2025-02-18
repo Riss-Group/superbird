@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_vendor_core_return_tree" model="ir.ui.view">
+        <field name="model">core.return</field>
+        <field name="arch" type="xml">
+            <tree>
+                  <field name="name"/>
+                  <field name="partner_id"/>
+                  <field name="date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_vendor_core_return_form" model="ir.ui.view">
+        <field name="model">core.return</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_open_dirty_cores_return" type="object" string="Return Dirty Cores" class="btn-primary o_list_button_save" display="always" invisible="picking_count != 0"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_picking"  type="object" icon="fa-truck" invisible="picking_count == 0">
+                            <field string="Returns" name="picking_ids" widget="statinfo" />
+                            <field name="picking_count" invisible="1" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1 class="d-flex">
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                      <field name="partner_id" domain="[('is_supplier','=', True)]" required="True" readonly="picking_count != 0"/>
+                      <field name="date" readonly="picking_ids != False"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_vendor_core_return">
+        <field name="name">Return Dirty Core</field>
+        <field name="res_model">core.return</field>
+    </record>
+    <menuitem
+        parent="purchase.menu_procurement_management"
+        id="menu_vendor_core_return" sequence="99" groups="cap_product_core_type.group_core_return"
+        action="action_vendor_core_return"/>
+</odoo>
