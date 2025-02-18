@@ -20,5 +20,9 @@
             <field name="padding">4</field>
             <field name="company_id" eval="False"/>
         </record>
+
+        <record model="res.groups" id="group_core_return">
+            <field name="name">Core Management</field>
+        </record>
     </data>
 </odoo>

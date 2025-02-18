@@ -49,6 +49,6 @@
     </record>
     <menuitem
         parent="purchase.menu_procurement_management"
-        id="menu_vendor_core_return" sequence="99"
+        id="menu_vendor_core_return" sequence="99" groups="cap_product_core_type.group_core_return"
         action="action_vendor_core_return"/>
 </odoo>
