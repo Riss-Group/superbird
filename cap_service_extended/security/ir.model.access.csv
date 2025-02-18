@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_vehicle_manufacturer_chassis_user,access.fleet.vehicle.manufacturer.chassis.user,model_fleet_vehicle_manufacturer_chassis,base.group_user,1,1,1,1
+access_fleet_vehicle_engine_user,access.fleet.vehicle.engine.user,model_fleet_vehicle_engine,base.group_user,1,1,1,1
+access_fleet_vehicle_transmission_user,access.fleet.vehicle.transmission.user,model_fleet_vehicle_transmission,base.group_user,1,1,1,1

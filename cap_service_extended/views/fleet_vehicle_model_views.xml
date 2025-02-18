@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="view_fleet_vehicle_model_form_inherit_cap_fleet" model="ir.ui.view">
+            <field name="name">fleet.vehicle.model.form.cap_fleet</field>
+            <field name="model">fleet.vehicle.model</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+            <field name="arch" type="xml">
+                <label for="brand_id" position="before">
+                    <label for="chassis_manufacturer_id"/>
+                    <h2>
+                        <field name="chassis_manufacturer_id"/>
+                    </h2>
+                </label>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+    <!-- Window Action for Chassis Manufacturers -->
+    <record id="action_fleet_vehicle_manufacturer_chassis" model="ir.actions.act_window">
+      <field name="name">Chassis Manufacturers</field>
+      <field name="res_model">fleet.vehicle.manufacturer.chassis</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a new chassis manufacturer.
+        </p>
+      </field>
+    </record>
+
+    <!-- Tree View for Chassis Manufacturers -->
+    <record id="view_fleet_vehicle_manufacturer_chassis_tree" model="ir.ui.view">
+      <field name="name">fleet.vehicle.manufacturer.chassis.tree</field>
+      <field name="model">fleet.vehicle.manufacturer.chassis</field>
+      <field name="arch" type="xml">
+        <tree string="Chassis Manufacturers">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Form View for Chassis Manufacturers -->
+    <record id="view_fleet_vehicle_manufacturer_chassis_form" model="ir.ui.view">
+      <field name="name">fleet.vehicle.manufacturer.chassis.form</field>
+      <field name="model">fleet.vehicle.manufacturer.chassis</field>
+      <field name="arch" type="xml">
+        <form string="Chassis Manufacturer">
+          <sheet>
+            <group>
+              <field name="name"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item for Chassis Manufacturers -->
+    <menuitem id="menu_fleet_vehicle_manufacturer_chassis"
+              name="Chassis Manufacturers"
+              parent="fleet.fleet_configuration"
+              action="action_fleet_vehicle_manufacturer_chassis"
+              sequence="10"/>
+  </data>
+</odoo>

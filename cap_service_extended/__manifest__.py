@@ -11,25 +11,16 @@
         """,
     'depends': [
         'cap_service',
-        # 'account',
-        # 'sale',
-        # 'stock',
-        # 'fleet',
-        # 'purchase',
-        # 'product',
-        # 'project',
-        # 'quality_control' ,
-        # 'sale_planning',
-        # 'sale_renting',
-        # 'sale_renting_sign',
-        # 'project_forecast',
-        # 'timesheet_grid'
     ],
     'data': [
         'views/fleet_vehicle_views.xml',
+        'views/fleet_vehicle_model_views.xml',
         'views/stock_picking_views.xml',
+        'views/fleet_vehicle_manufacturer_chassis_views.xml',
+        'views/fleet_vehicle_engine_views.xml',
+        'views/fleet_vehicle_transmission_views.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
     'auto_install': False,
-    'application': True,
 }
