@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Window Action for Vehicle Transmissions -->
+    <record id="action_fleet_vehicle_transmission" model="ir.actions.act_window">
+      <field name="name">Vehicle Transmissions</field>
+      <field name="res_model">fleet.vehicle.transmission</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a new transmission.
+        </p>
+      </field>
+    </record>
+
+    <!-- Tree View for Vehicle Transmissions -->
+    <record id="view_fleet_vehicle_transmission_tree" model="ir.ui.view">
+      <field name="name">fleet.vehicle.transmission.tree</field>
+      <field name="model">fleet.vehicle.transmission</field>
+      <field name="arch" type="xml">
+        <tree string="Vehicle Transmissions">
+          <field name="manufacturer"/>
+          <field name="model"/>
+          <field name="transmission_type"/>
+          <field name="speeds"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Form View for Vehicle Transmissions -->
+    <record id="view_fleet_vehicle_transmission_form" model="ir.ui.view">
+      <field name="name">fleet.vehicle.transmission.form</field>
+      <field name="model">fleet.vehicle.transmission</field>
+      <field name="arch" type="xml">
+        <form string="Vehicle Transmission">
+          <sheet>
+            <group>
+              <field name="manufacturer"/>
+              <field name="model"/>
+              <field name="transmission_type"/>
+              <field name="speeds"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item for Vehicle Transmissions -->
+    <menuitem id="menu_fleet_vehicle_transmission"
+              name="Vehicle Transmissions"
+              parent="fleet.fleet_configuration"
+              action="action_fleet_vehicle_transmission"
+              sequence="30"/>
+  </data>
+</odoo>

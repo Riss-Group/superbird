@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <record id="view_core_return_form" model="ir.ui.view">
+        <field name="name">Core Return Form</field>
+        <field name="model">dirty_core.return</field>
+        <field name="arch" type="xml">
+            <form>
+            <sheet>
+                <group>
+                    <field name="partner_id" readonly="1" invisible="model != 'sale.order'" required="model == 'sale.order'" domain="[('is_customer','=', True)]" string="Customer"/>
+                    <field name="partner_id" readonly="1" invisible="model != 'purchase.order'" required="model == 'purchase.order'" domain="[('is_supplier','=', True)]" string="Vendor"/>
+                    <field name="model" invisible="1" />
+                    <field name="ticket_id" invisible="1" />
+                    <field name="suitable_product_ids_domain" invisible="1" />
+                    <field name="suitable_product_ids" widget="many2many_tags" domain="suitable_product_ids_domain"/>
+                    <field name="put_in_batch" invisible="model != 'sale.order'"/>
+                </group>
+                <field name="lines" >
+                    <tree editable="top" create="1">
+                        <field name="product_id" options="{'no_create': True, 'no_open': True}" domain="suitable_product_ids_domain"/>
+                        <field name="suitable_product_ids_domain" column_invisible="1"/>
+                        <field name="core_return_id" column_invisible="1"/>
+                        <field name="original_moves" column_invisible="1"/>
+                        <field name="po_lines" column_invisible="1"/>
+                        <field name="quantity"/>
+                        <field name="allowed_quantity" readonly="1" optional="show"/>
+                    </tree>
+                </field>
+            </sheet>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn btn-primary" data-hotkey="q"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

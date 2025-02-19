@@ -12,5 +12,17 @@
             <field name="parent_id" ref="product.product_category_all"/>
             <field name="name">Core Part</field>
         </record>
+
+        <record id="seq_vendor_core_return" model="ir.sequence">
+            <field name="name">Dirty Core Return to Vendor</field>
+            <field name="code">core.return</field>
+            <field name="prefix">Return-Dirty Core/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record model="res.groups" id="group_core_return">
+            <field name="name">Core Management</field>
+        </record>
     </data>
 </odoo>

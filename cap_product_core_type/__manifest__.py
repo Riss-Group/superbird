@@ -16,13 +16,16 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_stock', 'purchase_stock','cap_pricelist'],
+    'depends': ['sale_stock', 'purchase_stock','cap_pricelist','helpdesk_stock'],
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'data/core_part_data.xml',
         'views/products.xml',
         'views/sale.xml',
+        'views/vendor_core_return.xml',
+        'wizards/core_returns.xml',
     ],
 }
 

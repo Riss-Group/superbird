@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import RedirectWarning, ValidationError
+from odoo.exceptions import RedirectWarning, ValidationError, UserError
 from odoo.tools.misc import formatLang, format_date
 
 
@@ -178,3 +178,35 @@ class AccountPayment(models.Model):
             return 18
         else:
             return 9
+
+    def do_print_checks(self):
+        # If there are multiple companies, handle each company separately
+        if len(self.company_id) > 1:
+            check_layouts = {}
+            for company in self.company_id:
+                check_layout = company.account_check_printing_layout
+                if not check_layout or check_layout == 'disabled':
+                    raise UserError(_("You have to choose a check layout for each company."))
+                check_layouts[company.id] = check_layout
+        else:
+            # For single company, use the layout directly
+            check_layout = self.company_id.account_check_printing_layout
+            if not check_layout or check_layout == 'disabled':
+                raise UserError(_("You have to choose a check layout for this company."))
+            check_layouts = {self.company_id.id: check_layout}
+
+        # Proceed with printing checks for each company
+        for company_id, check_layout in check_layouts.items():
+            report_action = self.env.ref(check_layout, False)
+            if not report_action:
+                raise UserError(
+                    _("Something went wrong with Check Layout, please select another layout in Invoicing/Accounting Settings and try again."))
+
+            self.write({'is_move_sent': True})
+
+            # Ensure report_action is not None and return it
+            action = report_action.report_action(self)
+            if not action:
+                raise UserError(_("Unable to generate the report. Please check the check layout configuration."))
+
+            return action

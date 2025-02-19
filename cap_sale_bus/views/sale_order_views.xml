@@ -1,0 +1,26 @@
+<!-- product_supercession/views/product_view.xml -->
+<odoo>
+
+    <record id="view_order_form_fleet_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.fleet.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="bus_line_id" invisible="not bus_line_id"/>
+                <field name="vehicle_year" invisible="not bus_line_id"/>
+                <field name="vehicle_make_id" invisible="not bus_line_id"/>
+                <field name="vehicle_model_id" invisible="not bus_line_id"/>
+            </field>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="before">
+                <field name="is_fleet_vehicle" column_invisible="1"/>
+                <field name="parent_id" column_invisible="1"/>
+                <field name="product_sub_qty" invisible="parent_id == False"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
