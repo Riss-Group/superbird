@@ -10,11 +10,11 @@
                 </xpath>
                 <xpath expr="//notebook//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='qty_invoiced']"
                        position="before">
-                    <field name="qty_invoiced_legacy" invisible="not is_legacy" optional="hide"
+                    <field name="qty_invoiced_legacy" column_invisible="not is_legacy" optional="hide"
                            readonly="parent.state != 'draft'"/>
                 </xpath>
                 <xpath expr="//notebook//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='qty_delivered']" position="before">
-                    <field name="qty_delivered_legacy" invisible="not is_legacy" optional="hide"
+                    <field name="qty_delivered_legacy" column_invisible="not is_legacy" optional="hide"
                            readonly="parent.state != 'draft'"/>
                     <field name="is_legacy" column_invisible="True"/>
                 </xpath>
