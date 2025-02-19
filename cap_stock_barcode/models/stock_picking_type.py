@@ -12,7 +12,7 @@ class StockPickingType(models.Model):
     machinegun_scan = fields.Boolean(string="machinegun Scan", default=False)
 
     def _get_fields_stock_barcode(self):
-        return super()._get_fields_stock_barcode() + ['split_lines', 'machinegun_scan', 'barcode_validation_full']
+        return super()._get_fields_stock_barcode() + ['split_lines', 'machinegun_scan', 'barcode_validation_full','restrict_scan_source_location']
 
 
     def _compute_scrap_location_id(self):
@@ -30,3 +30,9 @@ class StockPickingType(models.Model):
 
             record.quarantine_location_id = locations_per_company.get(record.company_id.id, False)
 
+    def get_stock_picking_action_picking_type(self):
+        if self.is_pick:
+            action = self.env["ir.actions.act_window"]._for_xml_id("cap_stock_barcode.stock_picking_action_pick")
+            return action
+        else:
+            return super(StockPickingType, self).get_stock_picking_action_picking_type()

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+
+    <t t-inherit="stock_barcode.LineSourceLocation" t-inherit-mode="extension">
+        <xpath expr="//div[@name='source_location']" position="before">
+           <div name="qty_onhand_in_locations" t-if="displayAvailableLocation" title="Available Location"
+                 t-attf-class="{{line.location_id.usage != 'internal' ? 'text-danger' : ''}} {{highlightLocation ? 'o_highlight' : ''}}">
+                <span class="o_line_source_location fst-italic text-muted">
+                    <t t-foreach="availableLocations" t-as="location" t-key="location.id">
+                        <t t-esc="LocationPath(location)"/>
+                        <span t-esc="location.name"
+                              t-attf-class="
+                                {{highlightLocation ? 'fw-bold' : ''}}
+                                {{line.location_id.usage != 'internal' ? 'text-danger' : 'text-black'}}"/>
+                        (<span t-esc="location.available_quantity"/>).
+                    </t>
+                </span>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

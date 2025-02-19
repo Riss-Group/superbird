@@ -9,4 +9,5 @@ class SaleOrderLine(models.Model):
 
     @api.depends('product_id', 'product_uom', 'product_uom_qty')
     def _compute_pricelist_item_id(self):
-        super(SaleOrderLine, self.with_context({'partner_id': self.order_id.partner_id,'quantity': self.product_uom_qty}))._compute_pricelist_item_id()
+        for rec in self:
+            super(SaleOrderLine, rec.with_context({'partner_id': rec.order_id.partner_id,'quantity': rec.product_uom_qty}))._compute_pricelist_item_id()

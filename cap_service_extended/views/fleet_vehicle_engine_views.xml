@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Window Action for Vehicle Engines -->
+    <record id="action_fleet_vehicle_engine" model="ir.actions.act_window">
+      <field name="name">Vehicle Engines</field>
+      <field name="res_model">fleet.vehicle.engine</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a new engine.
+        </p>
+      </field>
+    </record>
+
+    <!-- Tree View for Vehicle Engines -->
+    <record id="view_fleet_vehicle_engine_tree" model="ir.ui.view">
+      <field name="name">fleet.vehicle.engine.tree</field>
+      <field name="model">fleet.vehicle.engine</field>
+      <field name="arch" type="xml">
+        <tree string="Vehicle Engines">
+          <field name="manufacturer"/>
+          <field name="model"/>
+          <field name="size"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Form View for Vehicle Engines -->
+    <record id="view_fleet_vehicle_engine_form" model="ir.ui.view">
+      <field name="name">fleet.vehicle.engine.form</field>
+      <field name="model">fleet.vehicle.engine</field>
+      <field name="arch" type="xml">
+        <form string="Vehicle Engine">
+          <sheet>
+            <group>
+              <field name="manufacturer"/>
+              <field name="model"/>
+              <field name="size"/>
+              <field name="cylinders"/>
+              <field name="horsepower"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Item for Vehicle Engines -->
+    <menuitem id="menu_fleet_vehicle_engine"
+              name="Vehicle Engines"
+              parent="fleet.fleet_configuration"
+              action="action_fleet_vehicle_engine"
+              sequence="20"/>
+  </data>
+</odoo>

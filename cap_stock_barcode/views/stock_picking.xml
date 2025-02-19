@@ -14,9 +14,48 @@
             </xpath>
         </field>
     </record>
+
+    <record id="cap_stock_barcode_tree_view_pick" model="ir.ui.view">
+        <field name="name">stock.barcode.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="priority" eval="99" />
+        <field name="arch" type="xml">
+            <tree string="Picking list" sample="1">
+                <field name="company_id" column_invisible="True"/>
+                <field name="priority" optional="show" widget="priority" nolabel="1"/>
+                <field name="name" optional="hide"/>
+                <field name="origin" decoration-bf="1"/>
+                <field name="partner_id" optional="show"/>
+                <field name="partner_country_id" optional="show"/>
+                <field name="partner_street" optional="show"/>
+                <field name="has_oversize_part" optional="show"/>
+                <field name="weight" optional="show"/>
+                <field name="products_nbr" optional="show"/>
+                <field name="overall_qty" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user" readonly="state in ['cancel', 'done']"/>
+                <field name="state" optional="show" widget="badge"
+                       decoration-danger="state=='cancel'"
+                       decoration-info="state== 'assigned'"
+                       decoration-muted="state == 'draft'"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state not in ('draft','cancel','done','assigned')"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="stock_barcode.stock_picking_action_kanban" model="ir.actions.act_window">
         <field name="name">Operations</field>
         <field name="res_model">stock.picking</field>
         <field name="view_mode">kanban,form,tree</field>
     </record>
+
+    <record id="stock_picking_action_pick" model="ir.actions.act_window">
+        <field name="name">Operations</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="view_id" ref="cap_stock_barcode_tree_view_pick" />
+       <field name="context">{ 'tree_view_ref':'cap_stock_barcode_tree_view_pick'}</field>
+    </record>
+
+
 </odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+      <record id="cap_res_partner_form_view" model="ir.ui.view">
+        <field name="name">res.partner.form_cap</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.view_partner_property_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//field[@name='buyer_id']" position="after">
+                <field name="vendor_lead_time"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

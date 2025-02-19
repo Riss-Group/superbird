@@ -5,10 +5,43 @@
         <field name="model">fleet.vehicle</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='horsepower']" position="before">
+                <field name="engine_id"/>
+            </xpath>
+            <field name="horsepower" position="attributes">
+                <attribute name="readonly">engine_id != False</attribute>
+                <attribute name="store">True</attribute>
+            </field>
+            <xpath expr="//field[@name='transmission']" position="before">
+                <field name="transmission_id"/>
+            </xpath>
+            <field name="transmission" position="attributes">
+                <attribute name="readonly">transmission_id != False</attribute>
+                <attribute name="store">True</attribute>
+            </field>
+            <xpath expr="//sheet" position="inside">
+                <field name="manufacturing_status" readonly="1"/>
+            </xpath>
             <xpath expr="//notebook" position="inside">
-                <page name="dates" string="Dates">
+                <page name="sale_info" string="Sales" groups="sales_team.group_sale_salesman">
                     <group>
-                        <group name="purchase" string="Purchase Dates" groups="purchase.group_purchase_user">
+                        <group name="sale_docs" string="Sales Documents">
+                            <field name="sales_representative"/>
+                        </group>
+                        <group name="sale_dates" string="Sale Dates" >
+                            <field name="sold_customer_date" readonly="1"/>
+                            <field name="sales_requested_delivery_date" readonly="1"/>
+                            <field name="ready_for_delivery_date" readonly="1"/>
+                            <field name="customer_delivered_date" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="purchase_info" string="Purchase" groups="purchase.group_purchase_user">
+                    <group>
+                        <group name="purchase_docs" string="Purchase Documents">
+
+                        </group>
+                        <group name="purchase_dates" string="Purchase Dates">
                             <field name="chassis_built_date"/>
                             <field name="chassis_manufacturer_arrival_date"/>
                             <!-- Computed fields -->
@@ -19,19 +52,21 @@
                             <field name="dealer_arrival_date" readonly="1"/>
                             <field name="oem_ready_for_delivery_date"/>
                         </group>
-                        <group name="sale" string="Sale Dates" groups="sales_team.group_sale_salesman">
-                            <field name="sold_customer_date" readonly="1"/>
-                            <field name="sales_requested_delivery_date" readonly="1"/>
-                            <field name="ready_for_delivery_date" readonly="1"/>
-                            <field name="customer_delivered_date" readonly="1"/>
-                        </group>
                     </group>
+                </page>
+                <page name="accounting_info" string="Accounting &amp; Billing" groups="account.group_account_invoice">
                     <group>
-                        <group name="accounting" string="Accounting Dates" groups="account.group_account_invoice">
+                        <group name="accounting_docs" string="Accounting Documents"></group>
+                        <group name="accounting_dates" string="Accounting Dates">
                             <field name="oem_payment_due_date" readonly="1"/>
                             <field name="oem_body_payment_date"/>
                             <field name="oem_chassis_payment_date"/>
                         </group>
+                    </group>
+                </page>
+                <page name="service_info" string="Service">
+                    <group>
+                        <group name="service_docs" string="Service Documents"></group>
                         <group name="service" string="Service Date">
                             <!-- Computed field -->
                             <field name="ready_for_inspection_date" readonly="1"/>

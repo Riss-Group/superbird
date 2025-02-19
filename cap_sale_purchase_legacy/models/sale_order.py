@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    is_legacy = fields.Boolean("Is legacy")
+    is_legacy = fields.Boolean("Is legacy", readonly=True, store=True, default=False)
 
 
 class SaleOrderLine(models.Model):

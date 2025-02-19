@@ -6,8 +6,23 @@
             <form string="Digitalize Document">
                 <sheet>
                     <group>
-                        <field name="file" filename="filename"/>
-                        <field name="filename" invisible="1"/>
+                        <group>
+                            <label for="file" string="New File"/>
+                            <div>
+                                <field name="file" filename="filename"/>
+                                <field name="filename" invisible="1"/>
+                            </div>
+                        </group>
+                        <group invisible="not attachment_ids">
+                            <field name="attachment_ids" invisible="1"/>
+                            <field name="res_model" invisible="1"/>
+                            <field name="res_id" invisible="1"/>
+                            <label for="attachment_id"/>
+                            <div>
+                                <field name="attachment_id" class="oe_inline"/>
+                                <button name="action_load_attachment" string="Load" type="object" class="oe_inline" icon="fa-arrow-left"/>
+                            </div>
+                        </group>
                     </group>
                 </sheet>
                 <footer>

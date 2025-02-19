@@ -5,6 +5,31 @@ from odoo import  models, fields, api, _
 class FleetVehicle(models.Model):
     _inherit = 'fleet.vehicle'
 
+    # Technical info fields
+    manufacturing_status = fields.Char(
+        string="Manufacturing Status",
+        readonly=True,
+        help="This field is updated nightly from the OEM production system."
+    )
+    engine_id = fields.Many2one(
+        'fleet.vehicle.engine',
+        string="Engine",
+        help="Select the engine information."
+    )
+    transmission_id = fields.Many2one(
+        'fleet.vehicle.transmission',
+        string="Transmission",
+        help="Select the transmission information."
+    )
+
+    @api.depends('transmission_id', 'transmission_id.transmission_type', 'engine_id', 'engine_id.horsepower')
+    def _compute_model_fields(self):
+        super()._compute_model_fields()
+        for rec in self.filtered(lambda x: x.engine_id and x.engine_id.horsepower):
+            rec.horsepower = rec.engine_id.horsepower
+        for rec in self.filtered(lambda x: x.transmission_id and x.transmission_id.transmission_type):
+            rec.transmission = rec.transmission_id.transmission_type
+
     # purchase fields
     chassis_built_date = fields.Date('Chassis Built Date')
     chassis_manufacturer_arrival_date = fields.Date('Chassis Manufacturer Arrival Date')
@@ -17,6 +42,12 @@ class FleetVehicle(models.Model):
 
     # sales field
     sold_customer_date = fields.Date('Sold Customer Date', compute='_compute_dates', store=True, readonly=False)
+    sales_representative = fields.Many2one(
+        'res.users',
+        string="Sales Representative",
+        help="The representative who sold the bus.",
+        compute = '_compute_dates', store = True, readonly = False
+    )
     sales_requested_delivery_date = fields.Date('Sales Requested Delivery Date', compute='_compute_dates', store=True, readonly=False)
     ready_for_delivery_date = fields.Date('Ready for Delivery Date', compute='_compute_dates', store=True, readonly=False)
     customer_delivered_date = fields.Date('Customer Delivered Date', compute='_compute_dates', store=True, readonly=False)
@@ -54,6 +85,7 @@ class FleetVehicle(models.Model):
             sales_requested_delivery_date = False
             ready_for_delivery_date = False
             customer_delivered_date = False
+            sales_representative = False
             for move_line in rec.sudo().fleet_move_line_ids:
                 if move_line.picking_type_id.code == 'incoming':
                     purchase_order_ids = move_line.move_id.purchase_line_id.mapped('order_id')
@@ -65,6 +97,7 @@ class FleetVehicle(models.Model):
                 if move_line.picking_type_id.code == 'outgoing':
                     sale_order_id = move_line.move_id.sale_line_id.mapped('order_id')
                     if sale_order_id:
+                        sales_representative = sale_order_id.user_id
                         sold_customer_date = sale_order_id[0].date_order or False
                         sales_requested_delivery_date = sale_order_id[0].commitment_date or False
                     ready_for_delivery_date = move_line.move_id.date or False
@@ -75,6 +108,7 @@ class FleetVehicle(models.Model):
             rec.oem_payment_due_date = oem_payment_due_date
             rec.dealer_arrival_date = dealer_arrival_date
             rec.sold_customer_date = sold_customer_date
+            rec.sales_representative = sales_representative
             rec.sales_requested_delivery_date = sales_requested_delivery_date
             rec.ready_for_delivery_date = ready_for_delivery_date
             rec.customer_delivered_date = customer_delivered_date

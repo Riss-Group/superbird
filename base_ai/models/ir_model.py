@@ -54,15 +54,15 @@ class IrModel(models.Model):
         default=2
     )
 
-    def get_json_structure(self):
+    def get_json_structure(self, only_fields=[]):
         self.ensure_one()
         data = {
             'model': self.model,
-            'fields': self._build_field_structure(self.ai_exposed_field_ids)
+            'fields': self._build_field_structure(self.ai_exposed_field_ids, only_fields=only_fields)
         }
         return json.dumps(data, indent=2)
 
-    def _build_field_structure(self, field_records, depth=0):
+    def _build_field_structure(self, field_records, only_fields=[], depth=0):
         self.ensure_one()
         max_depth = self.max_depth or 2
         if depth > max_depth:
@@ -97,9 +97,8 @@ class IrModel(models.Model):
                             related_exposed_fields, depth=depth+1
                         )
                         field_info['exposed_fields'] = nested_fields
-
-            fields_data[field_rec.name] = field_info
-
+            if not only_fields or field_rec.name in only_fields:
+                fields_data[field_rec.name] = field_info
         return fields_data
 
     def _get_possible_values(self, model_name, field_records, related_model_record, depth=0):

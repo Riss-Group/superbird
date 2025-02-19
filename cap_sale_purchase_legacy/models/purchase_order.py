@@ -6,9 +6,7 @@ from odoo import api, fields, models, _
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    is_legacy = fields.Boolean("Is legacy")
-
-
+    is_legacy = fields.Boolean("Is legacy", readonly=True, store=True, default=False)
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
