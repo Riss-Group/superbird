@@ -12,8 +12,6 @@
         </xpath>
     </template>
     <template id="custom_products_breadcrumb" inherit_id="website_sale.products_breadcrumb">
-        <xpath expr="//ol" position="attributes">
-            <attribute name="class">d-none</attribute>
-        </xpath>
+        <xpath expr="//ol" position="replace" />
     </template>
 </odoo>
