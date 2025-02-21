@@ -6,7 +6,7 @@
     """,
     'version': '1.1',
     'author': 'captivea-rojo',
-    'depends': ['website_sale'],
+    'depends': ['emipro_theme_base','website_sale'],
     'data': [
         'views/custom_templates.xml',
         'views/website_templates.xml',
