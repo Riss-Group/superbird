@@ -103,7 +103,7 @@ class ResPartner(models.Model):
                     f"and/or Credit Limits has begun."
                 )
 
-        elif all(partner.waiting_on_approval for partner in self) and self.env.context.get('origin') != 'approval.request':
+        elif self and all(partner.waiting_on_approval for partner in self) and self.env.context.get('origin') != 'approval.request':
             raise UserError("There is already an Approval for this Contact's Accounting Changes.")
 
         return super(ResPartner, self).write(vals)
