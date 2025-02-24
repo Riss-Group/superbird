@@ -1,0 +1,32 @@
+.categories-list , .children-categories-list {
+    .card {
+        aspect-ratio: 1/1;
+        .card-img-top {
+            height: 80%;
+        }
+        .card-body {
+            a {
+                font-size: 12px;
+                color: var(--o-color-5) !important;
+            }
+        }
+    }
+
+    #products_grid .o_wsale_products_grid_table_wrapper {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        .table:not(.o_wsale_modal_table) td {
+            padding: 0 !important;
+            border: 0.5px solid grey;
+        }
+    }
+}
+
+.breadcrumb {
+    margin-bottom: 5rem;
+    a {
+        font-weight: 600;
+        color: var(--o-color-5);
+        text-decoration: none;
+    }
+}
