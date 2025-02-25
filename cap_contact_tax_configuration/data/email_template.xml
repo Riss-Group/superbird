@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="email_template_exemption_certificate_expiration_notification" model="mail.template">
+        <field name="name">Exemption Certificate Expiration Notification</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="subject">Action Required: Follow-Up on Expiring Tax Exemption Certificate</field>
+        <field name="email_from">${(object.company_id.email or 'no-reply@example.com')|safe}</field>
+        <field name="body_html"><![CDATA[
+            <p>Dear Accounting Team,</p>
+            <p>This is a reminder that the <strong>tax exemption certificate</strong> for
+               <strong> <span t-out="(object.display_name or '') or ''"> </strong> is set to expire on
+               <strong> <span t-out="(object.exemption_expiration_date or '') or ''"> </strong>.</p>
+            <p>Please reach out to the client to request an updated certificate to ensure continued compliance and avoid any tax-related issues.</p>
+            <p>Thank you.</p>
+        ]]></field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+</odoo>
