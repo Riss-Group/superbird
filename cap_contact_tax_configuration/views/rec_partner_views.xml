@@ -9,6 +9,13 @@
             <xpath expr="//group[@name='misc']" position="inside">
                 <field name="is_tax_applicable" readonly="parent_id" required="not parent_id and is_customer or is_supplier"/>
             </xpath>
+            <xpath expr="//field[@name='property_account_position_id']" position="after">
+                <field name="tax_exempt_reason" invisible="not is_tax_applicable == 'no'"/>
+                <field name="tax_exemption_certificate" invisible="not is_tax_applicable == 'no'" filename="certificate_name" widget="binary"/>
+                <field name="certificate_name" invisible="1"/>
+                <field name="exemption_expiration_date" invisible="not is_tax_applicable == 'no'"/>
+                <field name="exemption_certificate_number" invisible="not is_tax_applicable == 'no'"/>
+            </xpath>
         </field>
     </record>
     <record id="view_partner_property_form_inherited_1" model="ir.ui.view">

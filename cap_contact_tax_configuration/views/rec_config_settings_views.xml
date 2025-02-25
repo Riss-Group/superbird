@@ -12,6 +12,14 @@
                          company_dependent="1">
                     <field name="tax_exemption_fiscal_position_id"/>
                 </setting>
+                <setting id="exemption_notification_user_ids" groups="account.group_account_user"
+                         help="Enter one or more email addresses separated by commas."
+                         company_dependent="1">
+                    <field name="exemption_notification_user_ids"
+                           widget="many2many_avatar_user"
+                           domain="[('share', '=', False)]"
+                           options="{'no_create_edit': True, 'no_create': True}" force_save="1"/>
+                </setting>
             </xpath>
         </field>
     </record>
