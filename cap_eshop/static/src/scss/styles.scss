@@ -1,32 +1,76 @@
 .categories-list , .children-categories-list {
-    .card {
-        aspect-ratio: 1/1;
-        .card-img-top {
-            height: 80%;
+    padding-top: 1rem;
+    .category-item {
+        margin-top: 3rem !important;
+        margin-bottom: 3rem !important;
+        > a {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            font-size: 2rem;
+            color: var(--o-color-5);
+            font-weight: 600;
         }
-        .card-body {
+    }
+    .eshop-categories-list {
+        li {
+            margin-bottom: 10px;
             a {
-                font-size: 12px;
-                color: var(--o-color-5) !important;
+                text-decoration: none;
             }
         }
-    }
-
-    #products_grid .o_wsale_products_grid_table_wrapper {
-        margin-left: 0px !important;
-        margin-right: 0px !important;
-        .table:not(.o_wsale_modal_table) td {
-            padding: 0 !important;
-            border: 0.5px solid grey;
+        @media (max-width: 768px) {
+            display: none;
         }
     }
-}
-
-.breadcrumb {
-    margin-bottom: 5rem;
-    a {
-        font-weight: 600;
-        color: var(--o-color-5);
-        text-decoration: none;
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        a.card {
+            padding: 0px;
+            text-align: center;
+            border-radius: 0px;
+            text-decoration: none;
+            aspect-ratio: 1/1;
+            font-weight: 500;
+            .card-img-top {
+                height: 80%;
+                object-fit: contain;
+            }
+            .card-body {
+                a {
+                    font-size: 12px;
+                    color: var(--o-color-5) !important;
+                }
+            }
+            @media (max-width: 768px) {
+                flex-direction: row !important;
+                height: 120px;
+                text-align: left;
+                align-items: center;
+                .card-img-top {
+                    width: 40%;
+                }
+            }
+        }
+      
+        @media (max-width: 768px) {
+          flex-direction: column !important;
+        }
+    }
+    .breadcrumb {
+        width: 100% !important;
+        padding: 0 !important;
+        font-size: 0.875rem !important;
+        margin-bottom: 5rem;
+        a {
+            font-weight: 600;
+            color: var(--o-color-5);
+            text-decoration: none;
+        }
+      
+        @media (min-width: 768px) {
+          display: flex !important;
+        }
     }
 }
