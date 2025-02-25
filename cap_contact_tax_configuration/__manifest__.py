@@ -13,8 +13,12 @@
         'base', 'account', 'l10n_ca'
         ],
     'data': [
+        'security/ir.model.access.csv',
+        'data/cron.xml',
+        'data/email_template.xml',
         'views/rec_config_settings_views.xml',
         'views/rec_partner_views.xml',
+        'views/tax_exempt_reason_views.xml',
     ],
     'installable': True,
     'auto_install': False,
