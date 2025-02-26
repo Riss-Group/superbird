@@ -42,7 +42,7 @@ class CustomWebsiteSaleExt(WebsiteSaleExt):
             category_item = Category.search([('id', '=', int(category))], limit=1)
             if not category_item or not category_item.can_access_from_current_website():
                 raise NotFound()
-            category_children = Category.search([('parent_id', '=', category_item.id)])
+            category_children = Category.search([('parent_id', '=', category_item.id)], order="sequence asc")
             category_products = []
             if category_item.child_id:
                 values = {
@@ -53,11 +53,11 @@ class CustomWebsiteSaleExt(WebsiteSaleExt):
         else:
             category = Category
             Categories = request.env['product.public.category']
-            categories = Categories.search([])
+            categories = Categories.search([], order="sequence asc")
             category_products = []
             for category in categories:
                 if not category.parent_id and category.child_id:
-                    child_categories = category.child_id
+                    child_categories = category.child_id.sorted(lambda c: c.sequence)
                     category_products.append({
                         'category': category,
                         'children': child_categories,
