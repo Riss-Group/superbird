@@ -76,6 +76,7 @@
                                      <field name="name" widget="section_and_note_text" optional="show"/>
                                     <field name="quantity"/>
                                     <field name="unit_price"/>
+                                    <field name="discount"/>
                                     <field name="claim_for"/>
                                     <field name="subtotal"/>
                                 </tree>

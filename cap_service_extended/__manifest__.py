@@ -19,6 +19,7 @@
         'views/fleet_vehicle_manufacturer_chassis_views.xml',
         'views/fleet_vehicle_engine_views.xml',
         'views/fleet_vehicle_transmission_views.xml',
+        'views/res_partner_views.xml',
         'security/ir.model.access.csv'
     ],
     'installable': True,

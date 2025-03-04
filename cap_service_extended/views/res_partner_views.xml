@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_partner_form_inherit1">
+    <field name="name">view.partner.form.inherit1</field>
+    <field name="model">res.partner</field>
+    <field name="priority">46</field>
+    <field name="inherit_id" ref="base.view_partner_form" />
+    <field name="arch" type="xml">
+        <div name="button_box" position="inside">
+            <button name="action_fleet_vehicle_ids"
+                    type="object"
+                    string="Fleet"
+                    class="oe_stat_button"
+                    icon="fa-car">
+            </button>
+        </div>
+    </field>
+    </record>
+</odoo>

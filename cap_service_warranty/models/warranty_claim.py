@@ -99,10 +99,12 @@ class WarrantyClaim(models.Model):
 
     def action_create_invoice(self):
         for rec in self:
-            invoice = self.env['account.move'].sudo().create(
-                rec._prepare_invoice_values(rec, rec.warranty_claim_line_ids)
-            )
-            rec.state = 'in_payment'
+            warranty_claim_line_ids = rec.warranty_claim_line_ids.filtered(lambda line: not line.service_order_line_id.fully_invoiced)
+            if warranty_claim_line_ids and any(not line.display_type == 'line_section' for line in warranty_claim_line_ids):
+                invoice = self.env['account.move'].sudo().create(
+                    rec._prepare_invoice_values(rec, warranty_claim_line_ids)
+                )
+                rec.state = 'in_payment'
         return True
 
     def _prepare_invoice_values(self, order, wc_lines):
@@ -217,7 +219,7 @@ class WarrantyClaimLine(models.Model):
 
     warranty_claim_id = fields.Many2one('warranty.claim', string="Warranty claim")
     product_id = fields.Many2one('product.product', string="Product")
-    quantity = fields.Integer(string="Quantity")
+    quantity = fields.Float(string="Quantity")
     unit_price = fields.Float(string="Unit Price")
     claim_for = fields.Selection(selection=[('product', 'Product'),('labor', 'Labor')], string="Claim For")
     subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
@@ -228,6 +230,7 @@ class WarrantyClaimLine(models.Model):
     name = fields.Text(string="Description", compute='_compute_name', store=True, readonly=False, required=True,
                        precompute=True)
     display_type = fields.Selection(selection=[('line_section', "Section"), ('line_note', "Note")], default=False)
+    discount = fields.Float(string='Discount (%)', default=0.0)
 
     @api.depends('product_id')
     def _compute_name(self):
@@ -235,22 +238,32 @@ class WarrantyClaimLine(models.Model):
             if record.product_id:
                 record.name = record.product_id.get_product_multiline_description_sale()
 
-    @api.depends('unit_price', 'quantity')
+    @api.depends('unit_price', 'quantity', 'discount')
     def _compute_subtotal(self):
         for record in self:
-            record.subtotal = record.quantity * record.unit_price
+            discount_amount = (record.unit_price * record.discount) / 100
+            record.subtotal = record.quantity * (record.unit_price - discount_amount)
 
     def _prepare_invoice_line(self):
         self.ensure_one()
-        res = {
-            'display_type': 'product',
-            'name': self.product_id.name,
-            'product_id': self.product_id.id,
-            'product_uom_id': self.product_id.uom_id.id,
-            'quantity': self.quantity,
-            'price_unit': self.unit_price,
-            'warranty_claim_line_ids': [Command.link(self.id)],
-        }
+        res = {}
+        if self.display_type == 'line_section':
+            res = {
+                'name': self.name,
+                'display_type': 'line_section',
+                'warranty_claim_line_ids': [Command.link(self.id)],
+            }
+        else:
+            res = {
+                'display_type': 'product',
+                'name': self.product_id.name,
+                'product_id': self.product_id.id,
+                'product_uom_id': self.product_id.uom_id.id,
+                'quantity': self.quantity,
+                'price_unit': self.unit_price,
+                'discount': self.discount,
+                'warranty_claim_line_ids': [Command.link(self.id)],
+            }
         return res
 
     def _prepare_return_line(self):

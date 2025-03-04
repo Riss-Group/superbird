@@ -9,7 +9,11 @@ class ServiceOrder(models.Model):
 
     def action_claim_warranty(self):
        self.ensure_one()
-       service_order_line = self.service_order_lines.filtered(lambda x: x.ttype == 'Warranty' and x.warranty_partner_id)
+       service_order_line = self.service_order_lines.filtered(lambda x: x.ttype == 'Warranty')
+       if service_order_line:
+           partner_missing_service_order_line = service_order_line.filtered(lambda y: not y.warranty_partner_id)
+           if partner_missing_service_order_line:
+               raise UserError(_("Missing warranty partner for line type 'Warranty'"))
        warranty_partner_ids = service_order_line.mapped('warranty_partner_id')
        for warranty_partner in warranty_partner_ids:
            if self.warranty_claim_ids.filtered(lambda x: x.partner_id == warranty_partner and x.state != 'cancel'):
