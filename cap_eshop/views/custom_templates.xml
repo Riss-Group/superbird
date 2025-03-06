@@ -1,16 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="custom_products_page" inherit_id="website_sale.products_item">
-        <xpath expr="//div[@class='product_price']" position="replace" />
-        <xpath expr="//div[hasclass('o_wsale_product_information_text')]" position="attributes">
-            <attribute name="class">o_wsale_products_item_title mb-2 text-break text-center</attribute>
+        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="replace">
+            <div class="o_wsale_product_information">
+                <div class="p-2 te_shop_icon">
+                    <div class="o_wsale_product_information_text flex-grow-1">
+                        <h6 class="o_wsale_products_item_title mb-2 text-truncate">
+                            <a class="text-primary text-decoration-none" itemprop="name"
+                               t-att-href="product_href"
+                               t-att-content="product.name" t-field="product.name"/>
+                            <a t-if="not product.website_published" role="button" t-att-href="product_href"
+                               class="btn btn-sm btn-danger" title="This product is unpublished.">
+                                Unpublished
+                            </a>
+                        </h6>
+                    </div>
+                    <div class="o_wsale_product_sub pb-1">
+                        <t t-set="template_price_vals" t-value="get_product_prices(product)"/>
+                        <div class="product_price" itemprop="offers" itemscope="itemscope"
+                             t-if="website.display_product_price() and not request.env.user._is_public()"
+                             itemtype="http://schema.org/Offer">
+                            <span class="h6 mb-0"
+                                  t-if="template_price_vals['price_reduce'] or not website.prevent_zero_price_sale"
+                                  t-esc="template_price_vals['price_reduce']"
+                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            <span class="h6 mb-0" t-else="" t-field="website.prevent_zero_price_sale_text"/>
+                            <t t-if="'base_price' in template_price_vals and (template_price_vals['base_price'] &gt; template_price_vals['price_reduce']) and (template_price_vals['price_reduce'] or not website.prevent_zero_price_sale)">
+                                <del t-attf-class="small text-muted me-1 h6 mb-0" style="white-space: nowrap;"
+                                      t-esc="template_price_vals['base_price']"
+                                        t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            </t>
+                            <span itemprop="price" style="display:none;" t-esc="template_price_vals['price_reduce']"/>
+                            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                            <t t-set="combination_info" t-value="product._get_combination_info()"/>
+                            <div t-attf-class="te_discount {{'' if combination_info['has_discounted_price'] else 'd-none'}} d-inline-block fw-normal">
+                                <t t-set="difference" t-value="round(combination_info['list_price'] - combination_info['price'],2)"/>
+                                <t t-set="discount" t-value="round(difference*100/combination_info['list_price']) if combination_info['list_price'] &gt; 0 else 0"/>
+                                <div class="te_percentage">
+                                    <span class="percent_val" t-esc="'%s'%(discount)"/>% Off
+                                </div>
+                            </div>
+                        </div>
+                        <t t-call="theme_clarico_vega.b2b_hide_details_msg" t-if="website.display_b2b_message()"/>
+                    </div>
+                    <div class="oe_subdescription text-muted small sub_desc" contenteditable="false"
+                         t-if="request.website.viewref('website_sale.products_description').active">
+                            <div t-if="product.description_sale" itemprop="description" t-field="product.description_sale"/>
+                            <div t-else="" itemprop="description"/>
+                    </div>
+                    <div class="btn btn-secondary show-popup" data-bs-toggle="modal" data-bs-target="#popup">Open popup</div>
+                     <p t-if="not request.env.user._is_public()" class="product-default-code" t-esc="product.default_code" />
+                    <p t-if="not request.env.user._is_public()" class="product-qty-available"> <i class="fa fa-check" aria-hidden="true"></i> <t t-esc="product.qty_available"/> in stock</p>
+                    <div t-if="not request.env.user._is_public()" class="row product-add-to-cart">
+                        <div class="col">
+                            $ <t t-esc="product.base_unit_price" /> <br /> / Unit
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control quantity text-center" data-min="1" name="add_qty" value="1" />
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_wsale_product_btn">
+                    <t t-if="is_view_active('theme_clarico_vega.render_quick_view')">
+                        <a title="Quick View" class="btn btn-secondary quick-view-a te_quick_view card_hover_btn"
+                           t-att-data-id="'%s' % product.id">
+                            <span class="fa fa-eye"/>
+                        </a>
+                    </t>
+                    <t t-if="request.website.viewref('website_sale.products_add_to_cart').active">
+                        <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+                        <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
+                        <t t-if="product_variant_id and template_price_vals['price_reduce'] or not website.prevent_zero_price_sale">
+                            <a t-if="product._website_show_quick_add() and not product.remove_cart_button()"
+                               href="#" role="button" class="btn btn-primary a-submit" aria-label="Shopping cart"
+                               title="Shopping cart" t-att-data-id="product.id">
+                                <span class="fa fa-shopping-cart"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+            <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popupLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popupLabel">Popup title</h5>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </xpath>
     </template>
-    <template id="custom_products_pager" inherit_id="website_sale.products">
+    <!-- <template id="custom_products_pager" inherit_id="website_sale.products">
         <xpath expr="//div[hasclass('o_wsale_products_main_row')]" position="before">
             <t t-call="cap_eshop.breadcrumb" />
         </xpath>
-    </template>
+    </template> -->
     <template id="custom_products_breadcrumb" inherit_id="website_sale.products_breadcrumb">
         <xpath expr="//ol" position="attributes">
             <attribute name="class">d-none</attribute>
