@@ -16,6 +16,7 @@
         'security/ir.model.access.csv',
         'data/cron.xml',
         'data/email_template.xml',
+        'views/account_fiscal_position_views.xml',
         'views/rec_config_settings_views.xml',
         'views/rec_partner_views.xml',
         'views/tax_exempt_reason_views.xml',
