@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_account_position_form_inherit_tax_exempt" model="ir.ui.view">
+        <field name="name">view.account.position.form.inherit.tax.exempt</field>
+        <field name="model">account.fiscal.position</field>
+        <field name="priority">25</field>
+        <field name="inherit_id" ref="account.view_account_position_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]/group[1]" position="inside">
+                <field name="is_tax_exempt"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

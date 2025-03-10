@@ -17,6 +17,8 @@ class ResPartner(models.Model):
                                             company_dependent=True)
     exemption_certificate_number = fields.Char('Certificate Number', help="Enter the certificate number.",
                                                company_dependent=True)
+    is_tax_exempt = fields.Boolean(string='Tax Exempt?', related='property_account_position_id.is_tax_exempt',
+                                   company_dependent=True)
 
     @api.model
     def create(self, vals):
@@ -37,26 +39,17 @@ class ResPartner(models.Model):
                         "GST/HST Number and PST Number are required for Canadian companies when Tax Applicable is set to Yes.")
             if rec.is_tax_applicable == 'yes' and self.env.company.country_id.code == 'US' and not rec.vat:
                 raise ValidationError("Tax ID is required for US companies when Tax Applicable is set to Yes.")
-            if rec.is_tax_applicable == 'no' and self.env.company.country_id.code in ['CA', 'US']:
-                if not rec.tax_exempt_reason:
-                    raise ValidationError("Tax Exemption Reason is required!")
-                if not rec.tax_exemption_certificate:
-                    raise ValidationError("Tax Exemption Certificate is required!")
-                if not rec.exemption_expiration_date:
-                    raise ValidationError("Tax Exemption Expiration Date is required!")
-                if not rec.exemption_certificate_number:
-                    raise ValidationError("Tax Exemption Certificate Number is required!")
 
-    @api.constrains('is_tax_applicable')
+    @api.onchange('is_tax_applicable')
     def _change_tax_applicable(self):
-        if self.env.company.country_id.code == 'CA':
-            for rec in self:
-                if not rec.is_tax_applicable == 'yes':
-                    exemption_fiscal_position_id = self.env.company.sudo().tax_exemption_fiscal_position_id
-                    if exemption_fiscal_position_id:
-                        rec.property_account_position_id = exemption_fiscal_position_id
-                else:
-                    rec.property_account_position_id = False
+        # if self.env.company.country_id.code == 'CA': # For Canada
+        for rec in self:
+            if not rec.is_tax_applicable == 'yes':
+                exemption_fiscal_position_id = self.env.company.sudo().tax_exemption_fiscal_position_id
+                if exemption_fiscal_position_id and rec.property_account_position_id != exemption_fiscal_position_id:
+                    rec.property_account_position_id = exemption_fiscal_position_id
+            else:
+                rec.property_account_position_id = False
 
     @api.model
     def _commercial_fields(self):
@@ -64,8 +57,8 @@ class ResPartner(models.Model):
         res.append('is_tax_applicable')
         res.append('l10n_ca_pst')
         res.append('tax_exemption_certificate')
-        res.append('expiration_date')
-        res.append('certificate_number')
+        res.append('exemption_expiration_date')
+        res.append('exemption_certificate_number')
         return res
 
     @api.model
